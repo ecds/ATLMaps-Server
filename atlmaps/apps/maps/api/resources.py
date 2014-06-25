@@ -28,3 +28,7 @@ class LayerCollectionResource(resources.MongoEngineResource):
         allowed_methods = ('get')
         resource_name = 'layercollection'
         authorization = authorization.ReadOnlyAuthorization()
+        filtering = {
+            'slug': ALL,
+        }
+
