@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <script src ="js/jquery-2.1.1.js"></script>
+        <script src="js/handlebars-v1.3.0.js"></script>
+        <script src="http://builds.emberjs.com/release/ember.js"></script>
+        <script src="http://builds.emberjs.com/beta/ember-data.prod.js"></script>
+        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <script src="js/app.js"></script>
+        
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+        <link rel='stylesheet' href='css/local.css' />
+    </head>
+    <body>
+        <script type="text/x-handlebars" data-template-name="application">
+            <div class="navbar">
+                {{#link-to 'index' tagName='li' class='navbar-brand'}}Homepage{{/link-to}}
+                {{#link-to 'createMap' tagNme='li' class='navbar-brand'}}Create Map{{/link-to}}
+            </div>
+            <div class="container">{{outlet}}</div>
+            <div class="footer">GSU + Emory</div>
+        </script>
+        
+        <script type="text/x-handlebars" data-template-name="index">
+            <h1>Welcome to ATLMaps</h1>
+            <img {{bind-attr src="logo"}} alt="Logo" />
+            
+        </script>
+        
+        <script type='text/x-handlebars' data-template-name='createMap'>
+            <div id='map'></div>
+            {{#each}}
+                <p>
+                    {{name}}, {{layer_type}}
+                    {{add-remove-layer-button title='Add Layer' action='addLayer' param=this}}
+                </p>
+            {{/each}}
+        </script>
+        
+        <script type="text/x-handlebars" data-template-name="components/add-remove-layer-button">
+            {{#if layerAdded}}
+                <button {{action 'buttonRemove' this}}>Remove Layer</button>
+            {{else}}
+                <button {{action 'buttonAdd'}}>{{title}}</button>
+            {{/if}}
+        </script>
+        
+    </body>
+</html>
