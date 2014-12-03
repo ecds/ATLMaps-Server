@@ -1,2 +1,5 @@
 .komodotools
 *.komodoproject
+notes.js
+form-examples.js
+atlmaps/Gemfile.lock
