@@ -47,13 +47,17 @@ App.CreateMapRoute = Ember.Route.extend({
                 $(tile).addClass(slug)
             }
             else{
-                $("."+slug).remove();
+                $("."+slug).fadeOut( "slow", function() {
+                    $("."+slug).remove();
+                });
             }
             
         },
         
         removeLayer: function(layer){
-            $("."+layer).remove();
+            $("."+layer).fadeOut(5000, function() { $(this).remove();});
+            //<a onclick='$("#notification").fadeOut(300, function() { $(this).remove(); });' class="notificationClose "><img src="close.png"/></a>
+
         }
     }
 });
