@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141118171848) do
+ActiveRecord::Schema.define(version: 20141204173744) do
 
   create_table "layers", force: true do |t|
     t.string   "name"
@@ -27,6 +27,26 @@ ActiveRecord::Schema.define(version: 20141118171848) do
     t.decimal  "miny",        precision: 10, scale: 8
     t.decimal  "maxx",        precision: 10, scale: 8
     t.decimal  "maxy",        precision: 10, scale: 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "layers_projects", id: false, force: true do |t|
+    t.integer "layer_id"
+    t.integer "project_id"
+  end
+
+  create_table "projects", force: true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.string   "status"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
