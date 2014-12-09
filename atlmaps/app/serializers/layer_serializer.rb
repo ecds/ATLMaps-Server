@@ -1,6 +1,8 @@
 class LayerSerializer < ActiveModel::Serializer
   embed :ids # this is key for the Ember data to work.
   
+  has_many :projects
+  
   attributes  :id,
               :name,
               :slug,

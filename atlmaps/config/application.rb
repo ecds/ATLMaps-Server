@@ -8,10 +8,10 @@ Bundler.require(*Rails.groups)
 
 module Atlmaps
   class Application < Rails::Application
-    config.action_dispatch.default_headers = {
-    'Access-Control-Allow-Origin' => '*',
-    'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
-  }
+  #  config.action_dispatch.default_headers = {
+  #    'Access-Control-Allow-Origin' => '*',
+  #    'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
+  #}
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -23,5 +23,15 @@ module Atlmaps
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+    
+  config.middleware.insert_before "ActionDispatch::Static", "Rack::Cors" do allow do origins '*'
+
+    resource '*',
+      :headers => :any,
+      :methods => [:get, :post, :delete, :put, :options],
+      :max_age => 0
+    end
+  end
+    
   end
 end

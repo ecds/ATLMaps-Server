@@ -22,6 +22,7 @@ gem 'jquery-rails'
 
 gem 'json'
 gem 'rest-client'
+gem 'rack-cors'
 
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
