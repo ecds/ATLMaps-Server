@@ -5,24 +5,57 @@ var App = Ember.Application.create({
 App.Router.map(function() {
     //this.resource('layers');
     this.resource('createMap');
+    this.resource('projects', function() {
+        this.resource('project', { path: '/:project_id' });
+    });
 
 });
 
 // Controllers
 
-App.IndexController = Ember.ArrayController.extend({
-    logo: src="https://pbs.twimg.com/profile_images/378800000044814200/04835e4d7c58d4b305b1769c20160b31_400x400.jpeg",
-});
-
 App.CreateMapController = Ember.ArrayController.extend({
     sortProperties: ['layer_type', 'name'],
     
+    actions : {
+        
+        createProject: function() {
+            var project = this.store.createRecord('project', {
+                name: (new Date()).toTimeString(),
+                status: 'UNSAVED'
+            });
+            project.save()
+        }
+    }
+    
+});
+
+App.AddLayerModalController = Ember.ArrayController.extend({
+   sortProperties: ['layer_type', 'name'],
 });
 
 // Routers
 
-App.IndexRoute = Ember.Route.extend({
+App.IndexRoute = Ember.Route.extend({});
 
+App.AddLayerModalRoute = Ember.Route.extend({
+    model: function() {
+        return this.store.find('layer');
+    },
+});
+
+App.ProjectsRoute = Ember.Route.extend({
+    model: function() {
+        return this.store.find('project');
+    },
+})
+
+App.ProjectRoute = Ember.Route.extend({
+    model: function(params) {
+        var project = this.store.find('project',  params.project_id);
+        //console.log(project);
+        return project;
+    },
+    
 });
 
 App.CreateMapRoute = Ember.Route.extend({
@@ -30,10 +63,9 @@ App.CreateMapRoute = Ember.Route.extend({
         return this.store.find('layer');
     },
     
-    
     actions: {
         addLayer: function(layer) {
-            var slug = layer.get('layer')
+            var slug = layer.get('layer');
             if ($("."+slug).length!==1){
                 var map = store.get('map');
                 var tile = L.tileLayer('http://static.library.gsu.edu/ATLmaps/tiles/' + layer.get('layer') + '/{z}/{x}/{y}.png', {
@@ -44,15 +76,40 @@ App.CreateMapRoute = Ember.Route.extend({
                     //attribution: 'GSU'
                 }).addTo(map).getContainer();
                 
-                $(tile).addClass(slug)
+                var added_layers = addedLayer.get('layers');
+                
+                //console.log(addedLayer.get('layers'));
+                
+                added_layers.push(layer.get('name'));
+                addedLayer.set('layers', added_layers);
+                
+                //console.log(addedLayer.get('layers'));
+                
+                $(tile).addClass(slug);
             }
             else{
-                $("."+slug).fadeOut( 2000, function() {
-                    $("."+slug).remove();
+                $("."+slug).fadeOut( 500, function() {
+                    $(this).remove();
                 });
             }
             
+        },
+        
+        // Modal
+        showModal: function(name, content) {
+            this.controllerFor(name).set('content', content);
+            this.render(name, {
+                into: 'application',
+                outlet: 'modal'
+            });
+        },
+        removeModal: function() {
+            this.disconnectOutlet({
+                outlet: 'modal',
+                parentView: 'application'
+            });
         }
+        
     }
 });
 
@@ -60,12 +117,17 @@ App.CreateMapRoute = Ember.Route.extend({
 App.Map = Ember.Object.extend();
 var store = App.Map.create();
 
+App.AddedLayer = Ember.Object.extend();
+var addedLaeyr = App.AddedLayer.create();
+
 // Views
 
-App.CreateMapView = Ember.View.extend({
 
+// Components
+
+App.BaseMapComponent = Ember.Component.extend({
     didInsertElement: function() {
-        var map = L.map('map').setView([33.7489954,-84.3879824], 15);
+        var map = L.map('map').setView([33.7489954,-84.3879824], 14);
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
@@ -73,47 +135,78 @@ App.CreateMapView = Ember.View.extend({
         store.set('map', map);
         // save map instance
         this.controller.set('map', map);
+        console.log(map)
         
     },
-    
-
-});
-
-App.AddLayerView = Ember.View.extend({
-    
-    click: function(evt) {
-        //this.get('controller').send('addLayer', 'some map')
-        
-        var map = store.get('map');
-        console.log(map)
-        var wmsLayer = L.tileLayer.wms("http://geospatial.library.emory.edu:8081/geoserver/ebola/wms", {
-            layers: 'ebola:ATL28',
-            format: 'image/png',
-            CRS: 'EPSG:900913',
-            transparent: true,
-            auth: 'admin:geospatialisthefuture',
-            //attribution: 'Emory'
-          });
-          wmsLayer.addTo(map);
-        
-        
-    }
-});
-
-// Components
+})
 
 App.AddRemoveLayerButtonComponent = Ember.Component.extend({
     actions: {
-        buttonAdd: function() {
+        buttonToggle: function() {
             this.toggleProperty('layerAdded');
             this.sendAction('action', this.get('param'));
         },
-        buttonRemove: function() {
-            this.toggleProperty('layerAdded');
-            this.sendAction('action', this.get('param'));
-        }
     }
 });
+
+App.ListAddedLayersComponent = Ember.Component.extend({
+    
+    model: function() {
+        return this.store.find('project');
+    },
+
+});
+
+App.MyModalComponent = Ember.Component.extend({
+    actions: {
+        ok: function() {
+            this.$('.modal').modal('hide');
+            this.sendAction('ok');
+        }
+    },
+    show: function() {
+        this.$('.modal').modal().on('hidden.bs.modal', function() {
+            this.sendAction('close');
+        }.bind(this));
+    }.on('didInsertElement')
+});
+
+App.MapLayersComponent = Ember.Component.extend({
+    mappedLayers: function() {
+        
+        var mappedLayer = DS.PromiseObject.create({
+            promise: App.Layer.store.find('layer', this.layerID)
+        })
+        
+        mappedLayer.then(function() {
+            console.log(mappedLayer.get('layer'));
+            
+            var slug = mappedLayer.get('layer');
+            if ($("."+slug).length!==1){
+                var map = store.get('map');
+                var tile = L.tileLayer('http://static.library.gsu.edu/ATLmaps/tiles/' + mappedLayer.get('layer') + '/{z}/{x}/{y}.png', {
+                    layer: mappedLayer.get('layer'),
+                    tms: true,
+                    minZoom: 13,
+                    maxZoom: 19,
+                    //attribution: 'GSU'
+                }).addTo(map).getContainer();
+                
+                $(tile).addClass(slug);
+            }
+            else{
+                $("."+slug).fadeOut( 500, function() {
+                    $(this).remove();
+                });
+            } 
+        });
+        //return mappedLayer
+    }.property(),
+    
+    actions: {
+    }
+})
+
 
 
 // Adapter
@@ -122,21 +215,15 @@ App.AddRemoveLayerButtonComponent = Ember.Component.extend({
 App.ApplicationAdapter = DS.RESTAdapter.extend({
     host: 'http://api.atlmaps-dev.com:3000',
     namespace: 'v1',
-    suffix: '.json',
-    pathForType: function(type) {
-        return this._super(type) + this.get('suffix');
-    }
+    //suffix: '.json',
+    //pathForType: function(type) {
+    //    return this._super(type) + this.get('suffix');
+    //}
+    
 });
 
 
 // Models
-App.Layer = DS.Model.extend({
-    collection: DS.attr('number'),
-    name: DS.attr('string'),
-    layer_type: DS.attr('string'),
-    isNew: DS.attr('boolean')
-});
-
 App.Layer = DS.Model.extend({
     name: DS.attr('string'),
     slug: DS.attr('string'),
@@ -151,5 +238,14 @@ App.Layer = DS.Model.extend({
     miny: DS.attr('number'),
     maxx: DS.attr('number'),
     maxy: DS.attr('number'),
+    project_ids: DS.hasMany('project', {async: true})
+});
+
+App.Project = DS.Model.extend({
+    name: DS.attr('string'),
+    description: DS.attr('string'),
+    status: DS.attr('string'),
+    //user: DS.attr('number'),
+    layer_ids: DS.hasMany('layer', {async: true}),
 });
 

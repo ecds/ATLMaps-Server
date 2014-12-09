@@ -5,10 +5,12 @@
         <script src="http://builds.emberjs.com/release/ember.js"></script>
         <script src="http://builds.emberjs.com/beta/ember-data.prod.js"></script>
         <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <script src="http://getbootstrap.com/dist/js/bootstrap.js"></script>
         <script src="js/app.js"></script>
         
+        
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+        <link href="http://getbootstrap.com/dist/css/bootstrap.css" rel="stylesheet">
         <link rel='stylesheet' href='css/local.css' />
     </head>
     <body>
@@ -16,33 +18,136 @@
             <div class="navbar">
                 {{#link-to 'index' tagName='li' class='navbar-brand'}}Homepage{{/link-to}}
                 {{#link-to 'createMap' tagNme='li' class='navbar-brand'}}Create Map{{/link-to}}
+                {{#link-to 'projects' tagNme='li' class='navbar-brand'}}Projects{{/link-to}}
             </div>
-            <div class="container">{{outlet}}</div>
+            {{outlet modal}}
+            <div class="container">
+              {{outlet}}
+              
+            </div>
             <div class="footer">GSU + Emory</div>
         </script>
         
         <script type="text/x-handlebars" data-template-name="index">
+          <div id='banner'>
             <h1>Welcome to ATLMaps</h1>
-            <img {{bind-attr src="logo"}} alt="Logo" />
-            
+            <!--<img {{bind-attr src="logo"}} alt="Logo" />-->
+          </div>
         </script>
         
         <script type='text/x-handlebars' data-template-name='createMap'>
-            <div id='map'></div>
+          <button {{ action 'createProject' }}>Create Map</button>
+            <div class="row">
+              <div class="col-md-2">
+              {{ list-added-layers }}
+                <div>
+                  <button {{action 'showModal' 'add-layer-modal' model}}>Add Layers</button>
+                </div>
+                {{#each layer in addedLayers }}
+                <div class="added-layers">
+                  {{layer}}
+                </div>
+                {{/each}}
+              </div>
+              <div class="col-md-10">
+                {{ base-map }}
+              </div>
+            </div>
+        </script>
+        
+        <script type='text/x-handlebars' data-template-name='projects/index'>
+          <ul>
             {{#each}}
-                <p>
-                    {{name}}, {{layer_type}}
-                    {{add-remove-layer-button title='Add Layer' action='addLayer' param=this}}
-                </p>
+            <li>
+              {{#link-to 'project' this}}
+                {{name}}
+              {{/link-to}}
+            </li>
             {{/each}}
+          </ul>
+        </script>
+        
+        <script type='text/x-handlebars' data-template-name='project'>
+          {{name}}
+          
+          <div class="row">
+            <div class="col-md-2">
+              <ul>
+                {{#each layer_ids}}
+                <li>
+                  {{map-layers layerID=id layerNmae=layer}}
+                  {{id}}:{{name}}
+                </li>
+                {{else}}
+                <li>No Layers yet</li>
+                {{/each}}
+              </ul>
+            </div>
+            <div class="col-md-10">
+              {{ base-map }}
+            </div>
+          </div>
+        </script>
+
+        <script type="text/x-handlebars" data-template-name="add-layer-modal">
+          {{#my-modal title='Add Layers' close='removeModal'}}
+            {{#each}}
+              <div class="layer-list-item">
+                {{ list-avaliable-layers layer=this}}
+                {{add-remove-layer-button title='Add Layer' action='addLayer' param=this}}
+              </div>
+            {{/each}}
+          {{/my-modal}}
+        </script>
+        
+        <!-- COMPONENTS -->
+        
+        <script type="text/x-handlebars" data-template-name="components/base-map">
+          <div id='map'></div>
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/add-remove-layer-button">
-            {{#if layerAdded}}
-                <button {{action 'buttonRemove' this}}>Remove Layer</button>
-            {{else}}
-                <button {{action 'buttonAdd'}}>{{title}}</button>
-            {{/if}}
+          {{#if layerAdded}}
+            <button {{action 'buttonToggle' this}}>Remove Layer</button>
+          {{else}}
+            <button {{action 'buttonToggle'}}>{{title}}</button>
+          {{/if}}
+        </script>
+        
+        <script type="text/x-handlebars" data-template-name="components/list-added-layers">
+            
+            {{ list-avaliable-layers layer=this }}
+        </script>
+        
+        <script type="text/x-handlebars" data-template-name="components/list-avaliable-layers">
+            {{layer.name}}, {{layer.layer_type}}, {{layer.id}}
+            <p>
+              {{layer.description}}
+            </p>
+        </script>
+
+        <script type="text/x-handlebars" data-template-name="components/my-modal">
+          <div class="modal fade">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title">{{title}}</h4>
+                </div>
+                <div class="modal-body">
+                  {{yield}}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" {{action 'ok'}}>OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </script>
+
+        <script type="text/x-handlebars" data-template-name="components/map-layers">
+          {{mappedLayers}}
         </script>
         
     </body>

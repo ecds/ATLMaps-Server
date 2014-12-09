@@ -2,3 +2,21 @@
     width: 90%;
     height: 90%;
 }
+
+#banner {
+    background-image: url('../images/bg.jpg');
+    background-repeat: repeat-x;
+    height: 500px;
+}
+
+#banner h1 {
+    color: white;
+}
+
+.container {
+    width: 100%;
+}
+
+.layer-list-item:nth-child(even){
+    background: #EEE;
+}
