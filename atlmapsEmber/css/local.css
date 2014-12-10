@@ -20,3 +20,7 @@
 .layer-list-item:nth-child(even){
     background: #EEE;
 }
+
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}

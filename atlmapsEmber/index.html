@@ -6,11 +6,13 @@
         <script src="http://builds.emberjs.com/beta/ember-data.prod.js"></script>
         <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
         <script src="http://getbootstrap.com/dist/js/bootstrap.js"></script>
+        <script src="js/bootstrap-slider.js"></script>
         <script src="js/app.js"></script>
         
         
         <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
         <link href="http://getbootstrap.com/dist/css/bootstrap.css" rel="stylesheet">
+        <link rel='stylesheet' href='css/bootstrap-slider.css' />
         <link rel='stylesheet' href='css/local.css' />
     </head>
     <body>
@@ -39,15 +41,9 @@
           <button {{ action 'createProject' }}>Create Map</button>
             <div class="row">
               <div class="col-md-2">
-              {{ list-added-layers }}
                 <div>
                   <button {{action 'showModal' 'add-layer-modal' model}}>Add Layers</button>
                 </div>
-                {{#each layer in addedLayers }}
-                <div class="added-layers">
-                  {{layer}}
-                </div>
-                {{/each}}
               </div>
               <div class="col-md-10">
                 {{ base-map }}
@@ -72,11 +68,15 @@
           
           <div class="row">
             <div class="col-md-2">
+              <div>
+                
+              </div>
               <ul>
                 {{#each layer_ids}}
                 <li>
                   {{map-layers layerID=id layerNmae=layer}}
-                  {{id}}:{{name}}
+                  {{name}}
+                  {{ opacity-slider layer=layer layerID=id}}
                 </li>
                 {{else}}
                 <li>No Layers yet</li>
@@ -106,6 +106,11 @@
           <div id='map'></div>
         </script>
         
+        <script type="text/x-handlebars" data-template-name="components/opacity-slider">
+          {{opacityslider}}
+          <input class="slider" {{bind-attr class=layer name=layer}} {{action "opacityChange" on="change" param=layer}} value="10" type="text"/>
+        </script>
+        
         <script type="text/x-handlebars" data-template-name="components/add-remove-layer-button">
           {{#if layerAdded}}
             <button {{action 'buttonToggle' this}}>Remove Layer</button>
@@ -115,8 +120,7 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/list-added-layers">
-            
-            {{ list-avaliable-layers layer=this }}
+          {{ list-avaliable-layers layer=this }}
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/list-avaliable-layers">

@@ -56,6 +56,31 @@ App.ProjectRoute = Ember.Route.extend({
         return project;
     },
     
+    actions: {
+        // Modal
+        showModal: function(name, content) {
+            this.controllerFor(name).set('content', content);
+            this.render(name, {
+                into: 'application',
+                outlet: 'modal'
+            });
+        },
+        removeModal: function() {
+            this.disconnectOutlet({
+                outlet: 'modal',
+                parentView: 'application'
+            });
+        }
+    },
+    
+    didInsertElement: function() {
+        $('#ex1').slider({
+            formatter: function(value) {
+		return 'Current value: ' + value;
+            }
+        });
+    }
+    
 });
 
 App.CreateMapRoute = Ember.Route.extend({
@@ -75,15 +100,6 @@ App.CreateMapRoute = Ember.Route.extend({
                     maxZoom: 19,
                     //attribution: 'GSU'
                 }).addTo(map).getContainer();
-                
-                var added_layers = addedLayer.get('layers');
-                
-                //console.log(addedLayer.get('layers'));
-                
-                added_layers.push(layer.get('name'));
-                addedLayer.set('layers', added_layers);
-                
-                //console.log(addedLayer.get('layers'));
                 
                 $(tile).addClass(slug);
             }
@@ -117,11 +133,7 @@ App.CreateMapRoute = Ember.Route.extend({
 App.Map = Ember.Object.extend();
 var store = App.Map.create();
 
-App.AddedLayer = Ember.Object.extend();
-var addedLaeyr = App.AddedLayer.create();
-
 // Views
-
 
 // Components
 
@@ -135,10 +147,40 @@ App.BaseMapComponent = Ember.Component.extend({
         store.set('map', map);
         // save map instance
         this.controller.set('map', map);
-        console.log(map)
-        
     },
-})
+});
+
+
+App.OpacitySliderComponent = Ember.Component.extend({
+    opacityslider: function() {
+        
+        var layer = DS.PromiseObject.create({
+            promise: App.Layer.store.find('layer', this.layerID)
+        });
+        
+        layer.then(function() {
+            
+            var layerName = layer.get('layer');
+            console.log(layerName)
+            
+            var slider = $("input.slider, input ."+layerName).slider({
+                        //precision: 2,
+                        value: 10,
+            });
+
+        });
+    }.property(),
+    
+    actions: {
+        opacityChange: function() {
+            console.log(this.layer);
+            value = $("input."+this.layer).val();
+            var opacity = value / 10;
+            console.log(opacity);
+            $("div."+this.layer).css({'opacity': opacity});
+        }
+    }
+});
 
 App.AddRemoveLayerButtonComponent = Ember.Component.extend({
     actions: {
@@ -179,7 +221,6 @@ App.MapLayersComponent = Ember.Component.extend({
         })
         
         mappedLayer.then(function() {
-            console.log(mappedLayer.get('layer'));
             
             var slug = mappedLayer.get('layer');
             if ($("."+slug).length!==1){
