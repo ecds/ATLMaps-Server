@@ -1,29 +1,39 @@
 <html>
     <head>
-        <script src ="js/jquery-2.1.1.js"></script>
-        <script src="js/handlebars-v1.3.0.js"></script>
-        <script src="http://builds.emberjs.com/release/ember.js"></script>
+        <!-- bower:js -->
+        <script src="../bower_components/jquery/dist/jquery.js"></script>
+        <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="../bower_components/bootstrap-material-design/dist/js/material.js"></script>
+        <script src="../bower_components/bootstrap-material-design/dist/js/ripples.js"></script>
+        <script src="../bower_components/handlebars/handlebars.js"></script>
+        <script src="../bower_components/ember/ember.js"></script>
+        <script src="../bower_components/leaflet/dist/leaflet.js"></script>
+        <script src="../bower_components/leaflet/dist/leaflet-src.js"></script>
+        <!-- endbower -->
         <script src="http://builds.emberjs.com/beta/ember-data.prod.js"></script>
-        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-        <script src="http://getbootstrap.com/dist/js/bootstrap.js"></script>
         <script src="js/bootstrap-slider.js"></script>
         <script src="js/app.js"></script>
         
-        
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-        <link href="http://getbootstrap.com/dist/css/bootstrap.css" rel="stylesheet">
+        <!-- bower:css -->
+        <link rel='stylesheet' href='../bower_components/bootstrap/dist/css/bootstrap.css' />
+        <link rel='stylesheet' href='../bower_components/bootstrap-material-design/dist/css/material.css' />
+        <link rel='stylesheet' href='../bower_components/bootstrap-material-design/dist/css/ripples.css' />
+        <link rel='stylesheet' href='../bower_components/leaflet/dist/leaflet.css' />
+        <!-- endbower -->
         <link rel='stylesheet' href='css/bootstrap-slider.css' />
         <link rel='stylesheet' href='css/local.css' />
     </head>
     <body>
         <script type="text/x-handlebars" data-template-name="application">
-            <div class="navbar">
-                {{#link-to 'index' tagName='li' class='navbar-brand'}}Homepage{{/link-to}}
-                {{#link-to 'createMap' tagNme='li' class='navbar-brand'}}Create Map{{/link-to}}
-                {{#link-to 'projects' tagNme='li' class='navbar-brand'}}Projects{{/link-to}}
+            <div class="navbar navbar-inverse">
+              <ul class="nav navbar-nav">
+                {{#link-to 'index' tagName='li' class='navbar-brand'}}ATL Maps{{/link-to}}
+                {{#link-to 'createMap' tagName='li'}}<a>Create Map</a>{{/link-to}}
+                {{#link-to 'projects' tagName='li'}}<a>Projects</a>{{/link-to}}
+              </ul>
             </div>
             {{outlet modal}}
-            <div class="container">
+            <div class="content">
               {{outlet}}
               
             </div>
@@ -38,63 +48,76 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='createMap'>
-          <button {{ action 'createProject' }}>Create Map</button>
-            <div class="row">
-              <div class="col-md-2">
-                <div>
-                  <button {{action 'showModal' 'add-layer-modal' model}}>Add Layers</button>
+            <div class="card layer-controls">
+              <div class="form-group">
+                <div class="input-group">
+                <input class="form-control floating-label" id="focusedInput" type="text" placeholder="Map Name"/>
+                  <span class="input-group-btn">
+                  <a class="btn btn-info" {{ action 'createProject' }}>Create Map</a>
+                  </span>
                 </div>
               </div>
-              <div class="col-md-10">
-                {{ base-map }}
+              
+              <div>
+                <a class="btn btn-add" {{action 'showModal' 'add-layer-modal' model}}>
+                  <span class="mdi-content-add mdi-large"></span> Layers
+                </a>
               </div>
+            </div>
+
+            <div id="base-map">
+              {{ base-map }}
             </div>
         </script>
         
         <script type='text/x-handlebars' data-template-name='projects/index'>
-          <ul>
+          <div class="container" id="project-list">
             {{#each}}
-            <li>
+            <div class="well square">
               {{#link-to 'project' this}}
                 {{name}}
               {{/link-to}}
-            </li>
+            </div>
             {{/each}}
-          </ul>
+          </div>
         </script>
         
         <script type='text/x-handlebars' data-template-name='project'>
+        <div class="card layer-controls">
           <h1>{{name}}</h1>
-          
-          <div class="row">
-            <div class="col-md-2">
-              <div>
-                <button {{action 'showModal' 'add-layer-modal' model}}>Add Layers</button>
-              </div>
-              <ul>
-                {{#each layer_ids}}
-                <li>
-                  {{map-layers layerID=id layerNmae=layer}}
-                  {{name}}
-                  {{ opacity-slider layer=layer layerID=id}}
-                </li>
-                {{else}}
-                <li>No Layers yet</li>
-                {{/each}}
-              </ul>
-            </div>
-            <div class="col-md-10">
-              {{ base-map }}
-            </div>
+          <div class="layer-list">
+            <h3>Active Layers<a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal' model}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>
+            <hr/>
+            <ul class="media-list">
+              {{#each layer_ids}}
+              <li class="media">
+                <h4 class="media-heading">{{name}}</h4>
+                {{ opacity-slider layer=layer layerID=id}}
+                {{map-layers layerID=id layerNmae=layer}}
+              </li>
+              {{else}}
+              <li class="media">
+                <h4 class="media-heading">No Layers yet</h4>
+              </li>
+              {{/each}}
+            </ul>
           </div>
+          </div>
+        <div class="row" id="base-map">
+        {{ base-map }}
+        </div>
         </script>
 
         <script type="text/x-handlebars" data-template-name="add-layer-modal">
           {{#my-modal title='Add Layers' close='removeModal'}}
             {{#each}}
-              <div class="layer-list-item">
-                {{ list-avaliable-layers layer=this}}
-                {{add-remove-layer-button title='Add Layer' action='addLayer' param=this}}
+              <div class="layer-list-item row">
+                <div class="col-xs-2">
+                  {{add-remove-layer-button title='Add' action='addLayer' param=this}}
+                </div>
+                <div class="col-xs-9">
+                  {{ list-avaliable-layers layer=this}}
+                </div>
               </div>
             {{/each}}
           {{/my-modal}}
@@ -107,15 +130,15 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/opacity-slider">
-          {{opacityslider}}
           <input class="slider" {{bind-attr class=layer name=layer}} {{action "opacityChange" on="change" param=layer}} value="10" type="text"/>
+          {{opacityslider}}
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/add-remove-layer-button">
           {{#if layerAdded}}
-            <button {{action 'buttonToggle' this}}>Remove Layer</button>
+            <a class="btn rotate btn-added btn-fab btn-sm" {{action 'buttonToggle' this}}><span class="mdi-action-done"></span></a>
           {{else}}
-            <button {{action 'buttonToggle'}}>{{title}}</button>
+            <a class="btn rotate btn-add btn-fab btn-sm" {{action 'buttonToggle'}}><span class="mdi-content-add"></span></a>
           {{/if}}
         </script>
         
@@ -124,7 +147,8 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/list-avaliable-layers">
-            {{layer.name}}, {{layer.layer_type}}, {{layer.id}}
+            <h4>{{layer.name}}</h4>
+            <p><strong>{{layer.layer_type}}</strong>, {{layer.id}}</p>
             <p>
               {{layer.description}}
             </p>
@@ -142,8 +166,8 @@
                   {{yield}}
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" {{action 'ok'}}>OK</button>
+                  <a class="btn btn-default" data-dismiss="modal">Close</a>
+                  <a class="btn btn-primary" {{action 'ok'}}>OK</a>
                 </div>
               </div>
             </div>

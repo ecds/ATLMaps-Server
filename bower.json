@@ -1,0 +1,26 @@
+{
+  "name": "atlmaps",
+  "version": "0.0.0",
+  "homepage": "https://github.com/emory-libraries-ecds/ATLMaps",
+  "authors": [
+    "Jay Varner <jay.varner@emory.edu> Kevin Glover <kevin.glover@emory.edu>"
+  ],
+  "main": "css/local.css",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.3.1",
+    "bootstrap-material-design": "~0.2.1",
+    "handlebars": "~2.0.0",
+    "ember": "",
+    "leaflet": "~0.7.3"
+  }
+}

@@ -64,22 +64,6 @@ App.ProjectRoute = Ember.Route.extend({
         addLayer: function(layer, model) {
             console.log(layer.get('id'));
             console.log(this.get('controller.id'));
-        
-        
-            //var project = DS.PromiseObject.create({
-            //    promise: App.Project.store.find('project', this.get('controller.id'))
-            //})
-            //
-            //project.then(function() {
-            //
-            //    console.log(project.get('id'))
-            //
-            //    project.set('name', 'Hell Yeah');
-            //    console.log(project);
-            //    //project.save();
-            //    
-            //});
-            
             App.Project.store.find('project', this.get('controller.id')).then(function (project) {
                 project.set('name', 'Hell Yeah');
                 project.save();
@@ -109,7 +93,7 @@ App.ProjectRoute = Ember.Route.extend({
     didInsertElement: function() {
         $('#ex1').slider({
             formatter: function(value) {
-		return 'Current value: ' + value;
+    return 'Current value: ' + value;
             }
         });
     }
@@ -173,7 +157,8 @@ var store = App.Map.create();
 
 App.BaseMapComponent = Ember.Component.extend({
     didInsertElement: function() {
-        var map = L.map('map').setView([33.7489954,-84.3879824], 14);
+        var map = L.map('map', {zoomControl:false}).setView([33.7489954,-84.3879824], 14);
+        L.control.zoom({ position: 'topright' }).addTo(map);
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
         }).addTo(map);
@@ -288,15 +273,19 @@ App.MapLayersComponent = Ember.Component.extend({
 
 // Adapter
 
-
 App.ApplicationAdapter = DS.RESTAdapter.extend({
-    host: 'http://api.atlmaps-dev.com:3000',
+    host: 'http://api.atlmaps-dev.com:7000',
     namespace: 'v1',
     //suffix: '.json',
     //pathForType: function(type) {
     //    return this._super(type) + this.get('suffix');
     //}
     
+});
+
+
+App.Store = DS.Store.extend({
+  adapter: App.ApplicationAdapter
 });
 
 
@@ -327,4 +316,3 @@ App.Project = DS.Model.extend({
 });
 
 // curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d ' {"user":{"first_name":"firstname","last_name":"lastname","email":"email@email.com","password":"app123","password_confirmation":"app123"}}'  http://api.atlantamaps-dev.com:3000/api/v1/projects
-
