@@ -16,5 +16,6 @@ class LayerSerializer < ActiveModel::Serializer
               :minx,
               :miny,
               :maxx,
-              :maxy
+              :maxy,
+              :projects
 end

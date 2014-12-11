@@ -19,4 +19,16 @@ class Api::V1::LayersController < ApplicationController
     #end
   end
   
+  def update
+    project = Project.find(params[:id])
+    if project.update_attributes(params[:name])
+      head 204, location: project
+    end
+  end
+  
+  private
+    def project_params
+      params.permit(:projects)
+    end
+  
 end

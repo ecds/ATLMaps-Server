@@ -33,9 +33,16 @@ class Api::V1::ProjectsController < ApplicationController
     end
   end
   
+  def update
+    project = Project.find(params[:id])
+    if project.update(project_params)
+      head 204, location: project
+    end
+  end
+  
   private
     def project_params
-      params.require(:project).permit(:name, :status)
+      params.require(:project).permit(:name, :status, :layers)
     end
   
 end
