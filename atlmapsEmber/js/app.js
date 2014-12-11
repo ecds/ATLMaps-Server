@@ -56,9 +56,42 @@ App.ProjectRoute = Ember.Route.extend({
         return project;
     },
     
+    layers: function() {
+        return this.store.find('layer');
+    },
+    
     actions: {
+        addLayer: function(layer, model) {
+            console.log(layer.get('id'));
+            console.log(this.get('controller.id'));
+        
+        
+            //var project = DS.PromiseObject.create({
+            //    promise: App.Project.store.find('project', this.get('controller.id'))
+            //})
+            //
+            //project.then(function() {
+            //
+            //    console.log(project.get('id'))
+            //
+            //    project.set('name', 'Hell Yeah');
+            //    console.log(project);
+            //    //project.save();
+            //    
+            //});
+            
+            App.Project.store.find('project', this.get('controller.id')).then(function (project) {
+                project.set('name', 'Hell Yeah');
+                project.save();
+            });
+            
+            
+            
+        },
+        
         // Modal
-        showModal: function(name, content) {
+        showModal: function(name) {
+            var content = this.store.find('layer');
             this.controllerFor(name).set('content', content);
             this.render(name, {
                 into: 'application',
@@ -113,6 +146,7 @@ App.CreateMapRoute = Ember.Route.extend({
         
         // Modal
         showModal: function(name, content) {
+            console.log(content)
             this.controllerFor(name).set('content', content);
             this.render(name, {
                 into: 'application',
@@ -186,6 +220,7 @@ App.AddRemoveLayerButtonComponent = Ember.Component.extend({
     actions: {
         buttonToggle: function() {
             this.toggleProperty('layerAdded');
+            console.log(this);
             this.sendAction('action', this.get('param'));
         },
     }
@@ -245,6 +280,7 @@ App.MapLayersComponent = Ember.Component.extend({
     }.property(),
     
     actions: {
+        
     }
 })
 
@@ -289,4 +325,6 @@ App.Project = DS.Model.extend({
     //user: DS.attr('number'),
     layer_ids: DS.hasMany('layer', {async: true}),
 });
+
+// curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d ' {"user":{"first_name":"firstname","last_name":"lastname","email":"email@email.com","password":"app123","password_confirmation":"app123"}}'  http://api.atlantamaps-dev.com:3000/api/v1/projects
 

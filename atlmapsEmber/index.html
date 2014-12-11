@@ -64,12 +64,12 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='project'>
-          {{name}}
+          <h1>{{name}}</h1>
           
           <div class="row">
             <div class="col-md-2">
               <div>
-                
+                <button {{action 'showModal' 'add-layer-modal' model}}>Add Layers</button>
               </div>
               <ul>
                 {{#each layer_ids}}
