@@ -62,10 +62,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   
   // Default task(s).
-  grunt.registerTask('default', ['uglify','cssmin','bower','wiredep']);
+  // grunt.registerTask('default', ['uglify','cssmin','bower','wiredep']);
   
-  grunt.registerTask('default', 'Log some stuff.', function() {
-    grunt.log.write('Logging some stuff...').ok();
-  });
+  grunt.registerTask('default', ['bower','wiredep']);
+  
+  // grunt.registerTask('default', 'Log some stuff.', function() {
+  //   grunt.log.write('Logging some stuff...').ok();
+  // });
   
 };
