@@ -25,7 +25,7 @@
     </head>
     <body>
         <script type="text/x-handlebars" data-template-name="application">
-            <div class="navbar navbar-inverse">
+            <div class="navbar navbar-inverse navbar-clear">
               <ul class="nav navbar-nav">
                 {{#link-to 'index' tagName='li' class='navbar-brand'}}ATL Maps{{/link-to}}
                 {{#link-to 'createMap' tagName='li'}}<a>Create Map</a>{{/link-to}}
@@ -83,7 +83,9 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='project'>
+        <a class="btn btn-fab btn-sm pull-left" style="display:none;" id="show-layer-options"><span class="mdi-action-visibility"></span></a>
         <div class="card layer-controls">
+          <a class="btn btn-fab btn-sm pull-right" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
           <h1>{{name}}</h1>
           <div class="layer-list">
             <h3>Active Layers<a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal' model}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>

@@ -14,8 +14,11 @@ a:hover{
 
 .content {
   width: 100%;
-  position: relative;
+  position: absolute;
   height: 100%;
+  top: 0;
+  left: 0;
+  padding-top: 60px;
 }
 
 .modal-content .modal-body {
@@ -47,8 +50,19 @@ a:hover{
   margin: 0;
 }
 
+
 .navbar.navbar-clear {
   background-color: rgba(248, 248, 248, 0.85);
+}
+
+.navbar.navbar-clear.navbar-inverse{
+  background-color: rgba(82, 100, 174, 0.35);
+  transition: background-color 0.2s;
+}
+
+.navbar.navbar-clear.navbar-inverse:hover{
+  background-color:#5264ae;
+  background-color: rgba(82, 100, 174, 0.92);
 }
 
 .layer-list-item:nth-child(even){
@@ -180,6 +194,10 @@ h3 .btn {
   padding-top:20px;
 }
 
+.leaflet-top.leaflet-right {
+  top: 60px;
+}
+
 .well.square{
   float:left;
   width: 22%;
@@ -205,4 +223,26 @@ h3 .btn {
   background: #009587;
   text-decoration: none;
   color: #FFF;
+}
+
+.card.layer-controls{
+  z-index: 11;
+  left:0;
+}
+
+a#show-layer-options {
+  z-index: 10;
+  background-color: white;
+}
+
+a#show-layer-options,
+a#hide-layer-options {
+  color: rgb(158, 158, 158);
+  transition: color 0.2s, background 0.2s;
+}
+
+a#show-layer-options:hover,
+a#hide-layer-options:hover{
+  color: white;
+  background-color: rgb(181, 181, 181);
 }

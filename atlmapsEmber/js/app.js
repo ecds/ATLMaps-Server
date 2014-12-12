@@ -276,11 +276,11 @@ App.MapLayersComponent = Ember.Component.extend({
 App.ApplicationAdapter = DS.RESTAdapter.extend({
     host: 'http://api.atlmaps-dev.com:7000',
     namespace: 'v1',
-    //suffix: '.json',
-    //pathForType: function(type) {
-    //    return this._super(type) + this.get('suffix');
-    //}
-    
+    suffix: '.json',
+    buildURL: function(record, suffix) {
+      var s = this._super(record, suffix);
+      return s + this.get('suffix');
+    }
 });
 
 
@@ -316,3 +316,16 @@ App.Project = DS.Model.extend({
 });
 
 // curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d ' {"user":{"first_name":"firstname","last_name":"lastname","email":"email@email.com","password":"app123","password_confirmation":"app123"}}'  http://api.atlantamaps-dev.com:3000/api/v1/projects
+
+$(document).ready(function(){
+  $(document).on('click','#hide-layer-options',function(){
+    $(".card.layer-controls").animate({"left":"-100%"},function(){
+      $("#show-layer-options").fadeIn(500);
+    });
+  })
+  .on('click','#show-layer-options',function(){
+    $(".card.layer-controls").animate({"left":"0%"});
+    $("#show-layer-options").fadeOut(500);
+  })
+  
+})
