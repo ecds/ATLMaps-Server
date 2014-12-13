@@ -26,9 +26,10 @@ class Api::V1::LayersController < ApplicationController
     end
   end
   
-  private
-    def project_params
-      params.permit(:projects)
-    end
+  #private
+  #  def project_params
+  #    params.permit(:project_ids => [])
+  #  end
   
 end
+

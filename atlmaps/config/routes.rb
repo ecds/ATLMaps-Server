@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :layers, only: [:index, :show]
       resources :projects#, defaults => { :format => 'json' }
+      resources :projectlayers
       
       #with_options only: :index do |list_only|
       #  list_only.resources :zombies
@@ -13,3 +14,4 @@ Rails.application.routes.draw do
     end
   end
 end
+

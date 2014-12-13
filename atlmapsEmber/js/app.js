@@ -58,16 +58,16 @@ App.ProjectRoute = Ember.Route.extend({
     
     layers: function() {
         return this.store.find('layer');
-    },
+    },//.property('@each.layer'),
     
     actions: {
         addLayer: function(layer, model) {
             console.log(layer.get('id'));
             console.log(this.get('controller.id'));
-            App.Project.store.find('project', this.get('controller.id')).then(function (project) {
-                project.set('name', 'Hell Yeah');
-                project.save();
-            });
+            //App.Project.store.find('project', this.get('controller.id')).then(function (project) {
+            //    project.set('name', 'Hell Yeah');
+            //    project.save();
+            //});
             
             
             

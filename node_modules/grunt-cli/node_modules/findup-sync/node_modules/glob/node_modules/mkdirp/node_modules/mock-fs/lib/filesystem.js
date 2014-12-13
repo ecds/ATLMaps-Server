@@ -1,0 +1,276 @@
+var os = require('os');
+var path = require('path');
+
+var Directory = require('./directory');
+var File = require('./file');
+var FSError = require('./error');
+var SymbolicLink = require('./symlink');
+
+
+var isWindows = process.platform === 'win32';
+
+function getPathParts(filepath) {
+  var parts = path._makeLong(path.resolve(filepath)).split(path.sep);
+  parts.shift();
+  if (isWindows) {
+    // parts currently looks like ['', '?', 'c:', ...]
+    parts.shift();
+    var q = parts.shift(); // should be '?'
+    var base = '\\\\' + q + '\\' + parts.shift().toLowerCase();
+    parts.unshift(base);
+  }
+  if (parts[parts.length - 1] === '') {
+    parts.pop();
+  }
+  return parts;
+}
+
+
+
+/**
+ * Create a new file system.
+ * @constructor
+ */
+function FileSystem() {
+
+  var root = new Directory();
+
+  // populate with default directories
+  var defaults = [os.tmpdir && os.tmpdir() || os.tmpDir(), process.cwd()];
+  defaults.forEach(function(dir) {
+    var parts = getPathParts(dir);
+    var directory = root;
+    var i, ii, name, candidate;
+    for (i = 0, ii = parts.length; i < ii; ++i) {
+      name = parts[i];
+      candidate = directory.getItem(name);
+      if (!candidate) {
+        directory = directory.addItem(name, new Directory());
+      } else if (candidate instanceof Directory) {
+        directory = candidate;
+      } else {
+        throw new Error('Failed to create directory: ' + dir);
+      }
+    }
+  });
+
+  /**
+   * Root directory.
+   * @type {Directory}
+   */
+  this._root = root;
+
+}
+
+
+/**
+ * Get a file system item.
+ * @param {string} filepath Path to item.
+ * @return {Item} The item (or null if not found).
+ */
+FileSystem.prototype.getItem = function(filepath) {
+  var parts = getPathParts(filepath);
+  var currentParts = getPathParts(process.cwd());
+  var item = this._root;
+  var name;
+  for (var i = 0, ii = parts.length; i < ii; ++i) {
+    name = parts[i];
+    if (item instanceof Directory && name !== currentParts[i]) {
+      // make sure traversal is allowed
+      if (!item.canExecute()) {
+        throw new FSError('EACCES', filepath);
+      }
+    }
+    item = item.getItem(name);
+    if (!item) {
+      break;
+    }
+  }
+  return item;
+};
+
+
+/**
+ * Populate a directory with an item.
+ * @param {Directory} directory The directory to populate.
+ * @param {string} name The name of the item.
+ * @param {string|Buffer|function|Object} obj Instructions for creating the
+ *     item.
+ */
+function populate(directory, name, obj) {
+  var item;
+  if (typeof obj === 'string' || Buffer.isBuffer(obj)) {
+    // contents for a file
+    item = new File();
+    item.setContent(obj);
+  } else if (typeof obj === 'function') {
+    // item factory
+    item = obj();
+  } else {
+    // directory with more to populate
+    item = new Directory();
+    for (var key in obj) {
+      populate(item, key, obj[key]);
+    }
+  }
+  /**
+   * Special exception for redundant adding of empty directories.
+   */
+  if (item instanceof Directory &&
+      item.list().length === 0 &&
+      directory.getItem(name) instanceof Directory) {
+    // pass
+  } else {
+    directory.addItem(name, item);
+  }
+}
+
+
+/**
+ * Configure a mock file system.
+ * @param {Object} paths Config object.
+ * @return {FileSystem} Mock file system.
+ */
+FileSystem.create = function(paths) {
+  var system = new FileSystem();
+
+  for (var filepath in paths) {
+    var parts = getPathParts(filepath);
+    var directory = system._root;
+    var i, ii, name, candidate;
+    for (i = 0, ii = parts.length - 1; i < ii; ++i) {
+      name = parts[i];
+      candidate = directory.getItem(name);
+      if (!candidate) {
+        directory = directory.addItem(name, new Directory());
+      } else if (candidate instanceof Directory) {
+        directory = candidate;
+      } else {
+        throw new Error('Failed to create directory: ' + filepath);
+      }
+    }
+    populate(directory, parts[i], paths[filepath]);
+  }
+
+  return system;
+};
+
+
+/**
+ * Generate a factory for new files.
+ * @param {Object} config File config.
+ * @return {function():File} Factory that creates a new file.
+ */
+FileSystem.file = function(config) {
+  config = config || {};
+  return function() {
+    var file = new File();
+    if (config.hasOwnProperty('content')) {
+      file.setContent(config.content);
+    }
+    if (config.hasOwnProperty('mode')) {
+      file.setMode(config.mode);
+    } else {
+      file.setMode(0666);
+    }
+    if (config.hasOwnProperty('uid')) {
+      file.setUid(config.uid);
+    }
+    if (config.hasOwnProperty('gid')) {
+      file.setGid(config.gid);
+    }
+    if (config.hasOwnProperty('atime')) {
+      file.setATime(config.atime);
+    }
+    if (config.hasOwnProperty('ctime')) {
+      file.setCTime(config.ctime);
+    }
+    if (config.hasOwnProperty('mtime')) {
+      file.setMTime(config.mtime);
+    }
+    return file;
+  };
+};
+
+
+/**
+ * Generate a factory for new symbolic links.
+ * @param {Object} config File config.
+ * @return {function():File} Factory that creates a new symbolic link.
+ */
+FileSystem.symlink = function(config) {
+  config = config || {};
+  return function() {
+    var link = new SymbolicLink();
+    if (config.hasOwnProperty('mode')) {
+      link.setMode(config.mode);
+    } else {
+      link.setMode(0666);
+    }
+    if (config.hasOwnProperty('uid')) {
+      link.setUid(config.uid);
+    }
+    if (config.hasOwnProperty('gid')) {
+      link.setGid(config.gid);
+    }
+    if (config.hasOwnProperty('path')) {
+      link.setPath(config.path);
+    } else {
+      throw new Error('Missing "path" property');
+    }
+    if (config.hasOwnProperty('atime')) {
+      link.setATime(config.atime);
+    }
+    if (config.hasOwnProperty('ctime')) {
+      link.setCTime(config.ctime);
+    }
+    if (config.hasOwnProperty('mtime')) {
+      link.setMTime(config.mtime);
+    }
+    return link;
+  };
+};
+
+
+/**
+ * Generate a factory for new directories.
+ * @param {Object} config File config.
+ * @return {function():Directory} Factory that creates a new directory.
+ */
+FileSystem.directory = function(config) {
+  config = config || {};
+  return function() {
+    var dir = new Directory();
+    if (config.hasOwnProperty('mode')) {
+      dir.setMode(config.mode);
+    }
+    if (config.hasOwnProperty('uid')) {
+      dir.setUid(config.uid);
+    }
+    if (config.hasOwnProperty('gid')) {
+      dir.setGid(config.gid);
+    }
+    if (config.hasOwnProperty('items')) {
+      for (var name in config.items) {
+        populate(dir, name, config.items[name]);
+      }
+    }
+    if (config.hasOwnProperty('atime')) {
+      dir.setATime(config.atime);
+    }
+    if (config.hasOwnProperty('ctime')) {
+      dir.setCTime(config.ctime);
+    }
+    if (config.hasOwnProperty('mtime')) {
+      dir.setMTime(config.mtime);
+    }
+    return dir;
+  };
+};
+
+
+/**
+ * Module exports.
+ * @type {function}
+ */
+module.exports = FileSystem;

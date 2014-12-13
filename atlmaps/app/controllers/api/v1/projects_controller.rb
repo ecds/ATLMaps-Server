@@ -12,7 +12,7 @@ class Api::V1::ProjectsController < ApplicationController
   
   def index
     @projects = Project.all
-    render json: @projects
+    #render json: projects
     #respond_to do |format|
     #  format.json { render json: projects, status: :ok }
     #end
@@ -20,7 +20,13 @@ class Api::V1::ProjectsController < ApplicationController
   
   def show
     @project = Project.find(params[:id])
-    render json: @project
+    @layer_ids = []
+    layers = Projectlayer.select(:layer_id).where(:project_id => params[:id])
+    layers.each do |layer|
+      @layer_ids << layer.layer_id
+    end
+    #patients = physician.patients.includes(:appointments).where('appointments.appointment_date  = ?', some_date)
+    #render json: project
     #respond_to do |format|
     #  format.json { render json: project, status: :ok }
     #end
@@ -42,7 +48,8 @@ class Api::V1::ProjectsController < ApplicationController
   
   private
     def project_params
-      params.require(:project).permit(:name, :status, :layers)
+      params.require(:project).permit(:name, :status)
     end
   
 end
+

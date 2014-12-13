@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141204173744) do
+ActiveRecord::Schema.define(version: 20141211212739) do
 
   create_table "layers", force: true do |t|
     t.string   "name"
@@ -31,22 +31,20 @@ ActiveRecord::Schema.define(version: 20141204173744) do
     t.datetime "updated_at"
   end
 
-  create_table "layers_projects", id: false, force: true do |t|
-    t.integer "layer_id"
-    t.integer "project_id"
+  create_table "projectlayers", force: true do |t|
+    t.integer  "layer_id"
+    t.integer  "project_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "projectlayers", ["layer_id"], name: "index_projectlayers_on_layer_id", using: :btree
+  add_index "projectlayers", ["project_id"], name: "index_projectlayers_on_project_id", using: :btree
 
   create_table "projects", force: true do |t|
     t.string   "name"
     t.string   "description"
     t.string   "status"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "users", force: true do |t|
-    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
