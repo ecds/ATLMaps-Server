@@ -9,6 +9,7 @@
         <script src="../bower_components/ember/ember.js"></script>
         <script src="../bower_components/leaflet/dist/leaflet.js"></script>
         <script src="../bower_components/leaflet/dist/leaflet-src.js"></script>
+        <script src="../bower_components/leaflet-ajax/dist/leaflet.ajax.js"></script>
         <!-- endbower -->
         <script src="http://builds.emberjs.com/beta/ember-data.prod.js"></script>
         <script src="js/bootstrap-slider.js"></script>
@@ -70,9 +71,9 @@
             </div>
         </script>
         
-        <script type='text/x-handlebars' data-template-name='projects/index'>
+        <script type='text/x-handlebars' data-template-name='projects'>
           <div class="container" id="project-list">
-            {{#each project in this}}
+            {{#each project in this.model}}
             <div class="well square">
               {{#link-to 'project' project}}
                 {{project.name}}
@@ -94,7 +95,7 @@
               {{#each layer in layer_ids}}
               <li class="media">
                 <h4 class="media-heading">{{layer.name}}</h4>
-                {{ opacity-slider layer=layer.layer layerID=layer.id}}
+                {{ opacity-slider layer=layer.layer layerID=layer.id }}
                 {{map-layers layerID=layer.id layerNmae=layer.layer}}
               </li>
               {{else}}
@@ -112,13 +113,13 @@
 
         <script type="text/x-handlebars" data-template-name="add-layer-modal">
           {{#my-modal title='Add Layers' close='removeModal'}}
-            {{#each}}
+            {{#each layer in this}}
               <div class="layer-list-item row">
                 <div class="col-xs-2">
-                  {{add-remove-layer-button title='Add' action='addLayer' param=this}}
+                  {{add-remove-layer-button title='Add' action='addLayer' param=layer}}
                 </div>
                 <div class="col-xs-9">
-                  {{ list-avaliable-layers layer=this}}
+                  {{ list-avaliable-layers layer=layer}}
                 </div>
               </div>
             {{/each}}

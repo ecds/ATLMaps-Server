@@ -1,0 +1,172 @@
+{
+	"type": "FeatureCollection",
+	"features": [{
+		"type": "Feature",
+		"properties": {
+			"name": "Remed's Wall",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/remed/'> Remed</a> <br> ",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/remed",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.38579620000002, 33.759696, 0]
+		}
+	}, {
+		"type": "Feature",
+		"properties": {
+			"name": "Ripo and Remed's wall",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/ripo/'> Ripo</a><a href='http://livingwallsatl.com/artists/remed/'> Remed</a>,  <br> at 902 Dekalb Ave SE",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/ripo003",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.3576622, 33.7547211, 0]
+		}
+	}, {
+		"type": "Feature",
+		"properties": {
+			"name": "Never &#038; NASDAQ's Wall",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/nasdaq/'> NASDAQ</a><a href='http://livingwallsatl.com/artists/never/'> Never</a>,  <br> On the back of The Graveyard.  This mural no longer exists.",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/05",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.34616088867188, 33.73982923366871, 0]
+		}
+	}, {
+		"type": "Feature",
+		"properties": {
+			"name": "Ripo's wall",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/ripo/'> Ripo</a> <br> at 290 MLK Jr Dr SE",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/repo001",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.37883199999999, 33.748067, 0]
+		}
+	}, {
+		"type": "Feature",
+		"properties": {
+			"name": "Shaun Thurston's Wall",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/shaun-thurston/'> Shaun Thurston</a> <br> ",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/0120",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.29675800000001, 33.762403, 0]
+		}
+	}, {
+		"type": "Feature",
+		"properties": {
+			"name": "Faber's Wall",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/faber/'> Faber</a> <br> At 142 Walker st",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/Faber",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.40024900000003, 33.750549, 0]
+		}
+	}, {
+		"type": "Feature",
+		"properties": {
+			"name": "Michi Meko's Castlebury Hill Wall",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/michi-meko/'> Michi Meko</a> <br> ",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/07",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.40121469999997, 33.7500573, 0]
+		}
+	}, {
+		"type": "Feature",
+		"properties": {
+			"name": "Marco Sueno's Cabbagetown Wall",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/marco-sueno/'> Marco Sueno</a> <br> At the intersection of Krog st and Wylie st. This wheatpaste no longer exists.",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/MarcoSueno",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.36328650000002, 33.7522036, 0]
+		}
+	}, {
+		"type": "Feature",
+		"properties": {
+			"name": "Hugh Leeman's Wall",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/hugh-leeman/'> Hugh Leeman</a> <br> The side of The Sound Table. This wall no longer exists.",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/HughLeeman",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.37178899999998, 33.7542373, 0]
+		}
+	}, {
+		"type": "Feature",
+		"properties": {
+			"name": "Feral Child's Wall",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/feral-child/'> Feral Child</a> <br> On the side of Homegrown.",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/FeralChild_edit",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.35589490000001, 33.7466779, 0]
+		}
+	}, {
+		"type": "Feature",
+		"properties": {
+			"name": "Gaia, Swampy, &#038; Greg Mike",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/gaia-2/'> Gaia</a><a href='http://livingwallsatl.com/artists/greg-mike/'> Greg Mike</a>, <a href='http://livingwallsatl.com/artists/swampy/'> Swampy</a>,  <br> ",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/gaia",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.3576622, 33.7547211, 0]
+		}
+	}, {
+		"type": "Feature",
+		"properties": {
+			"name": "Doodles' Wall",
+			"description": "Artist(s): <a href='http://livingwallsatl.com/artists/doodles/'> Doodles</a> <br> On the side of Jai Sanit Yoga Studio",
+			"image": {
+				"url": "http://livingwallsatl.com/wp-content/uploads/2013/07/doodles-0565",
+				"credit": "Dustin Chambers"
+			}
+		},
+		"geometry": {
+			"type": "Point",
+			"coordinates": [-84.36638959999999, 33.7529035, 0]
+		}
+	}]
+}

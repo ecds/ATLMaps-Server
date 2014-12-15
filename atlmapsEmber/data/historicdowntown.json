@@ -1,0 +1,188 @@
+{
+	"type": "FeatureCollection",
+	"features": [{
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 1",
+				"image": {
+					"name": "historicdowntown1",
+					"url": "/images/historicdowntown/historicdowntown1.jpg"
+				},
+				"description": "On Gilmer, Looking NW up Edgewood Avenue, across Peachtree Center (Ivy)"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38642, 33.75427, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 2",
+				"image": {
+					"name": "historicdowntown2",
+					"url": "/images/historicdowntown/historicdowntown2.jpg"
+				},
+				"description": "On Gilmer St., looking southwest up Peachtree Center, Current location of GSU Art and Humanities Bldg."
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38630, 33.75428, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 3",
+				"image": {
+					"name": "historicdowntown3",
+					"url": "/images/historicdowntown/historicdowntown3.jpg"
+				},
+				"description": "On Decatur St. north side, next to GSU Law Library and University Center, looking northwest, Courtland "
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38645, 33.75201, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 4",
+				"image": {
+					"name": "historicdowntown4",
+					"url": "/images/historicdowntown/historicdowntown4.jpg"
+				},
+				"description": "Standing at the corner of Courtland and Gilmer St., looking across intersection at GSU’s Sparks Hall"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38520, 33.75350, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 5",
+				"image": {
+					"name": "historicdowntown5",
+					"url": "/images/historicdowntown/historicdowntown5.jpg"
+				},
+				"description": "Standing at the corner of Park Place and Edgewood, looking across Edgewood to the Suntrust Bldg. (soon to be GSU property)."
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38863, 33.755459, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 6",
+				"image": {
+					"name": "historicdowntown6",
+					"url": "/images/historicdowntown/historicdowntown6.jpg"
+				},
+				"description": "Standing at edge of Hurt Park, looking west across Peachtree Street at GSU’s AderholdBldg"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38875, 33.75615, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 7",
+				"image": {
+					"name": "historicdowntown7",
+					"url": "/images/historicdowntown/historicdowntown7.jpg"
+				},
+				"description": "Standing in the intersection of Forsyth and Luckie Streets towards GSU’s Rialto Theater"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38923, 33.75673, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 8",
+				"image": {
+					"name": "historicdowntown8",
+					"url": "/images/historicdowntown/historicdowntown8.jpg"
+				},
+				"description": "Looking across Forsyth Street towards GSU’s Rialto Theater"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38923, 33.75673, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 9",
+				"image": {
+					"name": "historicdowntown9",
+					"url": "/images/historicdowntown/historicdowntown9.jpg"
+				},
+				"description": "Looking across the intersection of Forsyth and Luckie Streets towards GSU’s Rialto Theater"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38923, 33.75673, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 10",
+				"image": {
+					"name": "historicdowntown10",
+					"url": "/images/historicdowntown/historicdowntown10.jpg"
+				},
+				"description": "In Hurt Park, looking east towards GSU Alumni Hall."
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38577, 33.75434, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 11",
+				"image": {
+					"name": "historicdowntown11",
+					"url": "/images/historicdowntown/historicdowntown11.jpg"
+				},
+				"description": "Looking up and across Courtland St. towards Alumni Hall, near intersection of Courtland St. and Auditorium Place."
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38463, 33.75437, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 12",
+				"image": {
+					"name": "historicdowntown12",
+					"url": "/images/historicdowntown/historicdowntown12.jpg"
+				},
+				"description": "Standing on 5th Floor of GSU Parking Deck T, looking Southeast towards GSU Alumni Hall across Edgewood Ave. and Hurt Park."
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.38643, 33.75458, 0.0]
+			}
+		}, {
+			"type": "Feature",
+			"properties": {
+				"name": "Historic Downtown 13",
+				"image": {
+					"name": "historicdowntown13",
+					"url": "/images/historicdowntown/historicdowntown13.jpg"
+				},
+				"description": "Standing near intersection of Edgewood Avenue and Park Place (Pryor), looking south on Park Place (Pryor)."
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-84.3889, 33.7546, 0.0]
+			}
+		}
+
+	]
+}
