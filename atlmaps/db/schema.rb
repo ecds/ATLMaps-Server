@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141211212739) do
+ActiveRecord::Schema.define(version: 20141215172551) do
 
   create_table "layers", force: true do |t|
     t.string   "name"
