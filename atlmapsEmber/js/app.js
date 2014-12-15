@@ -187,14 +187,11 @@ App.OpacitySliderComponent = Ember.Component.extend({
                 layer.then(function() {
                     
                     var layerName = layer.get('layer');
-                    console.log(layer.get('layer_type'));
-                    layerName.replace('/','').replace('.','')
                     console.log(layerName)
-                        var slider = $("input.slider, input ."+layerName).slider({
-                                    //precision: 2,
-                                    value: 10,
-                                  });
-
+                    var slider = $("input.slider, input ."+layerName).slider({
+                                //precision: 2,
+                                value: 10,
+                              });
         
                 });
     }.property(),
