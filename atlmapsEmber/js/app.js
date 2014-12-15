@@ -339,6 +339,7 @@ App.Projectlayer = DS.Model.extend({
 });
 
 $(document).ready(function(){
+  $.material.ripples(".btn, .navbar a");
   $(document).on('click','#hide-layer-options',function(){
     $(".card.layer-controls").animate({"left":"-100%"},function(){
       $("#show-layer-options").fadeIn(500);
