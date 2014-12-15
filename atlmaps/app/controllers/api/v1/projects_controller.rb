@@ -25,30 +25,25 @@ class Api::V1::ProjectsController < ApplicationController
     layers.each do |layer|
       @layer_ids << layer.layer_id
     end
-    #patients = physician.patients.includes(:appointments).where('appointments.appointment_date  = ?', some_date)
-    #render json: project
-    #respond_to do |format|
-    #  format.json { render json: project, status: :ok }
-    #end
   end
   
   def create
     project = Project.new(project_params)
     if project.save
-      head 204, location: project
+      head 204
     end
   end
   
   def update
     project = Project.find(params[:id])
     if project.update(project_params)
-      head 204, location: project
+      head 204
     end
   end
   
   private
     def project_params
-      params.require(:project).permit(:name, :status)
+      params.require(:project).permit(:name, :status, :description)
     end
   
 end
