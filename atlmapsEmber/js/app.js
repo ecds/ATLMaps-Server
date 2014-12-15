@@ -28,6 +28,14 @@ App.CreateMapController = Ember.ArrayController.extend({
     
 });
 
+App.ProjeclayerController = Ember.ObjectController.extend({
+    actions: {
+        addNewLayer: function() {
+            console.log(params.foo)
+        }
+    }
+});
+
 App.AddLayerModalController = Ember.ArrayController.extend({
    sortProperties: ['layer_type', 'name'],
 });
@@ -60,15 +68,15 @@ App.ProjectRoute = Ember.Route.extend({
     
     actions: {
         addLayer: function(layer, model) {
-            var layerID = String(layer.get('id'));
-            var projectID = String(this.get('controller.id'));
-            //App.Project.store.find('project', this.get('controller.id')).then(function (project) {
-                var projectlayer = this.store.createRecord('projectlayer', {
-                    project_id: '1',
-                    layer_id: '4'
-                });
-                projectlayer.save();
-            //});
+            var layerID = layer.get('id');
+            var projectID = this.get('controller.id');
+            console.log(projectID, layerID)
+
+            var projectlayer = this.store.createRecord('projectlayer', {
+                project_id: projectID,
+                layer_id: layerID
+            });
+            projectlayer.save();
             
         },
         
@@ -334,8 +342,8 @@ App.Project = DS.Model.extend({
 });
 
 App.Projectlayer = DS.Model.extend({
-    layer_id: DS.attr('number'),
-    project_id: DS.attr('number')
+    layer_id: DS.attr(),
+    project_id: DS.attr()
 });
 
 $(document).ready(function(){
