@@ -188,14 +188,13 @@ App.OpacitySliderComponent = Ember.Component.extend({
                     
                     var layerName = layer.get('layer');
                     console.log(layer.get('layer_type'));
-                    switch(layer.get('layer_type')) {
-                        case 'planningatlanta':
+                    layerName.replace('/','').replace('.','')
+                    console.log(layerName)
                         var slider = $("input.slider, input ."+layerName).slider({
                                     //precision: 2,
                                     value: 10,
-                        });
-                        break;
-                    }
+                                  });
+
         
                 });
     }.property(),
@@ -203,10 +202,11 @@ App.OpacitySliderComponent = Ember.Component.extend({
     actions: {
         opacityChange: function() {
             console.log(this.layer);
-            value = $("input."+this.layer).val();
+            var layerName = this.layer
+            value = $("input."+layerName).val();
             var opacity = value / 10;
             console.log(opacity);
-            $("div."+this.layer).css({'opacity': opacity});
+            $("div."+layerName).css({'opacity': opacity});
         }
     }
 });
@@ -277,14 +277,16 @@ App.MapLayersComponent = Ember.Component.extend({
                 
                 case 'geojson':
                     console.log(mappedLayer.get('layer'));
-                    var points = new L.GeoJSON.AJAX(mappedLayer.get('layer'), {
-                        pointToLayer: function (feature, latlng) {
-                          return L.marker(latlng);
-                        },
-                        //onEachFeature: popUp
-                    }).addTo(map);
-                    //points.addTo(map).getContainer();
-                    break;
+                    if(mappedLayer.get('url')){
+                      var points = new L.GeoJSON.AJAX(mappedLayer.get('url'), {
+                          pointToLayer: function (feature, latlng) {
+                            return L.marker(latlng);
+                          },
+                          //onEachFeature: popUp
+                      }).addTo(map);
+                      //points.addTo(map).getContainer();
+                      break;
+                    }
             }
         });
         //return mappedLayer
