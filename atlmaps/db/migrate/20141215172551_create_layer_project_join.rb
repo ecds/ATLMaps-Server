@@ -1,4 +1,4 @@
-class CreateProjectlayers < ActiveRecord::Migration
+class CreateProjectlayerJoin < ActiveRecord::Migration
   def change
     create_table :projectlayers do |t|
       t.belongs_to :layer
