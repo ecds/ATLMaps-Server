@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
+  
   namespace :api, path: '/', constraints: { subdomain: 'api' } do
     namespace :v1 do
       resources :layers, only: [:index, :show]
       resources :projects#, defaults => { :format => 'json' }
-      resources :projectlayers
+      resources :projectlayers, only: [:create, :destroy]
       
       #with_options only: :index do |list_only|
       #  list_only.resources :zombies

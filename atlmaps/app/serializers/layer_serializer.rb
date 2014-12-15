@@ -12,9 +12,11 @@ class LayerSerializer < ActiveModel::Serializer
               :layer,
               :date,
               :layer_type,
-              :zoomlevels,
+              :minzoom,
+              :maxzoom,
               :minx,
               :miny,
               :maxx,
-              :maxy
+              :maxy,
+              :institution
 end

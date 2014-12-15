@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141215172551) do
+ActiveRecord::Schema.define(version: 20141215211353) do
+
+  create_table "institutions", force: true do |t|
+    t.string   "name"
+    t.string   "geoserver"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "layers", force: true do |t|
     t.string   "name"
@@ -22,14 +29,18 @@ ActiveRecord::Schema.define(version: 20141215172551) do
     t.string   "layer"
     t.datetime "date"
     t.string   "layer_type"
-    t.string   "zoomlevels"
-    t.decimal  "minx",        precision: 10, scale: 8
-    t.decimal  "miny",        precision: 10, scale: 8
-    t.decimal  "maxx",        precision: 10, scale: 8
-    t.decimal  "maxy",        precision: 10, scale: 8
+    t.integer  "minzoom"
+    t.integer  "maxzoom"
+    t.decimal  "minx",           precision: 10, scale: 8
+    t.decimal  "miny",           precision: 10, scale: 8
+    t.decimal  "maxx",           precision: 10, scale: 8
+    t.decimal  "maxy",           precision: 10, scale: 8
+    t.integer  "institution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "layers", ["institution_id"], name: "index_layers_on_institution_id", using: :btree
 
   create_table "projectlayers", force: true do |t|
     t.integer  "layer_id"
