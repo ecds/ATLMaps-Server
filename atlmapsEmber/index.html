@@ -13,6 +13,7 @@
         <!-- endbower -->
         <script src="http://builds.emberjs.com/beta/ember-data.prod.js"></script>
         <script src="js/bootstrap-slider.js"></script>
+        <script src="js/shuffle.js"></script>
         <script src="js/app.js"></script>
         
         <!-- bower:css -->
@@ -105,22 +106,26 @@
         
         <script type='text/x-handlebars' data-template-name='project'>
         <a class="btn btn-fab btn-sm pull-left" style="display:none;" id="show-layer-options"><span class="mdi-action-visibility"></span></a>
-        <div class="card layer-controls">
-          <a class="btn btn-fab btn-sm pull-right" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
-          <h1>{{name}}</h1>
-          <div class="layer-list">
+        <div class="layer-controls">
+          <div class="card">
+            <a class="btn btn-fab btn-sm pull-right" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
+            <h1>{{name}}</h1>
             <h3>Active Layers<a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal' model}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>
             <hr/>
-            <ul class="media-list">
+          </div>
+          <div class="layer-list">
+            <ul class="shuffle-items">
               {{#each layer in layer_ids}}
-              <li class="media">
+              <li class="item">
                 <h4 class="media-heading">{{layer.name}}</h4>
-                {{ opacity-slider layer=layer.layer layerID=layer.id }}
-                {{map-layers layerID=layer.id layerNmae=layer.layer}}
+                <p class="alt text-muted">{{layer.name}}</p>
+                <p>{{ opacity-slider layer=layer.layer layerID=layer.id }}</p>
+                {{map-layers layerID=layer.id layerName=layer.layer}}
               </li>
               {{else}}
-              <li class="media">
+              <li class="item">
                 <h4 class="media-heading">No Layers yet</h4>
+                <p class="alt text-muted">No Layers yet</p>
               </li>
               {{/each}}
             </ul>

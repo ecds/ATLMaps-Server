@@ -245,7 +245,7 @@ App.MapLayersComponent = Ember.Component.extend({
         
         var mappedLayer = DS.PromiseObject.create({
             promise: App.Layer.store.find('layer', this.layerID)
-        })
+        });
         
         mappedLayer.then(function() {
             
@@ -301,6 +301,8 @@ App.MapLayersComponent = Ember.Component.extend({
                       break;
                     }
             }
+            
+            shuffle.init();
         });
         //return mappedLayer
     }.property(),
@@ -365,41 +367,7 @@ $(document).ready(function(){
   $.material.ripples(".btn, .navbar a");
   (function(){
   // init on shuffle items 
-    var shuffle = {
-      set_position: function(){
-        var $items = $(".shuffle-items li.item"),
-        len = $items.length,
-        zIndex = 5;
-        $items.each(function(i){
-          var z = parseInt( zIndex + parseInt(len) - parseInt(i) );
-          $(this).css("z-index", z)
-        });
-        var offset = $items.not(".collapsed").height()+$(".shuffle-items li.item.collapsed").first().height()-5;
-        $(".shuffle-items li.item.collapsed").css("top",offset);
-      }
-    }
-    
-    shuffle.set_position();
-
-    var rtime = new Date(1, 1, 2000, 12,00,00);
-    var timeout = false;
-    var delta = 200;
-    $(window).resize(function() {
-      rtime = new Date();
-      if (timeout === false) {
-        timeout = true;
-        setTimeout(resizeend, delta);
-      }
-    });
-    
-    function resizeend() {
-      if (new Date() - rtime < delta) {
-        setTimeout(resizeend, delta);
-      } else {
-        timeout = false;
-        shuffle.set_position();
-      }               
-    }
+    shuffle.init();
   })()
   
   // document events
@@ -413,17 +381,7 @@ $(document).ready(function(){
     $("#show-layer-options").fadeOut(500);
   })
   .on('click','.shuffle-items li.item',function(){
-    var $items = $(".shuffle-items li.item"),
-        len = $items.length,
-        zIndex = 5;
-    $items.addClass("collapsed");
-    $items.each(function(i){
-      var z = parseInt( zIndex + parseInt(len) - parseInt(i) );
-      $(this).css("z-index", z)
-    });
-    $(this).removeClass('collapsed').css("z-index", zIndex + parseInt(len)).css("top",0);
-    var offset = $(this).height()+$(".shuffle-items li.item.collapsed").first().height()-5
-    $(".shuffle-items li.item.collapsed").css("top",offset);
+    shuffle.click(this);
   })
   
 })
