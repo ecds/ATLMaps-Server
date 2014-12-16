@@ -203,7 +203,7 @@ App.OpacitySliderComponent = Ember.Component.extend({
             value = $("input."+layerName).val();
             var opacity = value / 10;
             console.log(opacity);
-            $("div."+layerName).css({'opacity': opacity});
+            $("div."+layerName+",img."+layerName).css({'opacity': opacity});
         }
     }
 });
@@ -278,15 +278,26 @@ App.MapLayersComponent = Ember.Component.extend({
                         var popupContent = "<h2>"+feature.properties.name+"</h2>";
                         layer.bindPopup(popupContent);
                     }
+                    function setIcon(url, class_name){
+                      return iconObj = L.icon({
+                                            iconUrl: url,
+                                            iconSize: [20, 25],
+                                            iconAnchor: [16, 37],
+                                            popupAnchor: [0, -28],
+                                            className: class_name
+                                          });
+                    }
                     
                     if(mappedLayer.get('url')){
+                      console.log(mappedLayer.get('url'));
                       var points = new L.GeoJSON.AJAX(mappedLayer.get('url'), {
                           pointToLayer: function (feature, latlng) {
-                            return L.marker(latlng);
+                            console.log("slug",slug);
+                            var marker = L.marker(latlng, {icon: setIcon("images/marker2.png", slug)});
+                            return marker
                           },
-                          onEachFeature: viewData
+                          onEachFeature: viewData,
                       }).addTo(map);
-                      $(points).addClass(slug);
                       break;
                     }
             }
@@ -352,8 +363,6 @@ App.Projectlayer = DS.Model.extend({
 
 $(document).ready(function(){
   $.material.ripples(".btn, .navbar a");
-  
-  
   (function(){
   // init on shuffle items 
     var shuffle = {
