@@ -273,8 +273,7 @@ App.MapLayersComponent = Ember.Component.extend({
                     break;
                 
                 case 'geojson':
-                    console.log(mappedLayer.get('layer'));
-                    
+                    var slug = mappedLayer.get('layer')
                     function viewData(feature, layer) {
                         var popupContent = "<h2>"+feature.properties.name+"</h2>";
                         layer.bindPopup(popupContent);
@@ -287,7 +286,7 @@ App.MapLayersComponent = Ember.Component.extend({
                           },
                           onEachFeature: viewData
                       }).addTo(map);
-                      //points.addTo(map).getContainer();
+                      $(points).addClass(slug);
                       break;
                     }
             }
@@ -353,6 +352,20 @@ App.Projectlayer = DS.Model.extend({
 
 $(document).ready(function(){
   $.material.ripples(".btn, .navbar a");
+  
+  // init on shuffle items 
+  (function(){
+    var $items = $(".shuffle-items li.item"),
+    len = $items.length,
+    zIndex = 5;
+    $items.each(function(i){
+      var z = parseInt( zIndex + parseInt(len) - parseInt(i) );
+      $(this).css("z-index", z)
+    });
+    $(".shuffle-items li.item.collapsed").css("top",$items.not(".collapsed").height()+50);
+  })();
+  
+  // document events
   $(document).on('click','#hide-layer-options',function(){
     $(".card.layer-controls").animate({"left":"-100%"},function(){
       $("#show-layer-options").fadeIn(500);
@@ -361,6 +374,19 @@ $(document).ready(function(){
   .on('click','#show-layer-options',function(){
     $(".card.layer-controls").animate({"left":"0%"});
     $("#show-layer-options").fadeOut(500);
+  })
+  .on('click','.shuffle-items li.item',function(){
+    var $items = $(".shuffle-items li.item"),
+        len = $items.length,
+        zIndex = 5;
+    $items.addClass("collapsed");
+    $items.each(function(i){
+      var z = parseInt( zIndex + parseInt(len) - parseInt(i) );
+      $(this).css("z-index", z)
+    });
+    $(this).removeClass('collapsed').css("z-index", zIndex + parseInt(len)).css("top",0);
+    var offset = $(this).height()+50;
+    $(".shuffle-items li.item.collapsed").css("top",offset);
   })
   
 })

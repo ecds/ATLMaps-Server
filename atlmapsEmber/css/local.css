@@ -1,7 +1,15 @@
+h1, .h1 { font-size: 36px; line-height: 40px; }
+h2, .h2 { font-size: 30px; line-height: 40px; }
+h3, .h3 { font-size: 24px; line-height: 40px; }
+h4, .h4 { font-size: 18px; line-height: 20px; }
+h5, .h5 { font-size: 14px; line-height: 20px; }
+h6, .h6 { font-size: 12px; line-height: 20px; }
+
 #base-map{
   top:0;
   left:0;
-  position:absolute;
+  position: absolute;
+  position: fixed;
   width:100%;
   height:100%;
   display:block;
@@ -18,7 +26,7 @@ a:hover{
   height: 100%;
   top: 0;
   left: 0;
-  padding-top: 60px;
+  padding-top: 40px;
 }
 
 .modal-content .modal-body {
@@ -50,9 +58,24 @@ a:hover{
   margin: 0;
 }
 
+.navbar .nav > li {
+  float: left;
+}
+
+.navbar .navbar-nav > li > a {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.navbar .navbar-brand {
+  padding: 5px 15px;
+  height: auto;
+}
+
 
 .navbar.navbar-clear {
   background-color: rgba(248, 248, 248, 0.85);
+  min-height: 25px;
 }
 
 .navbar.navbar-clear.navbar-inverse{
@@ -195,7 +218,7 @@ h3 .btn {
 }
 
 .leaflet-top.leaflet-right {
-  top: 60px;
+  top: 40px;
 }
 
 .well.square{
@@ -227,7 +250,8 @@ h3 .btn {
 
 .card.layer-controls{
   z-index: 11;
-  left:0;
+  left: 0%;
+  max-width: 50%;
 }
 
 a#show-layer-options {
@@ -245,4 +269,65 @@ a#show-layer-options:hover,
 a#hide-layer-options:hover{
   color: white;
   background-color: rgb(181, 181, 181);
+}
+
+
+
+/*Map items test*/
+.shuffle-items{
+  width: 97%;
+  float:left;
+  display:block;
+  list-style:none;
+  margin:0;
+  padding:0;
+  position:relative;
+  margin-top: 20px;
+}
+
+.shuffle-items li.item {
+  width:100%;
+  float:left;
+  background-color:#fff;
+  border-radius: 2px;
+  box-shadow: 0 4px 6px 1px rgba(50, 50, 50, 0.14);
+  box-sizing: border-box;
+  color: black;
+  line-height: 1.5;
+  margin: 10px;
+  padding: 15px 20px 15px 25px;
+  top: 0;
+  left: 0;
+  z-index: 4;
+  position:absolute;
+  transition-property: height, top, margin-top;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+}
+
+.shuffle-items li.item p.alt{
+  display:none;
+}
+
+.shuffle-items li.item.collapsed{
+  padding: 5px 15px 0px 25px;
+  height:40px;
+  margin-top:-10px;
+  z-index: 3;
+  position:relative;
+  top:160px;
+  transition-property: height, top, margin-top;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  transition-delay: 0s;
+}
+
+.shuffle-items li.item.collapsed h4,
+.shuffle-items li.item.collapsed p{
+  display:none;
+}
+
+.shuffle-items li.item.collapsed p.alt{
+  display:block;
 }
