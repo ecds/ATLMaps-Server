@@ -61,15 +61,17 @@ App.ProjectRoute = Ember.Route.extend({
     actions: {
         addLayer: function(layer, model) {
             var layerID = layer.get('id');
-            var projectID = this.get('controller.id');
+            var _this = this;
+            var projectID = _this.get('controller.model.id');
             // console.log(projectID, layerID)
-
+            
             var projectlayer = this.store.createRecord('projectlayer', {
                 project_id: projectID,
                 layer_id: layerID
             });
-            projectlayer.save();
-            
+            projectlayer.save().then(function(){
+              _this.get("controller.model").reload();
+            });
         },
         
         // Modal
@@ -99,6 +101,10 @@ App.ProjectRoute = Ember.Route.extend({
     
 });
 
+var loadCount = Ember.Object.create({
+  count: 0
+});
+
 App.ProjectController = Ember.Controller.extend({
     showLayers: function() {
       return this.get('model.layer_ids')
@@ -107,10 +113,15 @@ App.ProjectController = Ember.Controller.extend({
     
     getLayers: function(){
       loaded_layers = this.get("model.layer_ids").content.content.length;
-      console.log(loaded_layers);
-      if(loaded_layers==0){
+      var i = this.incrementProperty('i'),
+          c = loadCount.get("count");
+      
+      if(i !== c ){
         this.get("model").reload();
       }
+      
+      loadCount.set("count",i);
+      console.log(loadCount);
     }.property("model"),
     
     actions: {
