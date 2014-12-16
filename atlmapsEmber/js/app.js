@@ -29,11 +29,32 @@ App.CreateMapController = Ember.ArrayController.extend({
     
 });
 
-App.ProjeclayerController = Ember.ObjectController.extend({
+App.ProjectController = Ember.Controller.extend({
+    showLayers: function() {
+      return this.get('model.layer_ids')
+      
+    }.property('model.layer_ids.@each'),
+    
+    getLayers: function(){
+      loaded_layers = this.get("model.layer_ids").content.content.length;
+      var i = this.incrementProperty('i'),
+          c = loadCount.get("count");
+      
+      if(i !== c ){
+        this.get("model").reload();
+      }
+      
+      loadCount.set("count",i);
+      console.log(loadCount);
+    }.property("model"),
+    
     actions: {
-        addNewLayer: function() {
-            console.log(params.foo)
-        }
+      reload: function() {
+        this.get('model').reload().then(function(model) {
+          // do something with the reloaded model
+          console.log(model.layer_ids);
+        });
+      }
     }
 });
 
@@ -104,35 +125,6 @@ App.ProjectRoute = Ember.Route.extend({
 var loadCount = Ember.Object.create({
   count: 0
 });
-
-App.ProjectController = Ember.Controller.extend({
-    showLayers: function() {
-      return this.get('model.layer_ids')
-      
-    }.property('model.layer_ids.@each'),
-    
-    getLayers: function(){
-      loaded_layers = this.get("model.layer_ids").content.content.length;
-      var i = this.incrementProperty('i'),
-          c = loadCount.get("count");
-      
-      if(i !== c ){
-        this.get("model").reload();
-      }
-      
-      loadCount.set("count",i);
-      console.log(loadCount);
-    }.property("model"),
-    
-    actions: {
-      reload: function() {
-        this.get('model').reload().then(function(model) {
-          // do something with the reloaded model
-          console.log(model.layer_ids);
-        });
-      }
-    }
-})
 
 App.CreateMapRoute = Ember.Route.extend({
     model: function() {
