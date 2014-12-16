@@ -53,24 +53,15 @@ App.AddLayerModalRoute = Ember.Route.extend({
 App.ProjectsRoute = Ember.Route.extend({
     model: function() {
         return this.store.find('project');
-    },
+    }
 })
 
 App.ProjectRoute = Ember.Route.extend({
-    model: function(params) {
-        var project = this.store.find('project',  params.project_id);
-        return project;
-    },
-    
-    layers: function() {
-        return this.store.find('layer');
-    },//.property('@each.layer'),
-    
     actions: {
         addLayer: function(layer, model) {
             var layerID = layer.get('id');
             var projectID = this.get('controller.id');
-            console.log(projectID, layerID)
+            // console.log(projectID, layerID)
 
             var projectlayer = this.store.createRecord('projectlayer', {
                 project_id: projectID,
@@ -106,6 +97,22 @@ App.ProjectRoute = Ember.Route.extend({
     }
     
 });
+
+App.ProjectController = Ember.Controller.extend({
+    showLayers: function() {
+      return this.get('model.layer_ids')
+      
+    }.property('model.layer_ids.@each'),
+    
+    actions: {
+      reload: function() {
+        this.get('model').reload().then(function(model) {
+          // do something with the reloaded model
+          console.log(model.layer_ids);
+        });
+      }
+    }
+})
 
 App.CreateMapRoute = Ember.Route.extend({
     model: function() {
@@ -187,7 +194,7 @@ App.OpacitySliderComponent = Ember.Component.extend({
                 layer.then(function() {
                     
                     var layerName = layer.get('layer');
-                    console.log(layerName)
+                    // console.log(layerName)
                     var slider = $("input.slider, input ."+layerName).slider({
                                 //precision: 2,
                                 value: 10,
@@ -198,11 +205,11 @@ App.OpacitySliderComponent = Ember.Component.extend({
     
     actions: {
         opacityChange: function() {
-            console.log(this.layer);
+            // console.log(this.layer);
             var layerName = this.layer
             value = $("input."+layerName).val();
             var opacity = value / 10;
-            console.log(opacity);
+            // console.log(opacity);
             $("div."+layerName+",img."+layerName).css({'opacity': opacity});
         }
     }
@@ -212,7 +219,7 @@ App.AddRemoveLayerButtonComponent = Ember.Component.extend({
     actions: {
         buttonToggle: function() {
             this.toggleProperty('layerAdded');
-            console.log(this);
+            // console.log(this);
             this.sendAction('action', this.get('param'));
         },
     }
@@ -289,10 +296,9 @@ App.MapLayersComponent = Ember.Component.extend({
                     }
                     
                     if(mappedLayer.get('url')){
-                      console.log(mappedLayer.get('url'));
                       var points = new L.GeoJSON.AJAX(mappedLayer.get('url'), {
                           pointToLayer: function (feature, latlng) {
-                            console.log("slug",slug);
+                            // console.log("slug",slug);
                             var marker = L.marker(latlng, {icon: setIcon("images/marker2.png", slug)});
                             return marker
                           },
@@ -356,7 +362,7 @@ App.Project = DS.Model.extend({
     status: DS.attr('string'),
     //user: DS.attr('number'),
     layer_ids: DS.hasMany('layer', {async: true}),
-});
+})
 
 App.Projectlayer = DS.Model.extend({
     layer_id: DS.attr(),

@@ -350,3 +350,14 @@ a#hide-layer-options:hover{
   margin-top: -10px;
   max-width: 640px;
 }
+
+#reload {
+  position: absolute;
+  top: -30px;
+  left: -30px;
+  transition: background-color 0.2s;
+}
+
+#reload:hover, #reload:focus{
+  background-color:#FFF;
+}
