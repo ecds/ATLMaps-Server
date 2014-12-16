@@ -88,6 +88,11 @@ a:hover{
   background-color: rgba(82, 100, 174, 0.92);
 }
 
+.layer-list{
+  position: relative;
+  width:100%;
+}
+
 .layer-list-item:nth-child(even){
   background: #EEE;
 }
@@ -100,6 +105,12 @@ a:hover{
   display:block;
   float: left;
   position: relative;
+  z-index: 11;
+  left: 0%;
+  max-width: 50%;
+  min-width: 350px;
+  margin-left:30px;
+  margin-top:15px;
 }
 
 .card{
@@ -115,6 +126,10 @@ a:hover{
   top: 0;
   left: 0;
   z-index: 4;
+}
+
+.layer-controls .card{
+  margin:0;
 }
 
 .slider .tooltip.top,
@@ -248,15 +263,10 @@ h3 .btn {
   color: #FFF;
 }
 
-.card.layer-controls{
-  z-index: 11;
-  left: 0%;
-  max-width: 50%;
-}
-
 a#show-layer-options {
   z-index: 10;
   background-color: white;
+  position: absolute;
 }
 
 a#show-layer-options,
@@ -329,4 +339,14 @@ a#hide-layer-options:hover{
 
 .shuffle-items li.item.collapsed p.alt{
   display:block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.layer-controls .shuffle-items{
+  margin-top: -10px;
+  max-width: 640px;
 }
