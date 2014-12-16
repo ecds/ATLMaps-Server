@@ -28,6 +28,14 @@ App.CreateMapController = Ember.ArrayController.extend({
     
 });
 
+App.ProjeclayerController = Ember.ObjectController.extend({
+    actions: {
+        addNewLayer: function() {
+            console.log(params.foo)
+        }
+    }
+});
+
 App.AddLayerModalController = Ember.ArrayController.extend({
    sortProperties: ['layer_type', 'name'],
 });
@@ -56,12 +64,13 @@ App.ProjectRoute = Ember.Route.extend({
     
     layers: function() {
         return this.store.find('layer');
-    }.property('layers'),
+    },//.property('@each.layer'),
     
     actions: {
         addLayer: function(layer, model) {
             var layerID = layer.get('id');
             var projectID = this.get('controller.id');
+            console.log(projectID, layerID)
 
             var projectlayer = this.store.createRecord('projectlayer', {
                 project_id: projectID,
@@ -128,7 +137,7 @@ App.CreateMapRoute = Ember.Route.extend({
         
         // Modal
         showModal: function(name, content) {
-            //console.log(content)
+            console.log(content)
             this.controllerFor(name).set('content', content);
             this.render(name, {
                 into: 'application',
@@ -178,14 +187,11 @@ App.OpacitySliderComponent = Ember.Component.extend({
                 layer.then(function() {
                     
                     var layerName = layer.get('layer');
-                    switch(layer.get('layer_type')) {
-                        case 'planningatlanta':
-                        var slider = $("input.slider, input ."+layerName).slider({
-                                    //precision: 2,
-                                    value: 10,
-                        });
-                        break;
-                    }
+                    console.log(layerName)
+                    var slider = $("input.slider, input ."+layerName).slider({
+                                //precision: 2,
+                                value: 10,
+                              });
         
                 });
     }.property(),
@@ -193,10 +199,11 @@ App.OpacitySliderComponent = Ember.Component.extend({
     actions: {
         opacityChange: function() {
             console.log(this.layer);
-            value = $("input."+this.layer).val();
+            var layerName = this.layer
+            value = $("input."+layerName).val();
             var opacity = value / 10;
             console.log(opacity);
-            $("div."+this.layer).css({'opacity': opacity});
+            $("div."+layerName).css({'opacity': opacity});
         }
     }
 });
@@ -205,7 +212,7 @@ App.AddRemoveLayerButtonComponent = Ember.Component.extend({
     actions: {
         buttonToggle: function() {
             this.toggleProperty('layerAdded');
-            //console.log(this);
+            console.log(this);
             this.sendAction('action', this.get('param'));
         },
     }
@@ -247,18 +254,12 @@ App.MapLayersComponent = Ember.Component.extend({
             
             switch(mappedLayer.get('layer_type')) {
                 case 'planningatlanta':
-                    //console.log('here')
-                    //console.log(mappedLayer)
-                    //var nw = L.point(mappedLayer.get(maxx), mappedLayer.get(maxy));
-                    //var se = L.point(mappedLayer.get(minx), mappedLayer.get(miny));
                     if ($("."+slug).length!==1){
                         var tile = L.tileLayer('http://static.library.gsu.edu/ATLmaps/tiles/' + mappedLayer.get('layer') + '/{z}/{x}/{y}.png', {
                             layer: mappedLayer.get('layer'),
                             tms: true,
-                            minZoom: mappedLayer.get('minzoom'),
-                            maxZoom: mappedLayer.get('maxzoom'),
-                            errorTileUrl: '/images/none.png'
-                            //bounds: L.boutns(nw, se),
+                            minZoom: 13,
+                            maxZoom: 19,
                             //attribution: 'GSU'
                         }).addTo(map).getContainer();
                         
@@ -272,19 +273,21 @@ App.MapLayersComponent = Ember.Component.extend({
                     break;
                 
                 case 'geojson':
-                    //console.log(mappedLayer.get('layer'));
-                    var points = new L.GeoJSON.AJAX(mappedLayer.get('layer'), {
-                        pointToLayer: function (feature, latlng) {
-                          return L.marker(latlng);
-                        },
-                        //onEachFeature: popUp
-                    }).addTo(map);
-                    //points.addTo(map).getContainer();
-                    break;
+                    console.log(mappedLayer.get('layer'));
+                    if(mappedLayer.get('url')){
+                      var points = new L.GeoJSON.AJAX(mappedLayer.get('url'), {
+                          pointToLayer: function (feature, latlng) {
+                            return L.marker(latlng);
+                          },
+                          //onEachFeature: popUp
+                      }).addTo(map);
+                      //points.addTo(map).getContainer();
+                      break;
+                    }
             }
         });
         //return mappedLayer
-    }.property('@each.mappedLayer'),
+    }.property(),
     
     actions: {
         
@@ -321,13 +324,11 @@ App.Layer = DS.Model.extend({
     layer: DS.attr('string'),
     date: DS.attr('date'),
     layer_type: DS.attr('string'),
-    minzoom: DS.attr('number'),
-    maxzoon: DS.attr('number'),
+    zoomlevels: DS.attr('string'),
     minx: DS.attr('number'),
     miny: DS.attr('number'),
     maxx: DS.attr('number'),
     maxy: DS.attr('number'),
-    institution_id: DS.attr('number'),
     project_ids: DS.hasMany('project', {async: true})
 });
 

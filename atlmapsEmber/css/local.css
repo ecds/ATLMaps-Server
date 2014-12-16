@@ -126,7 +126,7 @@ a:hover{
 }
 
 .slider:hover .slider-handle.min-slider-handle.round {
-  margin-top: -8px;
+  margin-top: -10px;
   width: 20px;
   height: 20px;
 }
