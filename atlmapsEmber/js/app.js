@@ -276,7 +276,7 @@ App.MapLayersComponent = Ember.Component.extend({
                     console.log(mappedLayer.get('layer'));
                     
                     function viewData(feature, layer) {
-                        var popupContent = "<h2>Hello</h2>";
+                        var popupContent = "<h2>"+feature.properties.name+"</h2>";
                         layer.bindPopup(popupContent);
                     }
                     
