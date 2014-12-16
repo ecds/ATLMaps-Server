@@ -94,7 +94,7 @@
             <ul class="media-list">
               {{#each layer in layer_ids}}
               <li class="media">
-                <h4 class="media-heading">{{layer.layer}}</h4>
+                <h4 class="media-heading">{{layer.name}}</h4>
                 {{ opacity-slider layer=layer.layer layerID=layer.id }}
                 {{map-layers layerID=layer.id layerNmae=layer.layer}}
               </li>

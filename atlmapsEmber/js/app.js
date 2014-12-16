@@ -274,12 +274,18 @@ App.MapLayersComponent = Ember.Component.extend({
                 
                 case 'geojson':
                     console.log(mappedLayer.get('layer'));
+                    
+                    function viewData(feature, layer) {
+                        var popupContent = "<h2>Hello</h2>";
+                        layer.bindPopup(popupContent);
+                    }
+                    
                     if(mappedLayer.get('url')){
                       var points = new L.GeoJSON.AJAX(mappedLayer.get('url'), {
                           pointToLayer: function (feature, latlng) {
                             return L.marker(latlng);
                           },
-                          //onEachFeature: popUp
+                          onEachFeature: viewData
                       }).addTo(map);
                       //points.addTo(map).getContainer();
                       break;
