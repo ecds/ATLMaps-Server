@@ -372,12 +372,12 @@ $(document).ready(function(){
   
   // document events
   $(document).on('click','#hide-layer-options',function(){
-    $(".card.layer-controls").animate({"left":"-100%"},function(){
+    $(".layer-controls").animate({"left":"-100%"},500,"easeInQuint",function(){
       $("#show-layer-options").fadeIn(500);
     });
   })
   .on('click','#show-layer-options',function(){
-    $(".card.layer-controls").animate({"left":"0%"});
+    $(".layer-controls").animate({"left":"0%"},500,"easeOutQuint");
     $("#show-layer-options").fadeOut(500);
   })
   .on('click','.shuffle-items li.item',function(){

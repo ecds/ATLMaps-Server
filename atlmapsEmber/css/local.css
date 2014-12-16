@@ -109,6 +109,8 @@ a:hover{
   left: 0%;
   max-width: 50%;
   min-width: 350px;
+  margin-left:30px;
+  margin-top:15px;
 }
 
 .card{
@@ -264,6 +266,7 @@ h3 .btn {
 a#show-layer-options {
   z-index: 10;
   background-color: white;
+  position: absolute;
 }
 
 a#show-layer-options,
