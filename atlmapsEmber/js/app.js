@@ -5,8 +5,9 @@ var App = Ember.Application.create({
 App.Router.map(function() {
     //this.resource('layers');
     this.resource('createMap');
-    this.resource('projects');
-    this.resource('project', { path: 'project/:project_id' });
+    this.resource('projects', function() {
+        this.resource('project', { path: '/:project_id' });
+    });
 
 });
 
