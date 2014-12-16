@@ -353,17 +353,45 @@ App.Projectlayer = DS.Model.extend({
 $(document).ready(function(){
   $.material.ripples(".btn, .navbar a");
   
-  // init on shuffle items 
+  
   (function(){
-    var $items = $(".shuffle-items li.item"),
-    len = $items.length,
-    zIndex = 5;
-    $items.each(function(i){
-      var z = parseInt( zIndex + parseInt(len) - parseInt(i) );
-      $(this).css("z-index", z)
+  // init on shuffle items 
+    var shuffle = {
+      set_position: function(){
+        var $items = $(".shuffle-items li.item"),
+        len = $items.length,
+        zIndex = 5;
+        $items.each(function(i){
+          var z = parseInt( zIndex + parseInt(len) - parseInt(i) );
+          $(this).css("z-index", z)
+        });
+        var offset = $items.not(".collapsed").height()+$(".shuffle-items li.item.collapsed").first().height()-5;
+        $(".shuffle-items li.item.collapsed").css("top",offset);
+      }
+    }
+    
+    shuffle.set_position();
+
+    var rtime = new Date(1, 1, 2000, 12,00,00);
+    var timeout = false;
+    var delta = 200;
+    $(window).resize(function() {
+      rtime = new Date();
+      if (timeout === false) {
+        timeout = true;
+        setTimeout(resizeend, delta);
+      }
     });
-    $(".shuffle-items li.item.collapsed").css("top",$items.not(".collapsed").height()+50);
-  })();
+    
+    function resizeend() {
+      if (new Date() - rtime < delta) {
+        setTimeout(resizeend, delta);
+      } else {
+        timeout = false;
+        shuffle.set_position();
+      }               
+    }
+  })()
   
   // document events
   $(document).on('click','#hide-layer-options',function(){
@@ -385,7 +413,7 @@ $(document).ready(function(){
       $(this).css("z-index", z)
     });
     $(this).removeClass('collapsed').css("z-index", zIndex + parseInt(len)).css("top",0);
-    var offset = $(this).height()+50;
+    var offset = $(this).height()+$(".shuffle-items li.item.collapsed").first().height()-5
     $(".shuffle-items li.item.collapsed").css("top",offset);
   })
   

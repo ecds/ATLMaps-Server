@@ -275,7 +275,7 @@ a#hide-layer-options:hover{
 
 /*Map items test*/
 .shuffle-items{
-  width: 97%;
+  width: 100%;
   float:left;
   display:block;
   list-style:none;
@@ -294,7 +294,7 @@ a#hide-layer-options:hover{
   box-sizing: border-box;
   color: black;
   line-height: 1.5;
-  margin: 10px;
+  margin:0;
   padding: 15px 20px 15px 25px;
   top: 0;
   left: 0;
@@ -313,7 +313,6 @@ a#hide-layer-options:hover{
 .shuffle-items li.item.collapsed{
   padding: 5px 15px 0px 25px;
   height:40px;
-  margin-top:-10px;
   z-index: 3;
   position:relative;
   top:160px;
