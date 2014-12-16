@@ -111,6 +111,7 @@
           <div class="card">
             <a class="btn btn-fab btn-sm pull-right" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
             <h1>{{model.name}}</h1>
+            {{getLayers}}
             <h3>Active Layers <a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal' model}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>
             <a class="btn rotate btn-material-lightgrey btn-fab btn-sm" id="reload" {{action 'reload' this}}><span class="mdi-action-autorenew"></span></a>
             <hr/>

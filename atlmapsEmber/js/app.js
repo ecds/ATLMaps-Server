@@ -105,6 +105,14 @@ App.ProjectController = Ember.Controller.extend({
       
     }.property('model.layer_ids.@each'),
     
+    getLayers: function(){
+      loaded_layers = this.get("model.layer_ids").content.content.length;
+      console.log(loaded_layers);
+      if(loaded_layers==0){
+        this.get("model").reload();
+      }
+    }.property("model"),
+    
     actions: {
       reload: function() {
         this.get('model').reload().then(function(model) {
