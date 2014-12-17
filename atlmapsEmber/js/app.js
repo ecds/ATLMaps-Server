@@ -98,6 +98,7 @@ App.ProjectRoute = Ember.Route.extend({
         
         removeLayer: function(layer, model) {
             var layerID = layer.get('id');
+            var layerClass = layer.get('layer');
             var _this = this;
             var projectID = _this.get('controller.model.id');
             console.log(projectID, layerID)
@@ -117,6 +118,10 @@ App.ProjectRoute = Ember.Route.extend({
                 });
 
             });
+            
+             $("."+layerClass).fadeOut( 500, function() {
+                            $(this).remove();
+                        });
 
             //this.store.find('projectlayer', { layer_id: layerID, project_id: projectID }).then(function (projectlayer) {
             //    projectlayer.destroyRecord().then(function(){
