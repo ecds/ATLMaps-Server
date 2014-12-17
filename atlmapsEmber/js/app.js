@@ -31,22 +31,23 @@ App.CreateMapController = Ember.ArrayController.extend({
 
 App.ProjectController = Ember.Controller.extend({
     showLayers: function() {
-      return this.get('model.layer_ids')
+        return this.get('model.layer_ids')
       
     }.property('model.layer_ids.@each'),
     
     getLayers: function(){
-      loaded_layers = this.get("model.layer_ids").content.content.length;
-      var i = this.incrementProperty('i'),
-          c = loadCount.get("count");
+        loaded_layers = this.get("model.layer_ids").content.content.length;
+        var i = this.incrementProperty('i'),
+            c = loadCount.get("count");
+        
+        if(i !== c ){
+          this.get("model").reload();
+        }
       
-      if(i !== c ){
-        this.get("model").reload();
-      }
-      
-      loadCount.set("count",i);
-      console.log(loadCount);
+        loadCount.set("count",i);
+
     }.property("model"),
+    
     
     actions: {
       reload: function() {
@@ -93,6 +94,35 @@ App.ProjectRoute = Ember.Route.extend({
             projectlayer.save().then(function(){
               _this.get("controller.model").reload();
             });
+        },
+        
+        removeLayer: function(layer, model) {
+            var layerID = layer.get('id');
+            var _this = this;
+            var projectID = _this.get('controller.model.id');
+            console.log(projectID, layerID)
+            var projectLayer = this.store.find('projectlayer', { layer_id: layerID, project_id: projectID });
+            var projectLayer = DS.PromiseObject.create({
+                promise: this.store.find('projectlayer', { layer_id: layerID, project_id: projectID })
+            });
+
+            projectLayer.then(function() {
+                var projectLayerID = projectLayer.get('content.content.0.id');
+                console.log(projectLayerID)
+                
+                App.Projectlayer.store.find('projectlayer', projectLayerID).then(function(projectlayer){
+                    projectlayer.destroyRecord().then(function(){
+                        _this.get("controller.model").reload();
+                    });
+                });
+
+            });
+
+            //this.store.find('projectlayer', { layer_id: layerID, project_id: projectID }).then(function (projectlayer) {
+            //    projectlayer.destroyRecord().then(function(){
+            //        _this.get("controller.model").reload();
+            //    });
+            //});
         },
         
         // Modal
@@ -146,11 +176,11 @@ App.CreateMapRoute = Ember.Route.extend({
                 
                 $(tile).addClass(slug);
             }
-            else{
-                $("."+slug).fadeOut( 500, function() {
-                    $(this).remove();
-                });
-            }
+            //else{
+            //    $("."+slug).fadeOut( 500, function() {
+            //        $(this).remove();
+            //    });
+            //}
             
         },
         
@@ -231,9 +261,18 @@ App.AddRemoveLayerButtonComponent = Ember.Component.extend({
     actions: {
         buttonToggle: function() {
             this.toggleProperty('layerAdded');
-            // console.log(this);
+            console.log(this.get('param'));
             this.sendAction('action', this.get('param'));
         },
+    }
+});
+
+App.RemoveLayerButtonComponent = Ember.Component.extend({
+    actions: {
+        removeLayer: function() {
+            console.log('hi');
+            this.sendAction('action', this.get('param'));
+        }
     }
 });
 
@@ -300,7 +339,7 @@ App.MapLayersComponent = Ember.Component.extend({
                     function setIcon(url, class_name){
                       return iconObj = L.icon({
                                             iconUrl: url,
-                                            iconSize: [20, 25],
+                                            //iconSize: [50, 65],
                                             iconAnchor: [16, 37],
                                             popupAnchor: [0, -28],
                                             className: class_name
@@ -328,9 +367,7 @@ App.MapLayersComponent = Ember.Component.extend({
     actions: {
         
     }
-})
-
-
+});
 
 // Adapter
 

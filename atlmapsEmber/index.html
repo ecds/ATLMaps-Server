@@ -123,6 +123,7 @@
                 <h4 class="media-heading">{{layer.name}}</h4>
                 <p class="alt text-muted">{{layer.name}}</p>
                 <p>{{ opacity-slider layer=layer.layer layerID=layer.id }}</p>
+                <p>{{remove-layer-button title='Add' action='removeLayer' param=layer}}</p>
                 {{map-layers layerID=layer.id layerName=layer.layer}}
               </li>
               {{else}}
@@ -171,6 +172,10 @@
           {{else}}
             <a class="btn rotate btn-add btn-fab btn-sm" {{action 'buttonToggle'}}><span class="mdi-content-add"></span></a>
           {{/if}}
+        </script>
+        
+        <script type="text/x-handlebars" data-template-name="components/remove-layer-button">
+            <a class="btn rotate btn-added btn-fab btn-sm"{{action 'removeLayer'}}><span class="mdi-content-clear"></span></a>
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/list-added-layers">

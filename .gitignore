@@ -1,5 +1,6 @@
 .komodotools
 *.komodoproject
+*.DS_Store
 notes.js
 form-examples.js
 app.js.crap
