@@ -94,6 +94,7 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='projects/index'>
+          {{input valueBinding='newProject'}}<a class="btn rotate btn-add btn-fab btn-sm" {{action 'createProject'}}><span class="mdi-content-add"></span></a>
           <div class="container" id="project-list">
             {{#each project in this.model}}
             <div class="well square">
@@ -178,13 +179,9 @@
             <a class="btn rotate btn-added btn-fab btn-sm"{{action 'removeLayer'}}><span class="mdi-content-clear"></span></a>
         </script>
         
-        <script type="text/x-handlebars" data-template-name="components/list-added-layers">
-          {{ list-avaliable-layers layer=this }}
-        </script>
-        
         <script type="text/x-handlebars" data-template-name="components/list-avaliable-layers">
             <h4>{{layer.name}}</h4>
-            <p><strong>{{layer.layer_type}}</strong>, {{layer.id}}</p>
+            <p><strong>{{layer.layer_type}}</strong></p>
             <p>
               {{layer.description}}
             </p>

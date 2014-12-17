@@ -29,6 +29,26 @@ App.CreateMapController = Ember.ArrayController.extend({
     
 });
 
+App.ProjectsIndexController = Ember.ArrayController.extend({
+    sortProperties: ['name'],
+    
+    newProject: '',
+    
+    actions : {
+        
+        createProject: function() {
+            console.log(this.get('newProject'));
+            var project = this.store.createRecord('project', {
+                name: this.get('newProject'),
+                status: 'UNSAVED'
+            });
+            project.save();
+            //thsi.ProjectController.transitionToRoute('project', 1);
+        }
+    }
+    
+});
+
 App.ProjectController = Ember.Controller.extend({
     showLayers: function() {
         return this.get('model.layer_ids')
@@ -76,7 +96,8 @@ App.AddLayerModalRoute = Ember.Route.extend({
 App.ProjectsRoute = Ember.Route.extend({
     model: function() {
         return this.store.find('project');
-    }
+    },
+    
 })
 
 App.ProjectRoute = Ember.Route.extend({
@@ -252,11 +273,11 @@ App.OpacitySliderComponent = Ember.Component.extend({
     
     actions: {
         opacityChange: function() {
-            // console.log(this.layer);
+            console.log(this.layer);
             var layerName = this.layer
             value = $("input."+layerName).val();
             var opacity = value / 10;
-            // console.log(opacity);
+            console.log(opacity);
             $("div."+layerName+",img."+layerName).css({'opacity': opacity});
         }
     }
@@ -275,7 +296,6 @@ App.AddRemoveLayerButtonComponent = Ember.Component.extend({
 App.RemoveLayerButtonComponent = Ember.Component.extend({
     actions: {
         removeLayer: function() {
-            console.log('hi');
             this.sendAction('action', this.get('param'));
         }
     }
@@ -317,22 +337,17 @@ App.MapLayersComponent = Ember.Component.extend({
             
             switch(mappedLayer.get('layer_type')) {
                 case 'planningatlanta':
-                    if ($("."+slug).length!==1){
-                        var tile = L.tileLayer('http://static.library.gsu.edu/ATLmaps/tiles/' + mappedLayer.get('layer') + '/{z}/{x}/{y}.png', {
-                            layer: mappedLayer.get('layer'),
-                            tms: true,
-                            minZoom: 13,
-                            maxZoom: 19,
-                            //attribution: 'GSU'
-                        }).addTo(map).getContainer();
-                        
-                        $(tile).addClass(slug);
-                    }
-                    else{
-                        $("."+slug).fadeOut( 500, function() {
-                            $(this).remove();
-                        });
-                    }
+
+                    var tile = L.tileLayer('http://static.library.gsu.edu/ATLmaps/tiles/' + mappedLayer.get('layer') + '/{z}/{x}/{y}.png', {
+                        layer: mappedLayer.get('layer'),
+                        tms: true,
+                        minZoom: 13,
+                        maxZoom: 19,
+                        //attribution: 'GSU'
+                    }).addTo(map).getContainer();
+                    
+                    $(tile).addClass(slug);
+
                     break;
                 
                 case 'geojson':
