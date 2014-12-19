@@ -71,12 +71,10 @@
         
         <script type='text/x-handlebars' data-template-name='createMap'>
             <div class="card layer-controls">
+            <a class="btn btn-info" {{ action 'createProject' }}>Create Map</a>
               <div class="form-group">
                 <div class="input-group">
                 <input class="form-control floating-label" id="focusedInput" type="text" placeholder="Map Name"/>
-                  <span class="input-group-btn">
-                  <a class="btn btn-info" {{ action 'createProject' }}>Create Map</a>
-                  </span>
                 </div>
               </div>
               
@@ -93,17 +91,16 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='projects/index'>
-          {{input valueBinding='newProject'}}<a class="btn rotate btn-add btn-fab btn-sm" {{action 'createProject'}}><span class="mdi-content-add"></span></a>
+          <a {{action 'createProject'}}>Create New Project</a>
           <div class="container" id="project-list">
             {{#each project in this.model}}
             <div>
             <div class="well square">
-              {{#link-to 'project' project}}
-                {{project.name}}
-              {{/link-to}}
-              
+                <h3 class="heading">{{#link-to 'project' project}}{{project.name}}{{/link-to}}</h3>
+                
+                <a class="btn btn-warning btn-fab action project-delete" {{action 'deleteProject' project.id}}><span class="mdi-action-delete"></span></a>
+
             </div>
-            <button {{action 'deleteProject' project.id}}>Delete</button>
             {{/each}}
             </div>
           </div>
@@ -116,10 +113,11 @@
               <div class="card">
                 <a class="btn btn-fab btn-sm pull-right" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
                 {{savedStatus}}
+                {{model.saved}}
                 {{# if model.saved }}
                     <h1>{{model.name}}</h1>
                 {{ else }}
-                    {{input valueBinding='projectName'}}<a class="btn rotate btn-add btn-fab btn-sm" {{action 'updateProject'}}><span class="mdi-content-add"></span></a>
+                    {{input valueBinding='projectName'}}<a class="btn btn-add btn-fab btn-sm" {{action 'updateProject'}}><span class="mdi-content-add"></span></a>
                 {{/if}}
                 {{getLayers}}
                 <h3>Active Layers <a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal' model}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>

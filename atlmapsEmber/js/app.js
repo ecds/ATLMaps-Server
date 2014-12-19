@@ -86,30 +86,21 @@ App.ProjectController = Ember.Controller.extend({
     }.property("model"),
     
     savedStatus: function() {
-        console.log(this);
+        //console.log(this);
     }.property(),
     
     actions: {
-      reload: function() {
-        this.get('model').reload().then(function(model) {
-          // do something with the reloaded model
-          console.log(model.layer_ids);
-        });
-      },
+        reload: function() {
+          this.get('model').reload().then(function(model) {
+            // do something with the reloaded model
+            console.log(model.layer_ids);
+          });
+        },
       
-      updateProject: function() {
-            var self = this;
-            
-            var onSuccess = function(project) {
-                //self.get("controller.model").reload();
-            }
-            
-            var project = this.store.createRecord('project', {
-                name: this.get('projectName'),
-                saved: true
-            });
-            project.save().then(onSuccess);
-            
+        updateProject: function() {
+            this.get('model').set('name', this.get('projectName'))
+            this.get('model').set('saved', true);
+            this.get('model').save();
         },
     }
 });
@@ -128,7 +119,7 @@ App.AddLayerModalRoute = Ember.Route.extend({
     },
 });
 
-App.ProjectsRoute = Ember.Route.extend({
+App.ProjectsIndexRoute = Ember.Route.extend({
     model: function() {
         return this.store.find('project');
     },
@@ -136,6 +127,11 @@ App.ProjectsRoute = Ember.Route.extend({
 })
 
 App.ProjectRoute = Ember.Route.extend({
+    
+    model: function(params) {
+        var project = this.store.find('project',  params.project_id);
+        return project;
+    },
     
     actions: {
         addLayer: function(layer, model) {

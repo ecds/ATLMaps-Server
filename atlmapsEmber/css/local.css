@@ -22,7 +22,7 @@ a:hover{
 
 .content {
   width: 100%;
-  position: absolute;
+  position: relative;
   height: 100%;
   top: 0;
   left: 0;
@@ -274,26 +274,37 @@ h3 .btn {
   width: 22%;
   margin-left: 2.5%;
   position:relative;
-  padding-bottom: 40px;
+  padding-bottom: 8px;
 }
 
-.well.square a{
-  position:absolute;
+.well.square .row a{
   width:100%;
-  height:100%;
   left:0;
   top:0;
-  text-align:center;
-  padding-top: 8%;
-  display: block;
-  background: transparent;
-  transition: background 0.2s, color 0.2s;
 }
 
-.well.square a:hover,.well.square a:focus {
-  background: #009587;
-  text-decoration: none;
-  color: #FFF;
+.well.square .heading {
+    margin-top: 0;
+    font-size: 1.5em;
+    line-height: 1.5;
+}
+
+a.action.project-delete {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    font-size: 19px;
+    height: 35px;
+    width: 35px;
+    margin: 0;
+    padding: 8px 9px;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+a.action.project-delete:hover, 
+a.action.project-delete:focus{
+  opacity:1;
 }
 
 a#show-layer-options {
@@ -398,4 +409,16 @@ a#hide-layer-options:hover{
 
 .layer_description {
   float: left;
+}
+
+.footer {
+  width: 100%;
+  position: relative;
+  bottom: 0;
+  height: 80px;
+  background: rgb(224, 227, 236);
+}
+
+.content {
+  padding-bottom: 80px;
 }
