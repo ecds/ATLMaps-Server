@@ -4,7 +4,5 @@ json.project do
   json.saved @project.saved
   json.published @project.published
   json.layer_ids @layer_ids
-  #json.layers @project.layers do |layer|
-  #  json.id layer.id
-  #end
+  json.layers @project.layers
 end

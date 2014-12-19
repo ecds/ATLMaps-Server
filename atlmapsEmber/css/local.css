@@ -133,20 +133,23 @@ a:hover{
 }
 
 .slider .tooltip.top,
-.tooltip.tooltip-max.bottom {
+.tooltip.tooltip-max.bottom,
+.tooltip-min, .tooltip-max,
+.tooltip.tooltip-main{
   display: none;
 }
 
-.slider:hover .tooltip.top.in{
+.slider:hover .tooltip.tooltip-main{
   display:block;
+  transition: all 0.2s ease;
 }
 
-.slider.slider-horizontal {
+.slider.slider-horizontal, .slider.slider-vertical{
   background: transparent;
 }
 
 .slider-selection {
-  background: rgb(66, 169, 247);
+  background: rgb(215, 233, 247);
   border-radius: 0;
   transition: all 0.2s;
 }
@@ -154,6 +157,11 @@ a:hover{
 .slider.slider-horizontal .slider-track {
   height: 2px;
   margin-top: -1px;
+}
+
+.slider.slider-vertical .slider-track {
+  width: 2px;
+  margin-left: -3px;
 }
 
 .slider-handle.min-slider-handle.round {
@@ -169,8 +177,24 @@ a:hover{
   height: 20px;
 }
 
+.slider.slider-vertical .slider-handle.min-slider-handle.round{
+  margin-left:-4px;
+}
+
+.slider.slider-vertical:hover .slider-handle.min-slider-handle.round{
+  margin-left:-9px;
+}
+
 .slider.slider-horizontal{
   width:100%;
+}
+
+.slider.slider-vertical .slider-track {
+    background: rgb(66, 169, 247);
+}
+
+.layer-list .item .slider.slider-vertical {
+    float: right;
 }
 
 h3 .btn {
@@ -226,6 +250,15 @@ h3 .btn {
 
 .btn:not(.btn-link):not(.btn-flat).btn-added:active span{
   transform: rotateZ(-180deg);
+}
+
+.layer-list .btn-added.btn-fab.btn-sm {
+  font-size: 20px;
+  height: 32px;
+  width: 32px;
+  margin: -28px;
+  margin-bottom: 28px;
+  padding: 6px;
 }
 
 #project-list{
@@ -333,7 +366,8 @@ a#hide-layer-options:hover{
 }
 
 .shuffle-items li.item.collapsed h4,
-.shuffle-items li.item.collapsed p{
+.shuffle-items li.item.collapsed p,
+.shuffle-items li.item.collapsed div{
   display:none;
 }
 
@@ -360,4 +394,8 @@ a#hide-layer-options:hover{
 
 #reload:hover, #reload:focus{
   background-color:#FFF;
+}
+
+.layer_description {
+  float: left;
 }
