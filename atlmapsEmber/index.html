@@ -115,6 +115,7 @@
             <div class="layer-controls">
               <div class="card">
                 <a class="btn btn-fab btn-sm pull-right" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
+                {{savedStatus}}
                 {{# if model.saved }}
                     <h1>{{model.name}}</h1>
                 {{ else }}
@@ -131,6 +132,8 @@
                   <li class="item">
                     <h4 class="media-heading">{{layer.name}}</h4>
                     <p class="alt text-muted">{{layer.name}}</p>
+                    <p>{{layer.description}}</p>
+                    <p>{{layer.institution.name}}</p>
                     <p>{{ opacity-slider layer=layer.layer layerID=layer.id }}</p>
                     <p>
                         <a class="btn rotate btn-added btn-fab btn-sm"{{action 'removeLayer' layer model.id}}><span class="mdi-content-clear"></span></a>

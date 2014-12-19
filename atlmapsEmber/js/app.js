@@ -3,8 +3,6 @@ var App = Ember.Application.create({
 });
 
 App.Router.map(function() {
-    //this.resource('layers');
-    this.resource('createMap');
     this.resource('projects', function() {
         this.resource('project', { path: '/:project_id' });
     });
@@ -13,37 +11,54 @@ App.Router.map(function() {
 
 // Controllers
 
-App.CreateMapController = Ember.ArrayController.extend({
-    sortProperties: ['layer_type', 'name'],
-    
-    actions : {
-        
-        createProject: function() {
-            var project = this.store.createRecord('project', {
-                name: (new Date()).toTimeString(),
-                status: 'UNSAVED'
-            });
-            project.save()
-        }
-    }
-    
-});
-
 App.ProjectsIndexController = Ember.ArrayController.extend({
     sortProperties: ['name'],
     
-    newProject: '',
+    //newProject: '',
     
     actions : {
         
         createProject: function() {
-            console.log(this.get('newProject'));
+            
+            time = (new Date()).toTimeString();
+            
             var project = this.store.createRecord('project', {
-                name: this.get('newProject'),
-                status: 'UNSAVED'
+                name: time,
             });
-            project.save();
-            //thsi.ProjectController.transitionToRoute('project', 1);
+            
+            var self = this;
+            
+            var onSuccess = function(project) {
+                
+                var newProject = DS.PromiseObject.create({
+                    promise: App.Project.store.fetch('project', { name: time })
+                });
+    
+                newProject.then(function() {
+                    console.log(newProject)
+                    self.transitionToRoute('project', newProject.get('content.content.0.id'));
+                });
+            };
+            project.save().then(onSuccess);
+
+        },
+        
+        //saveProject: function() {
+        //    console.log(this.get('newProject'));
+        //    var project = this.store.createRecord('project', {
+        //        name: this.get('newProject'),
+        //        status: 'UNSAVED'
+        //    });
+        //    project.save();
+        //    
+        //},
+        
+        deleteProject: function(project) {
+            console.log(project);
+            this.store.find('project', project).then(function (project) {
+                project.destroyRecord(); // => DELETE to /posts/2
+            });
+            
         }
     }
     
@@ -54,6 +69,8 @@ App.ProjectController = Ember.Controller.extend({
         return this.get('model.layer_ids')
       
     }.property('model.layer_ids.@each'),
+    
+    thisProject: function() {}.property(),
     
     getLayers: function(){
         loaded_layers = this.get("model.layer_ids").content.content.length;
@@ -68,6 +85,9 @@ App.ProjectController = Ember.Controller.extend({
 
     }.property("model"),
     
+    savedStatus: function() {
+        console.log(this);
+    }.property(),
     
     actions: {
       reload: function() {
@@ -75,7 +95,22 @@ App.ProjectController = Ember.Controller.extend({
           // do something with the reloaded model
           console.log(model.layer_ids);
         });
-      }
+      },
+      
+      updateProject: function() {
+            var self = this;
+            
+            var onSuccess = function(project) {
+                //self.get("controller.model").reload();
+            }
+            
+            var project = this.store.createRecord('project', {
+                name: this.get('projectName'),
+                saved: true
+            });
+            project.save().then(onSuccess);
+            
+        },
     }
 });
 
@@ -101,6 +136,7 @@ App.ProjectsRoute = Ember.Route.extend({
 })
 
 App.ProjectRoute = Ember.Route.extend({
+    
     actions: {
         addLayer: function(layer, model) {
             var layerID = layer.get('id');
@@ -117,20 +153,17 @@ App.ProjectRoute = Ember.Route.extend({
             });
         },
         
-        removeLayer: function(layer, model) {
+        removeLayer: function(layer, project) {
             var layerID = layer.get('id');
             var layerClass = layer.get('layer');
             var _this = this;
-            var projectID = _this.get('controller.model.id');
-            console.log(projectID, layerID)
-            var projectLayer = this.store.find('projectlayer', { layer_id: layerID, project_id: projectID });
+
             var projectLayer = DS.PromiseObject.create({
-                promise: this.store.find('projectlayer', { layer_id: layerID, project_id: projectID })
+                promise: this.store.find('projectlayer', { layer_id: layerID, project_id: project })
             });
 
             projectLayer.then(function() {
                 var projectLayerID = projectLayer.get('content.content.0.id');
-                console.log(projectLayerID)
                 
                 App.Projectlayer.store.find('projectlayer', projectLayerID).then(function(projectlayer){
                     projectlayer.destroyRecord().then(function(){
@@ -140,15 +173,10 @@ App.ProjectRoute = Ember.Route.extend({
 
             });
             
-             $("."+layerClass).fadeOut( 500, function() {
-                            $(this).remove();
-                        });
+            $("."+layerClass).fadeOut( 500, function() {
+                $(this).remove();
+            });
 
-            //this.store.find('projectlayer', { layer_id: layerID, project_id: projectID }).then(function (projectlayer) {
-            //    projectlayer.destroyRecord().then(function(){
-            //        _this.get("controller.model").reload();
-            //    });
-            //});
         },
         
         // Modal
@@ -422,13 +450,15 @@ App.Layer = DS.Model.extend({
     miny: DS.attr('number'),
     maxx: DS.attr('number'),
     maxy: DS.attr('number'),
-    project_ids: DS.hasMany('project', {async: true})
+    project_ids: DS.hasMany('project', {async: true}),
+    institution: DS.attr()
 });
 
 App.Project = DS.Model.extend({
     name: DS.attr('string'),
     description: DS.attr('string'),
-    status: DS.attr('string'),
+    saved: DS.attr('boolean'),
+    published: DS.attr('boolean'),
     //user: DS.attr('number'),
     layer_ids: DS.hasMany('layer', {async: true}),
 })
