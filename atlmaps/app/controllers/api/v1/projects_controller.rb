@@ -11,7 +11,11 @@ class Api::V1::ProjectsController < ApplicationController
   #end
   
   def index
-    @projects = Project.all
+    if params[:name]
+      @projects = Project.where(name: params[:name])
+    else
+      @projects = Project.all
+    end
     #render json: projects
     #respond_to do |format|
     #  format.json { render json: projects, status: :ok }
@@ -39,6 +43,12 @@ class Api::V1::ProjectsController < ApplicationController
     if project.update(project_params)
       head 204
     end
+  end
+  
+  def destroy
+    project = Project.find(params[:id])
+    project.destroy
+    head 204
   end
   
   private
