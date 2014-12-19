@@ -16,6 +16,21 @@ h6, .h6 { font-size: 12px; line-height: 20px; }
   margin: 0;
 }
 
+
+.modal-backdrop.fade.in {
+    background: transparent;
+}
+
+.modal-backdrop.fade.in:before {
+    content: '';
+    position: fixed;
+    height: 10000em;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    display: block;
+    top: 0;
+}
+
 a:hover{
   cursor:pointer;
 }

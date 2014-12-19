@@ -56,7 +56,7 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
         deleteProject: function(project) {
             console.log(project);
             this.store.find('project', project).then(function (project) {
-                project.destroyRecord(); // => DELETE to /posts/2
+                project.destroyRecord();
             });
             
         }
@@ -98,9 +98,10 @@ App.ProjectController = Ember.Controller.extend({
         },
       
         updateProject: function() {
-            this.get('model').set('name', this.get('projectName'))
-            this.get('model').set('saved', true);
-            this.get('model').save();
+            var project = this.get('model')
+            project.set('name', this.get('projectName'))
+            project.set('saved', true);
+            project.save();
         },
     }
 });
