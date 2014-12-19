@@ -31,7 +31,6 @@
             <div class="navbar navbar-inverse navbar-clear">
               <ul class="nav navbar-nav">
                 {{#link-to 'index' tagName='li' class='navbar-brand'}}ATL Maps{{/link-to}}
-                {{#link-to 'createMap' tagName='li'}}<a>Create Map</a>{{/link-to}}
                 {{#link-to 'projects' tagName='li'}}<a>Projects</a>{{/link-to}}
               </ul>
             </div>
@@ -97,48 +96,59 @@
           {{input valueBinding='newProject'}}<a class="btn rotate btn-add btn-fab btn-sm" {{action 'createProject'}}><span class="mdi-content-add"></span></a>
           <div class="container" id="project-list">
             {{#each project in this.model}}
+            <div>
             <div class="well square">
               {{#link-to 'project' project}}
                 {{project.name}}
               {{/link-to}}
+              
             </div>
+            <button {{action 'deleteProject' project.id}}>Delete</button>
             {{/each}}
+            </div>
           </div>
         </script>
         
         <script type='text/x-handlebars' data-template-name='project'>
-        <a class="btn btn-fab btn-sm pull-left" style="display:none;" id="show-layer-options"><span class="mdi-action-visibility"></span></a>
-        <div class="layer-controls">
-          <div class="card">
-            <a class="btn btn-fab btn-sm pull-right" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
-            <h1>{{model.name}}</h1>
-            {{getLayers}}
-            <h3>Active Layers <a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal' model}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>
-            <a class="btn rotate btn-material-lightgrey btn-fab btn-sm" id="reload" {{action 'reload' this}}><span class="mdi-action-autorenew"></span></a>
-            <hr/>
-          </div>
-          <div class="layer-list">
-            <ul class="shuffle-items">
-              {{#each layer in showLayers}}
-              <li class="item">
-                <h4 class="media-heading">{{layer.name}}</h4>
-                <p class="alt text-muted">{{layer.name}}</p>
-                <p>{{ opacity-slider layer=layer.layer layerID=layer.id }}</p>
-                <p>{{remove-layer-button title='Add' action='removeLayer' param=layer}}</p>
-                {{map-layers layerID=layer.id layerName=layer.layer}}
-              </li>
-              {{else}}
-              <li class="item">
-                <h4 class="media-heading">No Layers yet</h4>
-                <p class="alt text-muted">No Layers yet</p>
-              </li>
-              {{/each}}
-            </ul>
-          </div>
-          </div>
-        <div class="row" id="base-map">
-        {{ base-map }}
-        </div>
+            {{thisProject}}
+            <a class="btn btn-fab btn-sm pull-left" style="display:none;" id="show-layer-options"><span class="mdi-action-visibility"></span></a>
+            <div class="layer-controls">
+              <div class="card">
+                <a class="btn btn-fab btn-sm pull-right" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
+                {{# if model.saved }}
+                    <h1>{{model.name}}</h1>
+                {{ else }}
+                    {{input valueBinding='projectName'}}<a class="btn rotate btn-add btn-fab btn-sm" {{action 'updateProject'}}><span class="mdi-content-add"></span></a>
+                {{/if}}
+                {{getLayers}}
+                <h3>Active Layers <a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal' model}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>
+                <a class="btn rotate btn-material-lightgrey btn-fab btn-sm" id="reload" {{action 'reload' this}}><span class="mdi-action-autorenew"></span></a>
+                <hr/>
+              </div>
+              <div class="layer-list">
+                <ul class="shuffle-items">
+                  {{#each layer in showLayers}}
+                  <li class="item">
+                    <h4 class="media-heading">{{layer.name}}</h4>
+                    <p class="alt text-muted">{{layer.name}}</p>
+                    <p>{{ opacity-slider layer=layer.layer layerID=layer.id }}</p>
+                    <p>
+                        <a class="btn rotate btn-added btn-fab btn-sm"{{action 'removeLayer' layer model.id}}><span class="mdi-content-clear"></span></a>
+                    </p>
+                    {{map-layers layerID=layer.id layerName=layer.layer}}
+                  </li>
+                  {{else}}
+                  <li class="item">
+                    <h4 class="media-heading">No Layers yet</h4>
+                    <p class="alt text-muted">No Layers yet</p>
+                  </li>
+                  {{/each}}
+                </ul>
+              </div>
+              </div>
+            <div class="row" id="base-map">
+            {{ base-map }}
+            </div>
         </script>
 
         <script type="text/x-handlebars" data-template-name="add-layer-modal">
