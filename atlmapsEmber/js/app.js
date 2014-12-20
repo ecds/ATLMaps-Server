@@ -202,13 +202,14 @@ App.ProjectRoute = Ember.Route.extend({
         }
     },
     
-    didInsertElement: function() {
-        $('#ex1').slider({
-            formatter: function(value) {
-                return 'Current value: ' + value;
-            }
-        });
-    }
+    //didInsertElement: function() {
+    //    $('#ex1').slider({
+    //        formatter: function(value) {
+    //            console.log('something here?')
+    //            return 'Current value: ' + value;
+    //        }
+    //    });
+    //}
     
 });
 
@@ -308,9 +309,13 @@ App.OpacitySliderComponent = Ember.Component.extend({
     
     actions: {
         opacityChange: function() {
-            console.log(this.layer);
             var layerName = this.layer
-            value = $("input."+layerName).val();
+            console.log(layerName)
+            var value = $("input."+layerName).val();
+            //if(isNaN(value)) {
+            //    var value = $("input."+layerName).val();
+            //}
+            console.log(value)
             var opacity = value / 10;
             console.log(opacity);
             $("div."+layerName+",img."+layerName).css({'opacity': opacity});

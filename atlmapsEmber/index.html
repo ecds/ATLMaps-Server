@@ -176,7 +176,7 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/opacity-slider">
-          <input class="slider" {{bind-attr class=layer name=layer}} {{action "opacityChange" on="change" param=layer}} value="10" data-slider-orientation="vertical" type="text"/>
+          <input {{bind-attr class=":slider layer" name=layer}} {{action "opacityChange" on="change" param=layer}} value="10" data-slider-orientation="vertical" type="text"/>
           {{opacityslider}}
         </script>
         
