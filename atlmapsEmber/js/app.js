@@ -64,11 +64,14 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
     
 });
 
-App.ProjectController = Ember.Controller.extend({
+App.ProjectController = Ember.ObjectController.extend({
     showLayers: function() {
         return this.get('model.layer_ids')
       
     }.property('model.layer_ids.@each'),
+    
+    // Empty property for the input filed so we can clear it later.
+    projectName: '',
     
     thisProject: function() {}.property(),
     
@@ -101,7 +104,13 @@ App.ProjectController = Ember.Controller.extend({
             var project = this.get('model')
             project.set('name', this.get('projectName'))
             project.set('saved', true);
-            project.save();
+            
+            // perserve this so we can clear the projectName field after save.
+            var controller = this;
+            project.save().then(function(project){
+                // Clear the projectName filed.
+                controller.set('projectName', '');    
+            });
         },
     }
 });
@@ -267,7 +276,7 @@ App.BaseMapComponent = Ember.Component.extend({
         var map = L.map('map', {zoomControl:false}).setView([33.7489954,-84.3879824], 14);
         L.control.zoom({ position: 'topright' }).addTo(map);
         L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors Georgia State University and Emory University',
         }).addTo(map);
 
         store.set('map', map);
@@ -381,6 +390,7 @@ App.MapLayersComponent = Ember.Component.extend({
                     function viewData(feature, layer) {
                         var popupContent = "<h2>"+feature.properties.name+"</h2>";
                         layer.bindPopup(popupContent);
+                        
                     }
                     function setIcon(url, class_name){
                       return iconObj = L.icon({

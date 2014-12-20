@@ -91,7 +91,7 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='projects/index'>
-          <a {{action 'createProject'}}>Create New Project</a>
+          <a {{action 'createProject' valueBinding='projectName'}}>Create New Project</a>
           <div class="container" id="project-list">
             {{#each project in this.model}}
             <div>
@@ -112,8 +112,6 @@
             <div class="layer-controls">
               <div class="card">
                 <a class="btn btn-fab btn-sm pull-right" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
-                {{savedStatus}}
-                {{model.saved}}
                 {{# if model.saved }}
                     <h1>{{model.name}}</h1>
                 {{ else }}
