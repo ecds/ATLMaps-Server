@@ -173,7 +173,7 @@ App.ProjectRoute = Ember.Route.extend({
             var layerID = layer.get('id');
             var layerClass = layer.get('layer');
             var _this = this;
-            var project_id = project || this.get("controller.model.id");
+            var project_id = this.get("controller.model.id");
 
             var projectLayer = DS.PromiseObject.create({
                 promise: this.store.find('projectlayer', { layer_id: layerID, project_id: project })
@@ -316,7 +316,7 @@ App.AddRemoveLayerButtonComponent = Ember.Component.extend({
         buttonRemoveLayer: function(layer) {
           this.toggleProperty("layerAdded")
           this.set('action','removeLayer');
-          this.sendAction('action', this.get('param'),2);
+          this.sendAction('action', this.get('param'));
         },
     }
 });
