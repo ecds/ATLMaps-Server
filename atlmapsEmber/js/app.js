@@ -274,11 +274,30 @@ var store = App.Map.create();
 
 App.BaseMapComponent = Ember.Component.extend({
     didInsertElement: function() {
-        var map = L.map('map', {zoomControl:false}).setView([33.7489954,-84.3879824], 14);
-        L.control.zoom({ position: 'topright' }).addTo(map);
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        
+        var osm = L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors Georgia State University and Emory University',
-        }).addTo(map);
+        });
+        
+        var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
+            attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+            subdomains: '1234'
+        });
+        
+        var baseMaps = {
+            "Street": osm,
+            "Satellite": MapQuestOpen_Aerial
+        }
+        
+        
+        var map = L.map('map', {
+            center: [33.7489954,-84.3879824],
+            zoom: 14,
+            layers: [osm]
+        });
+        
+        L.control.zoom({ position: 'topright' }).addTo(map);
+        L.control.layers(baseMaps).addTo(map);
 
         store.set('map', map);
         // save map instance
@@ -393,7 +412,10 @@ App.MapLayersComponent = Ember.Component.extend({
                 case 'geojson':
                     var slug = mappedLayer.get('layer')
                     function viewData(feature, layer) {
-                        var popupContent = "<h2>"+feature.properties.name+"</h2>";
+                        var popupContent = "<h2>"+feature.properties.name+"</h2>"+
+                        "<p>"+feature.properties.description+"</p>"+
+                        "<img class='geojson' src='"+feature.properties.image.url+"' title='"+feature.properties.image.name+"' />"+
+                        "<span>Photo Credit: "+feature.properties.image.credit+"</span>";
                         layer.bindPopup(popupContent);
                         
                     }

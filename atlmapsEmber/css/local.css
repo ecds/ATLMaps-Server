@@ -438,3 +438,12 @@ a#hide-layer-options:hover{
 .content {
   padding-bottom: 80px;
 }
+
+img.geojson {
+  width: 500px;
+  height: auto;
+}
+
+.leaflet-popup-content-wrapper {
+  min-width: 600px;
+}
