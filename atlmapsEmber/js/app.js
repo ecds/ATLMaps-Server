@@ -374,7 +374,7 @@ App.MapLayersComponent = Ember.Component.extend({
             var slug = mappedLayer.get('layer');
             var map = store.get('map');
             
-            instution = mappedLayer.get('institution');
+            institution = mappedLayer.get('institution');
             
             switch(mappedLayer.get('layer_type')) {
                 case 'planningatlanta':
@@ -393,8 +393,8 @@ App.MapLayersComponent = Ember.Component.extend({
                 
                 case 'wms':
                 
-                    var wmsLayer = L.tileLayer.wms(instution.geoserver + mappedLayer.get('url') + '/wms', {
-                        layers: mappedLayer.get('url')+':'+mappedLayer.get('layer'),
+                    var wmsLayer = L.tileLayer.wms(institution.geoserver + mappedLayer.get('url') + '/wms', {
+                        layers: mappedLayer.get('url') + ':' + mappedLayer.get('layer'),
                         format: 'image/png',
                         CRS: 'EPSG:900913',
                         transparent: true
