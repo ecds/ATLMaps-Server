@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 20141219150449) do
     t.string   "name"
     t.string   "description"
     t.boolean  "saved",       default: false
-    t.boolean  "publised",    default: false
+    t.boolean  "published",   default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
