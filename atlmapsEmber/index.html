@@ -69,27 +69,6 @@
           </div>
         </script>
         
-        <script type='text/x-handlebars' data-template-name='createMap'>
-            <div class="card layer-controls">
-            <a class="btn btn-info" {{ action 'createProject' }}>Create Map</a>
-              <div class="form-group">
-                <div class="input-group">
-                <input class="form-control floating-label" id="focusedInput" type="text" placeholder="Map Name"/>
-                </div>
-              </div>
-              
-              <div>
-                <a class="btn btn-add" {{action 'showModal' 'add-layer-modal' model}}>
-                  <span class="mdi-content-add mdi-large"></span> Layers
-                </a>
-              </div>
-            </div>
-
-            <div id="base-map">
-              {{ base-map }}
-            </div>
-        </script>
-        
         <script type='text/x-handlebars' data-template-name='projects/index'>
             <div class="continer" id="create_project">
                 <a class="btn btn-add" {{action 'createProject' valueBinding='projectName'}}><span class="mdi-content-add mdi-large"></span>Create New Project</a></h3>
@@ -120,8 +99,8 @@
                     {{input valueBinding='projectName'}}<a class="btn btn-add btn-fab btn-sm" {{action 'updateProject'}}><span class="mdi-content-add"></span></a>
                 {{/if}}
                 {{getLayers}}
-                <h3>Active Layers <a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal' model}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>
-                <a class="btn rotate btn-material-lightgrey btn-fab btn-sm" id="reload" {{action 'reload' this}}><span class="mdi-action-autorenew"></span></a>
+                <h3>Active Layers <a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal'}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>
+                <a class="btn btn-material-lightgrey btn-fab btn-sm" id="reload" {{action 'reload' this}}><span class="mdi-action-autorenew"></span></a>
                 <hr/>
               </div>
               <div class="layer-list">
@@ -161,7 +140,7 @@
             {{#each layer in this}}
               <div class="layer-list-item row">
                 <div class="col-xs-2">
-                  {{add-remove-layer-button title='Add' action='addLayer' param=layer}}
+                  {{add-remove-layer-button title='Add' action='addLayer' param=layer model=model}}
                 </div>
                 <div class="col-xs-9">
                   {{ list-avaliable-layers layer=layer}}
@@ -184,9 +163,9 @@
         
         <script type="text/x-handlebars" data-template-name="components/add-remove-layer-button">
           {{#if layerAdded}}
-            <a class="btn rotate btn-added btn-fab btn-sm" {{action 'buttonToggle' this}}><span class="mdi-action-done"></span></a>
+            <a class="btn rotate btn-added btn-fab btn-sm" {{action 'buttonRemoveLayer' this.layer this.model.id }}><span class="mdi-action-done"></span></a>
           {{else}}
-            <a class="btn rotate btn-add btn-fab btn-sm" {{action 'buttonToggle'}}><span class="mdi-content-add"></span></a>
+            <a class="btn rotate btn-add btn-fab btn-sm" {{action 'buttonAddLayer' this.layer}}><span class="mdi-content-add"></span></a>
           {{/if}}
         </script>
         
