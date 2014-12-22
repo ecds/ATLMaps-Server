@@ -41,6 +41,7 @@ a:hover{
   height: 100%;
   top: 0;
   left: 0;
+  margin-top: -40px;
   padding-top: 40px;
 }
 
@@ -435,19 +436,24 @@ a#hide-layer-options:hover{
   background: rgb(224, 227, 236);
 }
 
-.content {
-  padding-bottom: 80px;
-}
-
 img.geojson {
-  width: 500px;
+  width: 100%;
   height: auto;
 }
 
 .leaflet-popup-content-wrapper {
-  min-width: 600px;
+  min-width: 500px;
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #create_project {
   padding: 20px;
+}
+
+.leaflet-popup-content {
+  margin: auto;
+  width: 80%!important;
+  padding: 0;
 }

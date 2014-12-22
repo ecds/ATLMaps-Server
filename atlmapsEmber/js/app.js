@@ -232,6 +232,7 @@ App.BaseMapComponent = Ember.Component.extend({
         var map = L.map('map', {
             center: [33.7489954,-84.3879824],
             zoom: 14,
+            zoomControl:false 
         });
         
         var osm = L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
