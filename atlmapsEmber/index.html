@@ -91,7 +91,9 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='projects/index'>
-          <a {{action 'createProject' valueBinding='projectName'}}>Create New Project</a>
+            <div class="continer" id="create_project">
+                <a class="btn btn-add" {{action 'createProject' valueBinding='projectName'}}><span class="mdi-content-add mdi-large"></span>Create New Project</a></h3>
+            </div>
           <div class="container" id="project-list">
             {{#each project in this.model}}
             <div>

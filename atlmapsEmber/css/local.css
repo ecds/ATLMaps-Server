@@ -447,3 +447,7 @@ img.geojson {
 .leaflet-popup-content-wrapper {
   min-width: 600px;
 }
+
+#create_project {
+  padding: 20px;
+}
