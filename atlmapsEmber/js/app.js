@@ -246,8 +246,7 @@ App.BaseMapComponent = Ember.Component.extend({
         
         var toner = L.tileLayer('http://d.tile.stamen.com/toner/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="http://osm.org/copyright">Stamen Toner Map</a> contributors Georgia State University and Emory University',
-        })
-        
+        });
                 
         var baseMaps = {
             "Street": osm,
@@ -358,6 +357,8 @@ App.MapLayersComponent = Ember.Component.extend({
             var slug = mappedLayer.get('layer');
             var map = store.get('map');
             
+            instution = mappedLayer.get('institution');
+            
             switch(mappedLayer.get('layer_type')) {
                 case 'planningatlanta':
 
@@ -371,6 +372,19 @@ App.MapLayersComponent = Ember.Component.extend({
                                         
                     $(tile).addClass(slug);
 
+                    break;
+                
+                case 'wms':
+                
+                    var wmsLayer = L.tileLayer.wms(instution.geoserver + mappedLayer.get('url') + '/wms', {
+                        layers: mappedLayer.get('url')+':'+mappedLayer.get('layer'),
+                        format: 'image/png',
+                        CRS: 'EPSG:900913',
+                        transparent: true
+                    }).addTo(map).bringToFront().getContainer();
+                                        
+                    $(wmsLayer).addClass(slug);
+                
                     break;
                 
                 case 'geojson':
