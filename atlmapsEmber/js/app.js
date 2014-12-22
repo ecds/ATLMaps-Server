@@ -9,6 +9,10 @@ App.Router.map(function() {
 
 });
 
+var layersStore = Ember.Object.create({
+  loaded: []
+});
+
 // Controllers
 
 App.ProjectsIndexController = Ember.ArrayController.extend({
@@ -66,7 +70,15 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
 
 App.ProjectController = Ember.ObjectController.extend({
     showLayers: function() {
-        return this.get('model.layer_ids')
+      
+      var layers = this.get("model.layer_ids.content.content")
+      var added_layers = [];
+      $(layers).each(function(){
+        added_layers.push(this.id)
+      })
+      layersStore.set("loaded",added_layers)
+      
+      return this.get('model.layer_ids')
       
     }.property('model.layer_ids.@each'),
     
@@ -80,7 +92,6 @@ App.ProjectController = Ember.ObjectController.extend({
         var i = this.incrementProperty('i'),
             c = loadCount.get("count");
         
-        console.log(this.get("model.layer_ids.content.content"));
         if(i !== c ){
           this.get("model").reload();
         }
@@ -143,17 +154,12 @@ App.ProjectRoute = Ember.Route.extend({
         var project = this.store.find('project',  params.project_id);
         return project;
     },
-    project_id: function(){
-      return this.get("model")
-    }.property("model"),
-    
+
     actions: {
         addLayer: function(layer, model) {
             var layerID = layer.get('id');
             var _this = this;
-            var projectID = _this.get('controller.model.id');
-            // console.log(projectID, layerID)
-            
+            var projectID = _this.get('controller.model.id');            
             var projectlayer = this.store.createRecord('projectlayer', {
                 project_id: projectID,
                 layer_id: layerID
@@ -190,10 +196,6 @@ App.ProjectRoute = Ember.Route.extend({
             });
 
         },
-        
-        is_active: function(){
-          return "false"
-        }.property(),
         
         // Modal
         showModal: function(name) {
@@ -302,9 +304,12 @@ App.OpacitySliderComponent = Ember.Component.extend({
 });
 
 App.AddRemoveLayerButtonComponent = Ember.Component.extend({
+    layerAdded: function(layer){
+      return false
+    }.property(),
     actions: {
         buttonAddLayer: function(layer) {
-          this.toggleProperty("layerAdded")
+          this.toggleProperty("layerAdded");
           this.set('action','addLayer');
           this.sendAction('action', this.get('param'));
         },
@@ -314,6 +319,19 @@ App.AddRemoveLayerButtonComponent = Ember.Component.extend({
           this.sendAction('action', this.get('param'),2);
         },
     }
+});
+
+Ember.Handlebars.helper('is_active', function(layer) {
+    console.log(this.get("param.id"));
+    var loaded_layers = layersStore.get("loaded"),
+        this_layer = this.get("param.id");
+        
+    if (loaded_layers.indexOf(this_layer) > -1){
+      this.set("layerAdded",true)
+      return
+    }
+    this.set("layerAdded",false)
+    return
 });
 
 App.RemoveLayerButtonComponent = Ember.Component.extend({
