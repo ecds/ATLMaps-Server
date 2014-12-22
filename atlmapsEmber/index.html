@@ -161,7 +161,8 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/add-remove-layer-button">
-          {{#if layerAdded}}
+          {{is_active}}
+          {{#if layerAdded }}
             <a class="btn rotate btn-added btn-fab btn-sm" {{action 'buttonRemoveLayer' this.layer this.model.id }}><span class="mdi-action-done"></span></a>
           {{else}}
             <a class="btn rotate btn-add btn-fab btn-sm" {{action 'buttonAddLayer' this.layer}}><span class="mdi-content-add"></span></a>
