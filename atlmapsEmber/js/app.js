@@ -275,26 +275,24 @@ var store = App.Map.create();
 App.BaseMapComponent = Ember.Component.extend({
     didInsertElement: function() {
         
-        var osm = L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors Georgia State University and Emory University',
+        var map = L.map('map', {
+            center: [33.7489954,-84.3879824],
+            zoom: 14,
         });
         
+        var osm = L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors Georgia State University and Emory University',
+        }).addTo(map).setZIndex(0);
+        
         var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
-            attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+            attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency contributors Georgia State University and Emory University',
             subdomains: '1234'
         });
         
         var baseMaps = {
             "Street": osm,
             "Satellite": MapQuestOpen_Aerial
-        }
-        
-        
-        var map = L.map('map', {
-            center: [33.7489954,-84.3879824],
-            zoom: 14,
-            layers: [osm]
-        });
+        };        
         
         L.control.zoom({ position: 'topright' }).addTo(map);
         L.control.layers(baseMaps).addTo(map);
@@ -403,8 +401,8 @@ App.MapLayersComponent = Ember.Component.extend({
                         minZoom: 13,
                         maxZoom: 19,
                         //attribution: 'GSU'
-                    }).addTo(map).getContainer();
-                    
+                    }).addTo(map).bringToFront().getContainer();
+                                        
                     $(tile).addClass(slug);
 
                     break;
