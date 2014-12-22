@@ -244,9 +244,15 @@ App.BaseMapComponent = Ember.Component.extend({
             subdomains: '1234'
         });
         
+        var toner = L.tileLayer('http://d.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="http://osm.org/copyright">Stamen Toner Map</a> contributors Georgia State University and Emory University',
+        })
+        
+                
         var baseMaps = {
             "Street": osm,
-            "Satellite": MapQuestOpen_Aerial
+            "Satellite": MapQuestOpen_Aerial,
+            "Toner": toner
         };        
         
         L.control.zoom({ position: 'topright' }).addTo(map);
