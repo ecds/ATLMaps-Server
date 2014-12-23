@@ -457,3 +457,7 @@ img.geojson {
   width: 80%!important;
   padding: 0;
 }
+
+span.institution {
+  font-style: italic;
+}
