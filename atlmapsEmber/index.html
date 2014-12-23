@@ -111,7 +111,7 @@
                         <div class="col-xs-10">
                             <h4 class="media-heading">{{layer.name}}</h4>
                             <p>{{layer.description}}</p>
-                            <p><span class="institution">{{layer.institution.name}}</span></p>
+                            <p>Provided by: <img {{bind-attr src='layer.institution.icon'}} alt='Logo' class="institution_logo" /> <span class="institution">{{layer.institution.name}}</span></p>
                         </div>
                         <div class="col-xs-1 pull-right">
                             <a class="btn rotate btn-added btn-fab btn-sm"{{action 'removeLayer' layer model.id}}><span class="mdi-content-clear"></span></a>
@@ -175,10 +175,10 @@
         
         <script type="text/x-handlebars" data-template-name="components/list-avaliable-layers">
             <h4>{{layer.name}}</h4>
-            <p><strong>{{layer.layer_type}}</strong></p>
             <p>
               {{layer.description}}
             </p>
+            <p>Provided by: <img {{bind-attr src='layer.institution.icon'}} alt='Logo' class="institution_logo" /> <span class="institution">{{layer.institution.name}}</span></p>
         </script>
 
         <script type="text/x-handlebars" data-template-name="components/my-modal">

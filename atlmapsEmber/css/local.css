@@ -441,6 +441,11 @@ img.geojson {
   height: auto;
 }
 
+img.institution_logo {
+  width: 16px;
+  height: auto;
+}
+
 .leaflet-popup-content-wrapper {
   min-width: 500px;
   max-height: 500px;
