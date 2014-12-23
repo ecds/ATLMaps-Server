@@ -60,16 +60,15 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
 
 App.ProjectController = Ember.ObjectController.extend({
     showLayers: function() {
-      
-      var layers = this.get("model.layer_ids.content.content")
-      var added_layers = [];
-      $(layers).each(function(){
-        added_layers.push(this.id)
-      })
-      layersStore.set("loaded",added_layers)
-      
-      return this.get('model.layer_ids')
-      
+        var layers = this.get("model.layer_ids.content.content")
+        var added_layers = [];
+        $(layers).each(function(){
+            added_layers.push(this.id)
+        })
+        layersStore.set("loaded",added_layers)
+        
+        return this.get('model.layer_ids')
+    
     }.property('model.layer_ids.@each'),
     
     // Empty property for the input filed so we can clear it later.
@@ -96,7 +95,7 @@ App.ProjectController = Ember.ObjectController.extend({
         reload: function() {
           this.get('model').reload().then(function(model) {
             // do something with the reloaded model
-            console.log(model.layer_ids);
+            console.log('hello');
           });
         },
       
@@ -140,8 +139,11 @@ App.ProjectsIndexRoute = Ember.Route.extend({
 App.ProjectRoute = Ember.Route.extend({
     
     model: function(params) {
-        var project = this.store.find('project',  params.project_id);
-        return project;
+        return this.store.find('project', params.project_id);
+    },
+    
+    afterModel: function(model) {
+        model.reload();
     },
 
     actions: {

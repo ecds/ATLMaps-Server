@@ -70,13 +70,13 @@
         
         <script type='text/x-handlebars' data-template-name='projects/index'>
             <div class="continer" id="create_project">
-                <a class="btn btn-add" {{action 'createProject' valueBinding='projectName'}}><span class="mdi-content-add mdi-large"></span>Create New Project</a></h3>
+                <a class="btn btn-add" {{action 'createProject'}}><span class="mdi-content-add mdi-large"></span>Create New Project</a></h3>
             </div>
           <div class="container" id="project-list">
             {{#each project in this.model}}
             <div>
             <div class="well square">
-                <h3 class="heading">{{#link-to 'project' project}}{{project.name}}{{/link-to}}</h3>
+                <h3 class="heading">{{#link-to 'project' project action='reload'}}{{project.name}}{{/link-to}}</h3>
                 
                 <a class="btn btn-warning btn-fab action project-delete" {{action 'deleteProject' project.id}}><span class="mdi-action-delete"></span></a>
 
@@ -128,6 +128,7 @@
                   {{/each}}
                 </ul>
               </div>
+              
               </div>
             <div class="row" id="base-map">
             {{ base-map }}
