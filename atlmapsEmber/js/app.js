@@ -47,16 +47,6 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
 
         },
         
-        //saveProject: function() {
-        //    console.log(this.get('newProject'));
-        //    var project = this.store.createRecord('project', {
-        //        name: this.get('newProject'),
-        //        status: 'UNSAVED'
-        //    });
-        //    project.save();
-        //    
-        //},
-        
         deleteProject: function(project) {
             console.log(project);
             this.store.find('project', project).then(function (project) {
@@ -84,8 +74,6 @@ App.ProjectController = Ember.ObjectController.extend({
     
     // Empty property for the input filed so we can clear it later.
     projectName: '',
-    
-    thisProject: function() {}.property(),
     
     getLayers: function(){
         loaded_layers = this.get("model.layer_ids").content.content.length;
@@ -131,10 +119,11 @@ App.AddLayerModalController = Ember.ArrayController.extend({
    sortProperties: ['layer_type', 'name'],
 });
 
-// Routers
+// Routes
 
 App.IndexRoute = Ember.Route.extend({});
 
+// Is this needed?
 App.AddLayerModalRoute = Ember.Route.extend({
     model: function() {
         // return this.store.find('layer');
@@ -146,7 +135,7 @@ App.ProjectsIndexRoute = Ember.Route.extend({
         return this.store.find('project');
     },
     
-})
+});
 
 App.ProjectRoute = Ember.Route.extend({
     
@@ -265,7 +254,6 @@ App.BaseMapComponent = Ember.Component.extend({
     },
 });
 
-
 App.OpacitySliderComponent = Ember.Component.extend({
     opacityslider: function() {
         
@@ -276,11 +264,9 @@ App.OpacitySliderComponent = Ember.Component.extend({
                 layer.then(function() {
                     
                     var layerName = layer.get('layer');
-                    // console.log(layerName)
                     var slider = $("input.slider, input ."+layerName).slider({
-                        //precision: 2,
                         value: 10,
-                        reversed: true
+                        reversed: true,
                     });
         
                 });
@@ -289,14 +275,8 @@ App.OpacitySliderComponent = Ember.Component.extend({
     actions: {
         opacityChange: function() {
             var layerName = this.layer
-            // console.log("opacity layer name:"+layerName)
             var value = $("input."+layerName).val();
-            //if(isNaN(value)) {
-            //    var value = $("input."+layerName).val();
-            //}
-            // console.log("value of opacity slider:"+value)
             var opacity = value / 10;
-            // console.log("opacity:"+opacity);
             $("div."+layerName+",img."+layerName).css({'opacity': opacity});
         }
     }
