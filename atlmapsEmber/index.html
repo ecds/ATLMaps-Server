@@ -30,8 +30,9 @@
         <script type="text/x-handlebars" data-template-name="application">
             <div class="navbar navbar-inverse navbar-clear">
               <ul class="nav navbar-nav">
-                {{#link-to 'index' tagName='li' class='navbar-brand'}}ATL Maps{{/link-to}}
+                {{#link-to 'index' tagName='li' class='navbar-brand'}}ATLMaps{{/link-to}}
                 {{#link-to 'projects' tagName='li'}}<a>Projects</a>{{/link-to}}
+                {{#link-to 'about' tagName='li'}}<a>About</a>{{/link-to}}
               </ul>
             </div>
             {{outlet "modal"}}
@@ -42,29 +43,8 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="index">
-          <!--<div id='banner'>
+          <div id='banner'>
             <h1>Welcome to ATLMaps</h1>
-          </div>-->
-          <div class="container">
-          <ul class="shuffle-items">
-          <li class="item">
-            <h4>Quick Facts</h4>
-            <p class="alt text-muted">Cabbagetown is a neighborhood on the east side of Atlanta</p>
-            <p>Cabbagetown is a neighborhood on the east side of Atlanta, Georgia, United States, abutting historic Oakland Cemetery. It includes the Cabbagetown District, a historic district listed on the U.S. National Register of Historic Places. Wikipedia</p>
-          </li>
-          <li class="item collapsed">
-            <h4>Title 2</h4>
-            <p class="alt text-muted">Item 2 summary</p>
-            <p>brew; lambic, chocolate malt, shelf life. grainy aerobic alcohol sour/acidic pint glass. 
-            barrel black malt units of bitterness. dry hopping ipa? sparge lauter: lauter scotch ale hard cider.</p>
-          </li>
-          <li class="item collapsed">
-            <h4>Title 3</h4>
-            <p class="alt text-muted">Item 3 dry hopping ipa? sparge lauter</p>
-            <p>brew; lambic, chocolate malt, shelf life. grainy aerobic alcohol sour/acidic pint glass. 
-            barrel black malt units of bitterness. dry hopping ipa? sparge lauter: lauter scotch ale hard cider.</p>
-          </li>
-          </ul>
           </div>
         </script>
         
@@ -148,6 +128,10 @@
               </div>
             {{/each}}
           {{/my-modal}}
+        </script>
+        
+        <script type='text/x-handlebars' data-template-name='about'>
+            <p>Here we will do some about text and some branding. YAY!</p>
         </script>
         
         <!-- COMPONENTS -->
