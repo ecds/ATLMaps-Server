@@ -390,9 +390,12 @@ App.MapLayersComponent = Ember.Component.extend({
                     var slug = mappedLayer.get('layer')
                     function viewData(feature, layer) {
                         var popupContent = "<h2>"+feature.properties.name+"</h2>"+
-                        "<p>"+feature.properties.description+"</p>"+
-                        "<img class='geojson' src='"+feature.properties.image.url+"' title='"+feature.properties.image.name+"' />"+
-                        "<span>Photo Credit: "+feature.properties.image.credit+"</span>";
+                        "<p>"+feature.properties.description+"</p>";
+                        if (feature.properties.image) {
+                            popupContent += "<img class='geojson' src='"+feature.properties.image.url+"' title='"+feature.properties.image.name+"' />"+
+                                            "<span>Photo Credit: "+feature.properties.image.credit+"</span>";
+                        };
+                        console.log(popupContent)
                         layer.bindPopup(popupContent);
                         
                     }
