@@ -77,6 +77,8 @@ App.ProjectController = Ember.ObjectController.extend({
     
     getLayers: function(){
         loaded_layers = this.get("model.layer_ids").content.content.length;
+        // Needs to be changed to this if with go with ember data beta 14    
+        //loaded_layers = this.get("model.layer_ids").content.length;
         var i = this.incrementProperty('i'),
             c = loadCount.get("count");
         
@@ -176,6 +178,7 @@ App.ProjectRoute = Ember.Route.extend({
                     console.log(projectLayer);
                 
                 App.Projectlayer.store.find('projectlayer', projectLayerID).then(function(projectlayer){
+                    console.log(projectlayer)
                     projectlayer.destroyRecord().then(function(){
                         _this.get("controller.model").reload();
                     });
@@ -396,7 +399,6 @@ App.MapLayersComponent = Ember.Component.extend({
                             popupContent += "<img class='geojson' src='"+feature.properties.image.url+"' title='"+feature.properties.image.name+"' />"+
                                             "<span>Photo Credit: "+feature.properties.image.credit+"</span>";
                         };
-                        console.log(popupContent)
                         layer.bindPopup(popupContent);
                         
                     }
