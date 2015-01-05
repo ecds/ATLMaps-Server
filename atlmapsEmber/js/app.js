@@ -234,7 +234,7 @@ App.BaseMapComponent = Ember.Component.extend({
         
         var osm = L.tileLayer('http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors Georgia State University and Emory University',
-        }).addTo(map).setZIndex(0);
+        }).addTo(map);
         
         var MapQuestOpen_Aerial = L.tileLayer('http://oatile{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', {
             attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency contributors Georgia State University and Emory University',
@@ -242,7 +242,7 @@ App.BaseMapComponent = Ember.Component.extend({
         });
         
         var toner = L.tileLayer('http://d.tile.stamen.com/toner/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="http://osm.org/copyright">Stamen Toner Map</a> contributors Georgia State University and Emory University',
+          attribution: '&copy; <a href="http://osm.org/copyright">Stamen Toner Map</a> contributors Georgia State University and Emory University'
         });
                 
         var baseMaps = {
@@ -371,7 +371,7 @@ App.MapLayersComponent = Ember.Component.extend({
                         minZoom: 13,
                         maxZoom: 19,
                         //attribution: 'GSU'
-                    }).addTo(map).bringToFront().getContainer();
+                    }).addTo(map).setZIndex(10).getContainer();
                                         
                     $(tile).addClass(slug);
 
