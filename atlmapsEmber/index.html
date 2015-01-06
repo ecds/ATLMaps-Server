@@ -80,7 +80,7 @@
             <a class="btn btn-fab btn-sm pull-left" style="display:none;" id="show-layer-options"><span class="mdi-action-visibility"></span></a>
             <div class="layer-controls">
               <div class="card">
-                <a class="btn btn-fab btn-sm pull-right" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
+                <a class="btn btn-material-lightblue btn-fab btn-xs btn-flat pull-right" id="config-layers" data-ember-action="504"><span class="mdi-action-settings"></span><div class="ripple-wrapper"></div></a>
                 {{# if model.saved }}
                     <h1>{{model.name}}</h1>
                 {{ else }}
@@ -90,7 +90,7 @@
                 {{/if}}
                 {{getLayers}}
                 <h3>Active Layers <a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal'}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>
-                <a class="btn btn-material-lightgrey btn-fab btn-sm" id="reload" {{action 'reload' this}}><span class="mdi-action-autorenew"></span></a>
+                <a class="btn btn-fab btn-sm btn-material-lightgrey top-layer-button" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
                 <hr/>
               </div>
               <div class="layer-list">

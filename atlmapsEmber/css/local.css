@@ -218,6 +218,20 @@ h3 .btn {
   margin: 0;
 }
 
+.btn-fab.btn-xs {
+  font-size: 18px;
+  height: 29px;
+  width: 29px;
+  margin: 0px;
+  padding: 6px;
+  box-shadow: 1px 1px 5px rgba(119, 119, 119, 0.25);
+}
+
+.btn-fab.btn-xs.btn-flat{
+  box-shadow: none;
+}
+
+
 .btn-fab.btn-sm {
   font-size: 2em;
   height: 40px;
@@ -413,14 +427,14 @@ a#hide-layer-options:hover{
   max-width: 640px;
 }
 
-#reload {
+.top-layer-button {
   position: absolute;
   top: -30px;
   left: -30px;
   transition: background-color 0.2s;
 }
 
-#reload:hover, #reload:focus{
+.top-layer-button:hover, .top-layer-button:focus{
   background-color:#FFF;
 }
 
@@ -470,4 +484,13 @@ span.institution {
 .nav-btn {
   padding-top: 2;
   padding-bottom: 2;
+}
+
+.shuffle-items li.item.info .content{
+  margin-top: -60px;
+  padding-bottom: 20px;
+}
+
+.shuffle-items li.item.info h2{
+  margin-top:0;
 }

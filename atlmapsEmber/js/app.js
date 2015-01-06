@@ -1,7 +1,7 @@
 window.ENV = window.ENV || {};
 window.ENV['simple-auth-oauth2'] = {
-    serverTokenEndpoint: 'http://172.16.83.129:7000/oauth/token',
-    serverTokenRevocationEndpoint: 'http://172.16.83.129:7000/oauth/revoke',
+    serverTokenEndpoint: 'http://localhost:7000/oauth/token',
+    serverTokenRevocationEndpoint: 'http://localhost:7000/oauth/revoke',
 };
 
 var App = Ember.Application.create({
@@ -418,8 +418,12 @@ App.MapLayersComponent = Ember.Component.extend({
                         };
                         //layer.bindPopup(popupContent);
                         layer.on('click', function(marker) {
-                            alert(popupContent);
                             console.log(marker);
+                            $(".shuffle-items li.item.info").remove();
+                            var $content = $("<div/>").attr("class","content").html(popupContent)
+                            var $info = $('<li/>').attr("class","item info").append($content);
+                            $info.appendTo($(".shuffle-items"))
+                            shuffle.click($info);
                         });
                         
                     }
@@ -525,6 +529,9 @@ $(document).ready(function(){
     $("#show-layer-options").fadeOut(500);
   })
   .on('click','.shuffle-items li.item',function(){
+    if ($(this).hasClass('info') == false){
+      $(".shuffle-items li.item.info").remove();
+    }
     shuffle.click(this);
   })
   
