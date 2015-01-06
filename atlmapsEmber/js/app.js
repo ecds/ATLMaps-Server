@@ -416,7 +416,11 @@ App.MapLayersComponent = Ember.Component.extend({
                             popupContent += "<img class='geojson' src='"+feature.properties.image.url+"' title='"+feature.properties.image.name+"' />"+
                                             "<span>Photo Credit: "+feature.properties.image.credit+"</span>";
                         };
-                        layer.bindPopup(popupContent);
+                        //layer.bindPopup(popupContent);
+                        layer.on('click', function(marker) {
+                            alert(popupContent);
+                            console.log(marker);
+                        });
                         
                     }
                     function setIcon(url, class_name){
@@ -424,9 +428,9 @@ App.MapLayersComponent = Ember.Component.extend({
                                             iconUrl: url,
                                             //iconSize: [50, 65],
                                             iconAnchor: [16, 37],
-                                            popupAnchor: [0, -28],
+                                            //popupAnchor: [0, -28],
                                             className: class_name
-                                          });
+                                        });
                     }
                     
                     if(mappedLayer.get('url')){
