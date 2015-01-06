@@ -1,3 +1,9 @@
+window.ENV = window.ENV || {};
+window.ENV['simple-auth-oauth2'] = {
+    serverTokenEndpoint: 'http://172.16.83.129:7000/oauth/token',
+    serverTokenRevocationEndpoint: 'http://172.16.83.129:7000/oauth/revoke',
+};
+
 var App = Ember.Application.create({
     LOG_TRANSITIONS: true
 });
@@ -7,7 +13,7 @@ App.Router.map(function() {
         this.resource('project', { path: '/:project_id' });
     });
     this.resource('about');
-
+    this.route('login');
 });
 
 var layersStore = Ember.Object.create({
@@ -121,7 +127,14 @@ App.AddLayerModalController = Ember.ArrayController.extend({
    sortProperties: ['layer_type', 'name'],
 });
 
+App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
+    authenticator: 'simple-auth-authenticator:oauth2-password-grant'
+});
+ 
+
 // Routes
+
+App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
 
 App.IndexRoute = Ember.Route.extend({});
 
@@ -134,11 +147,13 @@ App.AddLayerModalRoute = Ember.Route.extend({
 
 App.ProjectsIndexRoute = Ember.Route.extend({
     model: function() {
+        console.log(this.session)
         return this.store.find('project');
     },
     
 });
 
+//App.ProjectRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin,{
 App.ProjectRoute = Ember.Route.extend({
     
     model: function(params) {
@@ -214,6 +229,8 @@ App.ProjectRoute = Ember.Route.extend({
 var loadCount = Ember.Object.create({
   count: 0
 });
+
+App.LoginRoute = Ember.Route.extend(SimpleAuth.UnauthenticatedRouteMixin);
 
 
 App.Map = Ember.Object.extend();

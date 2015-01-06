@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   
+  use_doorkeeper
+  
+  devise_for :users
+  
   namespace :api, path: '/', constraints: { subdomain: 'api' } do
     namespace :v1 do
       resources :layers, only: [:index, :show]
@@ -14,5 +18,9 @@ Rails.application.routes.draw do
       
     end
   end
+  get "/users/sign_up" => "users#new"
+  post "/user" => "users#create"
+
+  root to: "home#index"
 end
 

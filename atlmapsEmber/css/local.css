@@ -466,3 +466,8 @@ img.institution_logo {
 span.institution {
   font-style: italic;
 }
+
+.nav-btn {
+  padding-top: 2;
+  padding-bottom: 2;
+}

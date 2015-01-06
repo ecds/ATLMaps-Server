@@ -7,3 +7,4 @@ app.js.crap
 atlmaps/Gemfile.lock
 node_modules
 bower_components
+atlmapsEmber/js/app-diffcontrol.js

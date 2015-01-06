@@ -11,6 +11,8 @@
         <script src="../bower_components/leaflet/dist/leaflet-src.js"></script>
         <script src="../bower_components/leaflet-ajax/dist/leaflet.ajax.js"></script>
         <script src="../bower_components/jquery.easing/js/jquery.easing.js"></script>
+        <script src="../bower_components/ember-simple-auth/simple-auth.js"></script>
+        <script src="../bower_components/ember-simple-auth/simple-auth-oauth2.js"></script>
         <!-- endbower -->
         <!--<script src="http://builds.emberjs.com/beta/ember-data.min.js"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ember-data.js/1.0.0-beta.12/ember-data.prod.js"></script>
@@ -30,11 +32,16 @@
     <body>
         <script type="text/x-handlebars" data-template-name="application">
             <div class="navbar navbar-inverse navbar-clear">
-              <ul class="nav navbar-nav">
-                {{#link-to 'index' tagName='li' class='navbar-brand'}}ATLMaps{{/link-to}}
-                {{#link-to 'projects' tagName='li'}}<a>Projects</a>{{/link-to}}
-                {{#link-to 'about' tagName='li'}}<a>About</a>{{/link-to}}
-              </ul>
+                <ul class="nav navbar-nav">
+                    {{#link-to 'index' tagName='li' class='navbar-brand'}}ATLMaps{{/link-to}}
+                    {{#link-to 'projects' tagName='li'}}<a>Projects</a>{{/link-to}}
+                    {{#link-to 'about' tagName='li'}}<a>About</a>{{/link-to}}
+                </ul>
+                {{#if session.isAuthenticated}}
+                    <a {{ action 'invalidateSession' }} class="btn btn-xs navbar-right nav-btn">Logout</a>
+                {{else}}
+                    {{#link-to 'login' class="btn btn-xs navbar-right nav-btn"}}Login{{/link-to}}
+                {{/if}}
             </div>
             {{outlet "modal"}}
             <div class="content">
@@ -47,6 +54,7 @@
           <div id='banner'>
             <h1>Welcome to ATLMaps</h1>
           </div>
+          {{session}}
         </script>
         
         <script type='text/x-handlebars' data-template-name='projects/index'>
@@ -76,7 +84,9 @@
                 {{# if model.saved }}
                     <h1>{{model.name}}</h1>
                 {{ else }}
-                    {{input valueBinding='projectName'}}<a class="btn btn-add btn-fab btn-sm" {{action 'updateProject'}}><span class="mdi-content-add"></span></a>
+                    {{#if session.isAuthenticated}}
+                        {{input valueBinding='projectName' placeholder='Enter Title for Project'}}<a class="btn btn-add btn-fab btn-sm" {{action 'updateProject'}}><span class="mdi-content-add"></span></a>
+                    {{/if}}
                 {{/if}}
                 {{getLayers}}
                 <h3>Active Layers <a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal'}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>
@@ -133,6 +143,16 @@
         
         <script type='text/x-handlebars' data-template-name='about'>
             <p>Here we will do some about text and some branding. YAY!</p>
+        </script>
+        
+        <script type='text/x-handlebars' data-template-name='login'>
+            <form {{action 'authenticate' on='submit'}}>
+  <label for="identification">Login</label>
+  {{input value=identification placeholder='Enter Login'}}
+  <label for="password">Password</label>
+  {{input value=password placeholder='Enter Password' type='password'}}
+  <button type="submit">Login</button>
+</form>
         </script>
         
         <!-- COMPONENTS -->
