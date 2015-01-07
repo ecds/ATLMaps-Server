@@ -94,12 +94,16 @@ a:hover{
   min-height: 25px;
 }
 
-.navbar.navbar-clear.navbar-inverse{
+.navbar.navbar-inverse{
+  background-color: rgb(82, 100, 174);
+}
+
+.project .navbar.navbar-clear.navbar-inverse{
   background-color: rgba(82, 100, 174, 0.35);
   transition: background-color 0.2s;
 }
 
-.navbar.navbar-clear.navbar-inverse:hover{
+.project .navbar.navbar-clear.navbar-inverse:hover{
   background-color:#5264ae;
   background-color: rgba(82, 100, 174, 0.92);
 }
