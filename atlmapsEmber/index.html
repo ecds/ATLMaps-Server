@@ -20,7 +20,7 @@
         <script src="js/shuffle.js"></script>
         <script src="js/app.js"></script>
         
-        <!-- bower:css -->
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,700,400italic,300' rel='stylesheet' type='text/css'>        <!-- bower:css -->
         <link rel='stylesheet' href='../bower_components/bootstrap/dist/css/bootstrap.css' />
         <link rel='stylesheet' href='../bower_components/bootstrap-material-design/dist/css/material.css' />
         <link rel='stylesheet' href='../bower_components/bootstrap-material-design/dist/css/ripples.css' />
@@ -32,16 +32,22 @@
     <body>
         <script type="text/x-handlebars" data-template-name="application">
             <div class="navbar navbar-inverse navbar-clear">
-                <ul class="nav navbar-nav">
-                    {{#link-to 'index' tagName='li' class='navbar-brand'}}ATLMaps{{/link-to}}
-                    {{#link-to 'projects' tagName='li'}}<a>Projects</a>{{/link-to}}
-                    {{#link-to 'about' tagName='li'}}<a>About</a>{{/link-to}}
-                </ul>
-                {{#if session.isAuthenticated}}
-                    <a {{ action 'invalidateSession' }} class="btn btn-xs navbar-right nav-btn">Logout</a>
-                {{else}}
-                    {{#link-to 'login' class="btn btn-xs navbar-right nav-btn"}}Login{{/link-to}}
-                {{/if}}
+              <div class="container-fluid">
+                  <ul class="nav navbar-nav">
+                      {{#link-to 'index' tagName='li' class='navbar-brand'}}ATLMaps{{/link-to}}
+                      {{#link-to 'projects' tagName='li'}}<a>Projects</a>{{/link-to}}
+                      {{#link-to 'about' tagName='li'}}<a>About</a>{{/link-to}}
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                    <li>
+                      {{#if session.isAuthenticated}}
+                          <a {{ action 'invalidateSession' }} class="btn btn-xs navbar-right nav-btn">Logout</a>
+                      {{else}}
+                          {{#link-to 'login' class="btn btn-xs navbar-right nav-btn"}}Login{{/link-to}}
+                      {{/if}}
+                    </li>
+                  </ul>
+              </div>
             </div>
             {{outlet "modal"}}
             <div class="content">
@@ -146,13 +152,23 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='login'>
-            <form {{action 'authenticate' on='submit'}}>
-  <label for="identification">Login</label>
-  {{input value=identification placeholder='Enter Login'}}
-  <label for="password">Password</label>
-  {{input value=password placeholder='Enter Password' type='password'}}
-  <button type="submit">Login</button>
-</form>
+        <header class="text-center alt-header">
+          <h2>Start collaboraing and explore new layers.</h2>
+          <p class="lead">Log in to continue.</p>
+        </header>
+          <div class="well login-form">
+            <form {{action 'authenticate' on='submit'}} class="form">
+              <label for="identification" class="sr-only">Login</label>
+              <div class="form-group">
+                {{input value=identification placeholder='Email' class="form-control floating-label" type="text"}}
+              </div>
+              <label for="password" class="sr-only">Password</label>              
+              <div class="form-group">
+                {{input value=password placeholder='Password' type='password' class="form-control floating-label"}}
+              </div>
+              <button type="submit" class="btn btn-material-orange btn-block">Login</button>
+            </form>
+          </div>
         </script>
         
         <!-- COMPONENTS -->

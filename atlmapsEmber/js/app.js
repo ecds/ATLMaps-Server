@@ -530,6 +530,7 @@ App.Projectlayer = DS.Model.extend({
 
 $(document).ready(function(){
   $.material.ripples(".btn, .navbar a");
+  $.material.input()
   (function(){
   // init on shuffle items 
     shuffle.init();
