@@ -1,3 +1,12 @@
+body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+}
+
+h1, h2, h3, .h1, .h2, .h3{
+  font-weight: 100;
+}
+
 h1, .h1 { font-size: 36px; line-height: 40px; }
 h2, .h2 { font-size: 30px; line-height: 40px; }
 h3, .h3 { font-size: 24px; line-height: 40px; }
@@ -94,14 +103,22 @@ a:hover{
   min-height: 25px;
 }
 
-.navbar.navbar-clear.navbar-inverse{
+.navbar.navbar-inverse{
+  background-color: rgb(82, 100, 174);
+}
+
+.project .navbar.navbar-clear.navbar-inverse{
   background-color: rgba(82, 100, 174, 0.35);
   transition: background-color 0.2s;
 }
 
-.navbar.navbar-clear.navbar-inverse:hover{
+.project .navbar.navbar-clear.navbar-inverse:hover{
   background-color:#5264ae;
   background-color: rgba(82, 100, 174, 0.92);
+}
+
+.nav.navbar-nav.navbar-right .btn {
+  margin: 0;
 }
 
 .layer-list{
@@ -217,6 +234,20 @@ a:hover{
 h3 .btn {
   margin: 0;
 }
+
+.btn-fab.btn-xs {
+  font-size: 18px;
+  height: 29px;
+  width: 29px;
+  margin: 0px;
+  padding: 6px;
+  box-shadow: 1px 1px 5px rgba(119, 119, 119, 0.25);
+}
+
+.btn-fab.btn-xs.btn-flat{
+  box-shadow: none;
+}
+
 
 .btn-fab.btn-sm {
   font-size: 2em;
@@ -413,14 +444,14 @@ a#hide-layer-options:hover{
   max-width: 640px;
 }
 
-#reload {
+.top-layer-button {
   position: absolute;
   top: -30px;
   left: -30px;
   transition: background-color 0.2s;
 }
 
-#reload:hover, #reload:focus{
+.top-layer-button:hover, .top-layer-button:focus{
   background-color:#FFF;
 }
 
@@ -470,4 +501,49 @@ span.institution {
 .nav-btn {
   padding-top: 2;
   padding-bottom: 2;
+}
+
+.shuffle-items li.item.info .content{
+  margin-top: -60px;
+  padding-bottom: 20px;
+}
+
+.shuffle-items li.item.info h2{
+  margin-top:0;
+}
+
+
+.alt-header{
+  color: rgb(107, 107, 107);
+}
+
+.alt-header .lead{
+  color: rgb(152, 152, 152)
+}
+
+.login-form{
+  max-width: 360px;
+  margin:0 auto;
+}
+
+.login-form.well{
+  padding: 2em 2.5em;
+}
+
+.login-form h2{
+  margin-top: 0.5em;
+  margin-bottom:0.75em;
+  text-align:center
+}
+
+.login-form form{
+  padding-top:1em;
+}
+
+.login-form .form-group{
+  margin-bottom:1.75em;
+}
+
+.login-form button[type='submit']{
+  margin-top:2em;
 }

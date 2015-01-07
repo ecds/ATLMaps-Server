@@ -134,6 +134,23 @@ App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, 
 
 // Routes
 
+Ember.Route.reopen({
+  activate: function() {
+    var cssClass = this.toCssClass();
+    // you probably don't need the application class
+    // to be added to the body
+    if (cssClass != 'application') {
+      Ember.$('body').addClass(cssClass);
+    }
+  },
+  deactivate: function() {
+    Ember.$('body').removeClass(this.toCssClass());
+  },
+  toCssClass: function() {
+    return this.routeName.replace(/\./g, '-').dasherize();
+  }
+});
+
 App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
 
 App.IndexRoute = Ember.Route.extend({});
@@ -419,8 +436,12 @@ App.MapLayersComponent = Ember.Component.extend({
                         };
                         //layer.bindPopup(popupContent);
                         layer.on('click', function(marker) {
-                            alert(popupContent);
                             console.log(marker);
+                            $(".shuffle-items li.item.info").remove();
+                            var $content = $("<div/>").attr("class","content").html(popupContent)
+                            var $info = $('<li/>').attr("class","item info").append($content);
+                            $info.appendTo($(".shuffle-items"))
+                            shuffle.click($info);
                         });
                         
                     }
@@ -510,6 +531,7 @@ App.Projectlayer = DS.Model.extend({
 
 $(document).ready(function(){
   $.material.ripples(".btn, .navbar a");
+  $.material.input();
   (function(){
   // init on shuffle items 
     shuffle.init();
@@ -526,6 +548,9 @@ $(document).ready(function(){
     $("#show-layer-options").fadeOut(500);
   })
   .on('click','.shuffle-items li.item',function(){
+    if ($(this).hasClass('info') == false){
+      $(".shuffle-items li.item.info").remove();
+    }
     shuffle.click(this);
   })
   
