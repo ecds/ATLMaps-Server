@@ -1,7 +1,7 @@
 window.ENV = window.ENV || {};
 window.ENV['simple-auth-oauth2'] = {
-    serverTokenEndpoint: 'http://172.16.83.129:7000/oauth/token',
-    serverTokenRevocationEndpoint: 'http://172.16.83.129:7000/oauth/revoke',
+    serverTokenEndpoint: 'http://atlmaps-dev.com:7000/oauth/token',
+    serverTokenRevocationEndpoint: 'http://atlmaps-dev.com:7000/oauth/revoke',
 };
 
 var App = Ember.Application.create({
@@ -148,6 +148,7 @@ App.AddLayerModalRoute = Ember.Route.extend({
 App.ProjectsIndexRoute = Ember.Route.extend({
     model: function() {
         console.log(this.session)
+        $.getJSON("http://api.atlmaps-dev.com:7000/v1/tokens/me.json", function(data){console.log(data)})
         return this.store.find('project');
     },
     
