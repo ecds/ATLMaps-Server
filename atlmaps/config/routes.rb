@@ -10,6 +10,8 @@ Rails.application.routes.draw do
       resources :projects#, defaults => { :format => 'json' }
       resources :projectlayers, only: [:index, :show, :create, :destroy]
       
+      get '/tokens/me' => "tokens#me"
+      
       #with_options only: :index do |list_only|
       #  list_only.resources :zombies
       #  list_only.resources :humans

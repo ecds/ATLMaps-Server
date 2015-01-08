@@ -60,10 +60,11 @@
           <div id='banner'>
             <h1>Welcome to ATLMaps</h1>
           </div>
-          {{session}}
         </script>
         
         <script type='text/x-handlebars' data-template-name='projects/index'>
+            {{currentUser}}
+            {{!--<p class="welcome">Welcome {{#if session.isAuthenticated}}{{user_value}}{{else}}Guest{{/if}}</p>--}}
             <div class="continer" id="create_project">
                 <a class="btn btn-add" {{action 'createProject'}}><span class="mdi-content-add mdi-large"></span>Create New Project</a></h3>
             </div>
@@ -148,7 +149,9 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='about'>
-            <p>Here we will do some about text and some branding. YAY!</p>
+            <div class="continer">
+                <p>Here we will do some about text and some branding. YAY!</p>
+            </div>
         </script>
         
         <script type='text/x-handlebars' data-template-name='login'>

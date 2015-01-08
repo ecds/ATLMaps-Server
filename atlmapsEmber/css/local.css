@@ -25,7 +25,6 @@ h6, .h6 { font-size: 12px; line-height: 20px; }
   margin: 0;
 }
 
-
 .modal-backdrop.fade.in {
   background: transparent;
 }
@@ -546,4 +545,10 @@ span.institution {
 
 .login-form button[type='submit']{
   margin-top:2em;
+}
+
+.welcome {
+  padding-top: 10px;
+  padding-left: 20px;
+  font-size: large;
 }

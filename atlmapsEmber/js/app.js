@@ -1,4 +1,7 @@
 window.ENV = window.ENV || {};
+window.ENV['simple-auth'] = {
+    authorizer: 'simple-auth-authorizer:oauth2-bearer',
+};
 window.ENV['simple-auth-oauth2'] = {
     serverTokenEndpoint: 'http://atlmaps-dev.com:7000/oauth/token',
     serverTokenRevocationEndpoint: 'http://atlmaps-dev.com:7000/oauth/revoke',
@@ -22,10 +25,39 @@ var layersStore = Ember.Object.create({
 
 // Controllers
 
+var user = Ember.Object.create({
+        value:'User'
+    });
+
+App.ApplicationController = Ember.Controller.extend({
+    user_value: '',
+    currentUser: function() {
+        var token = this.session.get('content.access_token')
+        var self = this;
+        console.log(token)
+        var request = $.ajax({
+            url: "http://api.atlmaps-dev.com:7000/v1/tokens/me.json",
+            dataType: 'json',
+            beforeSend: function(xhr, settings) { xhr.setRequestHeader('Authorization','Bearer ' + token); }
+        });
+        request.done(function(json) {
+            console.log(json)
+            console.log(json.id)
+            console.log(json.email)
+            user.set('value',json);
+            self.set('user_value',json.email);
+        });
+        console.log(user.get('value'));
+    }.property(),
+});
+
 App.ProjectsIndexController = Ember.ArrayController.extend({
     sortProperties: ['name'],
     
-    //newProject: '',
+    user_value: Ember.computed.alias('controllers.application.user_value'),
+    
+    needs: ['application'],
+    currentUser: Ember.computed.alias('controllers.application.currentUser'),
     
     actions : {
         
@@ -164,10 +196,8 @@ App.AddLayerModalRoute = Ember.Route.extend({
 
 App.ProjectsIndexRoute = Ember.Route.extend({
     model: function() {
-        console.log(this.session)
-        $.getJSON("http://api.atlmaps-dev.com:7000/v1/tokens/me.json", function(data){console.log(data)})
         return this.store.find('project');
-    },
+    }
     
 });
 
@@ -200,10 +230,10 @@ App.ProjectRoute = Ember.Route.extend({
             var layerID = layer.get('id');
             var layerClass = layer.get('layer');
             var _this = this;
-            var project = project || this.get("controller.model.id");
+            var p = project || this.get("controller.model.id");
 
             var projectLayer = DS.PromiseObject.create({
-                promise: this.store.find('projectlayer', { layer_id: layerID, project_id: project })
+                promise: this.store.find('projectlayer', { layer_id: layerID, project_id: p })
             });
 
             projectLayer.then(function() {
@@ -428,12 +458,12 @@ App.MapLayersComponent = Ember.Component.extend({
                 case 'geojson':
                     var slug = mappedLayer.get('layer')
                     function viewData(feature, layer) {
-                        var popupContent = "<h2>"+feature.properties.name+"</h2>"+
-                        "<p>"+feature.properties.description+"</p>";
+                        var popupContent = "<h2>"+feature.properties.name+"</h2>"
                         if (feature.properties.image) {
                             popupContent += "<img class='geojson' src='"+feature.properties.image.url+"' title='"+feature.properties.image.name+"' />"+
                                             "<span>Photo Credit: "+feature.properties.image.credit+"</span>";
                         };
+                        popupContent += "<p>"+feature.properties.description+"</p>";
                         //layer.bindPopup(popupContent);
                         layer.on('click', function(marker) {
                             console.log(marker);
