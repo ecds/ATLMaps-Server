@@ -70,13 +70,16 @@
             </div>
           <div class="container" id="project-list">
             {{#each project in this.model}}
+            {{#if project.saved}}
             <div>
             <div class="well square">
+            
                 <h3 class="heading">{{#link-to 'project' project action='reload'}}{{project.name}}{{/link-to}}</h3>
                 
                 <a class="btn btn-warning btn-fab action project-delete" {{action 'deleteProject' project.id}}><span class="mdi-action-delete"></span></a>
 
             </div>
+            {{/if}}
             {{/each}}
             </div>
           </div>
@@ -92,7 +95,14 @@
                     <h1>{{model.name}}</h1>
                 {{ else }}
                     {{#if session.isAuthenticated}}
-                        {{input valueBinding='projectName' placeholder='Enter Title for Project'}}<a class="btn btn-add btn-fab btn-sm" {{action 'updateProject'}}><span class="mdi-content-add"></span></a>
+                    <div class="row">
+                        <div class='col-xs-7' id="title-input">
+                            {{input valueBinding='projectName' placeholder='Enter Title for Project' class="form-control floating-label" type="text"}}
+                        </div>
+                        <div class='col-xs-3'>
+                            <a class="btn btn-info btn-xs pull-right" id="title-button" {{action 'updateProject'}}><span">OK</span mdi-large></a>
+                        </div>
+                    </div>
                     {{/if}}
                 {{/if}}
                 {{getLayers}}

@@ -142,15 +142,21 @@ App.ProjectController = Ember.ObjectController.extend({
       
         updateProject: function() {
             var project = this.get('model')
-            project.set('name', this.get('projectName'))
-            project.set('saved', true);
-            
-            // perserve this so we can clear the projectName field after save.
-            var controller = this;
-            project.save().then(function(project){
-                // Clear the projectName filed.
-                controller.set('projectName', '');    
-            });
+            var submittedName = this.get('projectName')
+            if(submittedName === '') {
+                alert('Please add a title for you project.')
+            }
+            else {
+                project.set('name', submittedName)
+                project.set('saved', true);
+                
+                // perserve this so we can clear the projectName field after save.
+                var controller = this;
+                project.save().then(function(project){
+                    // Clear the projectName filed.
+                    controller.set('projectName', '');    
+                });
+            }
         },
     }
 });
@@ -196,6 +202,7 @@ App.AddLayerModalRoute = Ember.Route.extend({
 
 App.ProjectsIndexRoute = Ember.Route.extend({
     model: function() {
+        console.log(this.session)
         return this.store.find('project');
     }
     

@@ -552,3 +552,15 @@ span.institution {
   padding-left: 20px;
   font-size: large;
 }
+
+#title-input {
+  margin-top: 2em;
+  padding-right: 0;
+}
+
+#title-button {
+  float: none !important;
+  padding-right: 8px;
+  padding-left: 8px;
+  margin-top: 2em;
+}
