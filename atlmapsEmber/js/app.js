@@ -88,6 +88,7 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
         
         deleteProject: function(project) {
             console.log(project);
+            alert('ARE YOU SURE YOU WANT TO DELETE THIS PROJECT? THERE IS NO GETTING IT BACK!');
             this.store.find('project', project).then(function (project) {
                 project.destroyRecord();
             });
