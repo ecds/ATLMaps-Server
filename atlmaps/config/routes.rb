@@ -1,12 +1,18 @@
 Rails.application.routes.draw do
   
-  use_doorkeeper
+  use_doorkeeper do
+    # Using a custom controller for the token response so we can
+    # inject a user's details.
+    controllers :tokens => 'custom_tokens'
+  end
   
   devise_for :users
   
   namespace :api, path: '/', constraints: { subdomain: 'api' } do
     namespace :v1 do
       resources :layers, only: [:index, :show]
+      resources :users, only: [:show]
+      resources :profiles, only: [:show]
       resources :projects#, defaults => { :format => 'json' }
       resources :projectlayers, only: [:index, :show, :create, :destroy]
       

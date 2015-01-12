@@ -12,23 +12,28 @@ class Api::V1::ProjectsController < ApplicationController
   
   def index
     if params[:name]
-      @projects = Project.where(name: params[:name])
+      projects = Project.where(name: params[:name])
     else
-      @projects = Project.all
+      projects = Project.all
     end
-    #render json: projects
+    render json: projects
     #respond_to do |format|
     #  format.json { render json: projects, status: :ok }
     #end
   end
   
   def show
-    @project = Project.find(params[:id])
-    @layer_ids = []
-    layers = Projectlayer.select(:layer_id).where(:project_id => params[:id])
-    layers.each do |layer|
-      @layer_ids << layer.layer_id
-    end
+    project = Project.find(params[:id])
+    render json: project
+    #respond_to do |format|
+    #  format.json { render json: layer, status: :ok }
+    #end
+    #@project = Project.find(params[:id])
+    #@layer_ids = []
+    #layers = Projectlayer.select(:layer_id).where(:project_id => params[:id])
+    #layers.each do |layer|
+    #  @layer_ids << layer.layer_id
+    #end
   end
   
   def create
@@ -53,7 +58,7 @@ class Api::V1::ProjectsController < ApplicationController
   
   private
     def project_params
-      params.require(:project).permit(:name, :saved, :description)
+      params.require(:project).permit(:name, :saved, :description, :user_id)
     end
   
 end

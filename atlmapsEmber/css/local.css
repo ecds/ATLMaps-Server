@@ -71,7 +71,7 @@ a:hover{
 #banner h1 {
   color: white;
   font-weight: 700;
-  text-shadow: 4px 4px #666699;
+  text-shadow: 2px 2px #666699;
   text-align: center;
   
 }
@@ -312,7 +312,7 @@ h3 .btn {
   padding: 6px;
 }
 
-#project-list{
+.project-list{
   padding-top:20px;
 }
 
@@ -551,10 +551,9 @@ span.institution {
   margin-top:2em;
 }
 
-.welcome {
-  padding-top: 10px;
-  padding-left: 20px;
-  font-size: large;
+#welcome {
+  color: white;
+  margin: .6em;
 }
 
 #title-input {

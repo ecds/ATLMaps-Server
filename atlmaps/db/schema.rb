@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150105191051) do
+ActiveRecord::Schema.define(version: 20150112183224) do
 
   create_table "institutions", force: true do |t|
     t.string   "name"
@@ -98,12 +98,19 @@ ActiveRecord::Schema.define(version: 20150105191051) do
     t.string   "description"
     t.boolean  "saved",       default: false
     t.boolean  "published",   default: false
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
+
   create_table "users", force: true do |t|
+    t.string   "username"
+    t.string   "displayname"
     t.string   "email",                  default: "", null: false
+    t.string   "avatar"
+    t.string   "twiter"
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"

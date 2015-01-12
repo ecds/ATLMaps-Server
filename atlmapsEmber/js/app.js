@@ -65,7 +65,7 @@ var user = Ember.Object.create({
     });
 
 App.ApplicationController = Ember.Controller.extend({
-    user_value: '',
+    //user_value: '',
     //currentUser: function() {
     //    var token = this.session.get('content.access_token')
     //    var self = this;
@@ -85,15 +85,27 @@ App.ApplicationController = Ember.Controller.extend({
     //    console.log(user.get('value'));
     //}.property(),
     
+    mine: function() {
+        return true
+    }
+    
 });
 
 App.ProjectsIndexController = Ember.ArrayController.extend({
     sortProperties: ['name'],
     
-    user_value: Ember.computed.alias('controllers.application.user_value'),
+    //user_value: Ember.computed.alias('controllers.application.user_value'),
+    //
+    //needs: ['application'],
+    //currentUser: Ember.computed.alias('controllers.application.currentUser'),
     
-    needs: ['application'],
-    currentUser: Ember.computed.alias('controllers.application.currentUser'),
+    myProjects: function() {
+        console.log(this.session.get('content.user.id'))
+        //return this
+        var foo = this.filterBy('user_id', this.session.get('content.user.id') )
+        console.log(foo)
+        return foo
+    }.property(),
     
     actions : {
         
@@ -103,6 +115,7 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
             
             var project = this.store.createRecord('project', {
                 name: time,
+                user_id: this.session.get('content.user.id')
             });
             
             var self = this;
@@ -240,7 +253,7 @@ App.AddLayerModalRoute = Ember.Route.extend({
 
 App.ProjectsIndexRoute = Ember.Route.extend({
     model: function() {
-        console.log(this.session)
+        //console.log(this.session)
         return this.store.find('project');
     }
     
@@ -248,7 +261,7 @@ App.ProjectsIndexRoute = Ember.Route.extend({
 
 App.AboutController = Ember.Controller.extend({
     currentUser: function() {
-        console.log(this.session.get('content'))
+        //console.log(this.session.get('content'))
         return this.session.get('content.user.email')
     }.property('currentUser'),
 })
@@ -502,7 +515,7 @@ App.MapLayersComponent = Ember.Component.extend({
                     var wmsLayer = L.tileLayer.wms(institution.geoserver + mappedLayer.get('url') + '/wms', {
                         layers: mappedLayer.get('url') + ':' + mappedLayer.get('layer'),
                         format: 'image/png',
-                        //CRS: 'EPSG:900913',
+                        CRS: 'EPSG:900913',
                         transparent: true,
                         detectRetina: true
                     }).addTo(map).bringToFront().getContainer();
@@ -534,8 +547,8 @@ App.MapLayersComponent = Ember.Component.extend({
                     function setIcon(url, class_name){
                       return iconObj = L.icon({
                                             iconUrl: url,
-                                            iconSize: [50, 65],
-                                            //iconAnchor: [16, 37],
+                                            //iconSize: [50, 65],
+                                            iconAnchor: [16, 37],
                                             //popupAnchor: [0, -28],
                                             className: class_name
                                         });
@@ -545,7 +558,7 @@ App.MapLayersComponent = Ember.Component.extend({
                       var points = new L.GeoJSON.AJAX(mappedLayer.get('url'), {
                           pointToLayer: function (feature, latlng) {
                             // console.log("slug",slug);
-                            var marker = L.marker(latlng, {icon: setIcon("images/alex.png", slug)});
+                            var marker = L.marker(latlng, {icon: setIcon("images/marker2.png", slug)});
                             return marker
                           },
                           onEachFeature: viewData,
@@ -604,31 +617,38 @@ App.Layer = DS.Model.extend({
 App.Project = DS.Model.extend({
     name: DS.attr('string'),
     description: DS.attr('string'),
+    user: DS.attr(),
+    user_id: DS.attr('number'),
     saved: DS.attr('boolean'),
     published: DS.attr('boolean'),
     //user: DS.attr('number'),
     layer_ids: DS.hasMany('layer', {async: true}),
-})
+});
 
 App.Projectlayer = DS.Model.extend({
     layer_id: DS.attr(),
     project_id: DS.attr()
 });
 
-App.CustomSession = SimpleAuth.Session.extend({
-  account: function() {
-    consloe.log('oh hi there')
-    var accountId = this.get('account_id');
-    if (!Ember.isEmpty(accountId)) {
-        console.log('oh good')
-        console.log(this.container.lookup('store:main').find('account', accountId))
-        return this.container.lookup('store:main').find('account', accountId);
-    }
-    else {
-        return null
-    }
-  }.property('account_id')
-});
+App.User = DS.Model.extend({
+    displayname: DS.attr('string'),
+    avatar: DS.attr('string')
+})
+
+//App.CustomSession = SimpleAuth.Session.extend({
+//  account: function() {
+//    consloe.log('oh hi there')
+//    var accountId = this.get('account_id');
+//    if (!Ember.isEmpty(accountId)) {
+//        console.log('oh good')
+//        console.log(this.container.lookup('store:main').find('account', accountId))
+//        return this.container.lookup('store:main').find('account', accountId);
+//    }
+//    else {
+//        return null
+//    }
+//  }.property('account_id')
+//});
 
 //App.register('session:custom', App.CustomSession);
 
