@@ -70,6 +70,10 @@ a:hover{
 
 #banner h1 {
   color: white;
+  font-weight: 700;
+  text-shadow: 4px 4px #666699;
+  text-align: center;
+  
 }
 
 .container {

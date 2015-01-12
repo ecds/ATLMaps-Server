@@ -58,7 +58,7 @@
         
         <script type="text/x-handlebars" data-template-name="index">
           <div id='banner'>
-            <h1>Welcome to ATLMaps</h1>
+            <!--<h1>ATLMaps</h1>-->
           </div>
         </script>
         
@@ -75,8 +75,9 @@
             <div class="well square">
             
                 <h3 class="heading">{{#link-to 'project' project action='reload'}}{{project.name}}{{/link-to}}</h3>
-                
-                <a class="btn btn-warning btn-fab action project-delete" {{action 'deleteProject' project.id}}><span class="mdi-action-delete"></span></a>
+                {{#if session.isAuthenticated}}
+                    <a class="btn btn-warning btn-fab action project-delete" {{action 'deleteProject' project.id}}><span class="mdi-action-delete"></span></a>
+                {{/if}}
 
             </div>
             {{/if}}
@@ -161,6 +162,7 @@
         <script type='text/x-handlebars' data-template-name='about'>
             <div class="continer">
                 <p>Here we will do some about text and some branding. YAY!</p>
+          {{currentUser}}
             </div>
         </script>
         

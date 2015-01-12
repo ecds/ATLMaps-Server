@@ -3,7 +3,6 @@ Doorkeeper.configure do
   # Currently supported options are :active_record, :mongoid2, :mongoid3,
   # :mongoid4, :mongo_mapper
   orm :active_record
-  default_scopes :public
 
   # This block will be called to check whether the resource owner is authenticated or not.
   resource_owner_authenticator do
@@ -31,7 +30,7 @@ Doorkeeper.configure do
 
   # Access token expiration time (default 2 hours).
   # If you want to disable expiration, set this to nil.
-  # access_token_expires_in 2.hours
+  access_token_expires_in 72.hours
 
   # Reuse access token for the same resource owner within an application (disabled by default)
   # Rationale: https://github.com/doorkeeper-gem/doorkeeper/issues/383
@@ -49,7 +48,7 @@ Doorkeeper.configure do
   # Define access token scopes for your provider
   # For more information go to
   # https://github.com/doorkeeper-gem/doorkeeper/wiki/Using-Scopes
-  # default_scopes  :public
+  default_scopes  :public
   # optional_scopes :write, :update
 
   # Change the way client credentials are retrieved from the request object.
