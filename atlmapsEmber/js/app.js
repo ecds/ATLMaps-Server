@@ -159,6 +159,23 @@ App.ProjectController = Ember.ObjectController.extend({
         return this.get('model.layer_ids')
     
     }.property('model.layer_ids.@each'),
+    isMine: false,
+    mine: function() {
+        var _this = this;
+        var currentProject = DS.PromiseObject.create({
+            promise: this.store.find('project', this.model.id)
+        });
+        
+        currentProject.then(function() {
+            if (currentProject.get('user_id') === _this.session.content.user.id) {
+                console.log(_this.session.content.user.id)
+                _this.set('isMine', true);    
+            }
+            else {
+                _this.set('isMine', false);
+            }
+        });
+    }.property('model'),
     
     // Empty property for the input filed so we can clear it later.
     projectName: '',
@@ -258,13 +275,6 @@ App.ProjectsIndexRoute = Ember.Route.extend({
     }
     
 });
-
-App.AboutController = Ember.Controller.extend({
-    currentUser: function() {
-        //console.log(this.session.get('content'))
-        return this.session.get('content.user.email')
-    }.property('currentUser'),
-})
 
 //App.ProjectRoute = Ember.Route.extend(SimpleAuth.AuthenticatedRouteMixin,{
 App.ProjectRoute = Ember.Route.extend({
@@ -618,7 +628,7 @@ App.Project = DS.Model.extend({
     name: DS.attr('string'),
     description: DS.attr('string'),
     user: DS.attr(),
-    user_id: DS.attr('number'),
+    user_id: DS.attr(),
     saved: DS.attr('boolean'),
     published: DS.attr('boolean'),
     //user: DS.attr('number'),

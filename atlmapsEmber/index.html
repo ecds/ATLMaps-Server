@@ -91,6 +91,7 @@
                     {{#if project.saved}}
                         <div>
                             <div class="well square">
+                            {{mine}}
                                 <h3 class="heading">{{#link-to 'project' project action='reload'}}{{project.name}}{{/link-to}}</h3>
                                 <span>Created by: {{project.user.displayname}}</span>
                             </div>
@@ -105,6 +106,8 @@
             <a class="btn btn-fab btn-sm pull-left" style="display:none;" id="show-layer-options"><span class="mdi-action-visibility"></span></a>
             <div class="layer-controls">
               <div class="card">
+              {{mine}}
+              {{isMine}}
                 <a class="btn btn-material-lightblue btn-fab btn-xs btn-flat pull-right" id="config-layers" data-ember-action="504"><span class="mdi-action-settings"></span><div class="ripple-wrapper"></div></a>
                 {{# if model.saved }}
                     <h1>{{model.name}}</h1>
@@ -176,7 +179,6 @@
         <script type='text/x-handlebars' data-template-name='about'>
             <div class="continer">
                 <p>Here we will do some about text and some branding. YAY!</p>
-          {{currentUser}}
             </div>
         </script>
         
