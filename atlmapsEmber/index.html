@@ -69,21 +69,23 @@
                 <a class="btn btn-add" {{action 'createProject'}}><span class="mdi-content-add mdi-large"></span>Create New Project</a></h3>
             </div>
             <div class="container" class="project-list">
-                <h2>My Projects</h2>
-                {{#each project in myProjects}}
-                    {{#if project.saved}}
-                        <div>
-                            <div class="well square">
-                                <h3 class="heading">{{#link-to 'project' project action='reload'}}{{project.name}}{{/link-to}}</h3>
-                                {{#if session.isAuthenticated}}
-                                    <a class="btn btn-warning btn-fab action project-delete" {{action 'deleteProject' project.id}}>
-                                        <span class="mdi-action-delete"></span>
-                                    </a>
-                                {{/if}}
+                {{#if session.isAuthenticated}}
+                    <h2>My Projects</h2>
+                    {{#each project in myProjects}}
+                        {{#if project.saved}}
+                            <div>
+                                <div class="well square">
+                                    <h3 class="heading">{{#link-to 'project' project action='reload'}}{{project.name}}{{/link-to}}</h3>
+                                    {{#if session.isAuthenticated}}
+                                        <a class="btn btn-warning btn-fab action project-delete" {{action 'deleteProject' project.id}}>
+                                            <span class="mdi-action-delete"></span>
+                                        </a>
+                                    {{/if}}
+                                </div>
                             </div>
-                        </div>
-                    {{/if}}
-                {{/each}}
+                        {{/if}}
+                    {{/each}}
+                {{/if}}
             </div>
             <div class="container" class="project-list">
                 <h2>All Projects</h2>
@@ -183,23 +185,23 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='login'>
-        <header class="text-center alt-header">
-          <h2>Start collaboraing and explore new layers.</h2>
-          <p class="lead">Log in to continue.</p>
-        </header>
-          <div class="well login-form">
-            <form {{action 'authenticate' on='submit'}} class="form">
-              <label for="identification" class="sr-only">Login</label>
-              <div class="form-group">
-                {{input value=identification placeholder='Email' class="form-control floating-label" type="text"}}
-              </div>
-              <label for="password" class="sr-only">Password</label>              
-              <div class="form-group">
-                {{input value=password placeholder='Password' type='password' class="form-control floating-label"}}
-              </div>
-              <button type="submit" class="btn btn-material-orange btn-block">Login</button>
-            </form>
-          </div>
+            <header class="text-center alt-header">
+                <h2>Start collaboraing and explore new layers.</h2>
+                <p class="lead">Log in to continue.</p>
+            </header>
+            <div class="well login-form">
+                <form {{action 'authenticate' on='submit'}} class="form" autocomplete="on">
+                    <label for="identification" class="sr-only">Login</label>
+                    <div class="form-group">
+                        {{input value=identification placeholder='Email' class="form-control floating-label" type="text"}}
+                    </div>
+                    <label for="password" class="sr-only">Password</label>              
+                    <div class="form-group">
+                        {{input value=password placeholder='Password' type='password' class="form-control floating-label" autocomplete="off"}}
+                    </div>
+                    <button type="submit" class="btn btn-material-orange btn-block">Login</button>
+                </form>
+            </div>
         </script>
         
         <!-- COMPONENTS -->

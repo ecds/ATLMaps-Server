@@ -102,10 +102,9 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
     myProjects: function() {
         console.log(this.session.get('content.user.id'))
         //return this
-        var foo = this.filterBy('user_id', this.session.get('content.user.id') )
-        console.log(foo)
-        return foo
-    }.property(),
+        var isMine = this.filterBy('user_id', this.session.get('content.user.id') )
+        return isMine
+    }.property('@each.myProjects'),
     
     actions : {
         
@@ -270,7 +269,7 @@ App.AddLayerModalRoute = Ember.Route.extend({
 
 App.ProjectsIndexRoute = Ember.Route.extend({
     model: function() {
-        //console.log(this.session)
+        console.log(this.session)
         return this.store.find('project');
     }
     
