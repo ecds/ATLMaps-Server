@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   namespace :api, path: '/', constraints: { subdomain: 'api' } do
     namespace :v1 do
       resources :layers, only: [:index, :show]
+      resources :tags, only: [:index, :show]
       resources :users, only: [:show]
       resources :profiles, only: [:show]
       resources :projects#, defaults => { :format => 'json' }

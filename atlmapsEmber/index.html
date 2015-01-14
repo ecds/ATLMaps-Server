@@ -233,6 +233,7 @@
             <p>
               {{layer.description}}
             </p>
+            <p>{{partial 'tags'}}</p>
             {{partial 'citation'}}
         </script>
 
@@ -258,6 +259,10 @@
 
         <script type="text/x-handlebars" data-template-name="components/map-layers">
           {{mappedLayers}}
+        </script>
+        
+        <script type='text/x-handlebars' data-template-name='_tags'>
+          <span>Tags:</span><ul>{{#each tag in layer.tag_ids}}<li>{{tag.name}}</li>{{/each}}</ul>
         </script>
         
         <script type='text/x-handlebars' data-template-name='_citation'>

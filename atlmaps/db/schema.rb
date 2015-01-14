@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150113173741) do
+ActiveRecord::Schema.define(version: 20150114182036) do
 
   create_table "institutions", force: true do |t|
     t.string   "name"
@@ -42,6 +42,14 @@ ActiveRecord::Schema.define(version: 20150113173741) do
   end
 
   add_index "layers", ["institution_id"], name: "index_layers_on_institution_id", using: :btree
+
+  create_table "layers_tags", id: false, force: true do |t|
+    t.integer "layer_id"
+    t.integer "tag_id"
+  end
+
+  add_index "layers_tags", ["layer_id"], name: "index_layers_tags_on_layer_id", using: :btree
+  add_index "layers_tags", ["tag_id"], name: "index_layers_tags_on_tag_id", using: :btree
 
   create_table "oauth_access_grants", force: true do |t|
     t.integer  "resource_owner_id", null: false
@@ -104,6 +112,12 @@ ActiveRecord::Schema.define(version: 20150113173741) do
   end
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
+
+  create_table "tags", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "username"

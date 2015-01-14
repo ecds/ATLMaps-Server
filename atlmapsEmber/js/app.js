@@ -620,6 +620,7 @@ App.Layer = DS.Model.extend({
     maxx: DS.attr('number'),
     maxy: DS.attr('number'),
     project_ids: DS.hasMany('project', {async: true}),
+    tag_ids: DS.hasMany('tag', {async: true}),
     institution: DS.attr()
 });
 
@@ -639,10 +640,14 @@ App.Projectlayer = DS.Model.extend({
     project_id: DS.attr()
 });
 
+App.Tag = DS.Model.extend({
+    name: DS.attr('string')
+});
+
 App.User = DS.Model.extend({
     displayname: DS.attr('string'),
     avatar: DS.attr('string')
-})
+});
 
 //App.CustomSession = SimpleAuth.Session.extend({
 //  account: function() {
