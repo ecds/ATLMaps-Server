@@ -31,4 +31,64 @@ RailsAdmin.config do |config|
     # history_index
     # history_show
   end
+  
+  config.model 'Project' do
+    
+    list do
+      field :name
+      field :saved
+      field :published
+    end
+    
+    edit do
+      field :name
+      field :description
+      field :saved
+      field :published
+    end
+    
+  end
+  
+  config.model 'Layer' do
+    
+    list do
+      field :name
+      field :layer_type
+      field :institution
+    end
+    
+    edit do
+      field :name
+      field :description
+      field :tags
+      field :institution
+      field :slug
+      field :url
+      field :layer
+      field :layer_type
+      field :minzoom
+      field :maxzoom
+      field :minx
+      field :miny
+      field :maxx
+      field :maxy
+    end
+    
+  end
+  
+  config.model 'Institution' do
+    list do
+      field :name
+    end
+    
+    edit do
+      field :name
+      field :geoserver
+      field :icon
+    end
+    
+  end
+  
+  config.excluded_models << "Projectlayer"
+  
 end
