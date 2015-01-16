@@ -60,7 +60,7 @@
         
         <script type="text/x-handlebars" data-template-name="index">
           <div id='banner'>
-            <h1>ATLMaps</h1>
+            <!--<h1>ATLMaps</h1>-->
           </div>
         </script>
         
@@ -104,12 +104,10 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='project'>
-            {{thisProject}}
             <a class="btn btn-fab btn-sm pull-left" style="display:none;" id="show-layer-options"><span class="mdi-action-visibility"></span></a>
             <div class="layer-controls">
               <div class="card">
               {{mine}}
-              {{isMine}}
                 <a class="btn btn-material-lightblue btn-fab btn-xs btn-flat pull-right" id="config-layers" data-ember-action="504"><span class="mdi-action-settings"></span><div class="ripple-wrapper"></div></a>
                 {{# if model.saved }}
                     <h1>{{model.name}}</h1>
@@ -125,12 +123,14 @@
                     </div>
                     {{/if}}
                 {{/if}}
-                {{getLayers}}
-                <h3>Active Layers <a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal'}}><span class="mdi-content-add mdi-large"></span> Layers</a></h3>
+                
+        
+                <h3>Active Layers {{#if isMine}}<a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal'}}><span class="mdi-content-add mdi-large"></span> Layers</a>{{/if}}</h3>
                 <a class="btn btn-fab btn-sm btn-material-lightgrey top-layer-button" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
                 <hr/>
               </div>
               <div class="layer-list">
+              
                 <ul class="shuffle-items">
                   {{#each layer in showLayers}}
                   <li class="item">

@@ -30,6 +30,14 @@ App.Router.map(function() {
     this.route('login');
 });
 
+var vectorLayerCount = Ember.Object.create({
+    count: 0
+});
+
+var markerCount = Ember.Object.create({
+    count: 0
+});
+
 // the custom authenticator that handles the authenticated account
 //App.CustomAuthenticator = SimpleAuth.Authenticators.OAuth2.extend({
 //  authenticate: function(credentials) {
@@ -60,9 +68,10 @@ var layersStore = Ember.Object.create({
 
 // Controllers
 
-var user = Ember.Object.create({
-        value:'User'
-    });
+//var user = Ember.Object.create({
+//    value:'User'
+//});
+
 
 App.ApplicationController = Ember.Controller.extend({
     //user_value: '',
@@ -158,7 +167,9 @@ App.ProjectController = Ember.ObjectController.extend({
         return this.get('model.layer_ids')
     
     }.property('model.layer_ids.@each'),
+    
     isMine: false,
+    
     mine: function() {
         var _this = this;
         var currentProject = DS.PromiseObject.create({
@@ -179,20 +190,20 @@ App.ProjectController = Ember.ObjectController.extend({
     // Empty property for the input filed so we can clear it later.
     projectName: '',
     
-    getLayers: function(){
-        loaded_layers = this.get("model.layer_ids").content.content.length;
-        // Needs to be changed to this if with go with ember data beta 14    
-        //loaded_layers = this.get("model.layer_ids").content.length;
-        var i = this.incrementProperty('i'),
-            c = loadCount.get("count");
-        
-        if(i !== c ){
-          this.get("model").reload();
-        }
-      
-        loadCount.set("count",i);
-
-    }.property("model"),
+    //getLayers: function(){
+    //    loaded_layers = this.get("model.layer_ids").content.content.length;
+    //    // Needs to be changed to this if with go with ember data beta 14    
+    //    //loaded_layers = this.get("model.layer_ids").content.length;
+    //    var i = this.incrementProperty('i'),
+    //        c = loadCount.get("count");
+    //    
+    //    if(i !== c ){
+    //      this.get("model").reload();
+    //    }
+    //  
+    //    loadCount.set("count",i);
+    //
+    //}.property("model"),
     
     savedStatus: function() {
         //console.log(this);
@@ -201,8 +212,6 @@ App.ProjectController = Ember.ObjectController.extend({
     actions: {
         reload: function() {
           this.get('model').reload().then(function(model) {
-            // do something with the reloaded model
-            console.log('hello');
           });
         },
       
@@ -269,7 +278,6 @@ App.AddLayerModalRoute = Ember.Route.extend({
 
 App.ProjectsIndexRoute = Ember.Route.extend({
     model: function() {
-        console.log(this.session)
         return this.store.find('project');
     }
     
@@ -279,11 +287,12 @@ App.ProjectsIndexRoute = Ember.Route.extend({
 App.ProjectRoute = Ember.Route.extend({
     
     model: function(params) {
-        return this.store.find('project', params.project_id);
+        return this.store.fetch('project', params.project_id);
     },
     
     afterModel: function(model) {
-        model.reload();
+        //model.reload();
+        vectorLayerCount.set('count', 0)
     },
 
     actions: {
@@ -296,6 +305,8 @@ App.ProjectRoute = Ember.Route.extend({
                 layer_id: layerID
             });
             projectlayer.save().then(function(){
+                $("div").removeClass("vectorData");
+                vectorLayerCount.set('count', 0)
               _this.get("controller.model").reload();
             });
         },
@@ -317,6 +328,7 @@ App.ProjectRoute = Ember.Route.extend({
                 App.Projectlayer.store.find('projectlayer', projectLayerID).then(function(projectlayer){
                     console.log(projectlayer)
                     projectlayer.destroyRecord().then(function(){
+                        vectorLayerCount.set('count', 0)
                         _this.get("controller.model").reload();
                     });
                 });
@@ -468,13 +480,13 @@ App.RemoveLayerButtonComponent = Ember.Component.extend({
     }
 });
 
-App.ListAddedLayersComponent = Ember.Component.extend({
-    
-    model: function() {
-        return this.store.find('project');
-    },
-
-});
+//App.ListAddedLayersComponent = Ember.Component.extend({
+//    
+//    model: function() {
+//        return this.store.find('project');
+//    },
+//
+//});
 
 App.MyModalComponent = Ember.Component.extend({
     actions: {
@@ -496,9 +508,7 @@ App.MapLayersComponent = Ember.Component.extend({
         var mappedLayer = DS.PromiseObject.create({
             promise: App.Layer.store.find('layer', this.layerID)
         });
-        
         mappedLayer.then(function() {
-            
             var slug = mappedLayer.get('layer');
             var map = store.get('map');
             
@@ -533,8 +543,38 @@ App.MapLayersComponent = Ember.Component.extend({
                 
                     break;
                 
+                case 'wfs':
+                                    //http://geospatial.library.emory.edu:8081/geoserver/Sustainability_Map/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Sustainability_Map:Art_Walk_Points&maxFeatures=50&outputFormat=text%2Fjavascript&format_options=callback:processJSON&callback=jQuery21106192189888097346_1421268179487&_=1421268179488
+                                    //http://geospatial.library.emory.edu:8081/geoserver/Sustainability_Map/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Sustainability_Map:Art_Walk_Points&maxFeatures=50&outputFormat=text/javascript
+                    var wfsLayer = institution.geoserver + mappedLayer.get('url') + "/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=" + mappedLayer.get('url') + ":" + mappedLayer.get('layer') + "&maxFeatures=50&outputFormat=text%2Fjavascript&format_options=callback:processJSON";
+                    console.log(wfsLayer)
+                    
+                    $.ajax(wfsLayer,
+                      { dataType: 'jsonp' }
+                    ).done(function ( data ) {});
+                    
+                    // This part is the magic that makes the JSONP work
+                    // The string at the beginning of the JSONP is processJSON
+                    function processJSON(data) {
+                      points = wfsLayer(data,{
+                        //onEachFeature: onEachFeature,
+                        pointToLayer: function (feature, latlng) {
+                          return L.marker(latlng);
+                        }
+                      }).addTo(map);
+                    }
+                    
+                    break;
+                
                 case 'geojson':
+                    
+                    if (vectorLayerCount.count === 10) {
+                        vectorLayerCount.set('count', 0)
+                    }
+                    
+                    var count = vectorLayerCount.count++
                     var slug = mappedLayer.get('layer')
+                    
                     function viewData(feature, layer) {
                         var popupContent = "<h2>"+feature.properties.name+"</h2>"
                         if (feature.properties.image) {
@@ -550,24 +590,28 @@ App.MapLayersComponent = Ember.Component.extend({
                             var $info = $('<li/>').attr("class","item info").append($content);
                             $info.appendTo($(".shuffle-items"))
                             shuffle.click($info);
+
+                            //alert(App.laodCount)
+                            //$("img").addClass(pointCount);
                         });
                         
                     }
                     function setIcon(url, class_name){
-                      return iconObj = L.icon({
-                                            iconUrl: url,
-                                            //iconSize: [50, 65],
-                                            iconAnchor: [16, 37],
-                                            //popupAnchor: [0, -28],
-                                            className: class_name
-                                        });
+                        return iconObj = L.icon({
+                            iconUrl: url,
+                            iconSize: [25, 41],
+                            iconAnchor: [16, 37],
+                            //popupAnchor: [0, -28],
+                            className: class_name
+                        });
                     }
                     
                     if(mappedLayer.get('url')){
                       var points = new L.GeoJSON.AJAX(mappedLayer.get('url'), {
                           pointToLayer: function (feature, latlng) {
-                            // console.log("slug",slug);
-                            var marker = L.marker(latlng, {icon: setIcon("images/marker2.png", slug)});
+                            var layerClass = 'marker' + String(markerCount.count++) + ' ' + slug + ' vectorData' ;
+                            var markerImage = '/images/markers/' + count + '.png';
+                            var marker = L.marker(latlng, {icon: setIcon(markerImage, layerClass)});
                             return marker
                           },
                           onEachFeature: viewData,
