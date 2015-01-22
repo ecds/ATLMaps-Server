@@ -567,3 +567,8 @@ span.institution {
   padding-left: 8px;
   margin-top: 2em;
 }
+
+.tagsIcon {
+    float: left;
+    margin-right: .5em;
+}

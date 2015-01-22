@@ -146,7 +146,7 @@
                             {{ opacity-slider layer=layer.layer layerID=layer.id }}
                         </div>
                     </div>
-                    {{map-layers layerID=layer.id layerName=layer.layer}}
+                    {{map-layers layerID=layer.id layerName=layer.layer projectID=model.id}}
                   </li>
                   {{else}}
                   <li class="item">
@@ -233,8 +233,12 @@
             <p>
               {{layer.description}}
             </p>
-            <p>{{partial 'tags'}}</p>
-            {{partial 'citation'}}
+            <p>
+              {{partial 'tags'}}
+            </p>
+            <p>
+              {{partial 'citation'}}
+            </p>
         </script>
 
         <script type="text/x-handlebars" data-template-name="components/my-modal">
@@ -262,7 +266,7 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='_tags'>
-          <span>Tags:</span><ul>{{#each tag in layer.tag_ids}}<li>{{tag.name}}</li>{{/each}}</ul>
+          <span class="glyphicon glyphicon-tags tagsIcon"></span><ul class="list-inline">{{#each tag in layer.tag_ids}}<li>{{tag.name}}</li>{{else}}<li>Not Tagged</li>{{/each}}</ul>
         </script>
         
         <script type='text/x-handlebars' data-template-name='_citation'>

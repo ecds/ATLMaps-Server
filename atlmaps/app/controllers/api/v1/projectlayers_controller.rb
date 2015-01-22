@@ -27,7 +27,7 @@ class Api::V1::ProjectlayersController < ApplicationController
   
   private
     def projectlayer_params
-      params.require(:projectlayer).permit(:project_id, :layer_id, :projectlayer)
+      params.require(:projectlayer).permit(:project_id, :layer_id, :marker)
     end
     
 end

@@ -1,22 +1,12 @@
 window.ENV = window.ENV || {};
 window.ENV['simple-auth'] = {
     authorizer: 'simple-auth-authorizer:oauth2-bearer',
-    //session: 'session:custom',
 };
 
 window.ENV['simple-auth-oauth2'] = {
     serverTokenEndpoint: 'http://atlmaps-dev.com:7000/oauth/token',
     serverTokenRevocationEndpoint: 'http://atlmaps-dev.com:7000/oauth/revoke',
 };
-
-//Ember.Application.initializer({
-//    name: 'authentication',
-//    before: 'simple-auth',
-//    initialize: function(container, application) {
-//        console.log(container);
-//        container.register('session:custom', App.CustomSession);
-//    }
-//});
 
 var App = Ember.Application.create({
     LOG_TRANSITIONS: true
@@ -30,86 +20,27 @@ App.Router.map(function() {
     this.route('login');
 });
 
-var vectorLayerCount = Ember.Object.create({
-    count: 0
-});
-
-var markerCount = Ember.Object.create({
-    count: 0
-});
-
-// the custom authenticator that handles the authenticated account
-//App.CustomAuthenticator = SimpleAuth.Authenticators.OAuth2.extend({
-//  authenticate: function(credentials) {
-//    return new Ember.RSVP.Promise(function(resolve, reject) {
-//      // make the request to authenticate the user at endpoint /v3/token
-//      Ember.$.ajax({
-//        url:  'http://atlmaps-dev.com:7000/oauth/token',
-//        type: 'POST',
-//        data: { grant_type: 'password', username: credentials.identification, password: credentials.password }
-//      }).then(function(response) {
-//        Ember.run(function() {
-//          // resolve (including the account id) as the AJAX request was successful; all properties this promise resolves
-//          // with will be available through the session
-//          resolve({ access_token: response.access_token, account_id: response.account_id });
-//        });
-//      }, function(xhr, status, error) {
-//        Ember.run(function() {
-//          reject(xhr.responseText);
-//        });
-//      });
-//    });
-//  }
-//});
+// Objects
 
 var layersStore = Ember.Object.create({
   loaded: []
 });
 
-// Controllers
-
-//var user = Ember.Object.create({
-//    value:'User'
-//});
-
-
-App.ApplicationController = Ember.Controller.extend({
-    //user_value: '',
-    //currentUser: function() {
-    //    var token = this.session.get('content.access_token')
-    //    var self = this;
-    //    console.log(token)
-    //    var request = $.ajax({
-    //        url: "http://api.atlmaps-dev.com:7000/v1/tokens/me.json",
-    //        dataType: 'json',
-    //        beforeSend: function(xhr, settings) { xhr.setRequestHeader('Authorization','Bearer ' + token); }
-    //    });
-    //    request.done(function(json) {
-    //        console.log(json)
-    //        console.log(json.id)
-    //        console.log(json.email)
-    //        user.set('value',json);
-    //        self.set('user_value',json.email);
-    //    });
-    //    console.log(user.get('value'));
-    //}.property(),
-    
-    mine: function() {
-        return true
-    }
-    
+var Counts = Ember.Object.create({
+    vectorLayer: 0,
+    marker: 0
 });
+
+App.Map = Ember.Object.extend();
+var store = App.Map.create();
+
+//App.ApplicationController = Ember.Controller.extend({});
 
 App.ProjectsIndexController = Ember.ArrayController.extend({
     sortProperties: ['name'],
     
-    //user_value: Ember.computed.alias('controllers.application.user_value'),
-    //
-    //needs: ['application'],
-    //currentUser: Ember.computed.alias('controllers.application.currentUser'),
-    
     myProjects: function() {
-        console.log(this.session.get('content.user.id'))
+        //console.log(this.session.get('content.user.id'))
         //return this
         var isMine = this.filterBy('user_id', this.session.get('content.user.id') )
         return isMine
@@ -135,7 +66,7 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
                 });
     
                 newProject.then(function() {
-                    console.log(newProject)
+                    //console.log(newProject)
                     self.transitionToRoute('project', newProject.get('content.content.0.id'));
                 });
             };
@@ -144,8 +75,7 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
         },
         
         deleteProject: function(project) {
-            console.log(project);
-            //alert('ARE YOU SURE YOU WANT TO DELETE THIS PROJECT? THERE IS NO GETTING IT BACK!')
+            //console.log(project);
             this.store.find('project', project).then(function (project) {
                 project.destroyRecord();
             });
@@ -177,8 +107,9 @@ App.ProjectController = Ember.ObjectController.extend({
         });
         
         currentProject.then(function() {
+            
             if (currentProject.get('user_id') === _this.session.content.user.id) {
-                console.log(_this.session.content.user.id)
+                //console.log(_this.session.content.user.id)
                 _this.set('isMine', true);    
             }
             else {
@@ -190,23 +121,8 @@ App.ProjectController = Ember.ObjectController.extend({
     // Empty property for the input filed so we can clear it later.
     projectName: '',
     
-    //getLayers: function(){
-    //    loaded_layers = this.get("model.layer_ids").content.content.length;
-    //    // Needs to be changed to this if with go with ember data beta 14    
-    //    //loaded_layers = this.get("model.layer_ids").content.length;
-    //    var i = this.incrementProperty('i'),
-    //        c = loadCount.get("count");
-    //    
-    //    if(i !== c ){
-    //      this.get("model").reload();
-    //    }
-    //  
-    //    loadCount.set("count",i);
-    //
-    //}.property("model"),
-    
     savedStatus: function() {
-        //console.log(this);
+        ////console.log(this);
     }.property(),
     
     actions: {
@@ -242,7 +158,6 @@ App.AddLayerModalController = Ember.ArrayController.extend({
 
 App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
     authenticator: 'simple-auth-authenticator:oauth2-password-grant',
-    //authenticator: 'authenticator:custom'
 });
  
 
@@ -292,21 +207,24 @@ App.ProjectRoute = Ember.Route.extend({
     
     afterModel: function(model) {
         //model.reload();
-        vectorLayerCount.set('count', 0)
+        //console.log('afterModel ' + Counts.vectorLayer)
+        //Counts.set('vectorLayer', 0)
     },
 
     actions: {
         addLayer: function(layer, model) {
             var layerID = layer.get('id');
             var _this = this;
-            var projectID = _this.get('controller.model.id');            
+            var projectID = _this.get('controller.model.id');
+            //console.log(Counts.vectorLayer)
             var projectlayer = this.store.createRecord('projectlayer', {
                 project_id: projectID,
-                layer_id: layerID
+                layer_id: layerID,
+                marker: Counts.vectorLayer
             });
             projectlayer.save().then(function(){
                 $("div").removeClass("vectorData");
-                vectorLayerCount.set('count', 0)
+                Counts.set('vectorLayer', 0)
               _this.get("controller.model").reload();
             });
         },
@@ -323,12 +241,12 @@ App.ProjectRoute = Ember.Route.extend({
 
             projectLayer.then(function() {
                 var projectLayerID = projectLayer.get('content.content.0.id');
-                    console.log(projectLayer);
+                    //console.log(projectLayer);
                 
                 App.Projectlayer.store.find('projectlayer', projectLayerID).then(function(projectlayer){
-                    console.log(projectlayer)
+                    //console.log(projectlayer)
                     projectlayer.destroyRecord().then(function(){
-                        vectorLayerCount.set('count', 0)
+                        Counts.set('vectorLayer', 0)
                         _this.get("controller.model").reload();
                     });
                 });
@@ -360,15 +278,13 @@ App.ProjectRoute = Ember.Route.extend({
     
 });
 
-var loadCount = Ember.Object.create({
-  count: 0
-});
-
 App.LoginRoute = Ember.Route.extend(SimpleAuth.UnauthenticatedRouteMixin);
 
-
-App.Map = Ember.Object.extend();
-var store = App.Map.create();
+App.Projectlayer = Ember.Route.extend({
+    model: function() {
+        return App.Projectlayer.find()
+    }
+});
 
 // Views
 
@@ -480,14 +396,6 @@ App.RemoveLayerButtonComponent = Ember.Component.extend({
     }
 });
 
-//App.ListAddedLayersComponent = Ember.Component.extend({
-//    
-//    model: function() {
-//        return this.store.find('project');
-//    },
-//
-//});
-
 App.MyModalComponent = Ember.Component.extend({
     actions: {
         ok: function() {
@@ -505,12 +413,43 @@ App.MyModalComponent = Ember.Component.extend({
 App.MapLayersComponent = Ember.Component.extend({
     mappedLayers: function() {
         
+        //if (Counts.vectorLayer == 7) {
+        //    Counts.set('vectorLayer', 0)
+        //}
+        //console.log('was reset to ' + Counts.vectorLayer)
+        
+        var markerFor = ''//Counts.vectorLayer;
+        var _this = this;
+
+        var savedMarker = DS.PromiseObject.create({
+            promise: App.Project.store.find('projectlayer', { project_id: this.projectID, layer_id: this.layerID })
+        });
+
+        savedMarker.then(function() {
+            //console.log(savedMarker.content.content[0]._data.marker)
+            if(typeof savedMarker.content.content[0]._data.marker !== "undefined") {
+                _this.set('markerFor', savedMarker.content.content[0]._data.marker)
+                markerFor = savedMarker.content.content[0]._data.marker;
+                console.log('marker fond in DB ' + markerFor + ' Count is still ' + Counts.vectorLayer)
+            }
+        });
+        
+        
+        //console.log(Counts.vectorLayer)
+
         var mappedLayer = DS.PromiseObject.create({
             promise: App.Layer.store.find('layer', this.layerID)
         });
-        mappedLayer.then(function() {
+        mappedLayer.then(function() {console.log('Adding ' + mappedLayer.get('name'))});
+        var promises = [savedMarker, mappedLayer];
+        
+        Ember.RSVP.allSettled(promises).then(function(array){
+            //console.log('count: ' + Counts.vectorLayer)
+            //console.log('marker: ' + markerFor)
             var slug = mappedLayer.get('layer');
             var map = store.get('map');
+            
+            //console.log('markerFor is set at ' + markerFor)
             
             institution = mappedLayer.get('institution');
             
@@ -547,7 +486,7 @@ App.MapLayersComponent = Ember.Component.extend({
                                     //http://geospatial.library.emory.edu:8081/geoserver/Sustainability_Map/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Sustainability_Map:Art_Walk_Points&maxFeatures=50&outputFormat=text%2Fjavascript&format_options=callback:processJSON&callback=jQuery21106192189888097346_1421268179487&_=1421268179488
                                     //http://geospatial.library.emory.edu:8081/geoserver/Sustainability_Map/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Sustainability_Map:Art_Walk_Points&maxFeatures=50&outputFormat=text/javascript
                     var wfsLayer = institution.geoserver + mappedLayer.get('url') + "/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=" + mappedLayer.get('url') + ":" + mappedLayer.get('layer') + "&maxFeatures=50&outputFormat=text%2Fjavascript&format_options=callback:processJSON";
-                    console.log(wfsLayer)
+                    //console.log(wfsLayer)
                     
                     $.ajax(wfsLayer,
                       { dataType: 'jsonp' }
@@ -568,11 +507,17 @@ App.MapLayersComponent = Ember.Component.extend({
                 
                 case 'geojson':
                     
-                    if (vectorLayerCount.count === 10) {
-                        vectorLayerCount.set('count', 0)
-                    }
+                    // So this count is no longer doing anything but the increment needs to be moved
+                    // and this whole process needs to be cleaned up.
                     
-                    var count = vectorLayerCount.count++
+                    if (Counts.vectorLayer === 10) {
+                        console.log('i am resetting')
+                        Counts.set('vectorLayer', -1)
+                        console.log(Counts.vectorLayer)
+                    }
+                    Counts.vectorLayer++
+                    //console.log('count = ' + Counts.vectorLayer)
+                    
                     var slug = mappedLayer.get('layer')
                     
                     function viewData(feature, layer) {
@@ -584,7 +529,7 @@ App.MapLayersComponent = Ember.Component.extend({
                         popupContent += "<p>"+feature.properties.description+"</p>";
                         //layer.bindPopup(popupContent);
                         layer.on('click', function(marker) {
-                            console.log(marker);
+                            //console.log(marker);
                             $(".shuffle-items li.item.info").remove();
                             var $content = $("<div/>").attr("class","content").html(popupContent)
                             var $info = $('<li/>').attr("class","item info").append($content);
@@ -592,14 +537,14 @@ App.MapLayersComponent = Ember.Component.extend({
                             shuffle.click($info);
 
                             //alert(App.laodCount)
-                            //$("img").addClass(pointCount);
+                            //$("img").addClass(pointClicked);
                         });
                         
                     }
                     function setIcon(url, class_name){
                         return iconObj = L.icon({
                             iconUrl: url,
-                            iconSize: [25, 41],
+                            iconSize: [25, 35],
                             iconAnchor: [16, 37],
                             //popupAnchor: [0, -28],
                             className: class_name
@@ -609,19 +554,28 @@ App.MapLayersComponent = Ember.Component.extend({
                     if(mappedLayer.get('url')){
                       var points = new L.GeoJSON.AJAX(mappedLayer.get('url'), {
                           pointToLayer: function (feature, latlng) {
-                            var layerClass = 'marker' + String(markerCount.count++) + ' ' + slug + ' vectorData' ;
-                            var markerImage = '/images/markers/' + count + '.png';
+                            var layerClass = 'marker' + String(Counts.marker++) + ' ' + slug + ' vectorData' ;
+                            //var markerImage = '/images/markers/' + count + '.png';
+                            var markerImage = '/images/markers/' + markerFor + '.png';
                             var marker = L.marker(latlng, {icon: setIcon(markerImage, layerClass)});
                             return marker
                           },
                           onEachFeature: viewData,
                       }).addTo(map);
+                      // Not sure we need to do this.
+                      if (Counts.vectorLayer === markerFor) {
+                        console.log('time to subtract.')
+                        Counts.vectorLayer--
+                      }
+                      console.log('vectorLayer is ' + Counts.vectorLayer + ' markerFor is ' + markerFor)
+                      
                       break;
                     }
             }
             
             shuffle.init();
         });
+
         //return mappedLayer
     }.property(),
     
@@ -681,7 +635,8 @@ App.Project = DS.Model.extend({
 
 App.Projectlayer = DS.Model.extend({
     layer_id: DS.attr(),
-    project_id: DS.attr()
+    project_id: DS.attr(),
+    marker: DS.attr()
 });
 
 App.Tag = DS.Model.extend({
@@ -692,23 +647,6 @@ App.User = DS.Model.extend({
     displayname: DS.attr('string'),
     avatar: DS.attr('string')
 });
-
-//App.CustomSession = SimpleAuth.Session.extend({
-//  account: function() {
-//    consloe.log('oh hi there')
-//    var accountId = this.get('account_id');
-//    if (!Ember.isEmpty(accountId)) {
-//        console.log('oh good')
-//        console.log(this.container.lookup('store:main').find('account', accountId))
-//        return this.container.lookup('store:main').find('account', accountId);
-//    }
-//    else {
-//        return null
-//    }
-//  }.property('account_id')
-//});
-
-//App.register('session:custom', App.CustomSession);
 
 $(document).ready(function(){
   $.material.ripples(".btn, .navbar a");
