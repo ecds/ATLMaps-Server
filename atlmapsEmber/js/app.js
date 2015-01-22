@@ -432,6 +432,9 @@ App.MapLayersComponent = Ember.Component.extend({
                 markerFor = savedMarker.content.content[0]._data.marker;
                 console.log('marker fond in DB ' + markerFor + ' Count is still ' + Counts.vectorLayer)
             }
+            else {
+                markerFor = '/images/markers/default.png'
+            }
         });
         
         
