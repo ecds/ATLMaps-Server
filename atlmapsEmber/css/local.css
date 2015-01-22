@@ -572,3 +572,8 @@ span.institution {
     float: left;
     margin-right: .5em;
 }
+
+img.layerMarker {
+    max-height: 32px;
+    margin-left: .5em;
+}

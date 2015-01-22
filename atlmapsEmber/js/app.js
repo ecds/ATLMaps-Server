@@ -28,7 +28,8 @@ var layersStore = Ember.Object.create({
 
 var Counts = Ember.Object.create({
     vectorLayer: 0,
-    marker: 0
+    marker: 0,
+    lastAdded: -1
 });
 
 App.Map = Ember.Object.extend();
@@ -40,8 +41,6 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
     sortProperties: ['name'],
     
     myProjects: function() {
-        //console.log(this.session.get('content.user.id'))
-        //return this
         var isMine = this.filterBy('user_id', this.session.get('content.user.id') )
         return isMine
     }.property('@each.myProjects'),
@@ -66,7 +65,6 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
                 });
     
                 newProject.then(function() {
-                    //console.log(newProject)
                     self.transitionToRoute('project', newProject.get('content.content.0.id'));
                 });
             };
@@ -75,7 +73,6 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
         },
         
         deleteProject: function(project) {
-            //console.log(project);
             this.store.find('project', project).then(function (project) {
                 project.destroyRecord();
             });
@@ -109,7 +106,6 @@ App.ProjectController = Ember.ObjectController.extend({
         currentProject.then(function() {
             
             if (currentProject.get('user_id') === _this.session.content.user.id) {
-                //console.log(_this.session.content.user.id)
                 _this.set('isMine', true);    
             }
             else {
@@ -121,9 +117,8 @@ App.ProjectController = Ember.ObjectController.extend({
     // Empty property for the input filed so we can clear it later.
     projectName: '',
     
-    savedStatus: function() {
-        ////console.log(this);
-    }.property(),
+    // Does this do anything?
+    savedStatus: function() {}.property(),
     
     actions: {
         reload: function() {
@@ -205,10 +200,10 @@ App.ProjectRoute = Ember.Route.extend({
         return this.store.fetch('project', params.project_id);
     },
     
+    // This was causing an extra trip to the database and `fetch` seemes to be
+    // doing what we need. I just left this here as an example for the future.
     afterModel: function(model) {
         //model.reload();
-        //console.log('afterModel ' + Counts.vectorLayer)
-        //Counts.set('vectorLayer', 0)
     },
 
     actions: {
@@ -216,16 +211,28 @@ App.ProjectRoute = Ember.Route.extend({
             var layerID = layer.get('id');
             var _this = this;
             var projectID = _this.get('controller.model.id');
-            //console.log(Counts.vectorLayer)
+            
             var projectlayer = this.store.createRecord('projectlayer', {
                 project_id: projectID,
                 layer_id: layerID,
-                marker: Counts.vectorLayer
+                marker: Counts.vectorLayer,
+                layer_type: layer.get('layer_type')
             });
+            // Peg `Counts.lastAdded` to what we just saved in the model.
+            Counts.set('lastAdded', Counts.vectorLayer);
+            // Now increment `Counts.vectorLayer
+            Counts.vectorLayer++
+
             projectlayer.save().then(function(){
+                // This is sort of too bad, but we need to clear the vector layers off the map
+                // otherwise they will added again
                 $("div").removeClass("vectorData");
+                
+                // We need to set `Counts.vectorLayer` back to zero becuase it will increment
+                // with each vector layer readded
                 Counts.set('vectorLayer', 0)
-              _this.get("controller.model").reload();
+                
+                _this.get("controller.model").reload();
             });
         },
         
@@ -241,10 +248,8 @@ App.ProjectRoute = Ember.Route.extend({
 
             projectLayer.then(function() {
                 var projectLayerID = projectLayer.get('content.content.0.id');
-                    //console.log(projectLayer);
                 
                 App.Projectlayer.store.find('projectlayer', projectLayerID).then(function(projectlayer){
-                    //console.log(projectlayer)
                     projectlayer.destroyRecord().then(function(){
                         Counts.set('vectorLayer', 0)
                         _this.get("controller.model").reload();
@@ -253,6 +258,9 @@ App.ProjectRoute = Ember.Route.extend({
 
             });
             
+            Counts.vectorLayer++;
+            
+            // Remove the layer from the map
             $("."+layerClass).fadeOut( 500, function() {
                 $(this).remove();
             });
@@ -333,19 +341,18 @@ App.BaseMapComponent = Ember.Component.extend({
 App.OpacitySliderComponent = Ember.Component.extend({
     opacityslider: function() {
         
-                var layer = DS.PromiseObject.create({
-                    promise: App.Layer.store.find('layer', this.layerID)
-                });
-                
-                layer.then(function() {
-                    
-                    var layerName = layer.get('layer');
-                    var slider = $("input.slider, input ."+layerName).slider({
-                        value: 10,
-                        reversed: true,
-                    });
+        var layer = DS.PromiseObject.create({
+            promise: App.Layer.store.find('layer', this.layerID)
+        });
         
-                });
+        layer.then(function() {
+            
+            var layerName = layer.get('layer');
+            var slider = $("input.slider, input ."+layerName).slider({
+                value: 10,
+                reversed: true,
+            });
+        });
     }.property(),
     
     actions: {
@@ -356,6 +363,30 @@ App.OpacitySliderComponent = Ember.Component.extend({
             $("div."+layerName+",img."+layerName).css({'opacity': opacity});
         }
     }
+});
+
+App.LayerMarkerComponent = Ember.Component.extend({
+    tagName:'',
+    markerPath: function() {
+        var _this = this;
+        var markerPath = '';
+        
+        var layerMarker = DS.PromiseObject.create({
+            promise: App.Project.store.find('projectlayer', { project_id: this.projectID, layer_id: this.layerID })
+        });
+        
+        layerMarker.then(function() {
+            if (layerMarker.content.content[0]._data.layer_type == 'geojson') {
+                _this.set('markerPath', '/images/markers/' + layerMarker.content.content[0]._data.marker + '.png')
+            }
+            else {
+                _this.set('markerPath', '/images/none.png')
+            }
+        });
+
+        return '/images/loading.GIF'
+    
+    }.property('markerPath.@each')
 });
 
 App.AddRemoveLayerButtonComponent = Ember.Component.extend({
@@ -413,11 +444,6 @@ App.MyModalComponent = Ember.Component.extend({
 App.MapLayersComponent = Ember.Component.extend({
     mappedLayers: function() {
         
-        //if (Counts.vectorLayer == 7) {
-        //    Counts.set('vectorLayer', 0)
-        //}
-        //console.log('was reset to ' + Counts.vectorLayer)
-        
         var markerFor = ''//Counts.vectorLayer;
         var _this = this;
 
@@ -426,33 +452,23 @@ App.MapLayersComponent = Ember.Component.extend({
         });
 
         savedMarker.then(function() {
-            //console.log(savedMarker.content.content[0]._data.marker)
             if(typeof savedMarker.content.content[0]._data.marker !== "undefined") {
                 _this.set('markerFor', savedMarker.content.content[0]._data.marker)
                 markerFor = savedMarker.content.content[0]._data.marker;
-                console.log('marker fond in DB ' + markerFor + ' Count is still ' + Counts.vectorLayer)
-            }
-            else {
-                markerFor = '/images/markers/default.png'
             }
         });
-        
-        
-        //console.log(Counts.vectorLayer)
 
         var mappedLayer = DS.PromiseObject.create({
             promise: App.Layer.store.find('layer', this.layerID)
         });
-        mappedLayer.then(function() {console.log('Adding ' + mappedLayer.get('name'))});
+        
+        mappedLayer.then(function() {});
+        
         var promises = [savedMarker, mappedLayer];
         
         Ember.RSVP.allSettled(promises).then(function(array){
-            //console.log('count: ' + Counts.vectorLayer)
-            //console.log('marker: ' + markerFor)
             var slug = mappedLayer.get('layer');
             var map = store.get('map');
-            
-            //console.log('markerFor is set at ' + markerFor)
             
             institution = mappedLayer.get('institution');
             
@@ -489,7 +505,6 @@ App.MapLayersComponent = Ember.Component.extend({
                                     //http://geospatial.library.emory.edu:8081/geoserver/Sustainability_Map/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Sustainability_Map:Art_Walk_Points&maxFeatures=50&outputFormat=text%2Fjavascript&format_options=callback:processJSON&callback=jQuery21106192189888097346_1421268179487&_=1421268179488
                                     //http://geospatial.library.emory.edu:8081/geoserver/Sustainability_Map/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=Sustainability_Map:Art_Walk_Points&maxFeatures=50&outputFormat=text/javascript
                     var wfsLayer = institution.geoserver + mappedLayer.get('url') + "/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=" + mappedLayer.get('url') + ":" + mappedLayer.get('layer') + "&maxFeatures=50&outputFormat=text%2Fjavascript&format_options=callback:processJSON";
-                    //console.log(wfsLayer)
                     
                     $.ajax(wfsLayer,
                       { dataType: 'jsonp' }
@@ -510,16 +525,13 @@ App.MapLayersComponent = Ember.Component.extend({
                 
                 case 'geojson':
                     
-                    // So this count is no longer doing anything but the increment needs to be moved
-                    // and this whole process needs to be cleaned up.
-                    
-                    if (Counts.vectorLayer === 10) {
-                        console.log('i am resetting')
-                        Counts.set('vectorLayer', -1)
-                        console.log(Counts.vectorLayer)
+                    // We only have 10 markers (0-9) so we need to reset if we get to 10.
+                    if (Counts.vectorLayer == 10) {
+                        Counts.set('vectorLayer', 0)
                     }
-                    Counts.vectorLayer++
-                    //console.log('count = ' + Counts.vectorLayer)
+                    else {
+                        Counts.vectorLayer++
+                    }
                     
                     var slug = mappedLayer.get('layer')
                     
@@ -532,7 +544,6 @@ App.MapLayersComponent = Ember.Component.extend({
                         popupContent += "<p>"+feature.properties.description+"</p>";
                         //layer.bindPopup(popupContent);
                         layer.on('click', function(marker) {
-                            //console.log(marker);
                             $(".shuffle-items li.item.info").remove();
                             var $content = $("<div/>").attr("class","content").html(popupContent)
                             var $info = $('<li/>').attr("class","item info").append($content);
@@ -558,22 +569,29 @@ App.MapLayersComponent = Ember.Component.extend({
                       var points = new L.GeoJSON.AJAX(mappedLayer.get('url'), {
                           pointToLayer: function (feature, latlng) {
                             var layerClass = 'marker' + String(Counts.marker++) + ' ' + slug + ' vectorData' ;
-                            //var markerImage = '/images/markers/' + count + '.png';
                             var markerImage = '/images/markers/' + markerFor + '.png';
                             var marker = L.marker(latlng, {icon: setIcon(markerImage, layerClass)});
                             return marker
                           },
                           onEachFeature: viewData,
                       }).addTo(map);
-                      // Not sure we need to do this.
-                      if (Counts.vectorLayer === markerFor) {
-                        console.log('time to subtract.')
-                        Counts.vectorLayer--
-                      }
-                      console.log('vectorLayer is ' + Counts.vectorLayer + ' markerFor is ' + markerFor)
                       
-                      break;
+                      
                     }
+                    
+                    // Trust me, I feel guilty about the following code. `Counts.vectorLayer` always need to be
+                    // one greater than `Counts.lastAdded`. In general it is fine without this. Where things get
+                    // off track is when a user starts removing layers. We can always trust `Counts.lastAdded` as
+                    // it is only set when the model is saved.
+                    if (Counts.vectorLayer === Counts.lastAdded) {
+                        Counts.vectorLayer++
+                    }
+                    else if (Counts.vectorLayer > (Counts.lastAdded + 1)) {
+                        Counts.set('vectorLayer', Counts.lastAdded + 1)
+                    }
+                      
+                    break;
+                    
             }
             
             shuffle.init();
@@ -639,7 +657,8 @@ App.Project = DS.Model.extend({
 App.Projectlayer = DS.Model.extend({
     layer_id: DS.attr(),
     project_id: DS.attr(),
-    marker: DS.attr()
+    marker: DS.attr(),
+    layer_type: DS.attr()
 });
 
 App.Tag = DS.Model.extend({

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150116165924) do
+ActiveRecord::Schema.define(version: 20150122193842) do
 
   create_table "institutions", force: true do |t|
     t.string   "name"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 20150116165924) do
     t.integer  "layer_id"
     t.integer  "project_id"
     t.string   "marker"
+    t.string   "layer_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

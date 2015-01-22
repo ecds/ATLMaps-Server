@@ -89,6 +89,20 @@ RailsAdmin.config do |config|
     
   end
   
+  config.model 'User' do
+    edit do
+      #field :username
+      #field :displayname
+      #field :email
+      #field :institution
+      #field :avatar
+      #field :twitter
+      #field :admin
+      #field :password
+      #field :password_confirmation
+    end
+  end
+  
   config.excluded_models << "Projectlayer"
   
 end

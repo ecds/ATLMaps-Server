@@ -134,10 +134,20 @@
                 <ul class="shuffle-items">
                   {{#each layer in showLayers}}
                   <li class="item">
-                    <p class="alt text-muted">{{layer.name}}</p>
+                    <p class="alt text-muted">
+                      {{layer.name}}
+                      {{ layer-marker projectID=model.id layerID=layer.id layerType=layer.name }}
+                    </p>
                     <div class="row">
                         <div class="col-xs-10">
+                          <div class="row">
+                          <div class="col-xs-7">
                             <h4 class="media-heading">{{layer.name}}</h4>
+                          </div>
+                          <div class="cols-xs-2">
+                            {{ layer-marker projectID=model.id layerID=layer.id }}
+                          </div>
+                          </div>
                             <p>{{layer.description}}</p>
                             {{partial 'citation'}}
                         </div>
@@ -180,7 +190,9 @@
         
         <script type='text/x-handlebars' data-template-name='about'>
             <div class="continer">
-                <p>Here we will do some about text and some branding. YAY!</p>
+              <p>ATLMaps is a collaboration between Georgia State University and Emory University. The project is in active and heavy development.</p>
+              <p>The ATLmaps project combines archival maps, geospatial data visualization, and user contributed multimedia location “pinpoints” to promote investigation into any number of issues about Atlanta.  This innovative online platform will allow users to layer an increasing number of interdisciplinary data to address the complex issues that cities pose.  The project looks to offer a framework that incorporates storytelling reliant on the geospatial data and for normalizing input across a range of data sets about Atlanta so that material can be cross-compared in novel ways, allowing users to make connections between data sources and ask questions that would not be apparent when only looking at one particular project.  The ATLmaps project will also encourage knowledgeable members of the university and local communities to curate data on the site to demonstrate the possibilities for synthesizing material across projects and data types.</p>
+
             </div>
         </script>
         
@@ -214,6 +226,10 @@
           <input {{bind-attr class=":slider layer" name=layer}} {{action "opacityChange" on="change" param=layer}} value="10" data-slider-orientation="vertical" type="text"/>
           {{opacityslider}}
         </script>
+        
+        <script type="text/x-handlebars" data-template-name="components/layer-marker">
+          <img {{bind-attr src='markerPath'}} class="layerMarker" alt='Marker' />
+        </script> 
         
         <script type="text/x-handlebars" data-template-name="components/add-remove-layer-button">
           {{is_active}}
