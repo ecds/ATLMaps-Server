@@ -212,16 +212,27 @@ App.ProjectRoute = Ember.Route.extend({
             var _this = this;
             var projectID = _this.get('controller.model.id');
             
+            // We only have 10 markers right now (0-9), so we need to reset if we
+            // `Counts.vectorLayer` grows above 9.
+            if (Counts.vectorLayer > 9) {
+                Counts.set('vectorLayer', 0);
+                Counts.set('lastAdded', -1);
+            }
+            
             var projectlayer = this.store.createRecord('projectlayer', {
                 project_id: projectID,
                 layer_id: layerID,
                 marker: Counts.vectorLayer,
                 layer_type: layer.get('layer_type')
             });
-            // Peg `Counts.lastAdded` to what we just saved in the model.
-            Counts.set('lastAdded', Counts.vectorLayer);
-            // Now increment `Counts.vectorLayer
-            Counts.vectorLayer++
+            
+            // Peg `Counts.lastAdded` to what we just saved in the model but only if it is GeoJSON.
+            if (layer.get('layer_type') === 'geojson'){
+                console.log('this is geojson so we are going to mess with the counts')
+                Counts.set('lastAdded', Counts.vectorLayer);
+                // Now increment `Counts.vectorLayer
+                Counts.vectorLayer++
+            }
 
             projectlayer.save().then(function(){
                 // This is sort of too bad, but we need to clear the vector layers off the map
@@ -230,9 +241,10 @@ App.ProjectRoute = Ember.Route.extend({
                 
                 // We need to set `Counts.vectorLayer` back to zero becuase it will increment
                 // with each vector layer readded
-                Counts.set('vectorLayer', 0)
+                //Counts.set('vectorLayer', 0)
                 
                 _this.get("controller.model").reload();
+                console.log('after save vl = ' + Counts.vectorLayer + ' la = ' + Counts.lastAdded)
             });
         },
         
@@ -251,14 +263,17 @@ App.ProjectRoute = Ember.Route.extend({
                 
                 App.Projectlayer.store.find('projectlayer', projectLayerID).then(function(projectlayer){
                     projectlayer.destroyRecord().then(function(){
-                        Counts.set('vectorLayer', 0)
+                        //Counts.set('vectorLayer', 0)
                         _this.get("controller.model").reload();
                     });
                 });
 
             });
             
+            console.log('vl = ' + Counts.vectorLayer + ' la = ' + Counts.lastAdded)
             Counts.vectorLayer++;
+            Counts.lastAdded++;
+            console.log('vl = ' + Counts.vectorLayer + ' la = ' + Counts.lastAdded)
             
             // Remove the layer from the map
             $("."+layerClass).fadeOut( 500, function() {
@@ -525,14 +540,6 @@ App.MapLayersComponent = Ember.Component.extend({
                 
                 case 'geojson':
                     
-                    // We only have 10 markers (0-9) so we need to reset if we get to 10.
-                    if (Counts.vectorLayer == 10) {
-                        Counts.set('vectorLayer', 0)
-                    }
-                    else {
-                        Counts.vectorLayer++
-                    }
-                    
                     var slug = mappedLayer.get('layer')
                     
                     function viewData(feature, layer) {
@@ -579,16 +586,17 @@ App.MapLayersComponent = Ember.Component.extend({
                       
                     }
                     
-                    // Trust me, I feel guilty about the following code. `Counts.vectorLayer` always need to be
-                    // one greater than `Counts.lastAdded`. In general it is fine without this. Where things get
-                    // off track is when a user starts removing layers. We can always trust `Counts.lastAdded` as
-                    // it is only set when the model is saved.
-                    if (Counts.vectorLayer === Counts.lastAdded) {
-                        Counts.vectorLayer++
-                    }
-                    else if (Counts.vectorLayer > (Counts.lastAdded + 1)) {
-                        Counts.set('vectorLayer', Counts.lastAdded + 1)
-                    }
+                    //// Trust me, I feel guilty about the following code. `Counts.vectorLayer` always need to be
+                    //// one greater than `Counts.lastAdded`. In general it is fine without this. Where things get
+                    //// off track is when a user starts removing layers. We can always trust `Counts.lastAdded` as
+                    //// it is only set when the model is saved.
+                    //if (Counts.vectorLayer === Counts.lastAdded) {
+                    //    Counts.vectorLayer++
+                    //}
+                    //else if (Counts.vectorLayer > (Counts.lastAdded + 1)) {
+                    //    console.log('we are doing that crappy thing')
+                    //    Counts.set('vectorLayer', Counts.lastAdded + 1)
+                    //}
                       
                     break;
                     
