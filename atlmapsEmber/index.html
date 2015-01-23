@@ -118,7 +118,7 @@
                             {{input valueBinding='projectName' placeholder='Enter Title for Project' class="form-control floating-label" type="text"}}
                         </div>
                         <div class='col-xs-3'>
-                            <a class="btn btn-info btn-xs pull-right" id="title-button" {{action 'updateProject'}}><span">OK</span mdi-large></a>
+                            <a class="btn btn-info btn-xs pull-right" id="title-button" {{action 'updateProject'}}><span>OK</span mdi-large></a>
                         </div>
                     </div>
                     {{/if}}
@@ -126,8 +126,8 @@
                 
         
                 <h3>Active Layers {{#if isMine}}<a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal'}}><span class="mdi-content-add mdi-large"></span> Layers</a>{{/if}}</h3>
-                <a class="btn btn-fab btn-sm btn-material-lightgrey top-layer-button" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
                 <hr/>
+                <a class="btn btn-fab btn-sm btn-material-lightgrey top-layer-button" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
               </div>
               <div class="layer-list">
               
@@ -138,23 +138,21 @@
                       <span class="layer_marker">{{ layer-marker projectID=model.id layerID=layer.id layerType=layer.name }}</span>
                       {{layer.name}}
                     </p>
-                    <div class="row">
-                        <div class="col-xs-10">
-                          <div class="row">
-                          <div class="cols-xs-1 pull-left">
-                            {{ layer-marker projectID=model.id layerID=layer.id }}
-                          </div>
-                          <div class="col-xs-7">
-                            <h4 class="media-heading">{{layer.name}}</h4>
-                          </div>
-                          </div>
-                            <p>{{layer.description}}</p>
-                            {{partial 'citation'}}
+                    <div class="list-group row">
+                      <div class="list-group-item">
+                        <div class="row-action-primary">
+                          <span class="icon">{{ layer-marker projectID=model.id layerID=layer.id }}</span>
+                        </div>
+                        <div class="row-content">
+                          <h4 class="list-group-item-heading">{{layer.name}}</h4>
+                          <p class="list-group-item-text">{{layer.description}}</p>
+                          <div class="text-muted">{{partial 'citation'}}</div>
                         </div>
                         <div class="col-xs-1 pull-right">
-                            <a class="btn rotate btn-added btn-fab btn-sm"{{action 'removeLayer' layer model.id}}><span class="mdi-content-clear"></span></a>
-                            {{ opacity-slider layer=layer.layer layerID=layer.id }}
+                          <a class="btn rotate btn-added btn-fab btn-sm"{{action 'removeLayer' layer model.id}}><span class="mdi-content-clear"></span></a>
+                          {{ opacity-slider layer=layer.layer layerID=layer.id }}
                         </div>
+                      </div>
                     </div>
                     {{map-layers layerID=layer.id layerName=layer.layer projectID=model.id}}
                   </li>
@@ -189,23 +187,45 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="edit-project-modal">
+        
           {{#layer-modal title='Edit Project' close='removeModal'}}
-          <label>Title</label>{{input valueBinding=this.name}}
-          <label>Description</label>{{textarea valueBinding=this.description}}
-          <ul>
+          
+          <div class="col-xs-12">
+            <div class="form-group">
+              <label for="edit_name">Title for the Project</label>
+              {{input valueBinding=this.name id="edit_name" class="form-control h1" placeholder="Title for the project..."}}
+            </div>
+            <div class="form-group">
+              <label for="edit_description" class="form-control">Description</label>
+              {{textarea valueBinding=this.description id="edit_description" class="form-control" rows="4" placeholder="Enter your project description here..."}}
+            </div>
+            <h3>Included Layers</h3>
+            <hr/>
+            <div class="list-group row">
             {{#each layer in this.layer_ids}}
-              <li>
-                {{layer.name}}
-              </li>
-            {{/each}}
-          </ul>
+              <div class="list-group-item">
+                <div class="row-action-primary">
+                  <span {{bind-attr class="layer.layer_type"}}>
+                    <i class="mdi-maps-place" ></i>
+                  </span>
+                </div>
+                <div class="row-content">
+                  <h4 class="list-group-item-heading">{{layer.name}}</h4>
+                  <p class="list-group-item-text">{{layer.description}}</p>
+                </div>
+              </div>
+              <hr/>
+              {{/each}}
+            </div>
+          </div>
           {{/layer-modal}}
+          
         </script>
         
         <script type='text/x-handlebars' data-template-name='about'>
             <div class="continer">
               <p>ATLMaps is a collaboration between Georgia State University and Emory University. The project is in active and heavy development.</p>
-              <p>The ATLmaps project combines archival maps, geospatial data visualization, and user contributed multimedia location ÒpinpointsÓ to promote investigation into any number of issues about Atlanta.  This innovative online platform will allow users to layer an increasing number of interdisciplinary data to address the complex issues that cities pose.  The project looks to offer a framework that incorporates storytelling reliant on the geospatial data and for normalizing input across a range of data sets about Atlanta so that material can be cross-compared in novel ways, allowing users to make connections between data sources and ask questions that would not be apparent when only looking at one particular project.  The ATLmaps project will also encourage knowledgeable members of the university and local communities to curate data on the site to demonstrate the possibilities for synthesizing material across projects and data types.</p>
+              <p>The ATLmaps project combines archival maps, geospatial data visualization, and user contributed multimedia location ï¿½pinpointsï¿½ to promote investigation into any number of issues about Atlanta.  This innovative online platform will allow users to layer an increasing number of interdisciplinary data to address the complex issues that cities pose.  The project looks to offer a framework that incorporates storytelling reliant on the geospatial data and for normalizing input across a range of data sets about Atlanta so that material can be cross-compared in novel ways, allowing users to make connections between data sources and ask questions that would not be apparent when only looking at one particular project.  The ATLmaps project will also encourage knowledgeable members of the university and local communities to curate data on the site to demonstrate the possibilities for synthesizing material across projects and data types.</p>
 
             </div>
         </script>
