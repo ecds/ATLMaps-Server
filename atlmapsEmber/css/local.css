@@ -574,6 +574,16 @@ span.institution {
 }
 
 img.layerMarker {
-    max-height: 32px;
-    margin-left: .5em;
+    max-height: 20px;
+}
+
+.layer_marker {
+    margin-right: .5em;
+    min-width: 20px;
+    position: relative;
+    display: inline-block;
+}
+
+.item.collapsed .layer_marker{
+    opacity: 0.5;
 }

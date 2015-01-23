@@ -151,6 +151,8 @@ App.AddLayerModalController = Ember.ArrayController.extend({
    sortProperties: ['layer_type', 'name'],
 });
 
+App.EditProjectModalController = Ember.ObjectController.extend({});
+
 App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
     authenticator: 'simple-auth-authenticator:oauth2-password-grant',
 });
@@ -180,10 +182,12 @@ App.ApplicationRoute = Ember.Route.extend(SimpleAuth.ApplicationRouteMixin);
 App.IndexRoute = Ember.Route.extend({});
 
 // Is this needed?
-App.AddLayerModalRoute = Ember.Route.extend({
+App.AddLayerModalRoute = Ember.Route.extend({});
+
+App.EditProjectModalRoute = Ember.Route.extend({
     model: function() {
         // return this.store.find('layer');
-    },
+    }    
 });
 
 App.ProjectsIndexRoute = Ember.Route.extend({
@@ -285,6 +289,14 @@ App.ProjectRoute = Ember.Route.extend({
         // Modal
         showModal: function(name) {
             var content = this.store.find('layer');
+            this.controllerFor(name).set('content', content);
+            this.render(name, {
+                into: 'application',
+                outlet: 'modal'
+            });
+        },
+        showEditModal: function(name) {
+            var content = this.store.find('project', this.currentModel.id)
             this.controllerFor(name).set('content', content);
             this.render(name, {
                 into: 'application',
@@ -395,7 +407,7 @@ App.LayerMarkerComponent = Ember.Component.extend({
                 _this.set('markerPath', '/images/markers/' + layerMarker.content.content[0]._data.marker + '.png')
             }
             else {
-                _this.set('markerPath', '/images/none.png')
+                _this.set('markerPath', '/images/markers/layers.png')
             }
         });
 
@@ -442,7 +454,7 @@ App.RemoveLayerButtonComponent = Ember.Component.extend({
     }
 });
 
-App.MyModalComponent = Ember.Component.extend({
+App.LayerModalComponent = Ember.Component.extend({
     actions: {
         ok: function() {
             this.$('.modal').modal('hide');
@@ -548,6 +560,9 @@ App.MapLayersComponent = Ember.Component.extend({
                             popupContent += "<img class='geojson' src='"+feature.properties.image.url+"' title='"+feature.properties.image.name+"' />"+
                                             "<span>Photo Credit: "+feature.properties.image.credit+"</span>";
                         };
+                        if (feature.properties.gx_media_links) {
+                            popupContent += '<iframe width="375" height="250" src="//' + feature.properties.gx_media_links + '?modestbranding=1&rel=0&showinfo=0&theme=light" frameborder="0" allowfullscreen></iframe>'
+                        }
                         popupContent += "<p>"+feature.properties.description+"</p>";
                         //layer.bindPopup(popupContent);
                         layer.on('click', function(marker) {

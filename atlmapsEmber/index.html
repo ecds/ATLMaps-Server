@@ -108,7 +108,7 @@
             <div class="layer-controls">
               <div class="card">
               {{mine}}
-                <a class="btn btn-material-lightblue btn-fab btn-xs btn-flat pull-right" id="config-layers" data-ember-action="504"><span class="mdi-action-settings"></span><div class="ripple-wrapper"></div></a>
+                <a class="btn btn-material-lightblue btn-fab btn-xs btn-flat pull-right" id="config-layers" {{action 'showEditModal' 'edit-project-modal'}}><span class="mdi-action-settings"></span><div class="ripple-wrapper"></div></a>
                 {{# if model.saved }}
                     <h1>{{model.name}}</h1>
                 {{ else }}
@@ -135,17 +135,17 @@
                   {{#each layer in showLayers}}
                   <li class="item">
                     <p class="alt text-muted">
+                      <span class="layer_marker">{{ layer-marker projectID=model.id layerID=layer.id layerType=layer.name }}</span>
                       {{layer.name}}
-                      {{ layer-marker projectID=model.id layerID=layer.id layerType=layer.name }}
                     </p>
                     <div class="row">
                         <div class="col-xs-10">
                           <div class="row">
+                          <div class="cols-xs-1 pull-left">
+                            {{ layer-marker projectID=model.id layerID=layer.id }}
+                          </div>
                           <div class="col-xs-7">
                             <h4 class="media-heading">{{layer.name}}</h4>
-                          </div>
-                          <div class="cols-xs-2">
-                            {{ layer-marker projectID=model.id layerID=layer.id }}
                           </div>
                           </div>
                             <p>{{layer.description}}</p>
@@ -174,7 +174,7 @@
         </script>
 
         <script type="text/x-handlebars" data-template-name="add-layer-modal">
-          {{#my-modal title='Add Layers' close='removeModal'}}
+          {{#layer-modal title='Add Layers' close='removeModal'}}
             {{#each layer in this}}
               <div class="layer-list-item row">
                 <div class="col-xs-2">
@@ -185,7 +185,21 @@
                 </div>
               </div>
             {{/each}}
-          {{/my-modal}}
+          {{/layer-modal}}
+        </script>
+        
+        <script type="text/x-handlebars" data-template-name="edit-project-modal">
+          {{#layer-modal title='Edit Project' close='removeModal'}}
+          <label>Title</label>{{input valueBinding=this.name}}
+          <label>Description</label>{{textarea valueBinding=this.description}}
+          <ul>
+            {{#each layer in this.layer_ids}}
+              <li>
+                {{layer.name}}
+              </li>
+            {{/each}}
+          </ul>
+          {{/layer-modal}}
         </script>
         
         <script type='text/x-handlebars' data-template-name='about'>
@@ -257,7 +271,7 @@
             </p>
         </script>
 
-        <script type="text/x-handlebars" data-template-name="components/my-modal">
+        <script type="text/x-handlebars" data-template-name="components/layer-modal">
           <div class="modal fade">
             <div class="modal-dialog">
               <div class="modal-content">
