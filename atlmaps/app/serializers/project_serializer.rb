@@ -1,7 +1,8 @@
 class ProjectSerializer < ActiveModel::Serializer
   
   has_many :layers, embed: :ids
+  #has_one :user
   
-  attributes :id, :user, :name, :description, :saved, :published, :user_id
+  attributes :id, :name, :description, :saved, :published, :user_id, :user
 
 end

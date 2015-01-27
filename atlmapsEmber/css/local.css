@@ -63,9 +63,12 @@ a:hover{
 }
 
 #banner {
-  background-image: url('../images/bg.jpg');
-  background-repeat: repeat-x;
-  height: 500px;
+    background-image: url('../images/bg.jpg');
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
 }
 
 #banner h1 {
