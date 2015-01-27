@@ -17,6 +17,7 @@ App.Router.map(function() {
         this.resource('project', { path: '/:project_id' });
     });
     this.resource('about');
+    this.resource('user')
     this.route('login');
 });
 
@@ -51,7 +52,7 @@ App.ProjectsIndexController = Ember.ArrayController.extend({
             
             time = (new Date()).toTimeString();
             
-            var project = this.store.createRecord('project', {
+            var project = App.Project.store.createRecord('project', {
                 name: time,
                 user_id: this.session.get('content.user.id')
             });
@@ -671,6 +672,13 @@ App.MapLayersComponent = Ember.Component.extend({
     }
 });
 
+//App.CollaborateUsersComponent = Ember.Component.extend({
+//    users: function() {
+//        return App.User.store.find('user');
+//    }.property(),
+//    
+//});
+
 // Adapter
 
 App.ApplicationAdapter = DS.RESTAdapter.extend({
@@ -712,11 +720,12 @@ App.Layer = DS.Model.extend({
 App.Project = DS.Model.extend({
     name: DS.attr('string'),
     description: DS.attr('string'),
-    user: DS.attr(),
-    user_id: DS.attr(),
+    //user: DS.belongsTo('user'),
+    //user_id: DS.belongsTo('user'),
+    user_id: DS.attr('number'),
     saved: DS.attr('boolean'),
     published: DS.attr('boolean'),
-    //user: DS.attr('number'),
+    user: DS.attr(),
     layer_ids: DS.hasMany('layer', {async: true}),
 });
 
@@ -733,7 +742,8 @@ App.Tag = DS.Model.extend({
 
 App.User = DS.Model.extend({
     displayname: DS.attr('string'),
-    avatar: DS.attr('string')
+    avatar: DS.attr('string'),
+    project_ids: DS.attr(),
 });
 
 $(document).ready(function(){
