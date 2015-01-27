@@ -109,10 +109,9 @@
             <div class="layer-controls">
               <div class="card">
               {{mine}}
-                <a class="btn btn-material-lightblue btn-fab btn-xs btn-flat pull-right" id="config-layers" {{action 'showEditForm'}}><span class="mdi-action-settings"></span><div class="ripple-wrapper"></div></a>
+                {{#if isMine}}<a class="btn btn-material-lightblue btn-fab btn-xs btn-flat pull-right" id="config-layers" {{action 'showEditForm'}}><span class="mdi-action-settings"></span><div class="ripple-wrapper"></div></a>{{/if}}
                 {{# if model.saved }}
                     <h1>{{model.name}}</h1>
-                    {{isMine}}
                     <p>{{model.description}}</p>
                 {{ else }}
                     {{#if session.isAuthenticated}}
@@ -204,43 +203,6 @@
               </div>
             {{/each}}
           {{/layer-modal}}
-        </script>
-        
-        <script type="text/x-handlebars" data-template-name="edit-project-modal">
-        
-          {{#layer-modal title='Edit Project' close='removeModal'}}
-          
-          <div class="col-xs-12">
-            <div class="form-group">
-              <label for="edit_name">Title for the Project</label>
-              {{input valueBinding="name" name='name' id="edit_name" class="form-control h1"  }}
-            </div>
-            <div class="form-group">
-              <label for="edit_description" class="form-control">Description</label>
-              {{textarea valueBinding="this.description" id="edit_description" class="form-control" rows="4" placeholder="Enter your project description here..."}}
-              <a class="btn btn-add" {{action 'updateProject'}}><span class="glyphicon glyphicon-floppy-save"></span> Save</a>
-            </div>
-            <h3>Included Layers</h3>
-            <hr/>
-            <div class="list-group row">
-            {{#each layer in this.layer_ids}}
-              <div class="list-group-item">
-                <div class="row-action-primary">
-                  <span {{bind-attr class="layer.layer_type"}}>
-                    <i class="mdi-maps-place" ></i>
-                  </span>
-                </div>
-                <div class="row-content">
-                  <h4 class="list-group-item-heading">{{layer.name}}</h4>
-                  <p class="list-group-item-text">{{layer.description}}</p>
-                </div>
-              </div>
-              <hr/>
-              {{/each}}
-            </div>
-          </div>
-          {{/layer-modal}}
-          
         </script>
         
         <script type='text/x-handlebars' data-template-name='about'>
