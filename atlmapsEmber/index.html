@@ -144,7 +144,7 @@
                     <div class="list-group row">
                       <div class="list-group-item">
                         <div class="row-action-primary">
-                          <span class="icon">{{ layer-marker projectID=model.id layerID=layer.id }}</span>
+                          {{ layer-marker projectID=model.id layerID=layer.id }}
                         </div>
                         <div class="row-content">
                           <h4 class="list-group-item-heading">{{layer.name}}</h4>
@@ -283,7 +283,10 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/layer-marker">
-          <img {{bind-attr src='markerPath'}} class="layerMarker" alt='Marker' />
+        
+          <div {{bind-attr class='markerClass'}}>
+            <div class="icon"></div>
+          </div>
         </script> 
         
         <script type="text/x-handlebars" data-template-name="components/add-remove-layer-button">

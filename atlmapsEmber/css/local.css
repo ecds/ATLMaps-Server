@@ -461,7 +461,7 @@ a#hide-layer-options:hover{
 }
 
 .shuffle-items li.item.collapsed{
-  padding: 5px 15px 0px 25px;
+  padding: 5px 15px 0px 15px;
   height:40px;
   z-index: 3;
   position:relative;
@@ -476,6 +476,15 @@ a#hide-layer-options:hover{
 .shuffle-items li.item.collapsed p,
 .shuffle-items li.item.collapsed div{
   display:none;
+}
+
+.shuffle-items li.item.collapsed div.icon,
+.shuffle-items li.item.collapsed div.map-marker{
+  display: inline-block;
+  font-size: 22px;
+  line-height: 1;
+  position: relative;
+  top: 2px;
 }
 
 .shuffle-items li.item.collapsed p.alt{
@@ -628,7 +637,7 @@ img.layerMarker {
 }
 
 .layer_marker {
-  margin-right: .5em;
+  margin-right: 3px;
   min-width: 20px;
   position: relative;
   display: inline-block;
@@ -639,37 +648,37 @@ img.layerMarker {
 }
 
 #project_edit_form {
-    display: none;
-    position: absolute;
-    z-index: 100;
-    background-color: white;
-    border: 2px solid;
-    border-radius: 10px;
-    /*box-shadow: 10px 10px 5px #888888;*/
-    margin: 5em 10em;
-    padding: 2em;
+  display: none;
+  position: absolute;
+  z-index: 100;
+  background-color: white;
+  border: 2px solid;
+  border-radius: 10px;
+  /*box-shadow: 10px 10px 5px #888888;*/
+  margin: 5em 10em;
+  padding: 2em;
 }
 
 /*img.active_marker {
-    height: 100px !important;
+height: 100px !important;
 }*/
 
 
 @-webkit-keyframes blink { 
-    0%, {opacity: 0.25;} 
-    40% {opacity: 0.50;} 
-    60% {opacity: 0.75;}
-    100% {opacity: 1;}
+  0%, {opacity: 0.25;} 
+  40% {opacity: 0.50;} 
+  60% {opacity: 0.75;}
+  100% {opacity: 1;}
 } 
 
 @keyframes blink { 
-    0%, {opacity: 0.25;} 
-    40% {opacity: 0.50;} 
-    60% {opacity: 0.75;}
-    100% {opacity: 1;} 
+  0%, {opacity: 0.25;} 
+  40% {opacity: 0.50;} 
+  60% {opacity: 0.75;}
+  100% {opacity: 1;} 
 } 
 
 .blink { 
-    -webkit-animation-name: blink; 
-    animation-name: blink; 
+  -webkit-animation-name: blink; 
+  animation-name: blink; 
 }
