@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         list_show.resources :layers
         list_show.resources :tags
         list_show.resources :institutions
+        list_show.resources :users
       end
       
       with_options only: [:index, :show, :create, :destroy, :update] do |crud|

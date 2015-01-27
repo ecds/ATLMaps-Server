@@ -637,3 +637,42 @@ img.layerMarker {
 .item.collapsed .layer_marker{
   opacity: 0.5;
 }
+
+#project_edit_form {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    background-color: white;
+    border: 2px solid;
+    border-radius: 10px;
+    /*box-shadow: 10px 10px 5px #888888;*/
+    margin: 5em 10em;
+    padding: 2em;
+}
+
+/*img.active_marker {
+    height: 100px !important;
+}*/
+
+.active_marker {
+    content:url('/images/markers/active.png');
+} 
+
+@-webkit-keyframes blink { 
+    0%, {opacity: 0.25;} 
+    40% {opacity: 0.50;} 
+    60% {opacity: 0.75;}
+    100% {opacity: 1;}
+} 
+
+@keyframes blink { 
+    0%, {opacity: 0.25;} 
+    40% {opacity: 0.50;} 
+    60% {opacity: 0.75;}
+    100% {opacity: 1;} 
+} 
+
+.blink { 
+    -webkit-animation-name: blink; 
+    animation-name: blink; 
+}

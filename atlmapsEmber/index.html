@@ -28,6 +28,7 @@
         <!-- endbower -->
         <link rel='stylesheet' href='css/bootstrap-slider.css' />
         <link rel='stylesheet' href='css/local.css' />
+        <link rel='stylesheet' href='css/marker.css' />
     </head>
     <body>
         <script type="text/x-handlebars" data-template-name="application">
@@ -108,9 +109,11 @@
             <div class="layer-controls">
               <div class="card">
               {{mine}}
-                <a class="btn btn-material-lightblue btn-fab btn-xs btn-flat pull-right" id="config-layers" {{action 'showEditModal' 'edit-project-modal'}}><span class="mdi-action-settings"></span><div class="ripple-wrapper"></div></a>
+                <a class="btn btn-material-lightblue btn-fab btn-xs btn-flat pull-right" id="config-layers" {{action 'showEditForm'}}><span class="mdi-action-settings"></span><div class="ripple-wrapper"></div></a>
                 {{# if model.saved }}
                     <h1>{{model.name}}</h1>
+                    {{isMine}}
+                    <p>{{model.description}}</p>
                 {{ else }}
                     {{#if session.isAuthenticated}}
                     <div class="row">
@@ -118,16 +121,16 @@
                             {{input valueBinding='projectName' placeholder='Enter Title for Project' class="form-control floating-label" type="text"}}
                         </div>
                         <div class='col-xs-3'>
-                            <a class="btn btn-info btn-xs pull-right" id="title-button" {{action 'updateProject'}}><span>OK</span mdi-large></a>
+                            <a class="btn btn-info btn-xs pull-right" id="title-button" {{action 'saveProject'}}><span>OK</span mdi-large></a>
                         </div>
                     </div>
                     {{/if}}
                 {{/if}}
-                
         
                 <h3>Active Layers {{#if isMine}}<a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal'}}><span class="mdi-content-add mdi-large"></span> Layers</a>{{/if}}</h3>
                 <hr/>
                 <a class="btn btn-fab btn-sm btn-material-lightgrey top-layer-button" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
+                
               </div>
               <div class="layer-list">
               
@@ -169,6 +172,23 @@
             <div class="row" id="base-map">
             {{ base-map }}
             </div>
+            
+            
+            <div id='project_edit_form'>
+              <div class="form-group">
+              <label for="edit_name">Title for the Project</label>
+                {{input valueBinding="name" name='name' id="edit_name" class="form-control h1"  }}
+              </div>
+              <div class="form-group">
+                <label for="edit_description" class="form-control">Description</label>
+                {{textarea valueBinding="this.description" id="edit_description" class="form-control" rows="4" placeholder="Enter your project description here..."}}
+                <a class="btn btn-add" {{action 'updateProject'}}><span class="glyphicon glyphicon-floppy-save"></span> Save</a>
+                <a class="btn btn-danger" {{action 'cancelUpdate'}}><span class="glyphicon glyphicon glyphicon-remove"></span> Cancel</a>
+              </div>
+              <hr/>
+              {{ collaborate-users }}
+            </div>
+            
         </script>
 
         <script type="text/x-handlebars" data-template-name="add-layer-modal">
@@ -193,11 +213,12 @@
           <div class="col-xs-12">
             <div class="form-group">
               <label for="edit_name">Title for the Project</label>
-              {{input valueBinding=this.name id="edit_name" class="form-control h1" placeholder="Title for the project..."}}
+              {{input valueBinding="name" name='name' id="edit_name" class="form-control h1"  }}
             </div>
             <div class="form-group">
               <label for="edit_description" class="form-control">Description</label>
-              {{textarea valueBinding=this.description id="edit_description" class="form-control" rows="4" placeholder="Enter your project description here..."}}
+              {{textarea valueBinding="this.description" id="edit_description" class="form-control" rows="4" placeholder="Enter your project description here..."}}
+              <a class="btn btn-add" {{action 'updateProject'}}><span class="glyphicon glyphicon-floppy-save"></span> Save</a>
             </div>
             <h3>Included Layers</h3>
             <hr/>
@@ -313,6 +334,13 @@
 
         <script type="text/x-handlebars" data-template-name="components/map-layers">
           {{mappedLayers}}
+        </script>
+        
+        <script type="text/x-handlebars" data-template-name="components/collaborate-users">
+          Collaboraters:
+          <ul>
+            {{#each user in users}}<li>{{user.displayname}}</li>{{/each}}
+          </ul>
         </script>
         
         <script type='text/x-handlebars' data-template-name='_tags'>

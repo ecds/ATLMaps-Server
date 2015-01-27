@@ -27,9 +27,9 @@ var layersStore = Ember.Object.create({
 });
 
 var Counts = Ember.Object.create({
-    vectorLayer: 0,
+    vectorLayer: 1,
     marker: 0,
-    lastAdded: -1
+    lastAdded: 0
 });
 
 App.Map = Ember.Object.extend();
@@ -126,7 +126,7 @@ App.ProjectController = Ember.ObjectController.extend({
           });
         },
       
-        updateProject: function() {
+        saveProject: function() {
             var project = this.get('model')
             var submittedName = this.get('projectName')
             if(submittedName === '') {
@@ -143,6 +143,29 @@ App.ProjectController = Ember.ObjectController.extend({
                     controller.set('projectName', '');    
                 });
             }
+        },
+        
+        showEditForm: function() {
+            $("#project_edit_form").show();
+        },
+        
+        cancelUpdate: function() {
+            $("#project_edit_form").hide();
+        },
+        
+        updateProject: function() {
+            var project = this.get('model');
+            var submittedName = project.get('name');
+            var submittedDescription = project.get('description');
+
+            project.set('name', submittedName)
+            project.set('description', submittedDescription);
+            
+            console.log(submittedName)
+            
+            project.save().then(function(){
+                $("#project_edit_form").hide();
+            });
         },
     }
 });
@@ -219,8 +242,8 @@ App.ProjectRoute = Ember.Route.extend({
             // We only have 10 markers right now (0-9), so we need to reset if we
             // `Counts.vectorLayer` grows above 9.
             if (Counts.vectorLayer > 9) {
-                Counts.set('vectorLayer', 0);
-                Counts.set('lastAdded', -1);
+                Counts.set('vectorLayer', 1);
+                Counts.set('lastAdded', 0);
             }
             
             var projectlayer = this.store.createRecord('projectlayer', {
@@ -572,8 +595,9 @@ App.MapLayersComponent = Ember.Component.extend({
                             $info.appendTo($(".shuffle-items"))
                             shuffle.click($info);
 
-                            //alert(App.laodCount)
-                            //$("img").addClass(pointClicked);
+                            console.log(this)
+                            $(".active_marker").removeClass("active_marker");
+                            $(this._icon).addClass('active_marker');
                         });
                         
                     }
@@ -589,12 +613,31 @@ App.MapLayersComponent = Ember.Component.extend({
                     
                     if(mappedLayer.get('url')){
                       var points = new L.GeoJSON.AJAX(mappedLayer.get('url'), {
+                          
+                          //pointToLayer: function (feature, latlng) {
+                          //  var layerClass = 'marker' + String(Counts.marker++) + ' ' + slug + ' vectorData map-marker layer' + markerFor ;
+                          //  var markerImage = '/images/markers/' + markerFor + '.png';
+                          //  
+                          //  var icon = L.divIcon({
+                          //      className: layerClass,
+                          //      iconSize: null,
+                          //      html: '<div class="icon">!</div><div class="arrow" />'
+                          //  });
+                          //  
+                          //  var marker = L.marker(latlng, {icon: icon}); 
+                          
+                          
                           pointToLayer: function (feature, latlng) {
                             var layerClass = 'marker' + String(Counts.marker++) + ' ' + slug + ' vectorData' ;
                             var markerImage = '/images/markers/' + markerFor + '.png';
                             var marker = L.marker(latlng, {icon: setIcon(markerImage, layerClass)});
+                            
+                            
+                            
                             return marker
                           },
+                          
+                          
                           onEachFeature: viewData,
                       }).addTo(map);
                       

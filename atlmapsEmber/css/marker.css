@@ -1,0 +1,93 @@
+/*General marker style*/
+.map-marker {
+  position: relative;
+  width: 26px;
+  height: 26px;
+  border-radius: 26px;
+  margin-top: -34px; /*Shift by arrow top+height*/
+  margin-left: -12px; /*Shift by half the marker width*/
+  line-height: 22px;
+  font-size: 22px;
+  text-align: center;
+  font-weight: bold;
+  background: #444;
+}
+.map-marker div.icon {
+  position: relative;
+  width: 22px; /*Same as marker width*/
+  height: 22px; /*Same as marker height*/
+  border-radius: 22px;
+  margin-left: 2px;
+  margin-top: 2px;
+  background-repeat:no-repeat;
+  background-position:center;
+  background: #ccc;
+}
+.map-marker div.arrow {
+  position: relative;
+  left: 7px; /*(Marker width - arrow width)/2*/
+  border-width: 10px 6px 0 6px; /*Arrow w/h is defined by the borders*/
+  width: 0px; height: 0px;
+  border-style: solid;
+  border-color: #444 transparent transparent transparent;
+}
+
+/*Marker color instances*/
+.map-marker.layer0 div.icon{
+  background: Blue;
+}
+.map-marker.layer1 div.icon{
+  background: BlueViolet;
+}
+.map-marker.layer2 div.icon{
+  background: Chartreuse;
+}
+.map-marker.layer3 div.icon{
+  background: CornflowerBlue;
+}
+.map-marker.layer4 div.icon{
+  background: Cyan;
+}
+.map-marker.layer5 div.icon{
+  background: DarkCyan;
+}
+.map-marker.layer6 div.icon{
+  background: DarkGreen;
+}
+.map-marker.layer7 div.icon{
+  background: DarkOrange;
+}
+.map-marker.layer8 div.icon{
+  background: DarkOrchid;
+}
+.map-marker.layer9 div.icon{
+  background: DarkSlateBlue;
+}
+.map-marker.layer10 div.icon{
+  background: DarkTurquoise;
+}
+.map-marker.layer11 div.icon{
+  background: DeepPink;
+}
+.map-marker.layer12 div.icon{
+  background: DeepSkyBlue;
+}
+.map-marker.layer13 div.icon{
+  background: Gold;
+}
+.map-marker.layer14 div.icon{
+  background: Orange;
+}
+.map-marker.layer15 div.icon{
+  background: SlateBlue;
+}
+/*Marker states*/
+.map-marker.inactive {
+  opacity: 0.6;
+}
+.map-marker.highlighted div.icon{
+  background: red;
+}
+.map-marker.highlighted div.arrow{
+  border-color: #000 transparent transparent transparent;
+}
