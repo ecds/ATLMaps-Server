@@ -654,9 +654,6 @@ img.layerMarker {
     height: 100px !important;
 }*/
 
-.active_marker {
-    content:url('/images/markers/active.png');
-} 
 
 @-webkit-keyframes blink { 
     0%, {opacity: 0.25;} 
