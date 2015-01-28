@@ -434,7 +434,7 @@ App.LayerMarkerComponent = Ember.Component.extend({
                 _this.set('markerClass', 'map-marker layer-' + color_options[layerMarker.content.content[0]._data.marker] )
             }
             else {
-                _this.set('markerClass', 'map-marker layers')
+                _this.set('markerClass', 'map-marker layer-marker')
             }
         });
 

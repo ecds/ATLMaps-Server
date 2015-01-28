@@ -44,6 +44,13 @@
   content:"\e88b";
 }
 
+.layer-marker div.icon:before {
+  content: "\e867";
+}
+
+.laoding div.icon:before {
+  content: "\e8c0";
+}
 
 .map-marker div.shadow{
   background-image:url('/images/marker-shadow.png');
