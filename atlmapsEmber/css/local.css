@@ -63,12 +63,12 @@ a:hover{
 }
 
 #banner {
-    background-image: url('../images/bg.jpg');
-    height: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
+  background-image: url('../images/bg.jpg');
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
 }
 
 #banner h1 {
@@ -651,15 +651,23 @@ img.layerMarker {
 }
 
 #project_edit_form {
-  display: none;
   position: absolute;
   z-index: 100;
-  background-color: white;
-  border: 2px solid;
-  border-radius: 10px;
-  /*box-shadow: 10px 10px 5px #888888;*/
-  margin: 5em 10em;
-  padding: 2em;
+  top: 30px;
+  padding-top: 10px;
+  max-width: 500px;
+  min-height: 500px;
+}
+
+#project_edit_form h3{
+  margin-bottom:30px;
+  color: rgb(129, 120, 140);
+}
+
+#project_edit_form label{
+  color: rgb(143, 146, 153);
+  font-weight: bold;
+  border-bottom-color: rgb(219, 221, 226);
 }
 
 /*img.active_marker {
