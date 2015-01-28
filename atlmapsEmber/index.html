@@ -173,7 +173,8 @@
             </div>
             
             
-            <div id='project_edit_form'>
+            <div class="card" id='project_edit_form' style="display:none;left:-100%;">
+              <h3>Project Options</h3>
               <div class="form-group">
               <label for="edit_name">Title for the Project</label>
                 {{input valueBinding="name" name='name' id="edit_name" class="form-control h1"  }}
@@ -181,8 +182,10 @@
               <div class="form-group">
                 <label for="edit_description" class="form-control">Description (Max 255 Characters)</label>
                 {{textarea valueBinding="this.description" id="edit_description" class="form-control" rows="4" placeholder="Enter your project description here..."}}
-                <a class="btn btn-add" {{action 'updateProject'}}><span class="glyphicon glyphicon-floppy-save"></span> Save</a>
-                <a class="btn btn-danger" {{action 'cancelUpdate'}}><span class="glyphicon glyphicon glyphicon-remove"></span> Cancel</a>
+                <div class="text-right">
+                  <a class="btn btn-add" {{action 'updateProject'}}>Save</a>
+                  <a class="btn btn-danger" {{action 'cancelUpdate'}}>Cancel</a>
+                </div>
               </div>
               <hr/>
               {{ collaborate-users }}
