@@ -184,7 +184,6 @@
                 <a class="btn btn-add" {{action 'updateProject'}}><span class="glyphicon glyphicon-floppy-save"></span> Save</a>
                 <a class="btn btn-danger" {{action 'cancelUpdate'}}><span class="glyphicon glyphicon glyphicon-remove"></span> Cancel</a>
               </div>
-              <hr/>
               {{ collaborate-users }}
             </div>
             
@@ -302,7 +301,8 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/collaborate-users">
-          Collaboraters:
+          <!--<hr/>
+          Collaboraters:-->
           <ul>
             {{#each user in users}}<li>{{user.displayname}}</li>{{/each}}
           </ul>
