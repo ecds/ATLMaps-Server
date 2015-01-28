@@ -167,7 +167,9 @@ App.ProjectController = Ember.ObjectController.extend({
             console.log(submittedName)
             
             project.save().then(function(){
-                $("#project_edit_form").hide();
+              $("#project_edit_form").animate({"left":"-100%"},500,"easeInQuint",function(){
+                $(this).hide();
+              });
             });
         },
     }
