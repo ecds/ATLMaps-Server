@@ -13,6 +13,20 @@
         <script src="../bower_components/jquery.easing/js/jquery.easing.js"></script>
         <script src="../bower_components/ember-simple-auth/simple-auth.js"></script>
         <script src="../bower_components/ember-simple-auth/simple-auth-oauth2.js"></script>
+        <script src="../bower_components/get-size/get-size.js"></script>
+        <script src="../bower_components/matches-selector/matches-selector.js"></script>
+        <script src="../bower_components/eventie/eventie.js"></script>
+        <script src="../bower_components/doc-ready/doc-ready.js"></script>
+        <script src="../bower_components/eventEmitter/EventEmitter.js"></script>
+        <script src="../bower_components/outlayer/item.js"></script>
+        <script src="../bower_components/outlayer/outlayer.js"></script>
+        <script src="../bower_components/masonry/masonry.js"></script>
+        <script src="../bower_components/isotope/js/item.js"></script>
+        <script src="../bower_components/isotope/js/layout-mode.js"></script>
+        <script src="../bower_components/isotope/js/isotope.js"></script>
+        <script src="../bower_components/isotope/js/layout-modes/vertical.js"></script>
+        <script src="../bower_components/isotope/js/layout-modes/fit-rows.js"></script>
+        <script src="../bower_components/isotope/js/layout-modes/masonry.js"></script>
         <!-- endbower -->
         <!--<script src="http://builds.emberjs.com/beta/ember-data.min.js"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ember-data.js/1.0.0-beta.12/ember-data.prod.js"></script>
@@ -151,7 +165,7 @@
                           <div class="text-muted">{{partial 'citation'}}</div>
                         </div>
                         <div class="col-xs-1 pull-right">
-                          <a class="btn rotate btn-added btn-fab btn-sm"{{action 'removeLayer' layer model.id}}><span class="mdi-content-clear"></span></a>
+                          {{#if isMine}}<a class="btn rotate btn-added btn-fab btn-sm"{{action 'removeLayer' layer model.id}}><span class="mdi-content-clear"></span></a>{{/if}}
                           {{ opacity-slider layer=layer.layer layerID=layer.id }}
                         </div>
                       </div>
@@ -194,8 +208,9 @@
 
         <script type="text/x-handlebars" data-template-name="add-layer-modal">
           {{#layer-modal title='Add Layers' close='removeModal'}}
+          {{!--input type="text" id="search-todo" placeholder="Search Layers by Name..." value=searchTerm--}}
             {{#each layer in this}}
-              <div class="layer-list-item row">
+              <div {{bind-attr class=":layer-list-item :row layer.tag_slugs" }}>
                 <div class="col-xs-2">
                   {{add-remove-layer-button title='Add' action='addLayer' param=layer model=model}}
                 </div>
@@ -286,6 +301,7 @@
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                   <h4 class="modal-title">{{title}}</h4>
+                  Search Tags: {{search-tags}}
                 </div>
                 <div class="modal-body">
                   {{yield}}
@@ -297,6 +313,10 @@
               </div>
             </div>
           </div>
+        </script>
+        
+        <script type="text/x-handlebars" data-template-name="components/search-tags">
+          {{#each tag in tags}}{{tag.name}}{{/each}}foo
         </script>
 
         <script type="text/x-handlebars" data-template-name="components/map-layers">

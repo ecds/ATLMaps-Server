@@ -177,13 +177,20 @@ App.ProjectController = Ember.ObjectController.extend({
 
 App.AddLayerModalController = Ember.ArrayController.extend({
    sortProperties: ['layer_type', 'name'],
+   
+   searchResult: function(){
+        var searchTerm = this.get('searchTerm');
+        var regExp = new RegExp(searchTerm,'i');
+        this.get('model').set('content',this.store.filter('layer',function(item){
+                return regExp.test(item.get('name'));
+        }));
+    }.observes('searchTerm')
 });
-
-App.EditProjectModalController = Ember.ObjectController.extend({});
 
 App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
     authenticator: 'simple-auth-authenticator:oauth2-password-grant',
 });
+
  
 
 // Routes
@@ -492,11 +499,13 @@ App.LayerModalComponent = Ember.Component.extend({
             this.sendAction('ok');
         }
     },
+    
     show: function() {
         this.$('.modal').modal().on('hidden.bs.modal', function() {
             this.sendAction('close');
         }.bind(this));
-    }.on('didInsertElement')
+    }.on('didInsertElement'),
+
 });
 
 
@@ -680,6 +689,12 @@ App.MapLayersComponent = Ember.Component.extend({
     }
 });
 
+App.SearchTagsComponent = Ember.Component.extend({
+    tags: function() {
+        return App.Tag.store.find('tag');
+    }.property(),
+});
+
 //App.CollaborateUsersComponent = Ember.Component.extend({
 //    users: function() {
 //        return App.User.store.find('user');
@@ -722,7 +737,8 @@ App.Layer = DS.Model.extend({
     maxy: DS.attr('number'),
     project_ids: DS.hasMany('project', {async: true}),
     tag_ids: DS.hasMany('tag', {async: true}),
-    institution: DS.attr()
+    institution: DS.attr(),
+    tag_slugs: DS.attr('string')
 });
 
 App.Project = DS.Model.extend({
@@ -745,7 +761,8 @@ App.Projectlayer = DS.Model.extend({
 });
 
 App.Tag = DS.Model.extend({
-    name: DS.attr('string')
+    name: DS.attr('string'),
+    layer_ids: DS.hasMany('layer', {async: true})
 });
 
 App.User = DS.Model.extend({
@@ -753,6 +770,8 @@ App.User = DS.Model.extend({
     avatar: DS.attr('string'),
     project_ids: DS.attr(),
 });
+
+// Random JavaScript
 
 $(document).ready(function(){
   $.material.ripples(".btn, .navbar a");
@@ -775,6 +794,7 @@ $(document).ready(function(){
   .on('click','.shuffle-items li.item',function(){
     if ($(this).hasClass('info') == false){
       $(".shuffle-items li.item.info").remove();
+      $(".active_marker").removeClass("active_marker");
     }
     shuffle.click(this);
   })
