@@ -106,7 +106,10 @@ App.ProjectController = Ember.ObjectController.extend({
         
         currentProject.then(function() {
             
-            if (currentProject.get('user_id') === _this.session.content.user.id) {
+            if (_this.session.isAuthenticated == false) {
+                _this.set('isMine', false);
+            }
+            else if (currentProject.get('user_id') === _this.session.content.user.id) {
                 _this.set('isMine', true);    
             }
             else {
