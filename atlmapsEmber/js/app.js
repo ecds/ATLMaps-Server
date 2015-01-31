@@ -693,6 +693,7 @@ App.SearchTagsComponent = Ember.Component.extend({
                 $(".layer-list-item").show();
             }
             else {
+                $(".layer-list-item").show();
                 $(".layer-list-item").not("."+tag).fadeOut( 200, function() {
                     $(this).hide();
                 });
