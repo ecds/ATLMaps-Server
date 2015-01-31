@@ -13,20 +13,6 @@
         <script src="../bower_components/jquery.easing/js/jquery.easing.js"></script>
         <script src="../bower_components/ember-simple-auth/simple-auth.js"></script>
         <script src="../bower_components/ember-simple-auth/simple-auth-oauth2.js"></script>
-        <script src="../bower_components/get-size/get-size.js"></script>
-        <script src="../bower_components/matches-selector/matches-selector.js"></script>
-        <script src="../bower_components/eventie/eventie.js"></script>
-        <script src="../bower_components/doc-ready/doc-ready.js"></script>
-        <script src="../bower_components/eventEmitter/EventEmitter.js"></script>
-        <script src="../bower_components/outlayer/item.js"></script>
-        <script src="../bower_components/outlayer/outlayer.js"></script>
-        <script src="../bower_components/masonry/masonry.js"></script>
-        <script src="../bower_components/isotope/js/item.js"></script>
-        <script src="../bower_components/isotope/js/layout-mode.js"></script>
-        <script src="../bower_components/isotope/js/isotope.js"></script>
-        <script src="../bower_components/isotope/js/layout-modes/vertical.js"></script>
-        <script src="../bower_components/isotope/js/layout-modes/fit-rows.js"></script>
-        <script src="../bower_components/isotope/js/layout-modes/masonry.js"></script>
         <!-- endbower -->
         <!--<script src="http://builds.emberjs.com/beta/ember-data.min.js"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ember-data.js/1.0.0-beta.12/ember-data.prod.js"></script>
@@ -210,7 +196,7 @@
           {{#layer-modal title='Add Layers' close='removeModal'}}
           {{!--input type="text" id="search-todo" placeholder="Search Layers by Name..." value=searchTerm--}}
             {{#each layer in this}}
-              <div {{bind-attr class=":layer-list-item :row layer.tag_slugs" }}>
+              <div {{bind-attr class=":layer-list-item :row layer.tag_slugs layer.institution_slug layer.layer_type" }}>
                 <div class="col-xs-2">
                   {{add-remove-layer-button title='Add' action='addLayer' param=layer model=model}}
                 </div>
@@ -282,6 +268,7 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/list-avaliable-layers">
+            <span {{bind-attr class="layer.layer_type" }}</span>
             <h4>{{layer.name}}</h4>
             <p>
               {{layer.description}}
@@ -301,9 +288,9 @@
                 <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                   <h4 class="modal-title">{{title}}</h4>
-                  Search Tags: {{search-tags}}
+                  {{search-tags}}
                 </div>
-                <div class="modal-body">
+                <div class="modal-body js-isotope" id="isotopeContainer">
                   {{yield}}
                 </div>
                 <div class="modal-footer">
@@ -316,7 +303,51 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/search-tags">
-          {{#each tag in tags}}{{tag.name}}{{/each}}foo
+          <span>Filter by:</span>
+          <div class="btn-group" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Tags
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a {{ action 'sortTags' 'all'}}>Show All</a></li>
+                {{#each tag in tags}}
+                  <li><a {{ action 'sortTags' tag.slug }}>{{tag.name}}</a></li>
+                {{/each}}
+              </ul>
+            </div>
+            
+            
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Type
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a {{ action 'sortTags' 'all'}}>Show All</a></li>
+                <li><a {{ action 'sortTags' 'geojson'}}>GeoJSON</a></li>
+                <li><a {{ action 'sortTags' 'planningatlanta'}}>GSU Tiles</a></li>
+                <li><a {{ action 'sortTags' 'wms'}}>WMS</a></li>
+                <li><a {{ action 'sortTags' 'wfs'}}>WFS</a></li>
+              </ul>
+            </div>
+            
+            
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Provider
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li><a {{ action 'sortTags' 'all'}}>Show All</a></li>
+                {{#each institution in institutions}}
+                  <li><a {{ action 'sortTags' institution.slug }}>{{institution.name}}</a></li>
+                {{/each}}
+              </ul>
+            </div>
+            
+          </div>
         </script>
 
         <script type="text/x-handlebars" data-template-name="components/map-layers">

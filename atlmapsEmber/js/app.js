@@ -91,7 +91,6 @@ App.ProjectController = Ember.ObjectController.extend({
             added_layers.push(this.id)
         })
         layersStore.set("loaded",added_layers)
-        
         return this.get('model.layer_ids')
     
     }.property('model.layer_ids.@each'),
@@ -105,7 +104,6 @@ App.ProjectController = Ember.ObjectController.extend({
         });
         
         currentProject.then(function() {
-            
             if (_this.session.isAuthenticated == false) {
                 _this.set('isMine', false);
             }
@@ -167,8 +165,6 @@ App.ProjectController = Ember.ObjectController.extend({
             project.set('name', submittedName)
             project.set('description', submittedDescription);
             
-            console.log(submittedName)
-            
             project.save().then(function(){
               $("#project_edit_form").animate({"left":"-100%"},500,"easeInQuint",function(){
                 $(this).hide();
@@ -187,7 +183,14 @@ App.AddLayerModalController = Ember.ArrayController.extend({
         this.get('model').set('content',this.store.filter('layer',function(item){
                 return regExp.test(item.get('name'));
         }));
-    }.observes('searchTerm')
+    }.observes('searchTerm'),
+    
+    actions: {
+        reload: function() {
+          this.get('model').reload().then(function(model) {
+          });
+        },
+    }
 });
 
 App.LoginController  = Ember.Controller.extend(SimpleAuth.LoginControllerMixin, {
@@ -273,7 +276,6 @@ App.ProjectRoute = Ember.Route.extend({
             
             // Peg `Counts.lastAdded` to what we just saved in the model but only if it is GeoJSON.
             if (layer.get('layer_type') === 'geojson'){
-                console.log('this is geojson so we are going to mess with the counts')
                 Counts.set('lastAdded', Counts.vectorLayer);
                 // Now increment `Counts.vectorLayer
                 Counts.vectorLayer++
@@ -289,7 +291,6 @@ App.ProjectRoute = Ember.Route.extend({
                 //Counts.set('vectorLayer', 0)
                 
                 _this.get("controller.model").reload();
-                console.log('after save vl = ' + Counts.vectorLayer + ' la = ' + Counts.lastAdded)
             });
         },
         
@@ -315,10 +316,8 @@ App.ProjectRoute = Ember.Route.extend({
 
             });
             
-            console.log('vl = ' + Counts.vectorLayer + ' la = ' + Counts.lastAdded)
             Counts.vectorLayer++;
             Counts.lastAdded++;
-            console.log('vl = ' + Counts.vectorLayer + ' la = ' + Counts.lastAdded)
             
             // Remove the layer from the map
             $("."+layerClass).fadeOut( 500, function() {
@@ -616,7 +615,6 @@ App.MapLayersComponent = Ember.Component.extend({
                             $info.appendTo($(".shuffle-items"))
                             shuffle.click($info);
 
-                            console.log(this)
                             $(".active_marker").removeClass("active_marker");
                             $(this._icon).addClass('active_marker');
                         });
@@ -664,18 +662,6 @@ App.MapLayersComponent = Ember.Component.extend({
                       
                       
                     }
-                    
-                    //// Trust me, I feel guilty about the following code. `Counts.vectorLayer` always need to be
-                    //// one greater than `Counts.lastAdded`. In general it is fine without this. Where things get
-                    //// off track is when a user starts removing layers. We can always trust `Counts.lastAdded` as
-                    //// it is only set when the model is saved.
-                    //if (Counts.vectorLayer === Counts.lastAdded) {
-                    //    Counts.vectorLayer++
-                    //}
-                    //else if (Counts.vectorLayer > (Counts.lastAdded + 1)) {
-                    //    console.log('we are doing that crappy thing')
-                    //    Counts.set('vectorLayer', Counts.lastAdded + 1)
-                    //}
                       
                     break;
                     
@@ -696,6 +682,23 @@ App.SearchTagsComponent = Ember.Component.extend({
     tags: function() {
         return App.Tag.store.find('tag');
     }.property(),
+    
+    institutions: function() {
+        return App.Institution.store.find('institution');
+    }.property(),
+    
+    actions: {
+        sortTags: function (tag) {
+            if (tag === 'all') {
+                $(".layer-list-item").show();
+            }
+            else {
+                $(".layer-list-item").not("."+tag).fadeOut( 200, function() {
+                    $(this).hide();
+                });
+            }
+        }
+    },
 });
 
 //App.CollaborateUsersComponent = Ember.Component.extend({
@@ -741,6 +744,8 @@ App.Layer = DS.Model.extend({
     project_ids: DS.hasMany('project', {async: true}),
     tag_ids: DS.hasMany('tag', {async: true}),
     institution: DS.attr(),
+    institution_id: DS.belongsTo('institution'),
+    institution_slug: DS.attr('string'),
     tag_slugs: DS.attr('string')
 });
 
@@ -756,6 +761,13 @@ App.Project = DS.Model.extend({
     layer_ids: DS.hasMany('layer', {async: true}),
 });
 
+App.Institution = DS.Model.extend({
+    name: DS.attr('string'),
+    slug: DS.attr('string'),
+    geoserver: DS.attr('string'),
+    layer_ids: DS.hasMany('layer', {async: true})
+});
+
 App.Projectlayer = DS.Model.extend({
     layer_id: DS.attr(),
     project_id: DS.attr(),
@@ -765,6 +777,7 @@ App.Projectlayer = DS.Model.extend({
 
 App.Tag = DS.Model.extend({
     name: DS.attr('string'),
+    slug: DS.attr('string'),
     layer_ids: DS.hasMany('layer', {async: true})
 });
 
