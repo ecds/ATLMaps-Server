@@ -3,6 +3,7 @@ class LayerSerializer < ActiveModel::Serializer
   
   has_many :projects, embed: :ids
   has_many :tags, embed: :ids
+  has_one :institution
   
   attributes  :id,
               :name,
@@ -19,6 +20,7 @@ class LayerSerializer < ActiveModel::Serializer
               :miny,
               :maxx,
               :maxy,
-              :institution,
-              :tag_slugs
+              #:institution,
+              :tag_slugs,
+              :institution_slug
 end
