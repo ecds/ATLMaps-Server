@@ -22,5 +22,6 @@ class LayerSerializer < ActiveModel::Serializer
               :maxy,
               #:institution,
               :tag_slugs,
-              :institution_slug
+              :institution_slug,
+              :active
 end

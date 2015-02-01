@@ -1,14 +1,9 @@
 class Api::V1::LayersController < ApplicationController
   
   def index
+    #@layers = Layer.where(layer_type: 'geojson')
     @layers = Layer.all
     render json: @layers
-    #if project = params[:project]
-    #  layers = layers.where(project: project)
-    #end
-    #respond_to do |format|
-    #  format.json { render json: layers, status: :ok }
-    #end
   end
   
   def show

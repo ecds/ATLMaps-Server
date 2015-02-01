@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150122193842) do
+ActiveRecord::Schema.define(version: 20150201013329) do
 
   create_table "institutions", force: true do |t|
     t.string   "name"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 20150122193842) do
     t.decimal  "miny",           precision: 10, scale: 8
     t.decimal  "maxx",           precision: 10, scale: 8
     t.decimal  "maxy",           precision: 10, scale: 8
+    t.boolean  "active",                                  default: true
     t.integer  "institution_id"
     t.datetime "created_at"
     t.datetime "updated_at"

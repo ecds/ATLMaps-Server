@@ -126,7 +126,7 @@
                     {{/if}}
                 {{/if}}
         
-                <h3>Active Layers {{#if isMine}}<a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal'}}><span class="mdi-content-add mdi-large"></span> Layers</a>{{/if}}</h3>
+                <h3>Active Layers {{#if isMine}}{{partial 'addLayersButton'}}{{/if}}</h3>
                 <hr/>
                 <a class="btn btn-fab btn-sm btn-material-lightgrey top-layer-button" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
                 
@@ -196,14 +196,16 @@
           {{#layer-modal title='Add Layers' close='removeModal'}}
           {{!--input type="text" id="search-todo" placeholder="Search Layers by Name..." value=searchTerm--}}
             {{#each layer in this}}
-              <div {{bind-attr class=":layer-list-item :row layer.tag_slugs layer.institution_slug layer.layer_type" }}>
-                <div class="col-xs-2">
-                  {{add-remove-layer-button title='Add' action='addLayer' param=layer model=model}}
+              {{#if layer.active}}
+                <div {{bind-attr class=":layer-list-item :row layer.tag_slugs layer.institution_slug layer.layer_type" }}>
+                  <div class="col-xs-2">
+                    {{add-remove-layer-button title='Add' action='addLayer' param=layer model=model}}
+                  </div>
+                  <div class="col-xs-9">
+                    {{ list-avaliable-layers layer=layer}}
+                  </div>
                 </div>
-                <div class="col-xs-9">
-                  {{ list-avaliable-layers layer=layer}}
-                </div>
-              </div>
+              {{/if}}
             {{/each}}
           {{/layer-modal}}
         </script>
@@ -362,12 +364,16 @@
           </ul>
         </script>
         
-        <script type='text/x-handlebars' data-template-name='_tags'>
+        <script type="text/x-handlebars" data-template-name='_tags'>
           <span class="glyphicon glyphicon-tags tagsIcon"></span><ul class="list-inline">{{#each tag in layer.tag_ids}}<li>{{tag.name}}</li>{{else}}<li>Not Tagged</li>{{/each}}</ul>
         </script>
         
-        <script type='text/x-handlebars' data-template-name='_citation'>
+        <script type="text/x-handlebars" data-template-name='_citation'>
             <p>Provided by: <img {{bind-attr src='layer.institution.icon'}} alt='Logo' class="institution_logo" /> <span class="institution">{{layer.institution.name}}</span></p>
+        </script>
+        
+        <script type="text/x-handlebars" data-template-name="_addLayersButton">
+          <a class="btn btn-add pull-right" {{action 'showModal' 'add-layer-modal'}}><span class="mdi-content-add mdi-large"></span> Layers</a>
         </script>
         
     </body>

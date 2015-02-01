@@ -688,13 +688,13 @@ App.SearchTagsComponent = Ember.Component.extend({
     }.property(),
     
     actions: {
-        sortTags: function (tag) {
-            if (tag === 'all') {
+        sortTags: function (filter) {
+            if (filter === 'all') {
                 $(".layer-list-item").show();
             }
             else {
                 $(".layer-list-item").show();
-                $(".layer-list-item").not("."+tag).fadeOut( 200, function() {
+                $(".layer-list-item").not("."+filter).fadeOut( 200, function() {
                     $(this).hide();
                 });
             }
@@ -747,7 +747,8 @@ App.Layer = DS.Model.extend({
     institution: DS.attr(),
     institution_id: DS.belongsTo('institution'),
     institution_slug: DS.attr('string'),
-    tag_slugs: DS.attr('string')
+    tag_slugs: DS.attr('string'),
+    active: DS.attr('boolean')
 });
 
 App.Project = DS.Model.extend({

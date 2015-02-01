@@ -55,6 +55,7 @@ RailsAdmin.config do |config|
       field :name
       field :layer_type
       field :institution
+      field :active
     end
     
     edit do
@@ -72,6 +73,7 @@ RailsAdmin.config do |config|
       field :miny
       field :maxx
       field :maxy
+      field :active
     end
     
   end
