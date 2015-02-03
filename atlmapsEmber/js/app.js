@@ -545,14 +545,15 @@ App.LayerModalComponent = Ember.Component.extend({
             valueNames: [ 'name', 'description' ],
             indexAsync: true
         };
+        var layerList = new List('searchableLayers', options);
         
         // Start Alpha sort
         var $tags = $('ul.tags-dropdown'),
         $tagsli = $tags.children('li');
         
         $tagsli.sort(function(a,b){
-          var an = a.text().toLowerCase(),
-              bn = b.text().toLowerCase();
+          var an = $(a).text().toLowerCase(),
+              bn = $(b).text().toLowerCase();
           if(an > bn) {
             return 1;
           }
@@ -564,7 +565,6 @@ App.LayerModalComponent = Ember.Component.extend({
         $tagsli.detach().appendTo($tags);
         // End Alpha sort
         
-        var layerList = new List('searchableLayers', options);
                 
     }.on('didInsertElement'),
 
