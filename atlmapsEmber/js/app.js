@@ -337,15 +337,18 @@ App.ProjectRoute = Ember.Route.extend({
                 promise: this.store.find('layer')
             });
             
-            var $loading = $("<div/>").addClass("modal-loading").css({"top":"0px","position":"absolute","z-index":10000, "background":"red", "width":"50%","height":"50%"}).html("LOADING THE MODAL!")
+            var $loading_gif = $("<img/>").attr({'src':'/images/loaders/Preloader_19.gif'});
+            var $loading_message = $("<div/>").addClass("modal-loading-content").append($loading_gif);
+            var $loading = $("<div/>").addClass("modal-loading").append($loading_message);
             $("body").append($loading);
             content.then(function() {
-                $loading.remove();
                 _this.controllerFor(name).set('content', content);
                 _this.render(name, {
                     into: 'application',
                     outlet: 'modal'
                 });
+                $loading.fadeOut(1500, function(){$(this).remove()});
+                
                 
             });
             
@@ -523,10 +526,10 @@ App.LayerModalComponent = Ember.Component.extend({
         toggleFilters: function() {
             this.toggleProperty("showFilters");
             if (this.showFilters == true) {
-                $("#filter_and_searh").show();
+                $("#filter_and_search").show();
             }
             else {
-                $("#filter_and_searh").hide();
+                $("#filter_and_search").hide();
             }
         }
     },
@@ -542,7 +545,25 @@ App.LayerModalComponent = Ember.Component.extend({
             valueNames: [ 'name', 'description' ],
             indexAsync: true
         };
-                
+        
+        // Start Alpha sort
+        var $tags = $('ul.tags-dropdown'),
+        $tagsli = $tags.children('li');
+        
+        $tagsli.sort(function(a,b){
+          var an = a.text().toLowerCase(),
+              bn = b.text().toLowerCase();
+          if(an > bn) {
+            return 1;
+          }
+          if(an < bn) {
+            return -1;
+          }
+          return 0;
+        });
+        $tagsli.detach().appendTo($tags);
+        // End Alpha sort
+        
         var layerList = new List('searchableLayers', options);
                 
     }.on('didInsertElement'),
@@ -722,7 +743,7 @@ App.MapLayersComponent = Ember.Component.extend({
 App.SearchTagsComponent = Ember.Component.extend({
     
     tags: function() {
-        return  App.Tag.store.find('tag');
+        return App.Tag.store.find('tag');
     }.property(),
     
     institutions: function() {
@@ -868,5 +889,3 @@ $(document).ready(function(){
   //var layerList = new List('searchableLayers', options);
   
 });
-
-

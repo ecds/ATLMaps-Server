@@ -39,6 +39,104 @@ h6, .h6 { font-size: 12px; line-height: 20px; }
   top: 0;
 }
 
+.modal-loading{
+  top:0%;
+  left:0%;
+  position:absolute;
+  z-index:10000;
+  background: white;
+  width:100%;
+  height:100%;
+  opacity: 0.8;
+}
+
+.modal-loading-content {
+  margin: auto;
+  display: block;
+  width: 400px;
+  text-align: center;
+  top: 40%;
+  position: relative;
+  font-size: 2em;
+  color: #7B7B7B;
+}
+
+#searchableLayers .modal-header {
+  padding: 0;
+  position: relative;
+  width: 100%;
+  display: block;
+  height: 60px;
+}
+
+#searchableLayers .modal-header>.filter-heading{
+  float:left;
+  height: 100px;
+  width: 100%;
+  display: block;
+  position: relative;
+  padding: 15px;
+  margin: -21px 0;
+  background: rgb(119, 67, 208);
+  z-index: 1;
+  color: rgb(247, 247, 247);
+}
+
+#searchableLayers .modal-header>.filter-heading.active{
+  height: 150px;
+}
+
+#searchableLayers .modal-header h2,#searchableLayers .modal-header a {
+  float: left;
+  display:inline-block;
+}
+
+#searchableLayers .modal-header>.filter-heading+div{
+  position: relative;
+  bottom: 30px;
+  float: left;
+  width: 100%;
+}
+
+#searchableLayers .modal-header>.filter-heading+div nav{
+  float: left;
+  background-color: rgb(108, 61, 189);
+  padding-left: 30px;
+  width: 100%;
+  padding-top: 5px;
+}
+
+
+#searchableLayers .modal-header>.filter-heading+div form.navbar-form.navbar-left{
+  margin-top:5px;
+}
+
+#searchableLayers button.close {
+  z-index: 2;
+  position: absolute;
+  right: 15px;
+  top: -12px;
+  font-size: 2em;
+}
+
+.filter-heading .btn.rotate{
+  transition: all 0.2s;
+}
+
+.filter-heading .btn.btn-inverse{
+  color:rgb(188, 166, 226);
+}
+
+.filter-heading .btn.btn-inverse:hover{
+  color:rgb(107, 42, 216);
+}
+
+.filter-heading .btn.active{
+  transform: rotateZ(180deg);
+  box-shadow:0 -10px 10px rgba(0, 0, 0, 0.23), 0 10px 30px rgba(0, 0, 0, 0.19)!important;
+  color:rgb(107, 42, 216);
+}
+
 a:hover{
   cursor:pointer;
 }
@@ -192,10 +290,11 @@ a:hover{
 }
 .layer-list .list-group .list-group-item .row-content {
   width: 70%;
+  overflow: hidden;
 }
 
 .layer-list .list-group .list-group-item .row-action-primary .icon{
-  /*background: rgb(236, 236, 236);*/
+  background: rgb(245, 245, 245);
   display: block;
   padding: 10px;
   border-radius: 50%;
@@ -320,7 +419,7 @@ h3 .btn {
   color:#FFF;
 }
 
-.btn:not(.btn-link):not(.btn-flat).btn-add.rotate span{
+.btn:not(.btn-link):not(.btn-flat).btn.rotate span{
   transition: transform 0.2s;
 }
 
@@ -670,8 +769,8 @@ img.layerMarker {
   border-bottom-color: rgb(219, 221, 226);
 }
 
-#filter_and_searh {
-    display: none;
+#filter_and_search {
+  display: none;
 }
 
 /*img.active_marker {

@@ -246,7 +246,7 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/opacity-slider">
-          <input {{bind-attr class=":slider layer" name=layer}} {{action "opacityChange" on="change" param=layer}} value="10" data-slider-orientation="vertical" type="text"/>
+          <input style="display:none;" {{bind-attr class=":slider layer" name=layer}} {{action "opacityChange" on="change" param=layer}} value="10" data-slider-orientation="vertical" type="text"/>
           {{opacityslider}}
         </script>
         
@@ -289,11 +289,15 @@
             <div class="modal-dialog">
               <div class="modal-content" id="searchableLayers">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <a {{action 'toggleFilters'}} class="btn btn-default btn-xs pull-right"><span class="glyphicon glyphicon-filter"> </span> {{#if showFilters}}Hide{{else}}Show{{/if}} Filters</a>
-              <hr />
                 <div class="modal-header">
+                  <div {{bind-attr class=":filter-heading showFilters:active"}}>
+                    <a {{action 'toggleFilters'}} {{bind-attr class=":btn :rotate :btn-inverse :btn-fab :btn-sm showFilters:active"}}><span class="mdi-content-filter-list"> </span></a>
+                    <h2>Available Layers</h2>
+                  </div>
                   {{search-tags}}
+                  
                 </div>
+                <hr />
                 <div class="modal-body">
                   {{yield}}
                 </div>
@@ -306,7 +310,7 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/search-tags">
-          <nav class="navbar navbar-inverse" id="filter_and_searh">
+          <nav class="navbar navbar-inverse" id="filter_and_search">
             <ul class="nav navbar-nav">
             
               <li><a {{action 'sortTags' 'all'}}>All</a></li>
@@ -322,7 +326,7 @@
               
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Type <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
+                <ul class="dropdown-menu tags-dropdown" role="menu">
                   <li><a {{ action 'sortTags' 'geojson'}}>GeoJSON</a></li>
                   <li><a {{ action 'sortTags' 'planningatlanta'}}>GSU Tiles</a></li>
                   <li><a {{ action 'sortTags' 'wms'}}>WMS</a></li>
@@ -362,7 +366,9 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name='_tags'>
-          <span class="glyphicon glyphicon-tags tagsIcon"></span><ul class="list-inline">{{#each tag in layer.tag_ids}}<li>{{tag.name}}</li>{{else}}<li>Not Tagged</li>{{/each}}</ul>
+          {{#if layer.tag_ids}}
+            <span class="glyphicon glyphicon-tags tagsIcon"></span><ul class="list-inline">{{#each tag in layer.tag_ids}}<li>{{tag.name}}</li>{{/each}}</ul>
+          {{/if}}
         </script>
         
         <script type="text/x-handlebars" data-template-name='_citation'>
