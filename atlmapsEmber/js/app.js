@@ -287,7 +287,7 @@ App.ProjectRoute = Ember.Route.extend({
             projectlayer.save().then(function(){
                 // This is sort of too bad, but we need to clear the vector layers off the map
                 // otherwise they will added again
-                $("div").removeClass("vectorData");
+                $(".vectorData").remove();
                 
                 // We need to set `Counts.vectorLayer` back to zero becuase it will increment
                 // with each vector layer readded
