@@ -13,6 +13,7 @@
         <script src="../bower_components/jquery.easing/js/jquery.easing.js"></script>
         <script src="../bower_components/ember-simple-auth/simple-auth.js"></script>
         <script src="../bower_components/ember-simple-auth/simple-auth-oauth2.js"></script>
+        <script src="../bower_components/list.js/dist/list.js"></script>
         <!-- endbower -->
         <!--<script src="http://builds.emberjs.com/beta/ember-data.min.js"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ember-data.js/1.0.0-beta.12/ember-data.prod.js"></script>
@@ -125,7 +126,7 @@
                     </div>
                     {{/if}}
                 {{/if}}
-        
+                {{#each layer in allLayers}}{{layer.name}}{{/each}}
                 <h3>Active Layers {{#if isMine}}{{partial 'addLayersButton'}}{{/if}}</h3>
                 <hr/>
                 <a class="btn btn-fab btn-sm btn-material-lightgrey top-layer-button" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
@@ -194,10 +195,10 @@
 
         <script type="text/x-handlebars" data-template-name="add-layer-modal">
           {{#layer-modal title='Add Layers' close='removeModal'}}
-          {{!--input type="text" id="search-todo" placeholder="Search Layers by Name..." value=searchTerm--}}
+          <div class="list">
             {{#each layer in this}}
               {{#if layer.active}}
-                <div {{bind-attr class=":layer-list-item :row layer.tag_slugs layer.institution_slug layer.layer_type" }}>
+                <div {{bind-attr class=":layer-list-item :row :name layer.tag_slugs layer.institution.slug layer.layer_type" }}>
                   <div class="col-xs-2">
                     {{add-remove-layer-button title='Add' action='addLayer' param=layer model=model}}
                   </div>
@@ -207,15 +208,15 @@
                 </div>
               {{/if}}
             {{/each}}
+          </div>
           {{/layer-modal}}
         </script>
         
         <script type='text/x-handlebars' data-template-name='about'>
-            <div class="continer">
-              <p>ATLMaps is a collaboration between Georgia State University and Emory University. The project is in active and heavy development.</p>
-              <p>The ATLmaps project combines archival maps, geospatial data visualization, and user contributed multimedia location �pinpoints� to promote investigation into any number of issues about Atlanta.  This innovative online platform will allow users to layer an increasing number of interdisciplinary data to address the complex issues that cities pose.  The project looks to offer a framework that incorporates storytelling reliant on the geospatial data and for normalizing input across a range of data sets about Atlanta so that material can be cross-compared in novel ways, allowing users to make connections between data sources and ask questions that would not be apparent when only looking at one particular project.  The ATLmaps project will also encourage knowledgeable members of the university and local communities to curate data on the site to demonstrate the possibilities for synthesizing material across projects and data types.</p>
-
-            </div>
+          <div class="continer">
+            <p>ATLMaps is a collaboration between Georgia State University and Emory University. The project is in active and heavy development.</p>
+            <p>The ATLmaps project combines archival maps, geospatial data visualization, and user contributed multimedia location �pinpoints� to promote investigation into any number of issues about Atlanta.  This innovative online platform will allow users to layer an increasing number of interdisciplinary data to address the complex issues that cities pose.  The project looks to offer a framework that incorporates storytelling reliant on the geospatial data and for normalizing input across a range of data sets about Atlanta so that material can be cross-compared in novel ways, allowing users to make connections between data sources and ask questions that would not be apparent when only looking at one particular project.  The ATLmaps project will also encourage knowledgeable members of the university and local communities to curate data on the site to demonstrate the possibilities for synthesizing material across projects and data types.</p>
+          </div>          
         </script>
         
         <script type='text/x-handlebars' data-template-name='login'>
@@ -271,9 +272,9 @@
         
         <script type="text/x-handlebars" data-template-name="components/list-avaliable-layers">
             <span {{bind-attr class="layer.layer_type" }}</span>
-            <h4>{{layer.name}}</h4>
+            <h4 class="name">{{layer.name}}</h4>
             <p>
-              {{layer.description}}
+              <div class="description">{{layer.description}}</div>
             </p>
             <p>
               {{partial 'tags'}}
@@ -286,18 +287,18 @@
         <script type="text/x-handlebars" data-template-name="components/layer-modal">
           <div class="modal fade">
             <div class="modal-dialog">
-              <div class="modal-content">
+              <div class="modal-content" id="searchableLayers">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <a {{action 'toggleFilters'}} class="btn btn-default btn-xs pull-right"><span class="glyphicon glyphicon-filter"> </span> {{#if showFilters}}Hide{{else}}Show{{/if}} Filters</a>
+              <hr />
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                  <h4 class="modal-title">{{title}}</h4>
                   {{search-tags}}
                 </div>
-                <div class="modal-body js-isotope" id="isotopeContainer">
+                <div class="modal-body">
                   {{yield}}
                 </div>
                 <div class="modal-footer">
                   <a class="btn btn-default" data-dismiss="modal">Close</a>
-                  <a class="btn btn-primary" {{action 'ok'}}>OK</a>
                 </div>
               </div>
             </div>
@@ -305,51 +306,47 @@
         </script>
         
         <script type="text/x-handlebars" data-template-name="components/search-tags">
-          <span>Filter by:</span>
-          <div class="btn-group" role="group" aria-label="...">
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                Tags
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a {{ action 'sortTags' 'all'}}>Show All</a></li>
-                {{#each tag in tags}}
-                  <li><a {{ action 'sortTags' tag.slug }}>{{tag.name}}</a></li>
-                {{/each}}
-              </ul>
-            </div>
+          <nav class="navbar navbar-inverse" id="filter_and_searh">
+            <ul class="nav navbar-nav">
             
-            
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                Type
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a {{ action 'sortTags' 'all'}}>Show All</a></li>
-                <li><a {{ action 'sortTags' 'geojson'}}>GeoJSON</a></li>
-                <li><a {{ action 'sortTags' 'planningatlanta'}}>GSU Tiles</a></li>
-                <li><a {{ action 'sortTags' 'wms'}}>WMS</a></li>
-                <li><a {{ action 'sortTags' 'wfs'}}>WFS</a></li>
-              </ul>
-            </div>
-            
-            
-            <div class="btn-group" role="group">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                Provider
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu" role="menu">
-                <li><a {{ action 'sortTags' 'all'}}>Show All</a></li>
-                {{#each institution in institutions}}
-                  <li><a {{ action 'sortTags' institution.slug }}>{{institution.name}}</a></li>
-                {{/each}}
-              </ul>
-            </div>
-            
-          </div>
+              <li><a {{action 'sortTags' 'all'}}>All</a></li>
+              
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tags <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  {{#each tag in tags}}
+                    <li><a {{ action 'sortTags' tag.slug }}>{{tag.name}}</a></li>
+                  {{/each}}
+                </ul>
+              </li>
+              
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Type <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a {{ action 'sortTags' 'geojson'}}>GeoJSON</a></li>
+                  <li><a {{ action 'sortTags' 'planningatlanta'}}>GSU Tiles</a></li>
+                  <li><a {{ action 'sortTags' 'wms'}}>WMS</a></li>
+                  <li><a {{ action 'sortTags' 'wfs'}}>WFS</a></li>
+                </ul>
+              </li>
+              
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Provider <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  {{#each institution in institutions}}
+                    <li><a {{ action 'sortTags' institution.slug }}>{{institution.name}}</a></li>
+                  {{/each}}
+                </ul>
+              </li>
+              
+              <li>
+                <form class="navbar-form navbar-left" role="search">
+                    {{input type="text" class="search form-control" placeholder="Search" value=searchTerm}}
+                </form>
+              </li>
+              
+            </ul>          
+          </nav>
         </script>
 
         <script type="text/x-handlebars" data-template-name="components/map-layers">

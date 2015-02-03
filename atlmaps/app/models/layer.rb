@@ -10,9 +10,5 @@ class Layer < ActiveRecord::Base
   def tag_slugs
     return self.tags.map {|tag| tag.name.parameterize}.join(" ")
   end
-  
-  def institution_slug
-    return self.institution.name.parameterize
-  end
 
 end

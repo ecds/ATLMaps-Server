@@ -195,7 +195,7 @@ a:hover{
 }
 
 .layer-list .list-group .list-group-item .row-action-primary .icon{
-  background: rgb(236, 236, 236);
+  /*background: rgb(236, 236, 236);*/
   display: block;
   padding: 10px;
   border-radius: 50%;
@@ -670,6 +670,10 @@ img.layerMarker {
   border-bottom-color: rgb(219, 221, 226);
 }
 
+#filter_and_searh {
+    display: none;
+}
+
 /*img.active_marker {
 height: 100px !important;
 }*/
@@ -687,9 +691,4 @@ height: 100px !important;
   40% {opacity: 0.50;} 
   60% {opacity: 0.75;}
   100% {opacity: 1;} 
-} 
-
-.blink { 
-  -webkit-animation-name: blink; 
-  animation-name: blink; 
 }

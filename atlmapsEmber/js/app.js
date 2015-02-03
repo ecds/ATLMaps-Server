@@ -177,19 +177,22 @@ App.ProjectController = Ember.ObjectController.extend({
 App.AddLayerModalController = Ember.ArrayController.extend({
    sortProperties: ['layer_type', 'name'],
    
-   searchResult: function(){
-        var searchTerm = this.get('searchTerm');
-        var regExp = new RegExp(searchTerm,'i');
-        this.get('model').set('content',this.store.filter('layer',function(item){
-                return regExp.test(item.get('name'));
-        }));
-    }.observes('searchTerm'),
+   searchTerm: '',
+   
+   //searchResult: function(){
+   //     var searchTerm = this.get('searchTerm');
+   //     var regExp = new RegExp(searchTerm,'i');
+   //     this.get('model').set('content',this.store.filter('layer',function(item){
+   //             return regExp.test(item.get('name'));
+   //     }));
+   // }.observes('searchTerm'),
     
     actions: {
         reload: function() {
           this.get('model').reload().then(function(model) {
           });
-        },
+        }
+        
     }
 });
 
@@ -328,20 +331,33 @@ App.ProjectRoute = Ember.Route.extend({
         
         // Modal
         showModal: function(name) {
-            var content = this.store.find('layer');
-            this.controllerFor(name).set('content', content);
-            this.render(name, {
-                into: 'application',
-                outlet: 'modal'
+            
+            var _this = this;
+            var content = DS.PromiseArray.create({
+                promise: this.store.find('layer')
             });
-        },
-        showEditModal: function(name) {
-            var content = this.store.find('project', this.currentModel.id)
-            this.controllerFor(name).set('content', content);
-            this.render(name, {
-                into: 'application',
-                outlet: 'modal'
+            
+            var $loading = $("<div/>").addClass("modal-loading").css({"top":"0px","position":"absolute","z-index":10000, "background":"red", "width":"50%","height":"50%"}).html("LOADING THE MODAL!")
+            $("body").append($loading);
+            content.then(function() {
+                $loading.remove();
+                _this.controllerFor(name).set('content', content);
+                _this.render(name, {
+                    into: 'application',
+                    outlet: 'modal'
+                });
+                
             });
+            
+            // Non promise version
+            //var content = this.store.find('layer');
+            //this.controllerFor(name).set('content', content);
+            //this.render(name, {
+            //    into: 'application',
+            //    outlet: 'modal'
+            //});
+            
+            
         },
         removeModal: function() {
             this.disconnectOutlet({
@@ -495,17 +511,40 @@ App.RemoveLayerButtonComponent = Ember.Component.extend({
 });
 
 App.LayerModalComponent = Ember.Component.extend({
+    
+    showFilters: false,
+    
     actions: {
         ok: function() {
             this.$('.modal').modal('hide');
             this.sendAction('ok');
+        },
+        
+        toggleFilters: function() {
+            this.toggleProperty("showFilters");
+            if (this.showFilters == true) {
+                $("#filter_and_searh").show();
+            }
+            else {
+                $("#filter_and_searh").hide();
+            }
         }
     },
+    
+    searchTerm: '',
     
     show: function() {
         this.$('.modal').modal().on('hidden.bs.modal', function() {
             this.sendAction('close');
         }.bind(this));
+        
+        var options = {
+            valueNames: [ 'name', 'description' ],
+            indexAsync: true
+        };
+                
+        var layerList = new List('searchableLayers', options);
+                
     }.on('didInsertElement'),
 
 });
@@ -603,10 +642,12 @@ App.MapLayersComponent = Ember.Component.extend({
                             popupContent += "<img class='geojson' src='"+feature.properties.image.url+"' title='"+feature.properties.image.name+"' />"+
                                             "<span>Photo Credit: "+feature.properties.image.credit+"</span>";
                         };
+                        if (feature.properties.description) {
+                            popupContent += "<p>" + feature.properties.description + "</p>";
+                        };
                         if (feature.properties.gx_media_links) {
                             popupContent += '<iframe width="375" height="250" src="//' + feature.properties.gx_media_links + '?modestbranding=1&rel=0&showinfo=0&theme=light" frameborder="0" allowfullscreen></iframe>'
                         }
-                        popupContent += "<p>"+feature.properties.description+"</p>";
                         //layer.bindPopup(popupContent);
                         layer.on('click', function(marker) {
                             $(".shuffle-items li.item.info").remove();
@@ -679,8 +720,9 @@ App.MapLayersComponent = Ember.Component.extend({
 });
 
 App.SearchTagsComponent = Ember.Component.extend({
+    
     tags: function() {
-        return App.Tag.store.find('tag');
+        return  App.Tag.store.find('tag');
     }.property(),
     
     institutions: function() {
@@ -690,10 +732,12 @@ App.SearchTagsComponent = Ember.Component.extend({
     actions: {
         sortTags: function (filter) {
             if (filter === 'all') {
+                this.set('searchTerm', '');
+                //$('.search').val('');
                 $(".layer-list-item").show();
             }
             else {
-                $(".layer-list-item").show();
+                //$(".layer-list-item").show();
                 $(".layer-list-item").not("."+filter).fadeOut( 200, function() {
                     $(this).hide();
                 });
@@ -746,7 +790,6 @@ App.Layer = DS.Model.extend({
     tag_ids: DS.hasMany('tag', {async: true}),
     institution: DS.attr(),
     institution_id: DS.belongsTo('institution'),
-    institution_slug: DS.attr('string'),
     tag_slugs: DS.attr('string'),
     active: DS.attr('boolean')
 });
@@ -815,6 +858,15 @@ $(document).ready(function(){
       $(".active_marker").removeClass("active_marker");
     }
     shuffle.click(this);
-  })
+  });
+  
+  //var options = {
+  //  valueNames: [ 'name', 'description' ],
+  //  indexAsync: true
+  //};
+  //
+  //var layerList = new List('searchableLayers', options);
   
 });
+
+

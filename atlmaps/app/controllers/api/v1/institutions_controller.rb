@@ -1,6 +1,6 @@
 class Api::V1::InstitutionsController < ApplicationController
   def index
-    institutions = Institution.all
+    institutions = Institution.all.order('name') 
     render json: institutions
   end
   

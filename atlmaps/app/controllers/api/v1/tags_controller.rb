@@ -1,6 +1,6 @@
 class Api::V1::TagsController < ApplicationController
   def index
-    tags = Tag.all
+    tags = Tag.all.all.order('name') 
     render json: tags
   end
   
