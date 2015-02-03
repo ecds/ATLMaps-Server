@@ -16,12 +16,14 @@
   width: 22px; /*Same as marker width*/
   height: 22px; /*Same as marker height*/
   border-radius: 22px;
-  margin-left: 2px;
-  margin-top: 2px;
+  margin-left: 0;
+  margin-top: 0;
   background-repeat:no-repeat;
   background-position:center;
   display:block;
   font-size: 46px;
+  left: -13px;
+  top: -30px;
 }
 .map-marker div.icon {
   /*Icon Font*/
@@ -57,9 +59,9 @@
   width: 40px;
   height: 40px;
   position: absolute;
-  bottom: -6px;
-  right: -20px;
-  opacity:1;
+  bottom: 11px;
+  right: -16px;
+  opacity: 0.75;
 }
 
 /*Marker states*/

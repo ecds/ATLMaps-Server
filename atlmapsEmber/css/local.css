@@ -663,8 +663,10 @@ span.institution {
 }
 
 .shuffle-items li.item.info .content{
-  margin-top: -60px;
+  margin-top: -20px;
   padding-bottom: 20px;
+  overflow: hidden;
+  padding-top: 0;
 }
 
 .shuffle-items li.item.info h2{

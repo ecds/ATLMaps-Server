@@ -287,7 +287,10 @@ App.ProjectRoute = Ember.Route.extend({
             projectlayer.save().then(function(){
                 // This is sort of too bad, but we need to clear the vector layers off the map
                 // otherwise they will added again
-                $(".vectorData").remove();
+                $(".vectorData, .wmsLayer").addClass('remove_layer');
+                Ember.run.later(this, function() {
+                    $(".remove_layer").fadeOut(3000,function(){$(this).remove()});
+                }, 1500);
                 
                 // We need to set `Counts.vectorLayer` back to zero becuase it will increment
                 // with each vector layer readded
@@ -313,7 +316,11 @@ App.ProjectRoute = Ember.Route.extend({
                 App.Projectlayer.store.find('projectlayer', projectLayerID).then(function(projectlayer){
                     projectlayer.destroyRecord().then(function(){
                         //Counts.set('vectorLayer', 0)
+                        $(".vectorData, .wmsLayer").addClass('remove_layer');
                         _this.get("controller.model").reload();
+                        Ember.run.later(this, function() {
+                            $(".remove_layer").fadeOut(3000,function(){$(this).remove()});
+                        }, 1500);
                     });
                 });
 
@@ -543,10 +550,13 @@ App.LayerModalComponent = Ember.Component.extend({
         
         var options = {
             valueNames: [ 'name', 'description' ],
-            indexAsync: true
+            //indexAsync: true
         };
         var layerList = new List('searchableLayers', options);
-        
+        // This binds the search all event to the "All" filter button.
+        $("#filter_and_search .clear").on('click',function(){
+            layerList.search();
+        })
         // Start Alpha sort
         var $tags = $('ul.tags-dropdown'),
         $tagsli = $tags.children('li');
@@ -613,7 +623,7 @@ App.MapLayersComponent = Ember.Component.extend({
                         detectRetina: true
                     }).addTo(map).setZIndex(10).getContainer();
                                         
-                    $(tile).addClass(slug);
+                    $(tile).addClass(slug).addClass('wmsLayer');
 
                     break;
                 
@@ -754,11 +764,12 @@ App.SearchTagsComponent = Ember.Component.extend({
         sortTags: function (filter) {
             if (filter === 'all') {
                 this.set('searchTerm', '');
+                $("#searchableLayers input").keydown();
                 //$('.search').val('');
                 $(".layer-list-item").show();
             }
             else {
-                //$(".layer-list-item").show();
+                $(".layer-list-item").show();
                 $(".layer-list-item").not("."+filter).fadeOut( 200, function() {
                     $(this).hide();
                 });
