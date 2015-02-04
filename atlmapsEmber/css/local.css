@@ -775,6 +775,10 @@ img.layerMarker {
   display: none;
 }
 
+.publish_check {
+    margin-top: 2em;
+}
+
 /*img.active_marker {
 height: 100px !important;
 }*/

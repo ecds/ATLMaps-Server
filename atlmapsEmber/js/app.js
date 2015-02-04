@@ -161,9 +161,11 @@ App.ProjectController = Ember.ObjectController.extend({
             var project = this.get('model');
             var submittedName = project.get('name');
             var submittedDescription = project.get('description');
+            var submittedPublished = project.get('published');
 
             project.set('name', submittedName)
             project.set('description', submittedDescription);
+            project.set('published', submittedPublished);
             
             project.save().then(function(){
               $("#project_edit_form").animate({"left":"-100%"},500,"easeInQuint",function(){
@@ -670,7 +672,7 @@ App.MapLayersComponent = Ember.Component.extend({
                     function viewData(feature, layer) {
                         var popupContent = "<h2>"+feature.properties.name+"</h2>"
                         if (feature.properties.image) {
-                            popupContent += "<img class='geojson' src='"+feature.properties.image.url+"' title='"+feature.properties.image.name+"' />"+
+                            popupContent += "<a href='"+feature.properties.image.url+"' target='_blank'><img class='geojson' src='"+feature.properties.image.url+"' title='"+feature.properties.image.name+"' /></a>"+
                                             "<span>Photo Credit: "+feature.properties.image.credit+"</span>";
                         };
                         if (feature.properties.description) {

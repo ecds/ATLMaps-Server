@@ -26,8 +26,8 @@ module Atlmaps
 
     config.middleware.insert_before 0, "Rack::Cors" do
       allow do
-        origins 'atlmaps-dev.com'
-        resource '*', :headers => :any, :methods => [:get, :post, :put, :delete, :options]
+        origins 'http://atlmaps-dev.com'
+        resource '*', :headers => :any, :methods => [:get, :post, :put, :delete, :options], :max_age => 0
       end
     end
 

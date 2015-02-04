@@ -90,9 +90,9 @@
                 {{/if}}
             </div>
             <div class="container" class="project-list">
-                <h2>All Projects</h2>
+                <h2>Projects</h2>
                 {{#each project in this.model}}
-                    {{#if project.saved}}
+                    {{#if project.published}}
                         <div>
                             <div class="well square">
                             {{mine}}
@@ -182,7 +182,13 @@
               </div>
               <div class="form-group">
                 <label for="edit_description" class="form-control">Description (Max 255 Characters)</label>
-                {{textarea valueBinding="this.description" id="edit_description" class="form-control" rows="4" placeholder="Enter your project description here..."}}
+                {{textarea valueBinding="description" id="edit_description" class="form-control" rows="4" placeholder="Enter your project description here..."}}
+                
+                <div class="publish_check">
+                  <label>Publish</label>
+                  {{input type="checkbox" valueBinding="published" checked=published}}
+                </div>
+                
                 <div class="text-right">
                   <a class="btn btn-add" {{action 'updateProject'}}>Save</a>
                   <a class="btn btn-danger" {{action 'cancelUpdate'}}>Cancel</a>
