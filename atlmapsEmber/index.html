@@ -110,7 +110,7 @@
             <div class="layer-controls">
               <div class="card">
               {{mine}}
-                {{#if isMine}}<a class="btn btn-material-lightblue btn-fab btn-xs btn-flat pull-right" id="config-layers" {{action 'showEditForm'}}><span class="mdi-action-settings"></span><div class="ripple-wrapper"></div></a>{{/if}}
+                {{#if mayEdit}}<a class="btn btn-material-lightblue btn-fab btn-xs btn-flat pull-right" id="config-layers" {{action 'showEditForm'}}><span class="mdi-action-settings"></span><div class="ripple-wrapper"></div></a>{{/if}}
                 {{# if model.saved }}
                     <h1>{{model.name}}</h1>
                     <p>{{model.description}}</p>

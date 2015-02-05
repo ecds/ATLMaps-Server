@@ -96,6 +96,7 @@ App.ProjectController = Ember.ObjectController.extend({
     }.property('model.layer_ids.@each'),
     
     isMine: false,
+    mayEdit: false,
     
     mine: function() {
         var _this = this;
@@ -110,16 +111,19 @@ App.ProjectController = Ember.ObjectController.extend({
             if (_this.session.isAuthenticated == false) {
                 if (currentProject.get('user_id') == null) {
                     _this.set('isMine', true);
+                    _this.set('mayEdit', false);
                 }
                 else {
                     _this.set('isMine', false);
                 }
             }
             else if (currentProject.get('user_id') === _this.session.content.user.id) {
-                _this.set('isMine', true);    
+                _this.set('isMine', true);
+                _this.set('mayEdit', true);
             }
             else {
                 _this.set('isMine', false);
+                _this.set('mayEdit', false);
             }
         });
     }.property('model', 'this.session.content.user.id'),
