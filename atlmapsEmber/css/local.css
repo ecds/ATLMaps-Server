@@ -14,6 +14,17 @@ h4, .h4 { font-size: 18px; line-height: 20px; }
 h5, .h5 { font-size: 14px; line-height: 20px; }
 h6, .h6 { font-size: 12px; line-height: 20px; }
 
+.static_content {
+    background: white;
+    width: 65%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 5em;
+    box-shadow: 0 4px 6px 1px rgba(50, 50, 50, 0.14);
+    line-height: 1.5;
+}
+
 #base-map{
   top:0;
   left:0;

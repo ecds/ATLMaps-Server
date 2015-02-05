@@ -104,8 +104,16 @@ App.ProjectController = Ember.ObjectController.extend({
         });
         
         currentProject.then(function() {
+            // Here we want to allow unauthenticated users to be able to play with adding layers to a map
+            // without saveing a project. Basically, if the user isn't authenciated and the project isn't
+            // associated with a user, then show consider the user the owner and show the "Add Layers" button.
             if (_this.session.isAuthenticated == false) {
-                _this.set('isMine', false);
+                if (currentProject.get('user_id') == null) {
+                    _this.set('isMine', true);
+                }
+                else {
+                    _this.set('isMine', false);
+                }
             }
             else if (currentProject.get('user_id') === _this.session.content.user.id) {
                 _this.set('isMine', true);    
@@ -114,7 +122,7 @@ App.ProjectController = Ember.ObjectController.extend({
                 _this.set('isMine', false);
             }
         });
-    }.property('model'),
+    }.property('model', 'this.session.content.user.id'),
     
     // Empty property for the input filed so we can clear it later.
     projectName: '',

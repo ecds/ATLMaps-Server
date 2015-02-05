@@ -126,7 +126,7 @@
                     </div>
                     {{/if}}
                 {{/if}}
-                {{#each layer in allLayers}}{{layer.name}}{{/each}}
+                {{!--{{#each layer in allLayers}}{{layer.name}}{{/each}}--}}
                 <h3>Active Layers {{#if isMine}}{{partial 'addLayersButton'}}{{/if}}</h3>
                 <hr/>
                 <a class="btn btn-fab btn-sm btn-material-lightgrey top-layer-button" id="hide-layer-options"><span class="mdi-action-visibility-off"></span></a>
@@ -219,9 +219,11 @@
         </script>
         
         <script type='text/x-handlebars' data-template-name='about'>
-          <div class="continer">
+          <div id="banner">
+            <div class="static_content">
             <p>ATLMaps is a collaboration between Georgia State University and Emory University. The project is in active and heavy development.</p>
-            <p>The ATLmaps project combines archival maps, geospatial data visualization, and user contributed multimedia location �pinpoints� to promote investigation into any number of issues about Atlanta.  This innovative online platform will allow users to layer an increasing number of interdisciplinary data to address the complex issues that cities pose.  The project looks to offer a framework that incorporates storytelling reliant on the geospatial data and for normalizing input across a range of data sets about Atlanta so that material can be cross-compared in novel ways, allowing users to make connections between data sources and ask questions that would not be apparent when only looking at one particular project.  The ATLmaps project will also encourage knowledgeable members of the university and local communities to curate data on the site to demonstrate the possibilities for synthesizing material across projects and data types.</p>
+            <p>The ATLmaps project combines archival maps, geospatial data visualization, and user contributed multimedia location pinpoints to promote investigation into any number of issues about Atlanta.  This innovative online platform will allow users to layer an increasing number of interdisciplinary data to address the complex issues that cities pose.  The project looks to offer a framework that incorporates storytelling reliant on the geospatial data and for normalizing input across a range of data sets about Atlanta so that material can be cross-compared in novel ways, allowing users to make connections between data sources and ask questions that would not be apparent when only looking at one particular project.  The ATLmaps project will also encourage knowledgeable members of the university and local communities to curate data on the site to demonstrate the possibilities for synthesizing material across projects and data types.</p>
+            </div>
           </div>          
         </script>
         
