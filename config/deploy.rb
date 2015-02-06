@@ -34,8 +34,6 @@ set :linked_files, fetch(:linked_files, []).push('config/database.yml')
 # Default value for keep_releases is 5
 set :keep_releases, 5
 
-set :bundle_gemfile,  "atlmaps/Gemfile"
-
 namespace :deploy do
 
   after :restart, :clear_cache do
