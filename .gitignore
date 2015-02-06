@@ -1,10 +1,6 @@
 .komodotools
 *.komodoproject
 *.DS_Store
-notes.js
-form-examples.js
-app.js.crap
-atlmaps/Gemfile.lock
-node_modules
-bower_components
-atlmapsEmber/js/app-diffcontrol.js
+Gemfile.lock
+config/database.yml
+.capistrano
