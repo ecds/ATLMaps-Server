@@ -3,3 +3,4 @@
 *.DS_Store
 config/database.yml
 .capistrano
+config/initializers/devise.rb
