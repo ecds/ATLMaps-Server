@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
   
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  
   use_doorkeeper do
     # Using a custom controller for the token response so we can
     # inject a user's details.
@@ -11,6 +9,7 @@ Rails.application.routes.draw do
   devise_for :users
   
   namespace :api, path: '/', constraints: { subdomain: 'api' } do
+    mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
     namespace :v1 do
       
       with_options only: [:index, :show] do |list_show|

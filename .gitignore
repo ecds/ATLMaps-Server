@@ -4,3 +4,5 @@
 config/database.yml
 .capistrano
 config/initializers/devise.rb
+log/*
+tmp/*
