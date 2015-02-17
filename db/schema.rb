@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150201013329) do
+ActiveRecord::Schema.define(version: 20150213204643) do
 
   create_table "institutions", force: true do |t|
     t.string   "name"
@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(version: 20150201013329) do
     t.string   "twitter"
     t.boolean  "admin",                  default: false
     t.string   "encrypted_password",     default: "",    null: false
+    t.string   "authentication_token"
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"

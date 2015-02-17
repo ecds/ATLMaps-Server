@@ -6,3 +6,4 @@ config/database.yml
 config/initializers/devise.rb
 log/*
 tmp/*
+public/assets
