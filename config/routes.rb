@@ -27,7 +27,10 @@ Rails.application.routes.draw do
     end
   end
   get "/users/sign_up" => "users#new"
+  get "/users/sign_in" => "devise/sessions#new"
   post "/user" => "users#create"
+  post "/users/sign_in" => "devise/sessions#create"
+  delete "/users/sign_out" => "devise/sessions#destroy"
 
   root to: "home#index"
 end

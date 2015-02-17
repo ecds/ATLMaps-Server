@@ -9,11 +9,16 @@ class Api::V1::ProjectsController < ApplicationController
   #  headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
   #  headers['Access-Control-Max-Age'] = "1728000"
   #end
-  
+  #before_action -> { doorkeeper_authorize! :public }, only: :index
   def index
     if params[:name]
       projects = Project.where(name: params[:name])
     else
+      #logger.warn "*** current user ***"
+      if current_resource_owner
+        logger.warn current_resource_owner.displayname
+      end
+      #logger.warn "*** ^ that was the user ***"
       projects = Project.all
     end
     render json: projects
@@ -59,6 +64,10 @@ class Api::V1::ProjectsController < ApplicationController
   private
     def project_params
       params.require(:project).permit(:name, :saved, :description, :user_id, :published)
+    end
+    
+    def current_resource_owner
+      User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
     end
   
 end

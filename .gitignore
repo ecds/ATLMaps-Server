@@ -1,15 +1,10 @@
 .komodotools
 *.komodoproject
 *.DS_Store
-
-config/application.rb
 config/database.yml
-config/secrets.yml
 .capistrano
 config/initializers/devise.rb
 log/*
 tmp/*
-
-log/development.log
-
-tmp/pids/server.pid
+config/application.rb
+public/assets
