@@ -5,7 +5,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :institution
-  has_many :projects
+  
+  has_many :collaboration
+  has_many :projects, through: :collaboration, dependent: :destroy
 
   private
   
