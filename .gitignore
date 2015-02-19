@@ -4,11 +4,8 @@
 config/database.yml
 .capistrano
 config/initializers/devise.rb
-log/*
-tmp/*
-<<<<<<< HEAD
+log
+tmp
 public/assets
-=======
 config/application.rb
 public/assets
->>>>>>> develop

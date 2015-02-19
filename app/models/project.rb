@@ -11,7 +11,11 @@ class Project < ActiveRecord::Base
   end
   
   def owner
-    return self.user.displayname
+    if self.user
+      return self.user.displayname
+    else
+      return 'Guest'
+    end
   end
 
 end
