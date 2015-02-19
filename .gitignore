@@ -6,4 +6,9 @@ config/database.yml
 config/initializers/devise.rb
 log/*
 tmp/*
+<<<<<<< HEAD
 public/assets
+=======
+config/application.rb
+public/assets
+>>>>>>> develop

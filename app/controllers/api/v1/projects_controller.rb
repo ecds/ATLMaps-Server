@@ -13,12 +13,14 @@ class Api::V1::ProjectsController < ApplicationController
   def index
     if params[:name]
       projects = Project.where(name: params[:name])
+    elsif params[:published]
+      projects = Project.where(published: true)
+    elsif params[:user_id]
+      projects = Project.where(user_id: params[:user_id]).where(saved: true)
     else
-      #logger.warn "*** current user ***"
       if current_resource_owner
         logger.warn current_resource_owner.displayname
       end
-      #logger.warn "*** ^ that was the user ***"
       projects = Project.all
     end
     render json: projects

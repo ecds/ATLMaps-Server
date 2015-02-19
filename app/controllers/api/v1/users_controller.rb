@@ -1,7 +1,11 @@
 class Api::V1::UsersController < ApplicationController
   
   def index
-    @users = User.all
+    if current_resource_owner
+      @users = User.where.not(id: current_resource_owner.id)
+    else
+      @users = User.all
+    end
     render json: @users
   end
   

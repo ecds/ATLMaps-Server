@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       with_options only: [:index, :show, :create, :destroy, :update] do |crud|
         crud.resources :projects
         crud.resources :projectlayers
+        crud.resources :collaborations
       end
       
     end
