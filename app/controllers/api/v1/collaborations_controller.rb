@@ -1,7 +1,7 @@
 class Api::V1::CollaborationsController < ApplicationController
   def index
     if params[:project_id]
-      collaborations = Collaboration.where(user_id: params[:user_id]).where( project_id: params[:project_id])
+      collaborations = Collaboration.where(user_id: params[:user_id]).where( project_id: params[:project_id]).limit(1)
     else
       collaborations = Collaboration.all
     end

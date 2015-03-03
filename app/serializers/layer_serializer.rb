@@ -3,6 +3,7 @@ class LayerSerializer < ActiveModel::Serializer
   
   has_many :projects, embed: :ids
   has_many :tags, embed: :ids
+  has_many :projectlayer
   has_one :institution
   
   attributes  :id,

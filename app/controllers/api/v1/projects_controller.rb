@@ -14,13 +14,15 @@ class Api::V1::ProjectsController < ApplicationController
     if params[:name]
       projects = Project.where(name: params[:name])
     elsif params[:published]
-      projects = Project.where(published: true)
-    elsif params[:user_id]
-      projects = Project.where(user_id: params[:user_id]).where(saved: true)
-    else
       if current_resource_owner
         logger.warn current_resource_owner.displayname
       end
+      projects = Project.where(published: true)
+    elsif params[:user_id]
+      projects = Project.where(user_id: params[:user_id]).where(saved: true)
+    elsif params[:collaborations]
+      projects = Project.joins(:collaboration).where(collaborations: {user_id: current_resource_owner.id})
+    else
       projects = Project.all
     end
     render json: projects
@@ -30,8 +32,33 @@ class Api::V1::ProjectsController < ApplicationController
   end
   
   def show
-    project = Project.find(params[:id])
-    render json: project
+    @project = Project.find(params[:id])
+
+    collaborations = []
+    @project.collaboration.each do |collaborator|
+      collaborations << collaborator.user_id
+    end
+
+    if collaborations.any? and collaborations.include? current_resource_owner.id
+      @may_edit = true
+    else
+      @may_edit = false
+    end
+
+    if current_resource_owner && current_resource_owner.id == @project.user_id
+      @is_mine = true
+      @may_edit = true
+    else
+      @is_mine = false
+    end
+
+    # if current_resource_owner && self.collaborations.user_id.include? current_resource_owner.id
+    #   @may_edit = true
+    # else
+    #   @may_edit = false
+    # end
+
+    #render json: @project
     #respond_to do |format|
     #  format.json { render json: layer, status: :ok }
     #end
@@ -68,9 +95,9 @@ class Api::V1::ProjectsController < ApplicationController
       params.require(:project).permit(:name, :saved, :description, :user_id, :published)
     end
     
-    def current_resource_owner
-      User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
-    end
+    # def current_resource_owner
+    #   User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+    # end
   
 end
 

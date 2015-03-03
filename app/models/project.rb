@@ -4,7 +4,7 @@ class Project < ActiveRecord::Base
   has_many :layers, through: :projectlayer, dependent: :destroy
   belongs_to :user
   has_many :collaboration
-  has_many :users, through: :collaboration, dependent: :destroy
+  has_many :users, through: :collaboration#, dependent: :destroy
   
   def slug
     return self.name.parameterize

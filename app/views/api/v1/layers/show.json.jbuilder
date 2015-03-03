@@ -1,0 +1,21 @@
+json.layer do
+	json.id @layer.id
+	json.name @layer.name
+	json.slug @layer.slug
+	json.description @layer.description
+	json.layer @layer.layer
+	json.url @layer.url
+	json.layer_type @layer.layer_type
+	json.minzoom @layer.minzoom
+	json.maxzoom @layer.maxzoom
+	json.maxy @layer.maxy
+	json.maxx @layer.maxx
+	json.miny @layer.miny
+	json.minx @layer.minx
+	json.tag_slugs @layer.tag_slugs
+	json.tag_ids @layer.tags
+	json.active @layer.active
+	json.marker @marker
+	json.institution @layer.institution
+	json.projectlayers @layer.projectlayer
+end
