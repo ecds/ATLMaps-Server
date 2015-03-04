@@ -9,3 +9,5 @@ tmp
 public/assets
 config/application.rb
 public/assets
+
+tmp/pids/server.pid
