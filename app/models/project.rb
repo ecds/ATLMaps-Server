@@ -5,6 +5,8 @@ class Project < ActiveRecord::Base
   belongs_to :user
   has_many :collaboration
   has_many :users, through: :collaboration#, dependent: :destroy
+
+  default_scope {includes(:projectlayer)}
   
   def slug
     return self.name.parameterize

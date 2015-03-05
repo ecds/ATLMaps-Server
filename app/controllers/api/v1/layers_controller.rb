@@ -7,7 +7,8 @@ class Api::V1::LayersController < ApplicationController
       puts marker[:marker]
       @layers = Layer.all
     else
-      @layers = Layer.all
+      @layers = Layer.all.includes(:projectlayer, :tags, :institution)
+      #@layers = Layer.all
     end
     render json: @layers
   end
