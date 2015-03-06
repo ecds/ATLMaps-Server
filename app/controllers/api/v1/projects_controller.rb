@@ -39,17 +39,19 @@ class Api::V1::ProjectsController < ApplicationController
       collaborations << collaborator.user_id
     end
 
-    if collaborations.any? and collaborations.include? current_resource_owner.id
-      @may_edit = true
-    else
-      @may_edit = false
-    end
+    if current_resource_owner
+      if collaborations.any? and collaborations.include? current_resource_owner.id
+        @may_edit = true
+      else
+        @may_edit = false
+      end
 
-    if current_resource_owner && current_resource_owner.id == @project.user_id
-      @is_mine = true
-      @may_edit = true
-    else
-      @is_mine = false
+      if current_resource_owner && current_resource_owner.id == @project.user_id
+        @is_mine = true
+        @may_edit = true
+      else
+        @is_mine = false
+      end
     end
 
     # if current_resource_owner && self.collaborations.user_id.include? current_resource_owner.id
