@@ -1,3 +1,4 @@
 class CollaborationSerializer < ActiveModel::Serializer
-  attributes :id, :user_id, :project_id
+	#has_many :user
+  attributes :id, :user_id, :project_id, :user
 end

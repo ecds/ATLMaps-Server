@@ -20,4 +20,8 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def self.find_by_param(input)
+    find_by_slug(input)
+  end
+
 end

@@ -11,3 +11,5 @@ config/application.rb
 public/assets
 log/development.log
 tmp/pids/server.pid
+npm-debug.log
+node_modules
