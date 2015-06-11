@@ -6,7 +6,7 @@ gem 'rails', '4.1.7'
 # Use mysql as the database for Active Record
 gem 'mysql2'
 
-gem 'active_model_serializers'
+gem 'active_model_serializers', '~> 0.10.0.rc1'
 
 gem 'devise'
 gem 'doorkeeper'
@@ -33,7 +33,7 @@ gem 'rack-cors'
 
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.0'
+#gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
 

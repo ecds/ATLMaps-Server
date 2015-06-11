@@ -10,20 +10,20 @@ class Api::V1::LayersController < ApplicationController
       @layers = Layer.all.includes(:projectlayer, :tags, :institution)
       #@layers = Layer.all
     end
-    render json: @layers
+    render json: @layers, root: 'layers'
   end
   
   def show
-    if params[:project_id]
-      foo = Projectlayer.where(layer_id: params[:id]).where( project_id: params[:project_id]).limit(1)
-      foo.each do |marker|
-        @marker = marker.marker
-      end
-      @layer = Layer.find(params[:id])
-    else
-      @layer = Layer.find(params[:id])
-    end
-    render json: @layer
+    # if params[:project_id]
+    #   foo = Projectlayer.where(layer_id: params[:id]).where( project_id: params[:project_id]).limit(1)
+    #   foo.each do |marker|
+    #     @marker = marker.marker
+    #   end
+    #   @layer = Layer.find(params[:id])
+    # else
+      layer = Layer.find(params[:id])
+    #end
+    render json: layer, root: 'layer'
     #respond_to do |format|
     #  format.json { render json: layer, status: :ok }
     #end

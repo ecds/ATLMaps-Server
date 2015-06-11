@@ -1,21 +1,10 @@
 class Api::V1::ProjectsController < ApplicationController
 
-  #after_filter :cors_set_access_control_headers
-  #
-  ## For all responses in this controller, return the CORS access control headers.
-  #def cors_set_access_control_headers
-  #  headers['Access-Control-Allow-Origin'] = '*'
-  #  headers['Access-Control-Allow-Headers'] = 'X-AUTH-TOKEN, X-API-VERSION, X-Requested-With, Content-Type, Accept, Origin'
-  #  headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-  #  headers['Access-Control-Max-Age'] = "1728000"
-  #end
-  #before_action -> { doorkeeper_authorize! :public }, only: :index
   def index
     if params[:name]
       projects = Project.where(name: params[:name])
     elsif params[:published]
       if current_resource_owner
-        logger.warn current_resource_owner.displayname
       end
       projects = Project.where(published: true)
     elsif params[:user_id]
@@ -25,7 +14,8 @@ class Api::V1::ProjectsController < ApplicationController
     else
       projects = Project.all
     end
-    render json: projects
+
+    render json: projects, root: 'projects', resource_owner: owner_id
     #respond_to do |format|
     #  format.json { render json: projects, status: :ok }
     #end
@@ -38,46 +28,18 @@ class Api::V1::ProjectsController < ApplicationController
       #@project = Project.where(name: params[:id])
     #end
 
-    collaborations = []
-    @project.collaboration.each do |collaborator|
-      collaborations << collaborator.user_id
-    end
+    # if current_resource_owner
+    #   @may_edit = is_collaborator
 
-    if current_resource_owner
-      if collaborations.any? and collaborations.include? current_resource_owner.id
-        @may_edit = true
-      else
-        @may_edit = false
-      end
+    #   @is_mine = is_mine
 
-      if current_resource_owner && current_resource_owner.id == @project.user_id
-        @is_mine = true
-        @may_edit = true
-      else
-        @is_mine = false
-      end
-    else
-      if @project.owner == 'Guest'
-        @may_edit = true
-      end
-    end
-
-    # if current_resource_owner && self.collaborations.user_id.include? current_resource_owner.id
-    #   @may_edit = true
     # else
-    #   @may_edit = false
+    #   if @project.owner == 'Guest'
+    #     @may_edit = true
+    #   end
     # end
+    render json: @project, root: 'project', resource_owner: owner_id
 
-    #render json: @project
-    #respond_to do |format|
-    #  format.json { render json: layer, status: :ok }
-    #end
-    #@project = Project.find(params[:id])
-    #@layer_ids = []
-    #layers = Projectlayer.select(:layer_id).where(:project_id => params[:id])
-    #layers.each do |layer|
-    #  @layer_ids << layer.layer_id
-    #end
   end
 
   def create
@@ -101,9 +63,42 @@ class Api::V1::ProjectsController < ApplicationController
   end
 
   private
+
     def project_params
       params.require(:project).permit(:name, :saved, :description, :user_id, :published)
     end
+
+    def owner_id
+      # if current_resource_owner
+      #   return current_resource_owner.id
+      # else
+      #   return 0
+      # end
+      return current_resource_owner ? current_resource_owner.id : 0
+    end
+
+    def is_mine
+      if current_resource_owner && current_resource_owner.id == @project.user_id
+        return true
+      else
+        return false
+      end
+    end
+
+    def is_collaborator
+      collaborations = []
+      @project.collaboration.each do |collaborator|
+        collaborations << collaborator.user_id
+      end
+      if collaborations.any? and collaborations.include? current_resource_owner.id
+        return true
+      elsif is_mine
+        return true
+      else
+        return false
+      end
+    end
+          
 
     # def current_resource_owner
     #   User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token

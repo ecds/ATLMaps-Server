@@ -1,9 +1,9 @@
 class LayerSerializer < ActiveModel::Serializer
   #embed :ids # this is key for the Ember data to work.
   
-  #has_many :projects, embed: :ids
+  has_many :projects, embed: :ids
   has_many :tags, embed: :ids
-  has_many :projectlayer
+  #has_many :projectlayer
   has_one :institution
   
   attributes  :id,

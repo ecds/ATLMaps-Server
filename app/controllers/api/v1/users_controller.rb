@@ -10,12 +10,12 @@ class Api::V1::UsersController < ApplicationController
       #@users = User.where.not('project_id' => params[:project_id])
       @users = User.all
     end
-    render json: @users
+    render json: @users, root: 'users'
   end
   
   def show
     @user = User.find(params[:id])
-    render json: @user
+    render json: @user, root: 'user'
     #respond_to do |format|
     #  format.json { render json: layer, status: :ok }
     #end
