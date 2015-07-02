@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217192031) do
+ActiveRecord::Schema.define(version: 20150702163815) do
 
   create_table "collaborations", force: true do |t|
     t.integer  "project_id"
@@ -105,6 +105,7 @@ ActiveRecord::Schema.define(version: 20150217192031) do
   create_table "projectlayers", force: true do |t|
     t.integer  "layer_id"
     t.integer  "project_id"
+    t.integer  "position"
     t.string   "marker"
     t.string   "layer_type"
     t.datetime "created_at"
@@ -126,11 +127,63 @@ ActiveRecord::Schema.define(version: 20150217192031) do
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
+  create_table "raster_layer_projects", force: true do |t|
+    t.integer  "raster_layer_id"
+    t.integer  "project_id"
+    t.integer  "marker"
+    t.string   "layer_type"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "raster_layer_projects", ["project_id"], name: "index_raster_layer_projects_on_project_id", using: :btree
+  add_index "raster_layer_projects", ["raster_layer_id"], name: "index_raster_layer_projects_on_raster_layer_id", using: :btree
+
+  create_table "raster_layers", force: true do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.string   "keywords"
+    t.string   "description"
+    t.string   "url"
+    t.string   "layer"
+    t.datetime "date"
+    t.string   "layer_type"
+    t.integer  "minzoom"
+    t.integer  "maxzoom"
+    t.decimal  "minx",           precision: 10, scale: 8
+    t.decimal  "miny",           precision: 10, scale: 8
+    t.decimal  "maxx",           precision: 10, scale: 8
+    t.decimal  "maxy",           precision: 10, scale: 8
+    t.boolean  "active",                                  default: true
+    t.integer  "institution_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "raster_layers", ["institution_id"], name: "index_raster_layers_on_institution_id", using: :btree
+
+  create_table "raster_layers_tags", force: true do |t|
+    t.integer "raster_layer_id"
+    t.integer "tag_id"
+  end
+
+  add_index "raster_layers_tags", ["raster_layer_id"], name: "index_raster_layers_tags_on_raster_layer_id", using: :btree
+  add_index "raster_layers_tags", ["tag_id"], name: "index_raster_layers_tags_on_tag_id", using: :btree
+
   create_table "tags", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "tags_vector_layers", force: true do |t|
+    t.integer "vector_layer_id"
+    t.integer "tag_id"
+  end
+
+  add_index "tags_vector_layers", ["tag_id"], name: "index_tags_vector_layers_on_tag_id", using: :btree
+  add_index "tags_vector_layers", ["vector_layer_id"], name: "index_tags_vector_layers_on_vector_layer_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "username"
@@ -156,5 +209,41 @@ ActiveRecord::Schema.define(version: 20150217192031) do
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["institution_id"], name: "index_users_on_institution_id", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "vector_layer_projects", force: true do |t|
+    t.integer  "vector_layer_id"
+    t.integer  "project_id"
+    t.integer  "marker"
+    t.string   "layer_type"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "vector_layer_projects", ["project_id"], name: "index_vector_layer_projects_on_project_id", using: :btree
+  add_index "vector_layer_projects", ["vector_layer_id"], name: "index_vector_layer_projects_on_vector_layer_id", using: :btree
+
+  create_table "vector_layers", force: true do |t|
+    t.string   "name"
+    t.string   "slug"
+    t.string   "keywords"
+    t.string   "description"
+    t.string   "url"
+    t.string   "layer"
+    t.datetime "date"
+    t.string   "layer_type"
+    t.integer  "minzoom"
+    t.integer  "maxzoom"
+    t.decimal  "minx",           precision: 10, scale: 8
+    t.decimal  "miny",           precision: 10, scale: 8
+    t.decimal  "maxx",           precision: 10, scale: 8
+    t.decimal  "maxy",           precision: 10, scale: 8
+    t.boolean  "active",                                  default: true
+    t.integer  "institution_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "vector_layers", ["institution_id"], name: "index_vector_layers_on_institution_id", using: :btree
 
 end

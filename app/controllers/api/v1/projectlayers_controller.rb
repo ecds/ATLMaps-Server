@@ -1,8 +1,10 @@
 class Api::V1::ProjectlayersController < ApplicationController
 
   def index
-    if params[:project_id]
+    if params[:layer_id]
       projectlayers = Projectlayer.where(layer_id: params[:layer_id]).where( project_id: params[:project_id])
+    elsif params[:project_id]
+      projectlayers = Projectlayer.where( project_id: params[:project_id])
     else
       projectlayers = Projectlayer.all
     end
@@ -30,7 +32,7 @@ class Api::V1::ProjectlayersController < ApplicationController
   
   private
     def projectlayer_params
-      params.require(:projectlayer).permit(:project_id, :layer_id, :marker, :layer_type)
+      params.require(:projectlayer).permit(:project_id, :layer_id, :marker, :layer_type, :position)
     end
     
 end

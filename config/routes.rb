@@ -14,6 +14,8 @@ Rails.application.routes.draw do
       
       with_options only: [:index, :show] do |list_show|
         list_show.resources :layers
+        list_show.resources :raster_layers, :path => "rasterLayers"
+        list_show.resources :vector_layers, :path => "vectorLayers"
         list_show.resources :tags
         list_show.resources :institutions
         list_show.resources :users
@@ -22,6 +24,8 @@ Rails.application.routes.draw do
       with_options only: [:index, :show, :create, :destroy, :update] do |crud|
         crud.resources :projects
         crud.resources :projectlayers
+        crud.resources :raster_layer_projects, :path => "rasterLayerProjects"
+        crud.resources :vector_layer_projects, :path => "vectorLayerProjects"
         crud.resources :collaborations
       end
       
