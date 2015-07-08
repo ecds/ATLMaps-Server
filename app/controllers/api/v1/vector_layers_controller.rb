@@ -1,7 +1,14 @@
 class Api::V1::VectorLayersController < ApplicationController
   def index
-    @layers = VectorLayer.all.includes(:projectlayer, :tags, :institution)
-    render json: @layers, root: 'vector_layers'
+
+  	@layers = VectorLayer.all.includes(:projects, :tags, :institution)
+
+  	if params[:projectID]
+    	render json: @layers, root: 'vector_layers', project_id: params[:projectID]
+    else
+    	render json: @layers, root: 'vector_layers', project_id: 0
+    end
+
   end
   
   def show
@@ -14,7 +21,7 @@ class Api::V1::VectorLayersController < ApplicationController
     # else
       layer = VectorLayer.find(params[:id])
     #end
-    render json: layer, root: 'vector_layer'
+    render json: layer, root: 'vector_layer' 
     #respond_to do |format|
     #  format.json { render json: layer, status: :ok }
     #end
