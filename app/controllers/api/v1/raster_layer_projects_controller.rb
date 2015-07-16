@@ -7,18 +7,30 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
     else
       projectlayers = RasterLayerProject.all
     end
-    puts projectlayers
+
     render json: projectlayers, root: 'raster_layer_projects'
   end
   
   def show
-    @projectlayer = RasterLayerProject.find(params[:id])
+    if params[:raster_layer_id]
+        @projectlayer = RasterLayerProject.where(raster_layer_id: params[:raster_layer_id]).where( project_id: params[:project_id])
+    else
+        @projectlayer = RasterLayerProject.find(params[:id])
+    end
+
     render json: @projectlayer, root: 'raster_layer_project'
   end
 
   def create
     projectlayer = RasterLayerProject.new(raster_layer_project_params)
     if projectlayer.save
+      head 204
+    end
+  end
+
+  def update
+    project = RasterLayerProject.find(params[:id])
+    if project.update(raster_layer_project_params)
       head 204
     end
   end
@@ -30,8 +42,8 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
   end
   
   private
-    def projectlayer_params
-      params.require(:raster_layer_projectraster_layer_id).permit(:project_id, :raster_layer_id, :layer_type, :position)
+    def raster_layer_project_params
+      params.require(:rasterLayerProject).permit(:project_id, :raster_layer_id, :layer_type, :position)
     end
     
 end

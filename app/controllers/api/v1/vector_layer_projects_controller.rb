@@ -7,7 +7,7 @@ class Api::V1::VectorLayerProjectsController < ApplicationController
     else
       projectlayers = VectorLayerProject.all
     end
-    puts projectlayers
+
     render json: projectlayers, root: 'vector_layer_project'
   end
   
@@ -30,8 +30,8 @@ class Api::V1::VectorLayerProjectsController < ApplicationController
   end
   
   private
-    def projectlayer_params
-      params.require(:vector_layer_project).permit(:project_id, :vector_layer_id, :marker, :layer_type, :position)
+    def vector_layer_project_params
+      params.require(:vectorLayerProject).permit(:project_id, :vector_layer_id, :marker, :layer_type, :position)
     end
     
 end
