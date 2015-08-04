@@ -5,8 +5,6 @@ class RasterLayer < ActiveRecord::Base
   belongs_to :institution
   
   has_and_belongs_to_many :tags, dependent: :destroy
-
-  #default_scope :include => raster_layer_projects#, :order => "raster_layer_projects.position DESC"
   
   # Attribute to use for html classes
   def tag_slugs

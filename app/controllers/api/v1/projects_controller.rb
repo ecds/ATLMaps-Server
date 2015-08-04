@@ -3,16 +3,12 @@ class Api::V1::ProjectsController < ApplicationController
   def index
     if params[:name]
       projects = Project.where(name: params[:name])
-    elsif params[:published]
-      if current_resource_owner
-      end
-      projects = Project.where(published: true)
     elsif params[:user_id]
-      projects = Project.where(user_id: params[:user_id]).where(saved: true)
+      projects = Project.where(user_id: params[:user_id])
     elsif params[:collaborations]
       projects = Project.joins(:collaboration).where(collaborations: {user_id: current_resource_owner.id})
     else
-      projects = Project.all
+      projects = Project.where(published: true)
     end
 
     render json: projects, root: 'projects', resource_owner: owner_id
