@@ -51,6 +51,9 @@ gem 'capistrano-rails', group: :development
 gem 'capistrano-passenger', group: :development
 gem 'seed_dump', group: :development
 
+gem 'httparty'
+gem 'nokogiri'
+
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
