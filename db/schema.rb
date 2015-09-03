@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150828201848) do
+ActiveRecord::Schema.define(version: 20150903170534) do
 
   create_table "collaborations", force: true do |t|
     t.integer  "project_id"
@@ -118,11 +118,12 @@ ActiveRecord::Schema.define(version: 20150828201848) do
   create_table "projects", force: true do |t|
     t.string   "name"
     t.string   "description"
-    t.decimal  "center_lat",  precision: 10, scale: 8, default: 33.754401, null: false
-    t.decimal  "center_lng",  precision: 10, scale: 8, default: -84.38981, null: false
-    t.integer  "zoom_level",                           default: 13,        null: false
-    t.boolean  "saved",                                default: false
-    t.boolean  "published",                            default: false
+    t.decimal  "center_lat",       precision: 10, scale: 8, default: 33.754401, null: false
+    t.decimal  "center_lng",       precision: 10, scale: 8, default: -84.38981, null: false
+    t.integer  "zoom_level",                                default: 13,        null: false
+    t.string   "default_base_map",                          default: "street",  null: false
+    t.boolean  "saved",                                     default: false
+    t.boolean  "published",                                 default: false
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
