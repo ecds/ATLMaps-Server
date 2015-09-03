@@ -11,6 +11,7 @@ class ProjectSerializer < ActiveModel::Serializer
               :center_lat,
               :center_lng,
               :zoom_level,
+              :default_base_map,
         			:saved,
         			:published,
         			:slug,
