@@ -31,7 +31,7 @@ set :ssh_options, {
   auth_methods: %w(publickey)
 }
 
-set :branch, "master"
+set :branch, "develop"
 
 # And/or per server (overrides global)
 # ------------------------------------
