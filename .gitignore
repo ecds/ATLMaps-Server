@@ -13,3 +13,4 @@ log/development.log
 tmp/pids/server.pid
 npm-debug.log
 node_modules
+lib/tasks/gs_harvest.rake
