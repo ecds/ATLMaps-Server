@@ -1,7 +1,7 @@
-# Controller for rendering projects.
+# app/controllers/api/v1/projects_controller.rb
 module Api
   module V1
-    # foo
+    # Controller for repersenting projects
     class ProjectsController < ApplicationController
       # class for Controller
       def index
@@ -23,10 +23,10 @@ module Api
         # Only return the project if it is published, the user is the owner
         # or the user is a collaborator.
         @project = Project.find(params[:id])
-        if @project.published == true || is_mine == true || is_collaborator == true
+        if @project.published == true || mine == true || collaborator == true
           render json: @project, root: 'project', resource_owner: owner_id
         else
-          render json: {}, status: 401
+          head 401
         end
       end
 
@@ -34,6 +34,8 @@ module Api
         project = Project.new(project_params)
         if project.save
           head 204
+        else
+          head 500
         end
       end
 
@@ -41,6 +43,8 @@ module Api
         project = Project.find(params[:id])
         if project.update(project_params)
           head 204
+        else
+          head 500
         end
       end
 
@@ -50,21 +54,23 @@ module Api
           project.destroy
           head 204
         else
-          render json: {}, status: 401
+          head 401
         end
       end
 
       private
 
       def project_params
-        params.require(:project).permit(:name, :saved, :description, :center_lat, :center_lng, :zoom_level, :default_base_map, :user_id, :published)
+        params.require(:project).permit(
+          :name, :saved, :description, :center_lat, :center_lng, :zoom_level,
+          :default_base_map, :user_id, :published)
       end
 
       def owner_id
         current_resource_owner ? current_resource_owner.id : 0
       end
 
-      def is_mine
+      def mine
         if current_resource_owner && current_resource_owner.id == @project.user_id
           return true
         else
@@ -72,14 +78,11 @@ module Api
         end
       end
 
-      def is_collaborator
-        collaborations = []
-        @project.collaboration.each do |collaborator|
-          collaborations << collaborator.user_id
-        end
+      def collaborator
+        collaborations = @project.collaboration
         if collaborations.any? and collaborations.include? current_resource_owner.id
-          return true
-        elsif is_mine
+          return false
+        elsif mine
           return true
         else
           return false
