@@ -14,3 +14,6 @@ tmp/pids/server.pid
 npm-debug.log
 node_modules
 lib/tasks/gs_harvest.rake
+db/seeds.rb
+atlmaps.load
+atlmaps.sql

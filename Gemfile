@@ -4,7 +4,9 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.7'
 # Use mysql as the database for Active Record
-gem 'mysql2'
+gem 'pg'
+
+gem 'pg_search'
 
 gem 'active_model_serializers', '~> 0.10.0.rc1'
 
@@ -56,5 +58,3 @@ gem 'nokogiri'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
-

@@ -91,7 +91,6 @@ GEM
     minitest (5.4.3)
     multi_json (1.10.1)
     multi_xml (0.5.5)
-    mysql2 (0.3.17)
     nested_form (0.3.2)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -100,6 +99,11 @@ GEM
     nokogiri (1.6.5)
       mini_portile (~> 0.6.0)
     orm_adapter (0.5.0)
+    pg (0.18.3)
+    pg_search (1.0.5)
+      activerecord (>= 3.1)
+      activesupport (>= 3.1)
+      arel
     rack (1.5.2)
     rack-cors (0.2.9)
     rack-pjax (0.8.0)
@@ -198,8 +202,9 @@ DEPENDENCIES
   httparty
   jquery-rails
   json
-  mysql2
   nokogiri
+  pg
+  pg_search
   rack-cors
   rails (= 4.1.7)
   rails_admin
