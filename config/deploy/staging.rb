@@ -32,6 +32,7 @@ set :ssh_options, {
 }
 
 set :branch, "develop"
+set :deploy_to, '/data/rails/atlmaps'
 #
 # And/or per server (overrides global)
 # ------------------------------------
