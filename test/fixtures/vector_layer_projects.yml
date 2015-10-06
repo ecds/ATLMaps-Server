@@ -1,11 +1,27 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+one:
+  vector_layer_id: 1
+  project_id: 1
+  marker: 1
+  layer_type: geojson
+  position: 0
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+two:
+  vector_layer_id: 2
+  project_id: 1
+  marker: 2
+  layer_type: geojson
+  position: 0
+
+three:
+  vector_layer_id: 1
+  project_id: 2
+  marker: 3
+  layer_type: geojson
+  position: 0
+
+four:
+  vector_layer_id: 3
+  project_id: 2
+  marker: 4
+  layer_type: geojson
+  position: 0

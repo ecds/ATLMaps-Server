@@ -1,11 +1,55 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+one:
+  id: 1
+  name: Atlanta Airport 1967
+  slug: atlanta-airport-1967
+  keywords: foo, bar, baz
+  description: This topographic map of the Atlanta Airport
+  url: http://www.atlmaps.com/geoserver/atlmaps/wms
+  layer: atlpm0380_geo
+  date: null
+  layer_type: wms
+  minzoom: null
+  maxzoom: null
+  minx: -84.46091263
+  miny: 33.61212486
+  maxx: -84.37832072
+  maxy: 33.66527065
+  active: true
+  institution_id: 1
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+two:
+  id: 2
+  name: Bird's-eye-view
+  slug: bird's-eye-view
+  description: Birds eye view of the city of Atlanta
+  url: http://www.atlmaps.com/geoserver/atlmaps/wms
+  layer: atl1871
+  date: null
+  layer_type: wms
+  minzoom: 12
+  maxzoom: 18
+  minx: -84.41308472
+  miny: 33.73061309
+  maxx: -84.37179754
+  maxy: 33.77218988
+  active: false
+  institution_id: 2
+
+three:
+  id: 3
+  name: Butler Street Urban Redevelopment Area
+  slug: butler-street
+  keywords: Atlanta, Urban Renewal, Highways/Roads
+  description: Depicts streets to be vacated and existing streets to remain.
+  url: http://www.atlmaps.com/geoserver/atlmaps/wms
+  layer: atlpm0031d
+  date: null
+  layer_type: planningatlanta
+  minzoom: 13
+  maxzoom: 19
+  minx: 33.7472176
+  miny: -84.39013398
+  maxx: 33.76605777
+  maxy: -84.36198187
+  active: true
+  institution_id: 1

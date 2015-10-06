@@ -81,7 +81,8 @@ module Api
       def collaborator
         collaborations = @project.collaboration
         if collaborations.any? and collaborations.include? current_resource_owner.id
-          return false
+          puts current_resource_owner.id
+          return true
         elsif mine
           return true
         else

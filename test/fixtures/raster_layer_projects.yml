@@ -1,11 +1,27 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+one:
+  raster_layer_id: 1
+  project_id: 1
+  marker: null
+  layer_type: wms
+  position: 0
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+two:
+  raster_layer_id: 2
+  project_id: 1
+  marker: null
+  layer_type: planningatlanta
+  position: 1
+
+three:
+  raster_layer_id: 1
+  project_id: 2
+  marker: null
+  layer_type: wms
+  position: 0
+
+four:
+  raster_layer_id: 3
+  project_id: 2
+  marker: null
+  layer_type: wms
+  position: 1

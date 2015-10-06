@@ -1,0 +1,21 @@
+one:
+  id: 1
+  resource_owner_id: 1
+  application_id: nul
+  token: a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf
+  refresh_token: null
+  expires_in: 7200
+  created_at: <%= Time.now %>
+  revoked_at: null
+  scopes: public
+
+two:
+  id: 2
+  resource_owner_id: 2
+  application_id: null
+  token: 57dd83d2396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13
+  refresh_token: null
+  expires_in: 7200
+  created_at: <%= Time.now %>
+  revoked_at: null
+  scopes: public

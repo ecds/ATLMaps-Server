@@ -1,0 +1,9 @@
+one:
+  id: 1
+  raster_layer_id: 3
+  tag_id: 3
+
+two:
+  id: 2
+  raster_layer_id: 3
+  tag_id: 4

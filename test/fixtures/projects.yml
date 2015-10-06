@@ -1,11 +1,59 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+one:
+  id: 1
+  name: I'm From Here
+  description: In her memoir, Hannah Palmer explores how the growing
+  center_lat: 33.75453103
+  center_lng: -84.38976288
+  zoom_level: 13
+  default_base_map: satellite
+  saved: true
+  published: true
+  user_id: 2
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+two:
+  id: 2
+  name: Neat Project
+  description: Fanny pack four loko tattooed cliche actually, fixie
+  center_lat: 33.76147069
+  center_lng: -84.24264908
+  zoom_level: 15
+  default_base_map: street
+  saved: false
+  published: false
+  user_id: 1
+
+three:
+  id: 3
+  name: 1928 Atlas
+  description: null
+  center_lat: 33.754401
+  center_lng: -84.38981
+  zoom_level: 13
+  default_base_map: street
+  saved: true
+  published: true
+  user_id: 1
+
+four:
+  id: 4
+  name: Some Other Project
+  description: blah blah blah
+  center_lat: 33.754401
+  center_lng: -84.38981
+  zoom_level: 13
+  default_base_map: street
+  saved: false
+  published: false
+  user_id: 2
+
+five:
+  id: 5
+  name: One Last Project
+  description: blah blah blah
+  center_lat: 33.754401
+  center_lng: -84.38981
+  zoom_level: 13
+  default_base_map: street
+  saved: true
+  published: true
+  user_id: 2

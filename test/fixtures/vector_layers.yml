@@ -1,11 +1,56 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+one:
+  id: 1
+  name: Mountain View / Airport Points of Interest
+  slug: mountain-view
+  keywords: airport, Mountain View
+  description: hello there
+  url: /assets/data/hannahspoints.json
+  layer: hannahspoints
+  date: null
+  layer_type: geojson
+  minzoom: null
+  maxzoom: null
+  minx: null
+  miny: null
+  maxx: null
+  maxy: null
+  active: true
+  institution_id: 1
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+two:
+  id: 2
+  name: Historic Downtown Atlanta
+  slug: historic-downtown-atlanta
+  keywords: atlanta, historic downtown
+  description: Mixtape kitsch freegan
+  url: /assets/data/historicdowntown.json
+  layer: historicdowntown
+  date: null
+  layer_type: geojson
+  minzoom: null
+  maxzoom: null
+  minx: null
+  miny: null
+  maxx: null
+  maxy: null
+  active: true
+  institution_id: 2
+
+three:
+  id: 3
+  name: Living Walls - 2010
+  slug: living-walls-2010
+  keywords: atlanta, living walls, street art
+  description: hello world
+  url: /assets/data/livingwalls_2010.json
+  layer: livingwalls_2010
+  date: null
+  layer_type: geojson
+  minzoom: null
+  maxzoom: null
+  minx: null
+  miny: null
+  maxx: null
+  maxy: null
+  active: false
+  institution_id: 1
