@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class InstitutionTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "slug attibute shold be parameterized" do
+    institution = Institution.find(1)
+    assert_equal 'emory-university', institution.slug
+  end
 end

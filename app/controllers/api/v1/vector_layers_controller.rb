@@ -1,7 +1,7 @@
 class Api::V1::VectorLayersController < ApplicationController
   def index
 
-  	@layers = VectorLayer.all.includes(:projects, :tags, :institution)
+  	@layers = VectorLayer.where(active: true).includes(:projects, :tags, :institution)
 
   	if params[:projectID]
     	render json: @layers, root: 'vector_layers', project_id: params[:projectID]
@@ -20,12 +20,13 @@ class Api::V1::VectorLayersController < ApplicationController
     #end
   end
 
-  def update
-    project = Project.find(params[:id])
-    if project.update_attributes(params[:name])
-      head 204, location: project
-    end
-  end
+  # I don't think we need this anymore
+  # def update
+  #   project = Project.find(params[:id])
+  #   if project.update_attributes(params[:name])
+  #     head 204, location: project
+  #   end
+  # end
 
   #private
   #  def project_params

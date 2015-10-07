@@ -5,13 +5,6 @@ one:
   layer_type: geojson
   position: 0
 
-two:
-  vector_layer_id: 2
-  project_id: 1
-  marker: 2
-  layer_type: geojson
-  position: 0
-
 three:
   vector_layer_id: 1
   project_id: 2

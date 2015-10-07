@@ -1,9 +1,9 @@
 class Api::V1::RasterLayersController < ApplicationController
 	def index
-		if params[:raster_layer]
-			@layers = RasterLayer.where(layer: params[:layer])
-		elsif params[:query]
-			puts "**************hello there*********"
+		# Not sure this is still needed
+		# if params[:raster_layer]
+		# 	@layers = RasterLayer.where(layer: params[:layer])
+		if params[:query]
 			@layers = RasterLayer.text_search(params[:query])
 		else
 			@layers = RasterLayer.where(active: true).includes(:projects, :tags, :institution)
@@ -22,11 +22,13 @@ class Api::V1::RasterLayersController < ApplicationController
 
 	def show
 		layer = RasterLayer.find(params[:id])
-		if params[:projectID]
-			render json: layer, root: 'raster_layer', project_id: params[:projectID]
-		else
-			render json: layer, root: 'raster_layer'
-		end
+		# Not sure this conditional is still needed
+		# if params[:projectID]
+		# 	render json: layer, root: 'raster_layer', project_id: params[:projectID]
+		# else
+		# 	render json: layer, root: 'raster_layer'
+		# end
+		render json: layer, root: 'raster_layer'
 	end
 
 end

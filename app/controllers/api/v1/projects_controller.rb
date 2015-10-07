@@ -32,19 +32,27 @@ module Api
 
       def create
         project = Project.new(project_params)
-        if project.save
-          head 204
+        if current_resource_owner
+          if project.save
+            head 201
+          else
+            head 500
+          end
         else
-          head 500
+          head 401
         end
       end
 
       def update
-        project = Project.find(params[:id])
-        if project.update(project_params)
-          head 204
+        @project = Project.find(params[:id])
+        if mine == true || collaborator == true
+          if @project.update(project_params)
+            head 204
+          else
+            head 500
+          end
         else
-          head 500
+          head 401
         end
       end
 
@@ -79,12 +87,14 @@ module Api
       end
 
       def collaborator
-        collaborations = @project.collaboration
-        if collaborations.any? and collaborations.include? current_resource_owner.id
-          puts current_resource_owner.id
-          return true
-        elsif mine
-          return true
+        if current_resource_owner
+          # make an array of the user ids of collaborators
+          collaborations = @project.collaboration.map {|c| c.user_id}
+          if collaborations.any? and collaborations.include? current_resource_owner.id
+            return true
+          else
+            return false
+          end
         else
           return false
         end

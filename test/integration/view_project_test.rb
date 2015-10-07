@@ -11,10 +11,10 @@ class ViewProjectTest < ActionDispatch::IntegrationTest
   end
 
   # A GET request for a single unpublished project from a collaborator
-  # test 'returns 200 for unpublished project collaborator' do
-  #   get '/v1/projects/4.json', :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
-  #   assert_equal 200, response.status
-  # end
+  test 'returns 200 for unpublished project collaborator' do
+    get '/v1/projects/4.json', :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
+    assert_equal 200, response.status
+  end
 
   # A GET request for a single unpublished project from owner
   test 'return 200 for unpublished from owner' do

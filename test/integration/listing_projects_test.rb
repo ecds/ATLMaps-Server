@@ -48,4 +48,25 @@ class ListingProjectsTest < ActionDispatch::IntegrationTest
       refute p_three['may_edit']
   end
 
+  test 'get projects by user id' do
+    get '/v1/projects.json?user_id=1'
+
+    assert_equal 200, response.status
+    assert_equal 2, JSON.parse(response.body)['projects'].length
+  end
+
+  test 'get project by name' do
+    get '/v1/projects.json?name=One Last Project'
+    assert_equal 200, response.status
+    assert_equal 5, JSON.parse(response.body)['projects'][0]['id']
+  end
+
+  test 'get list of collaborative projects for a user' do
+    get '/v1/projects.json?collaborations=1', :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
+
+    assert_equal 200, response.status
+    assert_equal 2, JSON.parse(response.body)['projects'].length
+
+  end
+
 end

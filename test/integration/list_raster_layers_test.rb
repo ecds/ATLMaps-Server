@@ -5,7 +5,7 @@ class ListRasterLayersTest < ActionDispatch::IntegrationTest
   setup { host! 'api.example.com' }
 
   # A GET request for all raster layers
-  test 'returns a single published project unauthenticated' do
+  test 'returns a list of raster layers' do
     get '/v1/rasterLayers.json'
     assert_equal 200, response.status
 
@@ -35,6 +35,22 @@ class ListRasterLayersTest < ActionDispatch::IntegrationTest
     assert l_one['active_in_project']
     refute l_two['active_in_project']
 
+  end
+
+  test 'test search' do
+    get '/v1/rasterLayers.json?query=butler'
+    assert_equal 200, response.status
+
+    layers = JSON.parse(response.body)['raster_layers']
+    assert_equal 1, layers.length
+  end
+
+  test 'view raster layer' do
+    get '/v1/rasterLayers/2.json'
+    assert_equal 200, response.status
+    layer = JSON.parse(response.body)
+    assert_equal 1, layer.length
+    assert_equal "Bird's eye view", layer['raster_layer']['name']
   end
 
 end
