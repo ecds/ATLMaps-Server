@@ -55,6 +55,7 @@ gem 'seed_dump', group: :development
 gem 'httparty'
 gem 'nokogiri'
 
+gem 'ci_reporter'
 gem 'simplecov'#, group: :test
 # Use debugger
 # gem 'debugger', group: [:development, :test]
