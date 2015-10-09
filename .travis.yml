@@ -7,6 +7,6 @@ script:
   - rake db:migrate
   - rake test
 before_script:
-  - cp config/database.yml.travis config/datadase.yml
+  - cp config/database.yml.travis config/database.yml
   - psql -c 'create database travis_ci_test' -U postgres
   - cp config/application.rb.dist config/application.rb
