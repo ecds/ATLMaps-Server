@@ -8,4 +8,4 @@ script:
   - rake test
 before_script:
   - psql -c 'create database atlmaps_test' -U postgres
-  - cp config/application.rb.dist config/application.rb
+  - cp /home/travis/build/emory-libraries-ecds/ATLMaps/config/application.rb.dist /home/travis/build/emory-libraries-ecds/ATLMaps/config/application.rb
