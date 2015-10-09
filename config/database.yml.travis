@@ -1,4 +1,6 @@
-test:
+default: &default
   adapter: postgresql
+
+test:
   database: travis_ci_test
   username: postgres
