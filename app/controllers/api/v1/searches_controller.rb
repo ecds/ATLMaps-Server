@@ -9,7 +9,8 @@ class Api::V1::SearchesController < ApplicationController
 	    @vectors = VectorLayer.all.by_institution( params[:name])
 	    						.by_tags( params[:tags] ).by_date( params[:start_date], params[:end_date])
 	# end
-	@response = { :searches => @layers, :searches => @vectors }
+	@searches = @layers.merge(@vectors)
+	@response = { :searches => @searches }
 
 
 	render json: @response, each_serializer: SearchSerializer, root: false
