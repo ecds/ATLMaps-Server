@@ -1,5 +1,5 @@
 class Layer < ActiveRecord::Base
-
+  include Filtering
   has_many :projectlayer
   has_many :projects, through: :projectlayer, dependent: :destroy
   belongs_to :institution

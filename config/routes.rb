@@ -19,6 +19,7 @@ Rails.application.routes.draw do
         list_show.resources :tags
         list_show.resources :institutions
         list_show.resources :users
+        list_show.resources :searches
       end
       
       with_options only: [:index, :show, :create, :destroy, :update] do |crud|
@@ -35,6 +36,7 @@ Rails.application.routes.draw do
   get "/users/sign_in" => "devise/sessions#new"
   post "/user" => "users#create"
   post "/users/sign_in" => "devise/sessions#create"
+  # match "/searches" => "searches#index", via: [:get, :post]
   delete "/users/sign_out" => "devise/sessions#destroy"
 
   root to: "home#index"
