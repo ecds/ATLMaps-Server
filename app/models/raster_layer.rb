@@ -1,5 +1,5 @@
 class RasterLayer < ActiveRecord::Base
-  include Filtering
+  # include Filtering
   has_many :raster_layer_project
   has_many :projects, through: :raster_layer_project, dependent: :destroy
   belongs_to :institution
