@@ -1,4 +1,5 @@
 ![](https://travis-ci.org/emory-libraries-ecds/ATLMaps-Server.svg?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/emory-libraries-ecds/ATLMaps-Server/badge.svg?branch=develop&service=github)](https://coveralls.io/github/emory-libraries-ecds/ATLMaps-Server?branch=develop)
 
 #ATLMaps
 ATLMaps is a collaboration between [Georgia State University](http://gsu.edu) and [Emory University](http://emory.edu). The project is in active and heavy development.
