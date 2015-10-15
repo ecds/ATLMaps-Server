@@ -11,3 +11,4 @@ before_script:
   - psql -c 'create database travis_ci_test' -U postgres
   - cp config/application.rb.dist config/application.rb
   - cp config/initializers/devise.rb.dist config/initializers/devise.rb
+sudo: false
