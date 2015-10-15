@@ -31,33 +31,34 @@ RailsAdmin.config do |config|
     # history_index
     # history_show
   end
-  
+
   config.model 'Project' do
-    
+
     list do
       field :name
       field :saved
       field :published
     end
-    
+
     edit do
       field :name
       field :description
       field :saved
       field :published
     end
-    
+
   end
-  
-  config.model 'Layer' do
-    
+
+
+  config.model 'RasterLayer' do
+
     list do
       field :name
       field :layer_type
       field :institution
       field :active
     end
-    
+
     edit do
       field :name
       field :description
@@ -67,30 +68,47 @@ RailsAdmin.config do |config|
       field :url
       field :layer
       field :layer_type
-      field :minzoom
-      field :maxzoom
-      field :minx
-      field :miny
-      field :maxx
-      field :maxy
       field :active
     end
-    
+
   end
-  
+
+  config.model 'VectorLayer' do
+
+    list do
+      field :name
+      field :layer_type
+      field :institution
+      field :active
+    end
+
+    edit do
+      field :name
+      field :description
+      field :tags
+      field :institution
+      field :slug
+      field :url
+      field :layer
+      field :layer_type
+      field :active
+    end
+
+  end
+
   config.model 'Institution' do
     list do
       field :name
     end
-    
+
     edit do
       field :name
       field :geoserver
       field :icon
     end
-    
+
   end
-  
+
   config.model 'User' do
     edit do
       #field :username
@@ -104,7 +122,10 @@ RailsAdmin.config do |config|
       #field :password_confirmation
     end
   end
-  
-  config.excluded_models << "Projectlayer"
-  
+
+  config.excluded_models << 'Projectlayer'
+  config.excluded_models << 'VectorLayerProject'
+  config.excluded_models << 'RasterLayerProject'
+  config.excluded_models << 'Layer'
+
 end
