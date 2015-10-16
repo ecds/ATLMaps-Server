@@ -2,10 +2,9 @@ class Api::V1::SearchesController < ApplicationController
 
   def index
     @rasters = RasterLayer.all.by_institution( params[:name] )
-    						.by_tags( params[:tags] ).by_date( params[:start_date], params[:end_date])
+                .by_tags( params[:tags] ).by_date( params[:start_date], params[:end_date])
     @vectors = VectorLayer.all.by_institution( params[:name])
-    						.by_tags( params[:tags] ).by_date( params[:start_date], params[:end_date])
- 
+                .by_tags( params[:tags] ).by_date( params[:start_date], params[:end_date])
 
 	 if(!params.has_key?(:tags) && !params.has_key?(:start_date) && !params.has_key?(:finish_date) && !params.has_key?(:name))
 	 	@rasters = []
@@ -25,6 +24,4 @@ class Api::V1::SearchesController < ApplicationController
 
   render json: @searches
   end
-
-
 end
