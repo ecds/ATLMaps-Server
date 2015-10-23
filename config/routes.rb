@@ -1,17 +1,17 @@
 Rails.application.routes.draw do
-  
+
   use_doorkeeper do
     # Using a custom controller for the token response so we can
     # inject a user's details.
     controllers :tokens => 'custom_tokens'
   end
-  
+
   devise_for :users
-  
+
   namespace :api, path: '/', constraints: { subdomain: 'api' } do
     mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
     namespace :v1 do
-      
+
       with_options only: [:index, :show] do |list_show|
         list_show.resources :layers
         list_show.resources :raster_layers, :path => "rasterLayers"
@@ -20,8 +20,9 @@ Rails.application.routes.draw do
         list_show.resources :institutions
         list_show.resources :users
         list_show.resources :searches
+        list_show.resources :categories
       end
-      
+
       with_options only: [:index, :show, :create, :destroy, :update] do |crud|
         crud.resources :projects
         crud.resources :projectlayers
@@ -29,7 +30,7 @@ Rails.application.routes.draw do
         crud.resources :vector_layer_projects, :path => "vectorLayerProjects"
         crud.resources :collaborations
       end
-      
+
     end
   end
   get "/users/sign_up" => "users#new"
@@ -41,4 +42,3 @@ Rails.application.routes.draw do
 
   root to: "home#index"
 end
-

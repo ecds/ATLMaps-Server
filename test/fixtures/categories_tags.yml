@@ -1,0 +1,24 @@
+one:
+  category_id: 1
+  tag_id: 1
+two:
+  category_id: 1
+  tag_id: 3
+three:
+  category_id: 1
+  tag_id: 4
+four:
+  category_id: 2
+  tag_id: 1
+five:
+  category_id: 2
+  tag_id: 2
+six:
+  category_id: 3
+  tag_id: 2
+seven:
+  category_id: 3
+  tag_id: 3
+eight:
+  category_id: 3
+  tag_id: 4
