@@ -12,12 +12,15 @@ module Api
         elsif params[:collaborations]
           projects = Project.joins(:collaboration).where(\
             collaborations: { user_id: current_resource_owner.id })
+        elsif params[:featured]
+          projects = Project.where(featured: true)
         else
           projects = Project.where(published: true)
         end
 
         render json: projects, root: 'projects', resource_owner: owner_id
       end
+
 
       def show
         # Only return the project if it is published, the user is the owner
