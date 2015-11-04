@@ -24,6 +24,7 @@ class ProjectSerializer < ActiveModel::Serializer
              :is_mine,
              :may_edit,
              :user_ids
+             :featured
 
   def is_mine
     options[:resource_owner] == user_id
