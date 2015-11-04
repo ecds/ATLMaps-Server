@@ -15,6 +15,7 @@ class Project < ActiveRecord::Base
   has_many :users, through: :collaboration
 
   # default_scope {includes(:projectlayer)}
+  validates_format_of :media, :with => /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/, :on => :create, if: 'media.present?'
 
   def slug
     return self.name.parameterize

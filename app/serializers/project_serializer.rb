@@ -23,8 +23,10 @@ class ProjectSerializer < ActiveModel::Serializer
              :vector_layer_ids,
              :is_mine,
              :may_edit,
-             :user_ids
-             :featured
+             :user_ids,
+             :featured,
+             :details,
+             :media
 
   def is_mine
     options[:resource_owner] == user_id
