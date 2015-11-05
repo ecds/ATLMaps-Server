@@ -14,4 +14,4 @@ before_script:
 sudo: false
 
 notifications:
-  slack: litsdevs:hUCQWimeOwJHh4FX0G36OG2u
+  slack: litsdevs:CJeGHaEKHbNvp4YCaFTT1iVV

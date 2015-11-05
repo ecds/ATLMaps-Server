@@ -28,6 +28,14 @@ class ListingProjectsTest < ActionDispatch::IntegrationTest
 
   end
 
+  # A GET request to to `projects` that should onl return featured projects
+  test 'returns featured projects' do
+      get '/v1/projects.json?featured=true'
+      assert_equal 200, response.status
+      projects = JSON.parse(response.body)
+      assert_equal 3, projects['projects'].length
+  end
+
   # When a user is authenticated the `is_mine` and `may_edit` attributes are set
   # based on ownership or status as a collaborator.
   test 'authenticated call to projects' do

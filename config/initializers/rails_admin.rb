@@ -45,6 +45,7 @@ RailsAdmin.config do |config|
       field :description
       field :saved
       field :published
+      field :media
     end
 
   end

@@ -9,6 +9,7 @@ one:
   saved: true
   published: true
   user_id: 2
+  featured: true
 
 two:
   id: 2
@@ -21,6 +22,7 @@ two:
   saved: false
   published: false
   user_id: 1
+  featured: true
 
 three:
   id: 3
@@ -33,6 +35,7 @@ three:
   saved: true
   published: true
   user_id: 1
+  featured: false
 
 four:
   id: 4
@@ -45,6 +48,7 @@ four:
   saved: false
   published: false
   user_id: 2
+  featured: false
 
 five:
   id: 5
@@ -57,3 +61,4 @@ five:
   saved: true
   published: true
   user_id: 2
+  featured: true
