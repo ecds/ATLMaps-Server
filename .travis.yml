@@ -13,5 +13,5 @@ before_script:
   - cp config/initializers/devise.rb.dist config/initializers/devise.rb
 sudo: false
 
-# notifications:
-#   slack: litsdevs:hUCQWimeOwJHh4FX0G36OG2u
+notifications:
+  slack: litsdevs:hUCQWimeOwJHh4FX0G36OG2u
