@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151104201327) do
+ActiveRecord::Schema.define(version: 20151105165459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,6 +145,8 @@ ActiveRecord::Schema.define(version: 20151104201327) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "featured",                                  default: false
+    t.text     "details"
+    t.string   "media"
   end
 
   add_index "projects", ["user_id"], name: "atlmaps_api_dev_projects_user_id1_idx", using: :btree
