@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151104201327) do
+ActiveRecord::Schema.define(version: 20151105165459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -148,6 +148,8 @@ ActiveRecord::Schema.define(version: 20151104201327) do
     t.integer  "zoom_level",                                default: 13,        null: false
     t.string   "default_base_map",                          default: "street",  null: false
     t.boolean  "featured",                                  default: false
+    t.text     "details"
+    t.string   "media"
   end
 
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
