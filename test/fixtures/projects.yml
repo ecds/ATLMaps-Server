@@ -10,7 +10,6 @@ one:
   published: true
   user_id: 2
   featured: true
-  template_id: 1
 
 two:
   id: 2
@@ -24,7 +23,6 @@ two:
   published: false
   user_id: 1
   featured: true
-  template_id: 2
 
 three:
   id: 3
@@ -38,7 +36,6 @@ three:
   published: true
   user_id: 1
   featured: false
-  template_id: 3
 
 four:
   id: 4
@@ -52,7 +49,6 @@ four:
   published: false
   user_id: 2
   featured: false
-  template_id: 1
 
 five:
   id: 5
@@ -66,4 +62,3 @@ five:
   published: true
   user_id: 2
   featured: true
-  template_id: 2
