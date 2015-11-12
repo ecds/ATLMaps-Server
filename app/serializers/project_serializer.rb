@@ -25,7 +25,7 @@ class ProjectSerializer < ActiveModel::Serializer
              :may_edit,
              :user_ids,
              :featured,
-             :details,
+             :intro,
              :media
 
   def is_mine
