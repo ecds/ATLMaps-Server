@@ -2,6 +2,8 @@ class Project < ActiveRecord::Base
 
   belongs_to :user
 
+  belongs_to :template
+
   has_many :projectlayer
   has_many :layers, through: :projectlayer, dependent: :destroy
 

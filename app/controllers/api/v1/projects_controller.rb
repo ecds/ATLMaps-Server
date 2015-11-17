@@ -74,7 +74,7 @@ module Api
       def project_params
         params.require(:project).permit(
           :name, :saved, :description, :center_lat, :center_lng, :zoom_level,
-          :default_base_map, :user_id, :published, :featured, :details, :media)
+          :default_base_map, :user_id, :published, :featured, :intro, :media)
       end
 
       def owner_id

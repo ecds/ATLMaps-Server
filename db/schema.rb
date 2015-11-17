@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151105165459) do
+ActiveRecord::Schema.define(version: 20151112195801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -145,11 +145,15 @@ ActiveRecord::Schema.define(version: 20151105165459) do
     t.integer  "zoom_level",                                default: 13,        null: false
     t.string   "default_base_map",                          default: "street",  null: false
     t.boolean  "featured",                                  default: false
-    t.text     "details"
-    t.string   "media"
+    t.text     "intro"
+    t.text     "media"
+    t.integer  "templates_id"
   end
 
-  add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
+
+  add_index "projects", ["templates_id"], name: "index_projects_on_templates_id", using: :btree
+  add_index "projects", ["user_id"], name: "atlmaps_api_dev_projects_user_id1_idx", using: :btree
+
 
   create_table "raster_layer_projects", force: true do |t|
     t.integer  "raster_layer_id"
@@ -208,6 +212,10 @@ ActiveRecord::Schema.define(version: 20151105165459) do
 
   add_index "tags_vector_layers", ["tag_id"], name: "index_tags_vector_layers_on_tag_id", using: :btree
   add_index "tags_vector_layers", ["vector_layer_id"], name: "index_tags_vector_layers_on_vector_layer_id", using: :btree
+
+  create_table "templates", force: true do |t|
+    t.string "name"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",    null: false
