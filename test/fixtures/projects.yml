@@ -10,6 +10,8 @@ one:
   published: true
   user_id: 2
   featured: true
+  intro: In her memoir, Hannah Palmer explores how the growing
+  template_id: 1
 
 two:
   id: 2

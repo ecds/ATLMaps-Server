@@ -35,4 +35,18 @@ class ViewProjectTest < ActionDispatch::IntegrationTest
     assert_equal 401, response.status
   end
 
+  # Check to see if a project has an intro.
+  test 'project with intro' do
+      get '/v1/projects/1.json'
+      project = JSON.parse(response.body)
+      assert_not_nil project['project']['intro']
+  end
+
+  # Verifiy a project does not have an into.
+  test 'project without intro' do
+      get '/v1/projects/3.json'
+      project = JSON.parse(response.body)
+      assert_nil project['project']['intro']
+  end
+
 end

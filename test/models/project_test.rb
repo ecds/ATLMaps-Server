@@ -16,4 +16,10 @@ class ProjectTest < ActiveSupport::TestCase
     assert project.valid?
   end
 
+  test "get parameterized template" do
+    project = Project.find(1)
+
+    assert_equal 'article-and-video', project.templateSlug
+  end
+
 end

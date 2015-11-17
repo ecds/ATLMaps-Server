@@ -147,10 +147,10 @@ ActiveRecord::Schema.define(version: 20151112195801) do
     t.boolean  "featured",                                  default: false
     t.text     "intro"
     t.text     "media"
-    t.integer  "templates_id"
+    t.integer  "template_id"
   end
 
-  add_index "projects", ["templates_id"], name: "index_projects_on_templates_id", using: :btree
+  add_index "projects", ["template_id"], name: "index_projects_on_template_id", using: :btree
   add_index "projects", ["user_id"], name: "atlmaps_api_dev_projects_user_id1_idx", using: :btree
 
   create_table "raster_layer_projects", force: true do |t|

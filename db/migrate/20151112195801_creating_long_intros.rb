@@ -8,6 +8,6 @@ class CreatingLongIntros < ActiveRecord::Migration
       change_column :projects, :media, :text, after: :details
       rename_column :projects, :details, :intro
 
-      add_reference :projects, :templates, index: true, after: :media
+      add_reference :projects, :template, index: true, after: :media
   end
 end
