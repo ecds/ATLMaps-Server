@@ -29,8 +29,7 @@ class RasterLayerSerializer < ActiveModel::Serializer
               :active_in_project,
               :slider_id,
               :slider_value_id,
-              :position_in_project,
-              :template_id
+              :position_in_project
 
 	def active_in_project
 		if self.project_ids.include? options[:project_id].to_i
