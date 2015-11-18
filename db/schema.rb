@@ -16,6 +16,9 @@ ActiveRecord::Schema.define(version: 20151112195801) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "User", id: false, force: true do |t|
+  end
+
   create_table "categories", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -150,10 +153,8 @@ ActiveRecord::Schema.define(version: 20151112195801) do
     t.integer  "templates_id"
   end
 
-
   add_index "projects", ["templates_id"], name: "index_projects_on_templates_id", using: :btree
-  add_index "projects", ["user_id"], name: "atlmaps_api_dev_projects_user_id1_idx", using: :btree
-
+  add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
   create_table "raster_layer_projects", force: true do |t|
     t.integer  "raster_layer_id"

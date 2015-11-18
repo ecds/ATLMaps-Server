@@ -38,6 +38,7 @@ RailsAdmin.config do |config|
       field :name
       field :saved
       field :published
+      field :featured
     end
 
     edit do
@@ -45,7 +46,9 @@ RailsAdmin.config do |config|
       field :description
       field :saved
       field :published
+      field :featured
       field :media
+      
     end
 
   end
