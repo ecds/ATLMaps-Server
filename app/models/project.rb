@@ -29,6 +29,11 @@ class Project < ActiveRecord::Base
     return self.user.displayname
   end
 
+  def templateSlug
+      if (self.template)
+          return self.template.slug
+      end
+  end
   # I don't think this is needed anymore
   # def self.find_by_param(input)
   #   find_by_slug(input)
