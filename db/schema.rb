@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(version: 20151112195801) do
     t.integer  "template_id"
   end
 
-  add_index "projects", ["templates_id"], name: "index_projects_on_templates_id", using: :btree
+  add_index "projects", ["template_id"], name: "index_projects_on_template_id", using: :btree
   add_index "projects", ["user_id"], name: "index_projects_on_user_id", using: :btree
 
 
