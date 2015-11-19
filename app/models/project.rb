@@ -17,9 +17,8 @@ class Project < ActiveRecord::Base
   has_many :users, through: :collaboration
 
   # default_scope {includes(:projectlayer)}
-  # validates_format_of :media, :with => /(?:.be\/|\/watch\?v=|\/(?=p\/))([\w\/\-]+)/, :on => :create, if: 'media.present?'
-  validates :media, format: { with: /(?:.be\/|\/watch\?v=|\/(?=p\/))([\w\/\-]+)/,
-    message: "Not a valid YouTube embed code." }, if: 'media.present?'
+  validates :media, format: { with: /^http:\/\/(?:.*?)\.?(youtube|vimeo)\.com\/(watch\?[^#]*v=(\w+)|(\d+))/,
+    message: "Not a valid YouTube or Vimeo link." }, if: 'media.present?'
 
   def slug
     return self.name.parameterize
