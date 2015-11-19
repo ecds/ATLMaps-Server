@@ -11,7 +11,10 @@ class ProjectTest < ActiveSupport::TestCase
     project.media = 'http://notyoutube.com'
     project.save
     refute project.valid?
-    project.media = 'https://youtu.be/1m2cQjNhyaY'
+    project.media = 'https://youtube.com/watch?v=r6E3J4GPpjc'
+    project.save
+    assert project.valid?
+    project.media = 'https://vimeo.com/channels/staffpicks/45322909'
     project.save
     assert project.valid?
   end
