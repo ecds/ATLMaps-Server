@@ -64,4 +64,37 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
     assert_equal 401, response.status
   end
 
+  test 'add raster layer to project as owner' do
+      post '/v1/rasterLayerProjects.json', rasterLayerProject: {
+              project_id: '2',
+              layer_id: '4',
+              position: 60,
+              layer_type: "wms"
+          },
+          :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
+      assert_equal 201, response.status
+  end
+
+  test 'add vector layer to project as owner' do
+      post '/v1/vectorLayerProjects.json', vectorLayerProject: {
+              project_id: '2',
+              layer_id: '4',
+              marker: 60,
+              layer_type: "geojson"
+          },
+          :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
+      assert_equal 201, response.status
+  end
+
+  test 'adding a vector layer for project 9999999 is denied' do
+      post '/v1/vectorLayerProjects.json', vectorLayerProject: {
+              project_id: '9999999',
+              layer_id: '4',
+              marker: 60,
+              layer_type: "geojson"
+          },
+          :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
+      assert_equal 401, response.status
+  end
+
 end
