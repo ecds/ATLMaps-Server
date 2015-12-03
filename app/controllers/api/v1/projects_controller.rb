@@ -37,7 +37,8 @@ module Api
         project = Project.new(project_params)
         if current_resource_owner
           if project.save
-            head 201
+            # Ember wants some JSON
+            render json: {}, status: 201
           else
             head 500
           end
