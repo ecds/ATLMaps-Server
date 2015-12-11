@@ -1,3 +1,4 @@
+
 .komodotools
 *.komodoproject
 *.DS_Store
@@ -18,3 +19,11 @@ db/seeds.rb
 atlmaps.load
 atlmaps.sql
 coverage
+*.DS_Store
+*.pyc
+venv
+dump
+ATLMaps.kp.komodoproject
+.komodotools
+atlmaps/localsettings.py
+

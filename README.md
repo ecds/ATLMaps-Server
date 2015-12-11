@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ![](https://travis-ci.org/emory-libraries-ecds/ATLMaps-Server.svg?branch=develop)
 [![Coverage Status](https://coveralls.io/repos/emory-libraries-ecds/ATLMaps-Server/badge.svg?branch=develop&service=github)](https://coveralls.io/github/emory-libraries-ecds/ATLMaps-Server?branch=develop)
 
@@ -14,3 +15,7 @@ The ATLMaps-Server is a RESTful API powered by [Ruby on Rails](http://rubyonrail
 
 #License
 The ATLMaps software stack is distributed under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0).
+=======
+atlmaps
+=======
+>>>>>>> af2eafac9393c86399b16728ce57866b7d54e3a3

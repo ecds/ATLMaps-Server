@@ -1,0 +1,8 @@
+Django
+MySQL-python
+git+https://github.com/django-nonrel/django@nonrel-1.5
+git+https://github.com/django-nonrel/djangotoolbox
+git+https://github.com/django-nonrel/mongodb-engine
+django-tastypie
+django-tastypie-mongoengine
+tastypie-mongodb-resource
