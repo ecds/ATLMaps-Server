@@ -40,5 +40,5 @@ Rails.application.routes.draw do
   # match "/searches" => "searches#index", via: [:get, :post]
   delete "/users/sign_out" => "devise/sessions#destroy"
 
-  root to: "home#index"
+  root to: redirect('/admin')
 end
