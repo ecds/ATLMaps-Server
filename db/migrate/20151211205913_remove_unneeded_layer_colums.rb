@@ -1,6 +1,6 @@
 class RemoveUnneededLayerColums < ActiveRecord::Migration
   def change
-      remove_column :raster_layers, :layer
+      rename_column :raster_layers, :layer, :title
       remove_column :vector_layers, :layer
   end
 end
