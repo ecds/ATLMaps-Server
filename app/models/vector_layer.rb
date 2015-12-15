@@ -13,6 +13,11 @@ class VectorLayer < ActiveRecord::Base
 #default_scope {includes(:projectlayer)}
 
   # Attribute to use for html classes
+  def slug
+  	slug = self.name.parameterize
+  	return "#{slug}-#{id}"
+  end
+
   def tag_slugs
     return self.tags.map {|tag| tag.name.parameterize}.join(" ")
   end

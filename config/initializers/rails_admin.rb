@@ -51,7 +51,7 @@ RailsAdmin.config do |config|
       field :published
       field :featured
       field :media
-      
+
     end
 
   end
@@ -60,20 +60,17 @@ RailsAdmin.config do |config|
   config.model 'RasterLayer' do
 
     list do
-      field :name
+      field :title
       field :layer_type
       field :institution
       field :active
     end
 
     edit do
-      field :name
+      field :title
       field :description
       field :tags
       field :institution
-      field :slug
-      field :url
-      field :layer
       field :layer_type
       field :active
     end
@@ -92,11 +89,9 @@ RailsAdmin.config do |config|
     edit do
       field :name
       field :description
+      field :url
       field :tags
       field :institution
-      field :slug
-      field :url
-      field :layer
       field :layer_type
       field :active
     end

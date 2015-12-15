@@ -1,11 +1,9 @@
 one:
   id: 1
-  name: Atlanta Airport 1967
-  slug: atlanta-airport-1967
+  title: Atlanta Airport 1967
   keywords: foo, bar, baz
   description: This topographic map of the Atlanta Airport
-  url: http://www.atlmaps.com/geoserver/atlmaps/wms
-  layer: atlpm0380_geo
+  name: atlpm0380_geo
   date: null
   layer_type: wms
   minzoom: null
@@ -19,11 +17,9 @@ one:
 
 two:
   id: 2
-  name: Bird's eye view
-  slug: bird's-eye-view
+  title: Bird's eye view
   description: Birds eye view of the city of Atlanta
-  url: http://www.atlmaps.com/geoserver/atlmaps/wms
-  layer: atl1871
+  name: atl1871
   date: null
   layer_type: wms
   minzoom: 12
@@ -37,12 +33,10 @@ two:
 
 three:
   id: 3
-  name: Butler Street Urban Redevelopment Area
-  slug: butler-street
+  title: Butler Street Urban Redevelopment Area
   keywords: Atlanta, Urban Renewal, Highways/Roads
   description: Depicts streets to be vacated and existing streets to remain.
-  url: http://www.atlmaps.com/geoserver/atlmaps/wms
-  layer: atlpm0031d
+  name: atlpm0031d
   date: null
   layer_type: planningatlanta
   minzoom: 13

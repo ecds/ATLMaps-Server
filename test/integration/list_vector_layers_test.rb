@@ -51,6 +51,7 @@ class ListvectorLayersTest < ActionDispatch::IntegrationTest
     layer = JSON.parse(response.body)
     assert_equal 1, layer.length
     assert_equal "Historic Downtown Atlanta", layer['vector_layer']['name']
+    assert_equal "historic-downtown-atlanta-2", layer['vector_layer']['slug']
   end
 
 end

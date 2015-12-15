@@ -11,7 +11,7 @@ class RasterLayer < ActiveRecord::Base
   scope :by_date, -> (start_date,end_date) { where(date: start_date..end_date) if start_date.present? and end_date.present?}
 
   include PgSearch
-  pg_search_scope :search, against: [:name, :description],
+  pg_search_scope :search, against: [:name, :title, :description],
     using: { tsearch: { dictionary: 'english' } },
     associated_against: { tags: :name, institution: :name }
 
@@ -25,6 +25,11 @@ class RasterLayer < ActiveRecord::Base
 
 
   # Attribute to use for html classes
+  def slug
+  	slug = self.name.parameterize
+  	return "#{slug}-#{id}"
+  end
+
   def tag_slugs
     return self.tags.map {|tag| tag.name.parameterize}.join(" ")
   end

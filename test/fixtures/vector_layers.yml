@@ -1,11 +1,9 @@
 one:
   id: 1
   name: Mountain View / Airport Points of Interest
-  slug: mountain-view
   keywords: airport, Mountain View
   description: hello there
   url: /assets/data/hannahspoints.json
-  layer: hannahspoints
   date: null
   layer_type: geojson
   minzoom: null
@@ -20,11 +18,9 @@ one:
 two:
   id: 2
   name: Historic Downtown Atlanta
-  slug: historic-downtown-atlanta
   keywords: atlanta, historic downtown
   description: Mixtape kitsch freegan
   url: /assets/data/historicdowntown.json
-  layer: historicdowntown
   date: null
   layer_type: geojson
   minzoom: null
@@ -39,11 +35,9 @@ two:
 three:
   id: 3
   name: Living Walls - 2010
-  slug: living-walls-2010
   keywords: atlanta, living walls, street art
   description: hello world
   url: /assets/data/livingwalls_2010.json
-  layer: livingwalls_2010
   date: null
   layer_type: geojson
   minzoom: null

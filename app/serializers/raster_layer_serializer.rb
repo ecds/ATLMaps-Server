@@ -1,18 +1,18 @@
 class RasterLayerSerializer < ActiveModel::Serializer
   #embed :ids # this is key for the Ember data to work.
-  
+
   has_many :projects, embed: :ids
   has_many :tags, embed: :ids
   #has_many :projectlayer
   has_one :institution
-  
+
   attributes  :id,
               :name,
+              :title,
               :slug,
               :keywords,
               :description,
-              :url,
-              :layer,
+              :workspace,
               :date,
               :layer_type,
               :minzoom,

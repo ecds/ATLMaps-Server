@@ -50,7 +50,8 @@ class ListRasterLayersTest < ActionDispatch::IntegrationTest
     assert_equal 200, response.status
     layer = JSON.parse(response.body)
     assert_equal 1, layer.length
-    assert_equal "Bird's eye view", layer['raster_layer']['name']
+    assert_equal "Bird's eye view", layer['raster_layer']['title']
+    assert_equal "atl1871-2", layer['raster_layer']['slug']
   end
 
 end
