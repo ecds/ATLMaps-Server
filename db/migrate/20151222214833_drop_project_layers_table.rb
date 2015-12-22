@@ -1,5 +1,5 @@
 class DropProjectLayersTable < ActiveRecord::Migration
   def change
-      drop_table :projectlayers
+    #   drop_table :projectlayers
   end
 end
