@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151214145915) do
+ActiveRecord::Schema.define(version: 20151222213054) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,29 +47,6 @@ ActiveRecord::Schema.define(version: 20151214145915) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "layers", force: true do |t|
-    t.string   "name"
-    t.string   "slug"
-    t.string   "keywords"
-    t.string   "description"
-    t.string   "url"
-    t.string   "layer"
-    t.datetime "date"
-    t.string   "layer_type"
-    t.integer  "minzoom"
-    t.integer  "maxzoom"
-    t.decimal  "minx",                     precision: 10, scale: 8
-    t.decimal  "miny",                     precision: 10, scale: 8
-    t.decimal  "maxx",                     precision: 10, scale: 8
-    t.decimal  "maxy",                     precision: 10, scale: 8
-    t.integer  "active",         limit: 2
-    t.integer  "institution_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "layers", ["institution_id"], name: "atlmaps_api_dev_layers_institution_id1_idx", using: :btree
 
   create_table "layers_tags", id: false, force: true do |t|
     t.integer "layer_id"
@@ -184,6 +161,7 @@ ActiveRecord::Schema.define(version: 20151214145915) do
     t.datetime "updated_at"
     t.string   "title"
     t.string   "workspace"
+    t.integer  "year"
   end
 
   add_index "raster_layers", ["institution_id"], name: "atlmaps_api_dev_raster_layers_institution_id1_idx", using: :btree
@@ -269,6 +247,7 @@ ActiveRecord::Schema.define(version: 20151214145915) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "url"
+    t.integer  "year"
   end
 
   add_index "vector_layers", ["institution_id"], name: "atlmaps_api_dev_vector_layers_institution_id1_idx", using: :btree

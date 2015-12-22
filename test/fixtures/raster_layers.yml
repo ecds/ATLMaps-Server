@@ -2,9 +2,10 @@ one:
   id: 1
   title: Atlanta Airport 1967
   keywords: foo, bar, baz
-  description: This topographic map of the Atlanta Airport
+  description: This topographic map of the Atlanta Airport hello
   name: atlpm0380_geo
   date: null
+  year: 1999
   layer_type: wms
   minzoom: null
   maxzoom: null
@@ -21,6 +22,7 @@ two:
   description: Birds eye view of the city of Atlanta
   name: atl1871
   date: null
+  year: 1974
   layer_type: wms
   minzoom: 12
   maxzoom: 18
@@ -33,11 +35,12 @@ two:
 
 three:
   id: 3
-  title: Butler Street Urban Redevelopment Area
+  title: Butler Street Urban Redevelopment Area Hello
   keywords: Atlanta, Urban Renewal, Highways/Roads
   description: Depicts streets to be vacated and existing streets to remain.
   name: atlpm0031d
   date: null
+  year: 1992
   layer_type: planningatlanta
   minzoom: 13
   maxzoom: 19

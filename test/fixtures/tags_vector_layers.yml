@@ -1,0 +1,14 @@
+one:
+  id: 1
+  vector_layer_id: 3
+  tag_id: 3
+
+two:
+  id: 2
+  vector_layer_id: 3
+  tag_id: 4
+
+three:
+  id: 3
+  vector_layer_id: 2
+  tag_id: 3

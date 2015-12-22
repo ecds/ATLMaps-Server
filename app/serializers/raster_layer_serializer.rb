@@ -14,6 +14,7 @@ class RasterLayerSerializer < ActiveModel::Serializer
               :description,
               :workspace,
               :date,
+              :year,
               :layer_type,
               :minzoom,
               :maxzoom,

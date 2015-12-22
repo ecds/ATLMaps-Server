@@ -8,18 +8,37 @@ class RasterLayer < ActiveRecord::Base
 
   scope :by_institution, -> name { joins(:institution).where(institutions: {name: name}) if name.present?}
   scope :by_tags, -> tags { joins(:tags).where(tags: {name: tags}) if tags.present?}
-  scope :by_date, -> (start_date,end_date) { where(date: start_date..end_date) if start_date.present? and end_date.present?}
+  scope :search_by_year, -> (start_year,end_year) { where(year: start_year..end_year) }
+
+  def self.by_year(start_year, end_year)
+      if end_year > 0
+          search_by_year(start_year, end_year)
+      else
+          all
+      end
+  end
 
   include PgSearch
   pg_search_scope :search, against: [:name, :title, :description],
-    using: { tsearch: { dictionary: 'english' } },
-    associated_against: { tags: :name, institution: :name }
+    using: { tsearch: { prefix: true, dictionary: 'english' } }
+    # associated_against: { tags: :name, institution: :name }
 
-  def self.text_search(query)
+    def self.text_search(query)
+        # Return no results if query isn't present
+      if query.present?
+        search(query)
+      else
+        scoped
+      end
+    end
+
+  def self.browse_text_search(query)
+      # If there is no query, return everything.
+      # Not everything will be returned becuae other filters will be present.
     if query.present?
       search(query)
     else
-      scoped
+      all
     end
   end
 

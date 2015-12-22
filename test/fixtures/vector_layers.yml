@@ -1,10 +1,11 @@
 one:
   id: 1
-  name: Mountain View / Airport Points of Interest
+  name: Mountain View / Airport Points of Interest Hello
   keywords: airport, Mountain View
   description: hello there
   url: /assets/data/hannahspoints.json
   date: null
+  year: 1944
   layer_type: geojson
   minzoom: null
   maxzoom: null
@@ -22,6 +23,7 @@ two:
   description: Mixtape kitsch freegan
   url: /assets/data/historicdowntown.json
   date: null
+  year: 1988
   layer_type: geojson
   minzoom: null
   maxzoom: null
@@ -36,9 +38,10 @@ three:
   id: 3
   name: Living Walls - 2010
   keywords: atlanta, living walls, street art
-  description: hello world
+  description: hello world streets
   url: /assets/data/livingwalls_2010.json
   date: null
+  year: 1966
   layer_type: geojson
   minzoom: null
   maxzoom: null

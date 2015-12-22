@@ -13,6 +13,7 @@ class VectorLayerSerializer < ActiveModel::Serializer
               :description,
               :url,
               :date,
+              :year,
               :layer_type,
               :minzoom,
               :maxzoom,
