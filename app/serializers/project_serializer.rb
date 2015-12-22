@@ -1,6 +1,5 @@
 # app/serializers/project_serializer.rb
 class ProjectSerializer < ActiveModel::Serializer
-  has_many :layers, embed: :ids
   has_many :raster_layers, embed: :ids
   has_many :vector_layers, embed: :ids
   has_many :users, embed: :ids
@@ -18,7 +17,6 @@ class ProjectSerializer < ActiveModel::Serializer
              :user_id,
              :user,
              :owner,
-             :layer_ids,
              :raster_layer_ids,
              :vector_layer_ids,
              :is_mine,

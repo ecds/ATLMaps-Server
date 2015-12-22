@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151222213054) do
+ActiveRecord::Schema.define(version: 20151222214833) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,19 +95,6 @@ ActiveRecord::Schema.define(version: 20151222213054) do
   end
 
   add_index "oauth_applications", ["uid"], name: "atlmaps_api_dev_oauth_applications_uid1_idx", unique: true, using: :btree
-
-  create_table "projectlayers", force: true do |t|
-    t.integer  "layer_id"
-    t.integer  "project_id"
-    t.integer  "position"
-    t.string   "marker"
-    t.string   "layer_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "projectlayers", ["layer_id"], name: "atlmaps_api_dev_projectlayers_layer_id1_idx", using: :btree
-  add_index "projectlayers", ["project_id"], name: "atlmaps_api_dev_projectlayers_project_id2_idx", using: :btree
 
   create_table "projects", force: true do |t|
     t.string   "name"
