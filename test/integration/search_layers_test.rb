@@ -73,4 +73,12 @@ class SearchLayersTest < ActionDispatch::IntegrationTest
         assert_equal 1, results['searches']['raster_layer_ids'].length
         assert_equal 1, results['searches']['vector_layer_ids'].length
     end
+
+    test 'return empty arrays' do
+        get '/v1/searches.json'
+        assert_equal 200, response.status
+        results = JSON.parse(response.body)
+        assert_equal nil, results['searches']['raster_layer_ids']
+        assert_equal nil, results['searches']['vector_layer_ids']
+    end
 end

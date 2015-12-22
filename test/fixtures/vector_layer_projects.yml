@@ -1,4 +1,5 @@
 one:
+  id: 1
   vector_layer_id: 1
   project_id: 1
   marker: 1
@@ -6,6 +7,7 @@ one:
   position: 0
 
 three:
+  id: 2
   vector_layer_id: 1
   project_id: 2
   marker: 3
@@ -13,6 +15,7 @@ three:
   position: 0
 
 four:
+  id: 3
   vector_layer_id: 3
   project_id: 2
   marker: 4

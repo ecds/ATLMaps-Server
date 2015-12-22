@@ -28,8 +28,6 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
     if current_resource_owner && raster_layer_project_params[:project_id] != '9999999'
       if projectlayer.save
         head 201
-      else
-        head 500
       end
     else
       head 401

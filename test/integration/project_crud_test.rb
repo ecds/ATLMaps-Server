@@ -80,7 +80,7 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
               project_id: '2',
               layer_id: '4',
               marker: 60,
-              layer_type: "geojson"
+              vector_layer_type: "geojson"
           },
           :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
       assert_equal 201, response.status
@@ -91,10 +91,22 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
               project_id: '9999999',
               layer_id: '4',
               marker: 60,
-              layer_type: "geojson"
+              vector_layer_type: "geojson"
           },
           :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
       assert_equal 401, response.status
+  end
+
+  test 'remove vector layer to project as owner' do
+      delete '/v1/vectorLayerProjects/1.json',
+          :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
+      assert_equal 204, response.status
+  end
+
+  test 'remove raster layer to project as owner' do
+      delete '/v1/rasterLayerProjects/1.json',
+          :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
+      assert_equal 204, response.status
   end
 
 end
