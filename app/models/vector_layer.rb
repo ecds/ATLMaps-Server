@@ -25,11 +25,7 @@ class VectorLayer < ActiveRecord::Base
 
     def self.text_search(query)
         # Return no results if query isn't present
-      if query.present?
         search(query)
-      else
-        scoped
-      end
     end
 
   def self.browse_text_search(query)
