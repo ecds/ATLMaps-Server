@@ -40,9 +40,8 @@ class ListvectorLayersTest < ActionDispatch::IntegrationTest
   test 'test search' do
     get '/v1/vectorLayers.json?query=hello'
     assert_equal 200, response.status
-
-    layers = JSON.parse(response.body)['vector_layers']
-    assert_equal 2, layers.length
+    results = JSON.parse(response.body)['vector_layers']
+    assert_equal 2, results.length
   end
 
   test 'view vector layer' do
