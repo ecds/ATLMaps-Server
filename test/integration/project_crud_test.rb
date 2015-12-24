@@ -97,16 +97,26 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
       assert_equal 401, response.status
   end
 
-  test 'remove vector layer to project as owner' do
-      delete '/v1/vectorLayerProjects/1.json',
+  test 'remove vector layer from project as owner' do
+      delete '/v1/vectorLayerProjects/2.json',
           :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
       assert_equal 204, response.status
   end
 
-  test 'remove raster layer to project as owner' do
-      delete '/v1/rasterLayerProjects/1.json',
-          :access_token => 'a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
+  test 'remove raster layer from project as owner' do
+      delete '/v1/rasterLayerProjects/2.json',
+          :access_token => '57dd83d2396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13'
       assert_equal 204, response.status
+  end
+
+  test 'remove vector layer from project unauthenticated' do
+      delete '/v1/vectorLayerProjects/1.json'
+      assert_equal 401, response.status
+  end
+
+  test 'remove raster layer from project unauthenticated' do
+      delete '/v1/rasterLayerProjects/1.json'
+      assert_equal 401, response.status
   end
 
 end

@@ -20,10 +20,12 @@ class Api::V1::VectorLayerProjectsController < ApplicationController
     projectlayer = VectorLayerProject.new(vector_layer_project_params)
     # Projects from the explore route have an ID of 9999999. We don't want to save that junk.
     # http://www.funnyordie.com/videos/4ecfd3a85f/herman-cains-campaign-promises-with-mike-tyson
-    if current_resource_owner && vector_layer_project_params[:project_id] != '9999999'
-      if projectlayer.save
+    if projectlayer.project
+      if mayedit(projectlayer.project) == true
         head 201
       end
+    elsif current_resource_owner && vector_layer_project_params[:project_id] != '9999999'
+      head 201
     else
       head 401
     end
@@ -31,8 +33,12 @@ class Api::V1::VectorLayerProjectsController < ApplicationController
 
   def destroy
     projectlayer = VectorLayerProject.find(params[:id])
-    projectlayer.destroy
-    head 204
+    if mayedit(projectlayer.project) == true
+      projectlayer.destroy
+      head 204
+    else
+      head 401
+    end
   end
 
   private

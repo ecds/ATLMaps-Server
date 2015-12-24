@@ -6,11 +6,41 @@ class ApplicationController < ActionController::Base
   private
 
   	def default_serializer_options
-  		
+
 	end
-  
+
     def current_resource_owner
       User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
     end
-  
+
+    def mine(project)
+      if current_resource_owner && current_resource_owner.id == project.user_id
+        return true
+      else
+        return false
+      end
+    end
+
+    def collaborator(project)
+      if current_resource_owner and project.collaboration.present?
+        # make an array of the user ids of collaborators
+        collaborations = project.collaboration.map {|c| c.user_id}
+        if collaborations.any? and collaborations.include? current_resource_owner.id
+          return true
+        else
+          return false
+        end
+      else
+        return false
+      end
+    end
+
+    def mayedit(project)
+      if collaborator(project) or mine(project)
+        return true
+      else
+        return false
+      end
+    end
+
 end

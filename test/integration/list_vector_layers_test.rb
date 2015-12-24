@@ -18,7 +18,9 @@ class ListvectorLayersTest < ActionDispatch::IntegrationTest
     refute_includes in_project, true
 
     # Only two are returned because one is not active
-    assert_equal layers['vector_layers'].length, 2
+    assert_equal 2, layers['vector_layers'].length
+
+    assert_equal 'Mountain View / Airport Points of Interest Hello', layers['vector_layers'][0]['name']
 
   end
 

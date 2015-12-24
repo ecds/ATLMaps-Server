@@ -1,9 +1,9 @@
 class Api::V1::VectorLayersController < ApplicationController
     def index
         if params[:query]
-            @layers = RasterLayer.text_search(params[:query])
+            @layers = VectorLayer.text_search(params[:query])
         else
-            @layers = RasterLayer.where(active: true).includes(:projects, :tags, :institution)
+            @layers = VectorLayer.where(active: true).includes(:projects, :tags, :institution)
         end
 
         # If there is a param of `projectID` were going to send that as an argument to

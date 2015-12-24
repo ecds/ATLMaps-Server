@@ -43,8 +43,12 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
 
   def destroy
     projectlayer = RasterLayerProject.find(params[:id])
-    projectlayer.destroy
-    head 204
+    if mine(projectlayer.project) == true
+      projectlayer.destroy
+      head 204
+    else
+      head 401
+    end
   end
 
   private

@@ -20,6 +20,8 @@ class ListRasterLayersTest < ActionDispatch::IntegrationTest
     # Only two are returned because one is not active
     assert_equal layers['raster_layers'].length, 2
 
+    assert_equal 'Atlanta Airport 1967', layers['raster_layers'][0]['title']
+
   end
 
   # A GET request for a all raster layers from within a project

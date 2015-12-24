@@ -1,6 +1,7 @@
 # app/controllers/api/v1/projects_controller.rb
 module Api
   module V1
+
     # Controller for repersenting projects
     class ProjectsController < ApplicationController
       # class for Controller
@@ -26,7 +27,7 @@ module Api
         # Only return the project if it is published, the user is the owner
         # or the user is a collaborator.
         @project = Project.find(params[:id])
-        if @project.published == true || mine == true || collaborator == true
+        if @project.published == true || mine(@project) == true || collaborator(@project) == true
           render json: @project, root: 'project', resource_owner: owner_id
         else
           head 401
@@ -49,7 +50,7 @@ module Api
 
       def update
         @project = Project.find(params[:id])
-        if mine == true || collaborator == true
+        if mayedit(@project) == true
           if @project.update(project_params)
             head 204
           else
@@ -82,27 +83,6 @@ module Api
         current_resource_owner ? current_resource_owner.id : 0
       end
 
-      def mine
-        if current_resource_owner && current_resource_owner.id == @project.user_id
-          return true
-        else
-          return false
-        end
-      end
-
-      def collaborator
-        if current_resource_owner
-          # make an array of the user ids of collaborators
-          collaborations = @project.collaboration.map {|c| c.user_id}
-          if collaborations.any? and collaborations.include? current_resource_owner.id
-            return true
-          else
-            return false
-          end
-        else
-          return false
-        end
-      end
     end
   end
 end
