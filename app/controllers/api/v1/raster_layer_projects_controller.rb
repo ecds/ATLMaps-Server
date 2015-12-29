@@ -8,7 +8,7 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
       projectlayers = RasterLayerProject.all
     end
 
-    render json: projectlayers, root: 'raster_layer_projects'
+    render json: projectlayers
   end
 
   def show
@@ -18,7 +18,7 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
         @projectlayer = RasterLayerProject.find(params[:id])
     end
 
-    render json: @projectlayer, root: 'raster_layer_project'
+    render json: @projectlayer
   end
 
   def create

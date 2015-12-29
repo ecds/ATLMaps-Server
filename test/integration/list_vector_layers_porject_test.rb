@@ -9,7 +9,7 @@ class ListVectorLayersProjectTest < ActionDispatch::IntegrationTest
       assert_equal 200, response.status
 
       results = JSON.parse(response.body)
-      assert_equal 3, results['vector_layer_project'].length
+      assert_equal 3, results['vector_layer_projects'].length
   end
 
   test 'showing one layer project relation' do
@@ -25,16 +25,16 @@ class ListVectorLayersProjectTest < ActionDispatch::IntegrationTest
       get '/v1/vectorLayerProjects', {vector_layer_id: 1, project_id: 1}
       results = JSON.parse(response.body)
       assert_equal 200, response.status
-      assert_equal 1, results['vector_layer_project'][0]['project_id']
-      assert_equal 1, results['vector_layer_project'][0]['vector_layer_id']
+      assert_equal 1, results['vector_layer_projects'][0]['project_id']
+      assert_equal 1, results['vector_layer_projects'][0]['vector_layer_id']
   end
 
   test 'show vector layer project relation by project id' do
       get '/v1/vectorLayerProjects', {project_id: 1}
       results = JSON.parse(response.body)
       assert_equal 200, response.status
-      assert_equal 1, results['vector_layer_project'][0]['project_id']
-      assert_equal 1, results['vector_layer_project'][0]['vector_layer_id']
+      assert_equal 1, results['vector_layer_projects'][0]['project_id']
+      assert_equal 1, results['vector_layer_projects'][0]['vector_layer_id']
   end
 
 end

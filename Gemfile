@@ -8,7 +8,7 @@ gem 'pg'
 
 gem 'pg_search'
 
-gem 'active_model_serializers', '~> 0.10.0.rc1'
+gem 'active_model_serializers', '~> 0.10.0.rc3'
 
 gem 'devise'
 gem 'doorkeeper'

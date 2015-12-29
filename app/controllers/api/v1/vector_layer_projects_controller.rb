@@ -8,22 +8,22 @@ class Api::V1::VectorLayerProjectsController < ApplicationController
       projectlayers = VectorLayerProject.all
     end
 
-    render json: projectlayers, root: 'vector_layer_project'
+    render json: projectlayers
   end
 
   def show
     @projectlayer = VectorLayerProject.find(params[:id])
-    render json: @projectlayer, root: 'vector_layer_project'
+    render json: @projectlayer
   end
 
   def create
     projectlayer = VectorLayerProject.new(vector_layer_project_params)
-    # Projects from the explore route have an ID of 9999999. We don't want to save that junk.
-    # http://www.funnyordie.com/videos/4ecfd3a85f/herman-cains-campaign-promises-with-mike-tyson
     if projectlayer.project
       if mayedit(projectlayer.project) == true
         head 201
       end
+    # Projects from the explore route have an ID of 9999999. We don't want to save that junk.
+    # http://www.funnyordie.com/videos/4ecfd3a85f/herman-cains-campaign-promises-with-mike-tyson
     elsif current_resource_owner && vector_layer_project_params[:project_id] != '9999999'
       head 201
     else

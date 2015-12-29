@@ -1,5 +1,8 @@
 # app/serializers/project_serializer.rb
 class ProjectSerializer < ActiveModel::Serializer
+
+  ActiveModel::Serializer.config.adapter = :json
+
   has_many :raster_layers, embed: :ids
   has_many :vector_layers, embed: :ids
   has_many :users, embed: :ids
