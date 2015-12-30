@@ -5,7 +5,7 @@ class YearRangeTest < ActionDispatch::IntegrationTest
   setup { host! 'api.example.com' }
 
   test 'returns the max and min years in RasterLayer and VectorLayer' do
-    get '/v1/year_ranges.json'
+    get '/v1/yearRanges/1.json'
     assert_equal 200, response.status
 
     year_range = JSON.parse(response.body)
