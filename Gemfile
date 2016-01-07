@@ -16,9 +16,6 @@ gem 'doorkeeper'
 gem 'rails_admin'
 gem 'cancan'
 
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-
 gem 'json'
 gem 'rest-client'
 gem 'rack-cors'

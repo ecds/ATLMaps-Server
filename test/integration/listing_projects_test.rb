@@ -64,7 +64,7 @@ class ListingProjectsTest < ActionDispatch::IntegrationTest
   end
 
   test 'get project by name' do
-    get '/v1/projects.json?name=One Last Project'
+    get '/v1/projects.json?name=One%20Last%20Project'
     assert_equal 200, response.status
     assert_equal 5, JSON.parse(response.body)['projects'][0]['id']
   end
