@@ -20,7 +20,8 @@ class ListvectorLayersTest < ActionDispatch::IntegrationTest
     # Only two are returned because one is not active
     assert_equal 2, layers['vector_layers'].length
 
-    assert_equal 'Mountain View / Airport Points of Interest Hello', layers['vector_layers'][0]['name']
+    assert_equal 'Mountain View / Airport Points of Interest Hello', layers['vector_layers'][0]['title']
+    assert_equal 'fkeif', layers['vector_layers'][0]['name']
 
   end
 
@@ -51,8 +52,9 @@ class ListvectorLayersTest < ActionDispatch::IntegrationTest
     assert_equal 200, response.status
     layer = JSON.parse(response.body)
     assert_equal 1, layer.length
-    assert_equal "Historic Downtown Atlanta", layer['vector_layer']['name']
+    assert_equal "Historic Downtown Atlanta", layer['vector_layer']['title']
     assert_equal "historic-downtown-atlanta-2", layer['vector_layer']['slug']
+    assert_equal "k9eke", layer['vector_layer']['name']
   end
 
 end

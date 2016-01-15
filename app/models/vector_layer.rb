@@ -19,7 +19,7 @@ class VectorLayer < ActiveRecord::Base
   end
 
   include PgSearch
-  pg_search_scope :search, against: [:name, :description],
+  pg_search_scope :search, against: [:title, :description],
     using: { tsearch: { prefix: true, dictionary: 'english' } }
     # associated_against: { tags: :name, institution: :name }
 
@@ -40,7 +40,7 @@ class VectorLayer < ActiveRecord::Base
 
   # Attribute to use for html classes
   def slug
-  	slug = self.name.parameterize
+  	slug = self.title.parameterize
   	return "#{slug}-#{id}"
   end
 

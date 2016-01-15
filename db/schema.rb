@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151222214833) do
+ActiveRecord::Schema.define(version: 20160111200128) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -235,6 +235,7 @@ ActiveRecord::Schema.define(version: 20151222214833) do
     t.datetime "updated_at"
     t.string   "url"
     t.integer  "year"
+    t.string   "title"
   end
 
   add_index "vector_layers", ["institution_id"], name: "atlmaps_api_dev_vector_layers_institution_id1_idx", using: :btree
