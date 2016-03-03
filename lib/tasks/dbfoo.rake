@@ -53,4 +53,42 @@ namespace :dbfoo do
             raster.save
         }
     end
+
+    task data_format: :environment do
+        vectors = VectorLayer.all()
+        vectors.each { |vector|
+            vector.data_type = vector.data_format
+            vector.data_format = 'vector'
+            vector.save
+        }
+        rasters = RasterLayer.all()
+        rasters.each { |raster|
+            raster.data_type = raster.data_format
+            raster.data_format = 'raster'
+            raster.save
+        }
+
+    end
+
+    task proj_data_format: :environment do
+        vectors = VectorLayerProject.all()
+        vectors.each { |vector|
+            vector.data_format = 'vector'
+            vector.save
+        }
+        rasters = RasterLayerProject.all()
+        rasters.each { |raster|
+            raster.data_format = 'raster'
+            raster.save
+        }
+
+    end
+
+    task set_vector_type: :environment do
+        vectors = VectorLayer.all()
+        vectors.each { |vector|
+            vector.data_type = 'point-data'
+            vector.save
+        }
+    end
 end

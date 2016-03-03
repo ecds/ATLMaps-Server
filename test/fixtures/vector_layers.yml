@@ -7,7 +7,7 @@ one:
   url: /assets/data/hannahspoints.json
   date: null
   year: 1944
-  layer_type: geojson
+  data_format: geojson
   minzoom: null
   maxzoom: null
   minx: null
@@ -26,7 +26,7 @@ two:
   url: /assets/data/historicdowntown.json
   date: null
   year: 1988
-  layer_type: geojson
+  data_format: geojson
   minzoom: null
   maxzoom: null
   minx: null
@@ -45,7 +45,7 @@ three:
   url: /assets/data/livingwalls_2010.json
   date: null
   year: 1966
-  layer_type: geojson
+  data_format: geojson
   minzoom: null
   maxzoom: null
   minx: null

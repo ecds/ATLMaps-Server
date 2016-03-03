@@ -28,7 +28,7 @@ module Api
         # or the user is a collaborator.
         @project = Project.find(params[:id])
         if @project.published == true || mine(@project) == true || collaborator(@project) == true
-          render json: @project, resource_owner: owner_id
+          render json: @project, root: 'project', resource_owner: owner_id
         else
           head 401
         end

@@ -61,7 +61,7 @@ RailsAdmin.config do |config|
 
     list do
       field :title
-      field :layer_type
+      field :data_format
       field :institution
       field :active
     end
@@ -71,7 +71,7 @@ RailsAdmin.config do |config|
       field :description
       field :tags
       field :institution
-      field :layer_type
+      field :data_format
       field :active
     end
 
@@ -81,7 +81,7 @@ RailsAdmin.config do |config|
 
     list do
       field :name
-      field :layer_type
+      field :data_format
       field :institution
       field :active
     end
@@ -92,7 +92,7 @@ RailsAdmin.config do |config|
       field :url
       field :tags
       field :institution
-      field :layer_type
+      field :data_format
       field :active
     end
 

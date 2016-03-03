@@ -9,7 +9,7 @@ class Api::V1::RasterLayersController < ApplicationController
 			@layers = RasterLayer.where(active: true).includes(:projects, :tags, :institution)
 		end
 
-		# If there is a param of `projectID` were going to send that as an argument to
+		# If there is a param of `projectID` we're going to send that as an argument to
 		# the serializer.
 		if params[:projectID]
 			render json: @layers, project_id: params[:projectID]

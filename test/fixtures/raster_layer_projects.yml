@@ -3,7 +3,7 @@ one:
   raster_layer_id: 1
   project_id: 1
   marker: null
-  layer_type: wms
+  data_format: wms
   position: 0
 
 two:
@@ -11,7 +11,7 @@ two:
   raster_layer_id: 2
   project_id: 1
   marker: null
-  layer_type: planningatlanta
+  data_format: planningatlanta
   position: 1
 
 three:
@@ -19,7 +19,7 @@ three:
   raster_layer_id: 1
   project_id: 2
   marker: null
-  layer_type: wms
+  data_format: wms
   position: 0
 
 four:
@@ -27,5 +27,5 @@ four:
   raster_layer_id: 3
   project_id: 2
   marker: null
-  layer_type: wms
+  data_format: wms
   position: 1

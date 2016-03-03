@@ -80,5 +80,11 @@ class SearchLayersTest < ActionDispatch::IntegrationTest
         results = JSON.parse(response.body)
         assert_equal nil, results['searches']['raster_layer_ids']
         assert_equal nil, results['searches']['vector_layer_ids']
+
+        get '/v1/searches.json?end_year=&start_year=&text_search='
+        assert_equal 200, response.status
+        results = JSON.parse(response.body)
+        assert_equal nil, results['searches']['raster_layer_ids']
+        assert_equal nil, results['searches']['vector_layer_ids']
     end
 end

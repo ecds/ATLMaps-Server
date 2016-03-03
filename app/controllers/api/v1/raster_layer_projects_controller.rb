@@ -8,7 +8,7 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
       projectlayers = RasterLayerProject.all
     end
 
-    render json: projectlayers
+    render json: projectlayers#, include:['raster_layer']
   end
 
   def show
@@ -27,7 +27,7 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
     # http://www.funnyordie.com/videos/4ecfd3a85f/herman-cains-campaign-promises-with-mike-tyson
     if current_resource_owner && raster_layer_project_params[:project_id] != '9999999'
       if projectlayer.save
-        head 201
+        render json: {}, status: 201
       end
     else
       head 401
@@ -37,7 +37,9 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
   def update
     project = RasterLayerProject.find(params[:id])
     if project.update(raster_layer_project_params)
-      head 201
+      head 204
+    else
+      head 500
     end
   end
 
@@ -53,7 +55,7 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
 
   private
     def raster_layer_project_params
-      params.require(:rasterLayerProject).permit(:project_id, :raster_layer_id, :layer_type, :position)
+      params.require(:rasterLayerProject).permit(:project_id, :raster_layer_id, :data_format, :position)
     end
 
 end

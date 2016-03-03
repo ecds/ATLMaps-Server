@@ -228,6 +228,3 @@ DEPENDENCIES
   simplecov
   spring
   turbolinks
-
-BUNDLED WITH
-   1.10.6

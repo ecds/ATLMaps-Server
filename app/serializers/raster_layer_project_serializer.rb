@@ -1,6 +1,11 @@
 class RasterLayerProjectSerializer < ActiveModel::Serializer
 
   ActiveModel::Serializer.config.adapter = :json
-  
-  attributes :id, :project_id, :raster_layer_id, :layer_type, :position
+
+  # has_one :raster_layer, embed: :id, :include => true
+  # has_one :project
+
+  attributes :id, :project_id, :data_format, :position, :raster_layer_id
+
+
 end

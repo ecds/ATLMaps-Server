@@ -22,10 +22,19 @@ class Api::V1::VectorLayerProjectsController < ApplicationController
     # http://www.funnyordie.com/videos/4ecfd3a85f/herman-cains-campaign-promises-with-mike-tyson
     if current_resource_owner && vector_layer_project_params[:project_id] != '9999999'
       if projectlayer.save
-        head 201
+        render json: {}, status: 201
       end
     else
       head 401
+    end
+  end
+
+  def update
+    project = VectorLayerProject.find(params[:id])
+    if project.update(vector_layer_project_params)
+      head 204
+    else
+      head 500
     end
   end
 
@@ -41,7 +50,7 @@ class Api::V1::VectorLayerProjectsController < ApplicationController
 
   private
     def vector_layer_project_params
-      params.require(:vectorLayerProject).permit(:project_id, :vector_layer_id, :marker, :layer_type, :position)
+      params.require(:vectorLayerProject).permit(:project_id, :vector_layer_id, :marker, :data_format, :position)
     end
 
 end

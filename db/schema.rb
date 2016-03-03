@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160111200128) do
+ActiveRecord::Schema.define(version: 20160301165921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -121,7 +121,7 @@ ActiveRecord::Schema.define(version: 20160111200128) do
     t.integer  "raster_layer_id"
     t.integer  "project_id"
     t.integer  "marker"
-    t.string   "layer_type"
+    t.string   "data_format"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(version: 20160111200128) do
     t.string   "keywords"
     t.string   "description",    limit: 500
     t.datetime "date"
-    t.string   "layer_type"
+    t.string   "data_format"
     t.integer  "minzoom"
     t.integer  "maxzoom"
     t.decimal  "minx",                       precision: 10, scale: 8
@@ -149,6 +149,7 @@ ActiveRecord::Schema.define(version: 20160111200128) do
     t.string   "title"
     t.string   "workspace"
     t.integer  "year"
+    t.string   "data_type"
   end
 
   add_index "raster_layers", ["institution_id"], name: "atlmaps_api_dev_raster_layers_institution_id1_idx", using: :btree
@@ -208,7 +209,7 @@ ActiveRecord::Schema.define(version: 20160111200128) do
     t.integer  "vector_layer_id"
     t.integer  "project_id"
     t.integer  "marker"
-    t.string   "layer_type"
+    t.string   "data_format"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -222,7 +223,7 @@ ActiveRecord::Schema.define(version: 20160111200128) do
     t.string   "keywords"
     t.string   "description"
     t.datetime "date"
-    t.string   "layer_type"
+    t.string   "data_format"
     t.integer  "minzoom"
     t.integer  "maxzoom"
     t.decimal  "minx",           precision: 10, scale: 8
@@ -236,6 +237,7 @@ ActiveRecord::Schema.define(version: 20160111200128) do
     t.string   "url"
     t.integer  "year"
     t.string   "title"
+    t.string   "data_type"
   end
 
   add_index "vector_layers", ["institution_id"], name: "atlmaps_api_dev_vector_layers_institution_id1_idx", using: :btree

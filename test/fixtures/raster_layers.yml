@@ -6,7 +6,7 @@ one:
   name: atlpm0380_geo
   date: null
   year: 1999
-  layer_type: wms
+  data_format: wms
   minzoom: null
   maxzoom: null
   minx: -84.46091263
@@ -23,7 +23,7 @@ two:
   name: atl1871
   date: null
   year: 1974
-  layer_type: wms
+  data_format: wms
   minzoom: 12
   maxzoom: 18
   minx: -84.41308472
@@ -41,7 +41,7 @@ three:
   name: atlpm0031d
   date: null
   year: 1992
-  layer_type: planningatlanta
+  data_format: planningatlanta
   minzoom: 13
   maxzoom: 19
   minx: 33.7472176
