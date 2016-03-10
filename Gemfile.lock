@@ -34,6 +34,7 @@ GEM
     arel (5.0.1.20140414130214)
     bcrypt (3.1.9)
     builder (3.2.2)
+    byebug (8.2.2)
     cancan (1.6.10)
     capistrano (3.3.5)
       capistrano-stats (~> 1.1.0)
@@ -208,6 +209,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0.rc3)
+  byebug
   cancan
   capistrano-passenger
   capistrano-rails
@@ -228,3 +230,6 @@ DEPENDENCIES
   simplecov
   spring
   turbolinks
+
+BUNDLED WITH
+   1.11.2
