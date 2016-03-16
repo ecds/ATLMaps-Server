@@ -6,7 +6,7 @@ class Api::V1::RasterLayersController < ApplicationController
 		if params[:query]
 			@layers = RasterLayer.text_search(params[:query])
 		else
-			@layers = RasterLayer.where(active: true).includes(:projects, :tags, :institution)
+			@layers = RasterLayer.where(active: true)#.includes(:projects, :tags, :institution)
 		end
 
 		# If there is a param of `projectID` we're going to send that as an argument to

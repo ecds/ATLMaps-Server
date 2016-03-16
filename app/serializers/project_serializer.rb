@@ -4,10 +4,10 @@ class ProjectSerializer < ActiveModel::Serializer
   ActiveModel::Serializer.config.adapter = :json
   # has_many :raster_layers, embed: :objects
   # has_many :vector_layers, embed: :ids
-  has_many :raster_layer_project, embed: :objects#, :include => true
-  has_many :raster_layer_project, embed: :ids
-  has_many :vector_layer_project, embed: :ids
-  has_many :users, embed: :ids
+  # has_many :raster_layer_project, embed: :objects#, :include => true
+  # has_many :raster_layer_project, embed: :ids
+  # has_many :vector_layer_project, embed: :ids
+  # has_many :users, embed: :ids
 
 
   attributes :id,

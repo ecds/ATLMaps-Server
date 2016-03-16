@@ -4,9 +4,9 @@ class VectorLayerSerializer < ActiveModel::Serializer
 
   #embed :ids # this is key for the Ember data to work.
 
-  has_many :projects, embed: :ids
-  has_many :tags, embed: :ids
-  has_many :projects
+  # has_many :projects, embed: :ids
+  # has_many :tags, embed: :ids
+  # has_many :projects
   has_one :institution
 
   attributes  :id,
@@ -31,8 +31,8 @@ class VectorLayerSerializer < ActiveModel::Serializer
               :active,
               :tag_ids,
               :project_ids,
-              :active_in_project,
-              :project_ids
+              :active_in_project
+            #   :project_ids
 
 	def active_in_project
 		if self.project_ids.include? options[:project_id].to_i
