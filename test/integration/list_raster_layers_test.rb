@@ -24,20 +24,22 @@ class ListRasterLayersTest < ActionDispatch::IntegrationTest
 
   end
 
-  # A GET request for a all raster layers from within a project
-  test 'some layers should be active in project' do
-    get '/v1/rasterLayers.json?projectID=1'
-    assert_equal 200, response.status
+  # This is now handeled by the client.
 
-    layers = JSON.parse(response.body)
+  # # A GET request for a all raster layers from within a project
+  # test 'some layers should be active in project' do
+  #   get '/v1/rasterLayers.json?projectID=1'
+  #   assert_equal 200, response.status
+  #
+  #   layers = JSON.parse(response.body)
+  #
+  #   l_one = layers['raster_layers'][0]
+  #   l_two = layers['raster_layers'][1]
+  #
+  #   assert l_one['active_in_project']
+  #   refute l_two['active_in_project']
 
-    l_one = layers['raster_layers'][0]
-    l_two = layers['raster_layers'][1]
-
-    assert l_one['active_in_project']
-    refute l_two['active_in_project']
-
-  end
+  # end
 
   test 'test search' do
     get '/v1/rasterLayers.json?query=butler'
