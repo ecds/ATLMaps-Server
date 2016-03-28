@@ -10,7 +10,7 @@ class YearRangeTest < ActionDispatch::IntegrationTest
 
     year_range = JSON.parse(response.body)
     assert_equal 1944, year_range['year_range']['min_year']
-    assert_equal 1999, year_range['year_range']['max_year']
+    assert_equal 2000, year_range['year_range']['max_year']
     assert_equal 1, year_range['year_range']['id']
   end
 

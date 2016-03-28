@@ -18,7 +18,7 @@ class ListRasterLayersTest < ActionDispatch::IntegrationTest
     refute_includes in_project, true
 
     # Only two are returned because one is not active
-    assert_equal layers['raster_layers'].length, 2
+    assert_equal 3, layers['raster_layers'].length
 
     assert_equal 'Atlanta Airport 1967', layers['raster_layers'][0]['title']
 

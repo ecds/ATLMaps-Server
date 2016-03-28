@@ -19,7 +19,7 @@ class SearchLayersTest < ActionDispatch::IntegrationTest
     end
 
     test 'search by year range' do
-        get '/v1/searches.json', {start_year: 1922, end_year: 1980}
+        get '/v1/searches.json', {start_year: 1922, end_year: 1992}
         assert_equal 200, response.status
         results = JSON.parse(response.body)
         assert_equal 1, results['searches']['raster_layer_ids'].length
@@ -37,7 +37,7 @@ class SearchLayersTest < ActionDispatch::IntegrationTest
         assert_equal 200, response.status
         results = JSON.parse(response.body)
         assert_equal 2, results['searches']['raster_layer_ids'].length
-        assert_equal 2, results['searches']['vector_layer_ids'].length
+        assert_equal 1, results['searches']['vector_layer_ids'].length
 
         get '/v1/searches.json', { name: 'Georgia State University'}
         assert_equal 200, response.status
@@ -57,7 +57,7 @@ class SearchLayersTest < ActionDispatch::IntegrationTest
         assert_equal 200, response.status
         results = JSON.parse(response.body)
         assert_equal 2, results['searches']['raster_layer_ids'].length
-        assert_equal 2, results['searches']['vector_layer_ids'].length
+        assert_equal 1, results['searches']['vector_layer_ids'].length
     end
 
     test 'all filters' do

@@ -50,3 +50,20 @@ three:
   maxy: -84.36198187
   active: true
   institution_id: 1
+
+four:
+  id: 4
+  title: Bird's eye view2
+  description: Birds eye view of the city of Atlanta
+  name: atl1871
+  date: null
+  year: 2000
+  data_format: wms
+  minzoom: 12
+  maxzoom: 18
+  minx: -84.41308472
+  miny: 33.73061309
+  maxx: -84.37179754
+  maxy: 33.77218988
+  active: true
+  institution_id: 2
