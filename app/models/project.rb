@@ -1,5 +1,7 @@
 class Project < ActiveRecord::Base
 
+  mount_uploader :card, FeaturedCardUploader
+
   belongs_to :user
 
   belongs_to :template

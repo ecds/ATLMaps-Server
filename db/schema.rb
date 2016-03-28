@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301165921) do
+ActiveRecord::Schema.define(version: 20160328165028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 20160301165921) do
     t.text     "intro"
     t.text     "media"
     t.integer  "template_id"
+    t.string   "card"
   end
 
   add_index "projects", ["template_id"], name: "index_projects_on_template_id", using: :btree
