@@ -3,8 +3,10 @@ class Api::V1::SearchesController < ApplicationController
   def index
     @rasters = RasterLayer.browse_text_search(params[:text_search]).by_institution( params[:name] )
                 .by_tags( params[:tags] ).by_year( params[:start_year].to_i, params[:end_year].to_i)
+                # .active(true)
     @vectors = VectorLayer.browse_text_search(params[:text_search]).by_institution( params[:name] )
                 .by_tags( params[:tags] ).by_year( params[:start_year].to_i, params[:end_year].to_i)
+                # .active(true)
 
     # Without this, we will return everything if the user clears out previous search options.
 	 if(params[:tags].blank? && params[:start_year].blank? && params[:finish_year].blank? && params[:name].blank? && params[:text_search].blank?)

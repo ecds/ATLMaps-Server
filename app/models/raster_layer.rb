@@ -10,6 +10,7 @@ class RasterLayer < ActiveRecord::Base
   scope :by_tags, -> tags { joins(:tags).where(tags: {name: tags}) if tags.present?}
   scope :search_by_year, -> (start_year,end_year) { where(year: start_year..end_year) }
   scope :text_search, ->(text_search) { joins(:text_search) if query.present?}
+  scope :active, -> { where(active: true)}
 
 
   def self.by_year(start_year, end_year)
