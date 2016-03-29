@@ -20,10 +20,6 @@ atlmaps.load
 atlmaps.sql
 coverage
 *.DS_Store
-*.pyc
 venv
 dump
-ATLMaps.kp.komodoproject
-.komodotools
-atlmaps/localsettings.py
-
+config/initializers/fog.rb

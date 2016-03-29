@@ -1,9 +1,10 @@
 class Project < ActiveRecord::Base
 
-  mount_uploader :card, FeaturedCardUploader
+  # mount_uploader :card, FeaturedCardUploader
 
   belongs_to :user
 
+  #FIXME do we really hae to have a table for this?
   belongs_to :template
 
   has_many :raster_layer_project

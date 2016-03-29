@@ -50,3 +50,4 @@ gem 'byebug', group: [:development, :test]
 
 # For file uploads
 gem 'carrierwave'
+gem "fog", "~> 1.3.1"
