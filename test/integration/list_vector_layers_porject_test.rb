@@ -9,7 +9,7 @@ class ListVectorLayersProjectTest < ActionDispatch::IntegrationTest
       assert_equal 200, response.status
 
       results = JSON.parse(response.body)
-      assert_equal 3, results['vector_layer_projects'].length
+      assert_equal 4, results['vector_layer_projects'].length
   end
 
   test 'showing one layer project relation' do
