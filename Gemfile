@@ -50,4 +50,5 @@ gem 'byebug', group: [:development, :test]
 
 # For file uploads
 gem 'carrierwave'
-gem "fog", "~> 1.3.1"
+gem "fog", "~> 1.38.0"
+gem "mini_magick"

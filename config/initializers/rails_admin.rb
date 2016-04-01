@@ -50,7 +50,7 @@ RailsAdmin.config do |config|
       field :saved
       field :published
       field :featured
-      field :card
+      field :card, :carrierwave
       field :media
 
     end

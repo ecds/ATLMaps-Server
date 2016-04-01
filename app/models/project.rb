@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
 
-  # mount_uploader :card, FeaturedCardUploader
+  mount_uploader :card, FeaturedCardUploader
 
   belongs_to :user
 
