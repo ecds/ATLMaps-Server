@@ -1,6 +1,6 @@
 class InstitutionSerializer < ActiveModel::Serializer
 
-  ActiveModel::Serializer.config.adapter = :json
+  # ActiveModel::Serializer.config.adapter = :json
 
   has_many :users, embed: :ids
 

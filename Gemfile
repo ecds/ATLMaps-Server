@@ -47,3 +47,8 @@ gem 'simplecov'#, group: :test
 gem 'coveralls', require: false
 # Use debugger
 gem 'byebug', group: [:development, :test]
+
+# For file uploads
+gem 'carrierwave'
+gem "fog", "~> 1.38.0"
+gem "mini_magick"

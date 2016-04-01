@@ -14,8 +14,8 @@ class ListvectorLayersTest < ActionDispatch::IntegrationTest
     states = layers['vector_layers'].collect { |layer| layer['active'] }
     refute_includes states, false
 
-    in_project = layers['vector_layers'].collect { |layer| layer['active_in_project'] }
-    refute_includes in_project, true
+    # in_project = layers['vector_layers'].collect { |layer| layer['active_in_project'] }
+    # refute_includes in_project, true
 
     # Only two are returned because one is not active
     assert_equal 2, layers['vector_layers'].length
@@ -35,8 +35,8 @@ class ListvectorLayersTest < ActionDispatch::IntegrationTest
     l_one = layers['vector_layers'][0]
     l_two = layers['vector_layers'][1]
 
-    assert l_one['active_in_project']
-    refute l_two['active_in_project']
+    # assert l_one['active_in_project']
+    # refute l_two['active_in_project']
 
   end
 

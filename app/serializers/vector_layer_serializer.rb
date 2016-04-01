@@ -1,6 +1,6 @@
 class VectorLayerSerializer < ActiveModel::Serializer
 
-  ActiveModel::Serializer.config.adapter = :json
+  # ActiveModel::Serializer.config.adapter = :json
 
   #embed :ids # this is key for the Ember data to work.
 
@@ -30,15 +30,15 @@ class VectorLayerSerializer < ActiveModel::Serializer
               :tag_slugs,
               :active,
               :tag_ids,
-              :project_ids,
-              :active_in_project
+              :project_ids
+            #   :active_in_project
             #   :project_ids
 
-	def active_in_project
-		if self.project_ids.include? options[:project_id].to_i
-			return true
-		else
-			return false
-		end
-	end
+	# def active_in_project
+	# 	if self.project_ids.include? options[:project_id].to_i
+	# 		return true
+	# 	else
+	# 		return false
+	# 	end
+	# end
 end

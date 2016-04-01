@@ -50,6 +50,7 @@ RailsAdmin.config do |config|
       field :saved
       field :published
       field :featured
+      field :card, :carrierwave
       field :media
 
     end
@@ -60,6 +61,7 @@ RailsAdmin.config do |config|
   config.model 'RasterLayer' do
 
     list do
+      field :name
       field :title
       field :data_format
       field :institution
@@ -67,11 +69,13 @@ RailsAdmin.config do |config|
     end
 
     edit do
+      field :name
       field :title
       field :description
       field :tags
       field :institution
       field :data_format
+      field :data_type
       field :active
     end
 
@@ -81,6 +85,7 @@ RailsAdmin.config do |config|
 
     list do
       field :name
+      field :title
       field :data_format
       field :institution
       field :active
@@ -88,11 +93,13 @@ RailsAdmin.config do |config|
 
     edit do
       field :name
+      field :title
       field :description
       field :url
       field :tags
       field :institution
       field :data_format
+      field :data_type
       field :active
     end
 

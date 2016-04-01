@@ -1,7 +1,7 @@
 # app/serializers/project_serializer.rb
 class ProjectSerializer < ActiveModel::Serializer
 
-  ActiveModel::Serializer.config.adapter = :json
+  # ActiveModel::Serializer.config.adapter = :json
   # has_many :raster_layers, embed: :objects
   # has_many :vector_layers, embed: :ids
   # has_many :raster_layer_project, embed: :objects#, :include => true
@@ -35,14 +35,29 @@ class ProjectSerializer < ActiveModel::Serializer
              :intro,
              :media,
              :templateSlug,
-             :template_id
+             :template_id,
+             :card_url,
+             :card_phone_url,
+             :card_tablet_url
 
-  def is_mine
-    options[:resource_owner] == user_id
+  def is_mine()
+    return instance_options[:resource_owner] == object.user_id.to_i
+  end
+
+  def card_url()
+      return object.card.url
+  end
+
+  def card_phone_url()
+      return object.card.phone.url
+  end
+
+  def card_tablet_url()
+      return object.card.tablet.url
   end
 
   def may_edit
-    if user_ids.include? options[:resource_owner]
+    if object.user_ids.include? instance_options[:resource_owner]
       return true
     else
       return is_mine
