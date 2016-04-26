@@ -1,7 +1,5 @@
 class UserSerializer < ActiveModel::Serializer
 
-  # ActiveModel::Serializer.config.adapter = :json
-
   # has_many :projects, embed: :ids
   # has_many :projects
   has_many :collaboration

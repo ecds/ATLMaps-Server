@@ -1,7 +1,5 @@
 class VectorLayerSerializer < ActiveModel::Serializer
 
-  # ActiveModel::Serializer.config.adapter = :json
-
   #embed :ids # this is key for the Ember data to work.
 
   # has_many :projects, embed: :ids

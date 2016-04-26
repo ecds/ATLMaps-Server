@@ -1,3 +1,4 @@
+# FIXME: get rid of this and do it on the client side http://emberigniter.com/real-world-authentication-with-ember-simple-auth/
 # Got this code for here http://stackoverflow.com/a/25532347/1792144
 # The point of this is to inject the user's details into the response
 class CustomTokensController < Doorkeeper::TokensController

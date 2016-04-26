@@ -1,7 +1,5 @@
 class RasterLayerSerializer < ActiveModel::Serializer
 
-  # ActiveModel::Serializer.config.adapter = :json
-
   #embed :ids # this is key for the Ember data to work.
 
   # has_many :projects, embed: :ids
@@ -35,7 +33,9 @@ class RasterLayerSerializer < ActiveModel::Serializer
             #   :active_in_project,
               :slider_id,
               :slider_value_id,
-              :tag_ids
+              :tag_ids,
+              :url,
+              :layers
             #   :position_in_project
 
 	# def active_in_project

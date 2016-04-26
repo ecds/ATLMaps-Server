@@ -1,6 +1,4 @@
 
-.komodotools
-*.komodoproject
 *.DS_Store
 config/database.yml
 .capistrano
@@ -23,3 +21,4 @@ coverage
 venv
 dump
 config/initializers/fog.rb
+config/secrets.yml

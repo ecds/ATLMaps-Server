@@ -62,4 +62,11 @@ class RasterLayer < ActiveRecord::Base
   	return "slider-value-#{slug}-#{id}"
   end
 
+  def url
+      return "#{self.institution.geoserver}#{self.workspace}/wms"
+  end
+
+  def layers
+      return "#{self.workspace}:#{self.name}"
+  end
 end
