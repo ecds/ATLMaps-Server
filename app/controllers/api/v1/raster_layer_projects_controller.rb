@@ -21,13 +21,23 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
     render json: @projectlayer
   end
 
+  # def create
+  #   projectlayer = RasterLayerProject.new(raster_layer_project_params)
+  #    if projectlayer.save
+  #       render json: {}, status: 201
+  #   else
+  #     head 401
+  #   end
+  # end
+
   def create
     projectlayer = RasterLayerProject.new(raster_layer_project_params)
-    # Projects from the explore route have an ID of 9999999. We don't want to save that junk.
-    # http://www.funnyordie.com/videos/4ecfd3a85f/herman-cains-campaign-promises-with-mike-tyson
-    if current_resource_owner && raster_layer_project_params[:project_id] != '9999999'
+    if current_resource_owner
       if projectlayer.save
-        render json: {}, status: 201
+        # Ember wants some JSON
+        render json: projectlayer, status: 201
+      else
+        head 500
       end
     else
       head 401

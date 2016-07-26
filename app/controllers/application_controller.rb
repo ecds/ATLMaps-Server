@@ -9,6 +9,8 @@ class ApplicationController < ActionController::Base
 
 	end
 
+    # FIXME Everything about this is awful!
+    
     def current_resource_owner
       User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
     end

@@ -39,7 +39,7 @@ module Api
         if current_resource_owner
           if project.save
             # Ember wants some JSON
-            render json: {}, status: 201
+            render json: project, status: 201
           else
             head 500
           end
@@ -52,7 +52,7 @@ module Api
         @project = Project.find(params[:id])
         if mayedit(@project) == true
           if @project.update(project_params)
-            head 204
+            render json: {}, status: 204
           else
             head 500
           end
