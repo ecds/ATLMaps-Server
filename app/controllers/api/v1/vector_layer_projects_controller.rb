@@ -32,10 +32,14 @@ class Api::V1::VectorLayerProjectsController < ApplicationController
 
   def update
     project = VectorLayerProject.find(params[:id])
-    if project.update(vector_layer_project_params)
-      head 204
+    if mayedit(project.project) == true
+        if project.update(vector_layer_project_params)
+          head 204
+        else
+          head 500
+        end
     else
-      head 500
+        head 401
     end
   end
 
@@ -43,7 +47,7 @@ class Api::V1::VectorLayerProjectsController < ApplicationController
     projectlayer = VectorLayerProject.find(params[:id])
     if mayedit(projectlayer.project) == true
       projectlayer.destroy
-      head 204
+      head 200
     else
       head 401
     end

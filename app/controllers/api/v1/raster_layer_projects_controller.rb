@@ -46,10 +46,14 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
 
   def update
     project = RasterLayerProject.find(params[:id])
-    if project.update(raster_layer_project_params)
-      head 204
+    if mayedit(project.project) == true
+        if project.update(raster_layer_project_params)
+          head 204
+        else
+          head 500
+        end
     else
-      head 500
+        head 401
     end
   end
 
@@ -57,7 +61,7 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
     projectlayer = RasterLayerProject.find(params[:id])
     if mine(projectlayer.project) == true
       projectlayer.destroy
-      head 204
+      head 200
     else
       head 401
     end

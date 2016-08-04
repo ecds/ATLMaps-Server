@@ -48,6 +48,8 @@ GEM
     capistrano-rails (1.1.0)
       capistrano (>= 3.0.0)
       capistrano-bundler (>= 1.0.0)
+    capistrano-rvm (0.0.3)
+      capistrano
     carrierwave (0.11.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -360,6 +362,7 @@ DEPENDENCIES
   cancan
   capistrano-passenger
   capistrano-rails
+  capistrano-rvm
   carrierwave
   coveralls
   devise
