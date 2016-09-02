@@ -8,4 +8,8 @@ class Api::V1::TagsController < ApplicationController
     @tag = Tag.find(params[:id])
     render json: @tag
   end
+
+  def tag_params
+    params.permit(:raster_layer_ids => [])
+  end
 end

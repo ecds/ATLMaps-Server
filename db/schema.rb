@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160328165028) do
+ActiveRecord::Schema.define(version: 20160831190532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -180,6 +180,20 @@ ActiveRecord::Schema.define(version: 20160328165028) do
   create_table "templates", force: true do |t|
     t.string "name"
   end
+
+  create_table "user_taggeds", force: true do |t|
+    t.integer  "raster_layer_id"
+    t.integer  "vector_layer_id"
+    t.integer  "tag_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_taggeds", ["raster_layer_id"], name: "index_user_taggeds_on_raster_layer_id", using: :btree
+  add_index "user_taggeds", ["tag_id"], name: "index_user_taggeds_on_tag_id", using: :btree
+  add_index "user_taggeds", ["user_id"], name: "index_user_taggeds_on_user_id", using: :btree
+  add_index "user_taggeds", ["vector_layer_id"], name: "index_user_taggeds_on_vector_layer_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "username"
