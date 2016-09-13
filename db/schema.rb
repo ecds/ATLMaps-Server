@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160909190550) do
+ActiveRecord::Schema.define(version: 20160913033626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,16 +134,16 @@ ActiveRecord::Schema.define(version: 20160909190550) do
   create_table "raster_layers", force: true do |t|
     t.string   "name"
     t.string   "keywords"
-    t.string   "description",    limit: 500
+    t.text     "description"
     t.datetime "date"
     t.string   "data_format"
     t.integer  "minzoom"
     t.integer  "maxzoom"
-    t.decimal  "minx",                       precision: 10, scale: 8
-    t.decimal  "miny",                       precision: 10, scale: 8
-    t.decimal  "maxx",                       precision: 10, scale: 8
-    t.decimal  "maxy",                       precision: 10, scale: 8
-    t.boolean  "active",                                              default: false
+    t.decimal  "minx",           precision: 10, scale: 8
+    t.decimal  "miny",           precision: 10, scale: 8
+    t.decimal  "maxx",           precision: 10, scale: 8
+    t.decimal  "maxy",           precision: 10, scale: 8
+    t.boolean  "active",                                  default: false
     t.integer  "institution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -238,7 +238,7 @@ ActiveRecord::Schema.define(version: 20160909190550) do
   create_table "vector_layers", force: true do |t|
     t.string   "name"
     t.string   "keywords"
-    t.string   "description"
+    t.text     "description"
     t.datetime "date"
     t.string   "data_format"
     t.integer  "minzoom"
