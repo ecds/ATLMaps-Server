@@ -36,7 +36,7 @@ Rails.application.routes.draw do
         add_update.resources :raster_layers, :path => "rasterLayers"
       end
 
-      with_options only: [:create] do |onlyCreate|
+      with_options only: [:create, :index] do |onlyCreate|
         onlyCreate.resources :user_taggeds, :path => "userTaggeds"
       end
 

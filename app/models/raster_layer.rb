@@ -4,13 +4,15 @@ class RasterLayer < ActiveRecord::Base
   has_many :projects, through: :raster_layer_project, dependent: :destroy
   belongs_to :institution
 
-  has_and_belongs_to_many :tags, dependent: :destroy
+  has_and_belongs_to_many :tags, dependent: :destroy, counter_cache: true
 
   scope :by_institution, -> name { joins(:institution).where(institutions: {name: name}) if name.present?}
   scope :by_tags, -> tags { joins(:tags).where(tags: {name: tags}) if tags.present?}
   scope :search_by_year, -> (start_year,end_year) { where(year: start_year..end_year) }
   scope :text_search, ->(text_search) { joins(:text_search) if query.present?}
   scope :active, -> { where(active: true)}
+  # Get random map taht has less than three tags
+  scope :un_taged, -> { group("raster_layers.id").having( 'count( raster_layers ) < 3' ).order('RANDOM()').first! }
 
 
   def self.by_year(start_year, end_year)

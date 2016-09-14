@@ -3,11 +3,12 @@ class Api::V1::RasterLayersController < ApplicationController
         # Not sure this is still needed
         # if params[:raster_layer]
         # 	@layers = RasterLayer.where(layer: params[:layer])
-        puts params
         if params[:query]
             @layers = RasterLayer.text_search(params[:query])
-        elsif params[:tagem]
-            @layers = RasterLayer.order('RANDOM()').includes(:tags).where(tags: { id: nil }).first
+        # elsif params[:tagem].include? '-'
+        #     @layers = RasterLayer.where(name: params[:tagem].split('-')[1]).first
+        elsif
+            @layers = RasterLayer.un_taged
         else
             @layers = RasterLayer.where(active: true) # .includes(:projects, :tags, :institution)
         end

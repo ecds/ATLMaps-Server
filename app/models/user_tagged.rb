@@ -4,7 +4,7 @@ class UserTagged < ActiveRecord::Base
   belongs_to :tag
   belongs_to :user
 
-  validates :user_id, uniqueness: { scope: [:raster_layer_id, :tag_id] }
+  # validates :user_id, uniqueness: { scope: [:raster_layer_id, :tag_id] }
 
   after_save do
       count = UserTagged \

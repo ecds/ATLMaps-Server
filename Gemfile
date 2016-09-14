@@ -12,6 +12,7 @@ gem 'active_model_serializers', '~> 0.10.0.rc3'
 
 gem 'devise'
 gem 'doorkeeper'
+gem "omniauth-google-oauth2"
 
 gem 'rails_admin'
 gem 'cancan'
