@@ -1,7 +1,7 @@
 class Tag < ActiveRecord::Base
 
   has_and_belongs_to_many :layers, dependent: :destroy
-  has_and_belongs_to_many :raster_layers, dependent: :destroy, counter_cache:true
+  has_and_belongs_to_many :raster_layers, dependent: :destroy
   has_and_belongs_to_many :vector_layers, dependent: :destroy
 
   has_and_belongs_to_many :categories

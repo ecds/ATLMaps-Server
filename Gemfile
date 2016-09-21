@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.7'
 # Use mysql as the database for Active Record
 gem 'pg'
-
+gem 'activerecord-postgis-adapter'
 gem 'pg_search'
 
 gem 'active_model_serializers', '~> 0.10.0.rc3'

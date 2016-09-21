@@ -26,6 +26,9 @@ GEM
       activemodel (= 4.1.7)
       activesupport (= 4.1.7)
       arel (~> 5.0.0)
+    activerecord-postgis-adapter (2.2.2)
+      activerecord (>= 4.0.0, < 4.2.0)
+      rgeo-activerecord (~> 1.2)
     activesupport (4.1.7)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
@@ -326,6 +329,10 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
+    rgeo (0.5.3)
+    rgeo-activerecord (1.2.0)
+      activerecord (~> 4.0)
+      rgeo (~> 0.3)
     safe_yaml (1.0.4)
     sass (3.4.22)
     sass-rails (5.0.4)
@@ -380,6 +387,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0.rc3)
+  activerecord-postgis-adapter
   byebug
   cancan
   capistrano-passenger
