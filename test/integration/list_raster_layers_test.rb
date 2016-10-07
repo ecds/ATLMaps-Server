@@ -11,16 +11,16 @@ class ListRasterLayersTest < ActionDispatch::IntegrationTest
 
     layers = JSON.parse(response.body)
 
-    # states = layers['raster_layers'].collect { |layer| layer['active'] }
-    # refute_includes states, false
+    states = layers['raster_layers'].collect { |layer| layer['active'] }
+    refute_includes states, false
 
-    # in_project = layers['raster_layers'].collect { |layer| layer['active_in_project'] }
-    # refute_includes in_project, true
-    #
-    # # Only two are returned because one is not active
-    # assert_equal 3, layers['raster_layers'].length
-    #
-    # assert_equal 'Atlanta Airport 1967', layers['raster_layers'][0]['title']
+    in_project = layers['raster_layers'].collect { |layer| layer['active_in_project'] }
+    refute_includes in_project, true
+
+    # Only two are returned because one is not active
+    assert_equal 3, layers['raster_layers'].length
+
+    assert_equal 'Atlanta Airport 1967', layers['raster_layers'][0]['title']
 
   end
 

@@ -11,6 +11,7 @@ class VectorLayer < ActiveRecord::Base
   scope :search_by_year, -> (start_year,end_year) { where(year: start_year..end_year) }
   scope :text_search, ->(text_search) { joins(:text_search) if query.present?}
   scope :active, -> { where(active: true)}
+  scope :by_bounds, ->(bounds) {}
 
   def self.by_year(start_year, end_year)
       if end_year > 0

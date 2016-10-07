@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   use_doorkeeper do
     # Using a custom controller for the token response so we can
     # inject a user's details.

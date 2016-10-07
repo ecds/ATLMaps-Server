@@ -7,7 +7,7 @@ class Api::V1::RasterLayersController < ApplicationController
             @layers = RasterLayer.text_search(params[:query])
         # elsif params[:tagem].include? '-'
         #     @layers = RasterLayer.where(name: params[:tagem].split('-')[1]).first
-        elsif
+      elsif params[:tagem]
             @layers = RasterLayer.un_taged
         else
             @layers = RasterLayer.where(active: true) # .includes(:projects, :tags, :institution)
