@@ -32,7 +32,7 @@ class Api::V1::SearchesController < ApplicationController
         }
       }
 
-  render json: @searches
+  render json: @searches, meta: pagination_dict(@searches)
   end
 
   def make_polygon(bounds)

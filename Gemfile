@@ -11,20 +11,25 @@ gem 'rgeo-geojson'
 
 gem 'pg_search'
 
+# API Responses
 gem 'active_model_serializers', '~> 0.10.0.rc3'
-gem 'will_paginate', '~> 3.1.1'
+gem 'kaminari'
+# gem 'will_paginate', '~> 3.1.1'
 
+# Authentication
 gem 'devise'
 gem 'doorkeeper'
 gem "omniauth-google-oauth2"
-
-gem 'rails_admin'
 gem 'cancan'
+
+# Content Admin
+gem 'rails_admin'
+
 
 gem 'json'
 gem 'rest-client'
 gem 'rack-cors'
-gem 'turbolinks'
+# gem 'turbolinks'
 gem 'responders', '~> 2.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 #gem 'jbuilder', '~> 2.0'

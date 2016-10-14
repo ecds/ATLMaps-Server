@@ -28,7 +28,7 @@ class RasterLayer < ActiveRecord::Base
   has_and_belongs_to_many :tags, dependent: :destroy
 
   # Scope: by_institution. Seraches layers by institution
-  scope :by_institution, ->(name) { joins(:institution).where(institutions: {name: name}) if name.present?}
+  scope :by_institution, ->(institution) { joins(:institution).where(institutions: {name: institution}) if institution.present?}
   scope :by_tags, -> tags { joins(:tags).where(tags: {name: tags}) if tags.present?}
   scope :search_by_year, -> (start_year,end_year) { where(year: start_year..end_year) }
 
@@ -96,7 +96,7 @@ class RasterLayer < ActiveRecord::Base
     )
 
     RasterLayer.select( [
-      RasterLayer.arel_table[:title]
+      RasterLayer.arel_table[Arel.star]
     ]).where(
     Arel::Nodes::NamedFunction.new(
       'ST_INTERSECTS', [
@@ -242,14 +242,15 @@ class RasterLayer < ActiveRecord::Base
   end
 
   def set_boundingbox(raster)
-    factory = RGeo::Geographic.simple_mercator_factory()
-    nw = factory.point(raster.maxx, raster.maxy)
-    ne = factory.point(raster.minx, raster.maxy)
-    se = factory.point(raster.minx, raster.miny)
-    sw = factory.point(raster.maxx, raster.miny)
-    return factory.polygon(
-      factory.linear_ring([nw, ne, se, sw, nw])
-    )
+    # factory = RGeo::Geographic.simple_mercator_factory()
+    # nw = factory.point(raster.maxx, raster.maxy)
+    # ne = factory.point(raster.minx, raster.maxy)
+    # se = factory.point(raster.minx, raster.miny)
+    # sw = factory.point(raster.maxx, raster.miny)
+    # return factory.polygon(
+    #   factory.linear_ring([nw, ne, se, sw, nw])
+    # )
+    return true
   end
 
   # @!attribute [r] layers
