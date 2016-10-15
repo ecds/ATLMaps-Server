@@ -8,7 +8,7 @@ gem 'pg'
 gem 'activerecord-postgis-adapter', '~> 3.1.4'
 gem 'squeel'
 gem 'rgeo-geojson'
-
+gem 'rgeo'
 gem 'pg_search'
 
 # API Responses

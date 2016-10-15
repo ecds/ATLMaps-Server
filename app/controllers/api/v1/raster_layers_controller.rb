@@ -11,16 +11,21 @@ class Api::V1::RasterLayersController < ApplicationController
         elsif params[:tagem]
             @layers = RasterLayer.un_tagged
         elsif params[:search]
-            # @layers = RasterLayer.active().paginate(page: params[:page], per_page: 25) # .includes(:projects, :tags, :institution)
-            @layers = RasterLayer.active
-            # @todo do we need the .present? here and on the
-            @layers = @layers.browse_text_search(params[:text_search]) if params[:text_search].present?
-            @layers = @layers.by_institution(params[:institution]) if params[:institution].present?
-            @layers = @layers.by_tags(params[:tags]) if params[:tags].present?
-            @layers = @layers.by_year(params[:start_year].to_i, params[:end_year].to_i) if params[:end_year].present?
-            if params[:bounds] != false
-                puts params[:bounds]
-                @layers = @layers.by_bounds(make_polygon(params[:bounds])) if params[:bounds].present?
+            # We always expect search, subomain, controller, format, and action
+            # be preesent.
+            if params.length <= 5
+                @layers = RasterLayer.none
+            else
+                @layers = RasterLayer.active()
+                # @todo do we need the .present? here and on the
+                @layers = @layers.browse_text_search(params[:text_search]) if params[:text_search].present?
+                @layers = @layers.by_institution(params[:institution]) if params[:institution].present?
+                @layers = @layers.by_tags(params[:tags]) if params[:tags].present?
+                @layers = @layers.by_year(params[:start_year].to_i, params[:end_year].to_i) if params[:end_year].present?
+                if params[:bounds] != false
+                    puts params[:bounds]
+                    @layers = @layers.by_bounds(make_polygon(params[:bounds])) if params[:bounds].present?
+                end
             end
         else
             @layers = RasterLayer.active

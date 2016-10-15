@@ -14,5 +14,5 @@ before_script:
   - psql -U postgres -d travis_ci_test -c "create extension postgis"
 sudo: false
 
-notifications:
-  slack: litsdevs:CJeGHaEKHbNvp4YCaFTT1iVV
+# notifications:
+#   slack: litsdevs:CJeGHaEKHbNvp4YCaFTT1iVV

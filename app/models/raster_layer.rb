@@ -241,17 +241,16 @@ class RasterLayer < ActiveRecord::Base
       return "#{self.institution.geoserver}#{self.workspace}/wms"
   end
 
-  def set_boundingbox(raster)
-    # factory = RGeo::Geographic.simple_mercator_factory()
-    # nw = factory.point(raster.maxx, raster.maxy)
-    # ne = factory.point(raster.minx, raster.maxy)
-    # se = factory.point(raster.minx, raster.miny)
-    # sw = factory.point(raster.maxx, raster.miny)
-    # return factory.polygon(
-    #   factory.linear_ring([nw, ne, se, sw, nw])
-    # )
-    return true
-  end
+  # def set_boundingbox(raster)
+  #   factory = RGeo::Geographic.simple_mercator_factory()
+  #   nw = factory.point(raster.maxx, raster.maxy)
+  #   ne = factory.point(raster.minx, raster.maxy)
+  #   se = factory.point(raster.minx, raster.miny)
+  #   sw = factory.point(raster.maxx, raster.miny)
+  #   return factory.polygon(
+  #     factory.linear_ring([nw, ne, se, sw, nw])
+  #   )
+  # end
 
   # @!attribute [r] layers
   # @return [String]

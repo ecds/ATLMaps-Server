@@ -455,6 +455,7 @@ DEPENDENCIES
   rails_admin
   responders (~> 2.0)
   rest-client
+  rgeo
   rgeo-geojson
   seed_dump
   simplecov

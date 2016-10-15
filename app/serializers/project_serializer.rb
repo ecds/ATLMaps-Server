@@ -36,9 +36,9 @@ class ProjectSerializer < ActiveModel::Serializer
              :media,
              :templateSlug,
              :template_id,
-             :card_url,
-             :card_phone_url,
-             :card_tablet_url
+            #  :card_url,
+            #  :card_phone_url,
+            #  :card_tablet_url
 
   def is_mine()
     return instance_options[:resource_owner] == object.user_id.to_i
