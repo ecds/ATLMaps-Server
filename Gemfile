@@ -29,7 +29,7 @@ gem 'rails_admin'
 gem 'json'
 gem 'rest-client'
 gem 'rack-cors'
-# gem 'turbolinks'
+gem 'turbolinks'
 gem 'responders', '~> 2.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 #gem 'jbuilder', '~> 2.0'

@@ -48,7 +48,7 @@ class RasterLayer < ActiveRecord::Base
   scope :active, -> { where(active: true)}
   # Get random map taht has less than three tags
   scope :test, -> { all if :tags.length > 0 }
-  scope :un_taged, -> { group("raster_layers.id").having( 'count( raster_layers ) < 3' ).order('RANDOM()').first! }
+  scope :un_tagged, -> { group("raster_layers.id").having( 'count( raster_layers ) < 3' ).order('RANDOM()') }
 
   pg_search_scope :search, against: [:name, :title, :description],
     using: { tsearch: { prefix: true, dictionary: 'english' } }
@@ -241,16 +241,16 @@ class RasterLayer < ActiveRecord::Base
       return "#{self.institution.geoserver}#{self.workspace}/wms"
   end
 
-  # def set_boundingbox(raster)
-  #   factory = RGeo::Geographic.simple_mercator_factory()
-  #   nw = factory.point(raster.maxx, raster.maxy)
-  #   ne = factory.point(raster.minx, raster.maxy)
-  #   se = factory.point(raster.minx, raster.miny)
-  #   sw = factory.point(raster.maxx, raster.miny)
-  #   return factory.polygon(
-  #     factory.linear_ring([nw, ne, se, sw, nw])
-  #   )
-  # end
+  def set_boundingbox(raster)
+    factory = RGeo::Geographic.simple_mercator_factory()
+    nw = factory.point(raster.maxx, raster.maxy)
+    ne = factory.point(raster.minx, raster.maxy)
+    se = factory.point(raster.minx, raster.miny)
+    sw = factory.point(raster.maxx, raster.miny)
+    return factory.polygon(
+      factory.linear_ring([nw, ne, se, sw, nw])
+    )
+  end
 
   # @!attribute [r] layers
   # @return [String]

@@ -411,6 +411,9 @@ GEM
     tilt (2.0.5)
     tins (1.12.0)
     trollop (2.1.2)
+    turbolinks (5.0.1)
+      turbolinks-source (~> 5)
+    turbolinks-source (5.0.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     unf (0.1.4)
@@ -461,6 +464,7 @@ DEPENDENCIES
   simplecov
   spring
   squeel
+  turbolinks
   web-console (~> 2.0)
   yard
 

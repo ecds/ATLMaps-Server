@@ -26,7 +26,9 @@ class Api::V1::VectorLayersController < ApplicationController
         # Otherwise, we're just going to say that the `project_id` is `0` so the
         # `active_in_project` attribute will be `false`.
         else
-            render json: @layers, project_id: 0
+            # render json: @layers, project_id: 0
+            @layers = @layers.page(params[:page]).per(params[:limit] || 10)
+            render json: @layers, meta: pagination_dict(@layers) # , project_id: 0
         end
     end
 

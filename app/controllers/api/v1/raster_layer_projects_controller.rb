@@ -1,7 +1,7 @@
 class Api::V1::RasterLayerProjectsController < ApplicationController
   def index
-    if params[:raster_layer_id]
-      projectlayers = RasterLayerProject.where(raster_layer_id: params[:raster_layer_id]).where( project_id: params[:project_id])
+    if (params[:raster_layer_id] && params[:project_id])
+      projectlayers = RasterLayerProject.where(raster_layer_id: params[:raster_layer_id]).where( project_id: params[:project_id]).first
     elsif params[:project_id]
       projectlayers = RasterLayerProject.where( project_id: params[:project_id])
     else
@@ -13,7 +13,7 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
 
   def show
     if params[:raster_layer_id]
-        @projectlayer = RasterLayerProject.where(raster_layer_id: params[:raster_layer_id]).where( project_id: params[:project_id])
+        @projectlayer = RasterLayerProject.where(raster_layer_id: params[:raster_layer_id]).where( project_id: params[:project_id]).first
     else
         @projectlayer = RasterLayerProject.find(params[:id])
     end
@@ -61,7 +61,7 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
     projectlayer = RasterLayerProject.find(params[:id])
     if mine(projectlayer.project) == true
       projectlayer.destroy
-      head 200
+      render json: {}, status: 200
     else
       head 401
     end

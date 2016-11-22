@@ -9,7 +9,7 @@ class Api::V1::RasterLayersController < ApplicationController
         # elsif params[:tagem].include? '-'
         #     @layers = RasterLayer.where(name: params[:tagem].split('-')[1]).first
         elsif params[:tagem]
-            @layers = RasterLayer.un_tagged
+            @layers = RasterLayer.un_tagged()
         elsif params[:search]
             # We always expect search, subomain, controller, format, and action
             # be preesent.
@@ -44,14 +44,19 @@ class Api::V1::RasterLayersController < ApplicationController
     end
 
     def show
-        layer = RasterLayer.find(params[:id])
+        if params[:id]
+            @layer = RasterLayer.find(params[:id])
+        elsif params[:tagem]
+            puts 'what the fuck man'
+            @layers = RasterLayer.un_tagged
+        end
         # Not sure this conditional is still needed
         # if params[:projectID]
         # 	render json: layer, root: 'raster_layer', project_id: params[:projectID]
         # else
         # 	render json: layer, root: 'raster_layer'
         # end
-        render json: layer, root: 'raster_layer'
+        render json: @layer, root: 'raster_layer'
     end
 
     def update
