@@ -146,66 +146,6 @@ class RasterLayer < ActiveRecord::Base
     )
   }
 
-
-
-
-# RasterLayer.joins{st_intersects(:boundingbox, :neighborhoods) :neighborhoods}.select{st_area(st_intersection(:boundingbox, neighborhoods.polygon)).as('intersection')}
-#
-# RasterLayer.includes(:neighborhoods).select{[st_area(st_intersection(:boundingbox, :neighborhoods.polygon)).as('intersection'), st_distance(st_centroid(:boundingbox), st_centroid(n.polygon)).as('distance')]}
-
-# RasterLayer.select{[
-#   st_area(
-#     st_intersection(:boundingbox, n.polygon)
-#   ).as('intersection'),
-#   st_distance(
-#     st_centroid(:boundingbox),
-#     st_centroid(n.polygon)
-#   ).as('distance')]
-# }.joins{neighborhoods}
-
-# SELECT
-#   raster_layers.title,
-#   neighborhoods.name,
-# ST_AREA(ST_INTERSECTION(
-#     raster_layers.boundingbox,
-#     neighborhoods.polygon)
-# ) AS intersection,
-# ST_DISTANCE(
-#     ST_Centroid(
-#         neighborhoods.polygon
-#     ),
-#     ST_Centroid(
-#         raster_layers.boundingbox)
-#     ) AS distance_from_center
-# FROM raster_layers INNER JOIN neighborhoods
-# ON  ST_INTERSECTS(
-#     raster_layers.boundingbox,
-#     neighborhoods.polygon
-# )
-# WHERE neighborhoods.id = 37
-# ORDER BY
-#     distance_from_center ASC,
-#     intersection DESC
-
-  # before_save :set_boundingbox
-
-# conf.echo = false
-# ActiveRecord::Base.logger = nil
-
-
-
-
-  # def self.browse_text_search(query)
-  #     # If there is no query, return everything.
-  #     # Not everything will be returned becuae other filters will be present.
-  #   if query.present?
-  #     search(query)
-  #   else
-  #     all
-  #   end
-  # end
-
-
   # Attribute to use for html classes
   def slug
   	slug = self.name.parameterize
@@ -242,7 +182,7 @@ class RasterLayer < ActiveRecord::Base
   end
 
   def set_boundingbox(raster)
-    factory = RGeo::Geographic.simple_mercator_factory()
+    factory = RGeo::Geographic.simple_mercator_factory
     nw = factory.point(raster.maxx, raster.maxy)
     ne = factory.point(raster.minx, raster.maxy)
     se = factory.point(raster.minx, raster.miny)
