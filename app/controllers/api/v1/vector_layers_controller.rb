@@ -2,6 +2,19 @@ class Api::V1::VectorLayersController < ApplicationController
     def index
         if params[:query]
             @layers = VectorLayer.text_search(params[:query])
+        elsif params[:search]
+            # We always expect search, subomain, controller, format, and action
+            # be preesent.
+            if params.length <= 5
+                @layers = VectorLayer.none
+            else
+                # @todo do we need the .present? here and on the
+                @layers = VectorLayer.active()
+                @layers = @layers.browse_text_search(params[:text_search]) if params[:text_search].present?
+                @layers = @layers.by_institution(params[:institution]) if params[:institution].present?
+                @layers = @layers.by_tags(params[:tags]) if params[:tags].present?
+                @layers = @layers.by_year(params[:start_year].to_i, params[:end_year].to_i) if params[:end_year].present?
+            end
         else
             @layers = VectorLayer.where(active: true).includes(:projects, :tags, :institution)
         end
@@ -13,7 +26,9 @@ class Api::V1::VectorLayersController < ApplicationController
         # Otherwise, we're just going to say that the `project_id` is `0` so the
         # `active_in_project` attribute will be `false`.
         else
-            render json: @layers, project_id: 0
+            # render json: @layers, project_id: 0
+            @layers = @layers.page(params[:page]).per(params[:limit] || 10)
+            render json: @layers, meta: pagination_dict(@layers) # , project_id: 0
         end
     end
 

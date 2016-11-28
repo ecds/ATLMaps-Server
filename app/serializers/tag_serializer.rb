@@ -4,6 +4,7 @@ class TagSerializer < ActiveModel::Serializer
     # has_many :categories, embed: :ids
     attributes  :id,
                 :name,
+                :heading,
                 :slug,
                 :vector_layer_ids,
                 :raster_layer_ids,

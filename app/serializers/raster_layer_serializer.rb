@@ -11,6 +11,6 @@ class RasterLayerSerializer < LayerSerializer
               # :tag_ids,
               :workspace,
               :layers
-
+              :distance_from_center
 
 end

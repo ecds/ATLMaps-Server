@@ -6,11 +6,12 @@ class VectorLayer < ActiveRecord::Base
 
   has_and_belongs_to_many :tags, dependent: :destroy
 
-  scope :by_institution, ->(name) { joins(:institution).where(institutions: {name: name}) if name.present?}
+  scope :by_institution, ->(institution) { joins(:institution).where(institutions: {name: institution}) if institution.present?}
   scope :by_tags, -> (tags){ joins(:tags).where(tags: {name: tags}) if tags.present?}
   scope :search_by_year, -> (start_year,end_year) { where(year: start_year..end_year) }
   scope :text_search, ->(text_search) { joins(:text_search) if query.present?}
   scope :active, -> { where(active: true)}
+  scope :by_bounds, ->(bounds) {}
 
   def self.by_year(start_year, end_year)
       if end_year > 0
