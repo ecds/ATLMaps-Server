@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160927212343) do
+ActiveRecord::Schema.define(version: 20161203045333) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,10 +58,10 @@ ActiveRecord::Schema.define(version: 20160927212343) do
   add_index "layers_tags", ["tag_id"], name: "atlmaps_api_dev_layers_tags_tag_id1_idx", using: :btree
 
   create_table "neighborhoods", force: :cascade do |t|
-    t.string    "name"
-    t.geometry "polygon",    limit: {:srid=>4326, :type=>"multi_polygon", :geographic=>false}
-    t.datetime  "created_at",                                                                  null: false
-    t.datetime  "updated_at",                                                                  null: false
+    t.string   "name"
+    t.geometry "polygon",    limit: {:srid=>0, :type=>"geometry"}
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 20160927212343) do
 
   create_table "projects", force: :cascade do |t|
     t.string   "name",             limit: 255
-    t.string   "description",      limit: 255
+    t.string   "description",      limit: 500
     t.decimal  "center_lat",                   precision: 10, scale: 8, default: 33.754401, null: false
     t.decimal  "center_lng",                   precision: 10, scale: 8, default: -84.38981, null: false
     t.integer  "zoom_level",                                            default: 13,        null: false
@@ -121,6 +121,7 @@ ActiveRecord::Schema.define(version: 20160927212343) do
     t.text     "media"
     t.integer  "template_id"
     t.string   "card",             limit: 255
+    t.string   "photo"
   end
 
   add_index "projects", ["template_id"], name: "index_projects_on_template_id", using: :btree
@@ -140,26 +141,26 @@ ActiveRecord::Schema.define(version: 20160927212343) do
   add_index "raster_layer_projects", ["raster_layer_id"], name: "atlmaps_api_dev_raster_layer_projects_raster_layer_id1_idx", using: :btree
 
   create_table "raster_layers", force: :cascade do |t|
-    t.string    "name",           limit: 255
-    t.string    "keywords",       limit: 255
-    t.text      "description"
-    t.datetime  "date"
-    t.string    "data_format",    limit: 255
-    t.integer   "minzoom"
-    t.integer   "maxzoom"
-    t.decimal   "minx",                                                                      precision: 10, scale: 8
-    t.decimal   "miny",                                                                      precision: 10, scale: 8
-    t.decimal   "maxx",                                                                      precision: 10, scale: 8
-    t.decimal   "maxy",                                                                      precision: 10, scale: 8
-    t.boolean   "active",                                                                                             default: false
-    t.integer   "institution_id"
-    t.datetime  "created_at"
-    t.datetime  "updated_at"
-    t.string    "title",          limit: 255
-    t.string    "workspace",      limit: 255
-    t.integer   "year"
-    t.string    "data_type",      limit: 255
-    t.geometry "boundingbox",    limit: {:srid=>4326, :type=>"polygon", :geographic=>false}
+    t.string   "name",           limit: 255
+    t.string   "keywords",       limit: 255
+    t.text     "description"
+    t.datetime "date"
+    t.string   "data_format",    limit: 255
+    t.integer  "minzoom"
+    t.integer  "maxzoom"
+    t.decimal  "minx",                                                 precision: 10, scale: 8
+    t.decimal  "miny",                                                 precision: 10, scale: 8
+    t.decimal  "maxx",                                                 precision: 10, scale: 8
+    t.decimal  "maxy",                                                 precision: 10, scale: 8
+    t.boolean  "active",                                                                        default: false
+    t.integer  "institution_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "title",          limit: 255
+    t.string   "workspace",      limit: 255
+    t.integer  "year"
+    t.string   "data_type",      limit: 255
+    t.geometry "boundingbox",    limit: {:srid=>0, :type=>"geometry"}
   end
 
   add_index "raster_layers", ["boundingbox"], name: "index_raster_layers_on_boundingbox", using: :gist

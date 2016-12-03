@@ -25,8 +25,9 @@ class ListRasterLayersProjectTest < ActionDispatch::IntegrationTest
       get '/v1/rasterLayerProjects', {raster_layer_id: 1, project_id: 1}
       results = JSON.parse(response.body)
       assert_equal 200, response.status
-      assert_equal 1, results['raster_layer_projects']['project_id']
-      assert_equal 1, results['raster_layer_projects']['raster_layer_id']
+      puts results
+      assert_equal 1, results['raster_layer_project']['project_id']
+      assert_equal 1, results['raster_layer_project']['raster_layer_id']
   end
 
   test 'show raster layer project relation by project id' do

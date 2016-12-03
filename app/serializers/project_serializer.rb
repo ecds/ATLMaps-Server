@@ -34,6 +34,7 @@ class ProjectSerializer < ActiveModel::Serializer
              :featured,
              :intro,
              :media,
+             :photo,
              :templateSlug,
              :template_id,
             #  :card_url,
