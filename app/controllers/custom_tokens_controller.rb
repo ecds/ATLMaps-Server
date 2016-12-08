@@ -6,7 +6,11 @@ class CustomTokensController < Doorkeeper::TokensController
   # Overriding create action
   # POST /oauth/token
   def create
-    response = strategy.authorize
+    puts '!!!!!!!!!!!!!'
+    puts server.token_request params[:grant_type]
+    response = authorize_response
+    puts response
+    puts '%%%%%%%%%%%%%'
     body = response.body
 
     if response.status == :ok

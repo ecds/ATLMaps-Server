@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/Badiapp/doorkeeper-grants_assertion
+  revision: 353e67e10d17e9421a3691d98bc41595cb046ed1
+  specs:
+    doorkeeper-grants_assertion (0.0.1)
+      doorkeeper (>= 4.0)
+      railties (>= 3.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -295,6 +303,8 @@ GEM
     omniauth (1.3.1)
       hashie (>= 1.2, < 4)
       rack (>= 1.0, < 3)
+    omniauth-facebook (4.0.0)
+      omniauth-oauth2 (~> 1.2)
     omniauth-google-oauth2 (0.4.1)
       jwt (~> 1.5.2)
       multi_json (~> 1.3)
@@ -444,12 +454,14 @@ DEPENDENCIES
   coveralls
   devise
   doorkeeper
+  doorkeeper-grants_assertion!
   fog (~> 1.38.0)
   httparty
   json
   kaminari
   mini_magick
   nokogiri
+  omniauth-facebook
   omniauth-google-oauth2
   pg
   pg_search

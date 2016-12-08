@@ -7,7 +7,8 @@ Rails.application.routes.draw do
     controllers :tokens => 'custom_tokens'
   end
 
-  devise_for :users
+  # devise_for :users
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   namespace :api, path: '/', constraints: { subdomain: 'api' } do
     mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
@@ -44,6 +45,7 @@ Rails.application.routes.draw do
 
     end
   end
+
   get "/users/sign_up" => "users#new"
   get "/users/sign_in" => "devise/sessions#new"
   post "/user" => "users#create"

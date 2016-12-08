@@ -19,7 +19,9 @@ gem 'kaminari'
 # Authentication
 gem 'devise'
 gem 'doorkeeper'
+gem 'doorkeeper-grants_assertion', git: 'https://github.com/Badiapp/doorkeeper-grants_assertion'
 gem "omniauth-google-oauth2"
+gem 'omniauth-facebook'
 gem 'cancan'
 
 # Content Admin
