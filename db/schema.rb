@@ -57,6 +57,18 @@ ActiveRecord::Schema.define(version: 20161207015352) do
   add_index "layers_tags", ["layer_id"], name: "atlmaps_api_dev_layers_tags_layer_id0_idx", using: :btree
   add_index "layers_tags", ["tag_id"], name: "atlmaps_api_dev_layers_tags_tag_id1_idx", using: :btree
 
+  create_table "logins", force: :cascade do |t|
+    t.string   "identification",          null: false
+    t.string   "password_digest"
+    t.string   "oauth2_token",            null: false
+    t.string   "uid"
+    t.string   "single_use_oauth2_token"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "provider"
+  end
+
   create_table "neighborhoods", force: :cascade do |t|
     t.string   "name"
     t.geometry "polygon",    limit: {:srid=>0, :type=>"geometry"}

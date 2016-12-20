@@ -18,7 +18,7 @@ class Api::V1::VectorLayerProjectsController < ApplicationController
 
   def create
     projectlayer = VectorLayerProject.new(vector_layer_project_params)
-    if current_resource_owner
+    if @current_login
       if projectlayer.save
         # Ember wants some JSON
         render json: projectlayer, status: 201

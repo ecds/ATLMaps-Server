@@ -293,7 +293,7 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='id identifier rubyid_project'>project</span> <span class='op'>=</span> <span class='const'>Project</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_project_params'>project_params</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_current_resource_owner'>current_resource_owner</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_@current_login'>@current_login</span>
     <span class='kw'>if</span> <span class='id identifier rubyid_project'>project</span><span class='period'>.</span><span class='id identifier rubyid_save'>save</span>
       <span class='comment'># Ember wants some JSON
 </span>      <span class='id identifier rubyid_render'>render</span> <span class='label'>json:</span> <span class='id identifier rubyid_project'>project</span><span class='comma'>,</span> <span class='label'>status:</span> <span class='int'>201</span>
@@ -404,7 +404,7 @@
     <span class='id identifier rubyid_projects'>projects</span> <span class='op'>=</span> <span class='const'>Project</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>user_id:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:user_id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='kw'>elsif</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:collaborations</span><span class='rbracket'>]</span>
     <span class='id identifier rubyid_projects'>projects</span> <span class='op'>=</span> <span class='const'>Project</span><span class='period'>.</span><span class='id identifier rubyid_joins'>joins</span><span class='lparen'>(</span><span class='symbol'>:collaboration</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span>\
-      <span class='label'>collaborations:</span> <span class='lbrace'>{</span> <span class='label'>user_id:</span> <span class='id identifier rubyid_current_resource_owner'>current_resource_owner</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+      <span class='label'>collaborations:</span> <span class='lbrace'>{</span> <span class='label'>user_id:</span> <span class='id identifier rubyid_@current_login'>@current_login</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span> <span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='kw'>elsif</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:featured</span><span class='rbracket'>]</span>
     <span class='id identifier rubyid_projects'>projects</span> <span class='op'>=</span> <span class='const'>Project</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>featured:</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='kw'>else</span>

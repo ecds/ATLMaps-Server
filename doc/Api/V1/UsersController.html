@@ -212,11 +212,11 @@
       <pre class="code"><span class="info file"># File 'app/controllers/api/v1/users_controller.rb', line 3</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_index'>index</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_current_resource_owner'>current_resource_owner</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_@current_login'>@current_login</span>
     <span class='comment'># if params[:project_id]
 </span>    <span class='comment'>#   projects = Project.where(name: params[:name])
 </span>    <span class='comment'># end
-</span>    <span class='ivar'>@users</span> <span class='op'>=</span> <span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='period'>.</span><span class='id identifier rubyid_not'>not</span><span class='lparen'>(</span><span class='label'>id:</span> <span class='id identifier rubyid_current_resource_owner'>current_resource_owner</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span><span class='comment'>#.where.not(&#39;collaboration.project_id&#39; =&gt; parmas[:project_id])
+</span>    <span class='ivar'>@users</span> <span class='op'>=</span> <span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='period'>.</span><span class='id identifier rubyid_not'>not</span><span class='lparen'>(</span><span class='label'>id:</span> <span class='id identifier rubyid_@current_login'>@current_login</span><span class='period'>.</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span><span class='comment'>#.where.not(&#39;collaboration.project_id&#39; =&gt; parmas[:project_id])
 </span>  <span class='kw'>else</span>
     <span class='comment'>#@users = User.where.not(&#39;project_id&#39; =&gt; params[:project_id])
 </span>    <span class='ivar'>@users</span> <span class='op'>=</span> <span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_all'>all</span>

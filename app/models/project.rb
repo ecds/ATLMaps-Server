@@ -1,5 +1,7 @@
 class Project < ActiveRecord::Base
 
+  include RailsApiAuth::Authentication
+
   mount_uploader :card, FeaturedCardUploader
 
   belongs_to :user
@@ -31,29 +33,11 @@ class Project < ActiveRecord::Base
     return self.user.displayname
   end
 
+  # TODO We don't use templates anymore for the intro
   def templateSlug
       if (self.template)
           return self.template.slug
       end
   end
-
-#   def mine
-#       puts @current_user
-#     if @current_user && @current_user.id == self.user_id
-#       return true
-#     else
-#       return false
-#     end
-#   end
-#
-#   private
-#
-# def current_user
-#   @current_user ||= User.find(doorkeeper_token[:resource_owner_id])
-# end
-  # I don't think this is needed anymore
-  # def self.find_by_param(input)
-  #   find_by_slug(input)
-  # end
 
 end

@@ -32,7 +32,7 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
 
   def create
     projectlayer = RasterLayerProject.new(raster_layer_project_params)
-    if current_resource_owner
+    if @current_login
       if projectlayer.save
         # Ember wants some JSON
         render json: projectlayer, status: 201

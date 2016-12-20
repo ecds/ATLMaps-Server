@@ -7,7 +7,7 @@ class Api::V1::UserTaggedsController < ApplicationController
 
     def create
         usertagged = UserTagged.new(usertagged_params)
-        # if current_resource_owner
+        # if @current_login
         if usertagged.save
             # Ember wants some JSON
             render json: usertagged, root: 'user_tagged', status: 201
