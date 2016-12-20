@@ -280,7 +280,7 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='id identifier rubyid_projectlayer'>projectlayer</span> <span class='op'>=</span> <span class='const'>VectorLayerProject</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_vector_layer_project_params'>vector_layer_project_params</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_current_resource_owner'>current_resource_owner</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_@current_login'>@current_login</span>
     <span class='kw'>if</span> <span class='id identifier rubyid_projectlayer'>projectlayer</span><span class='period'>.</span><span class='id identifier rubyid_save'>save</span>
       <span class='comment'># Ember wants some JSON
 </span>      <span class='id identifier rubyid_render'>render</span> <span class='label'>json:</span> <span class='id identifier rubyid_projectlayer'>projectlayer</span><span class='comma'>,</span> <span class='label'>status:</span> <span class='int'>201</span>

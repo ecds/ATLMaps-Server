@@ -29,7 +29,7 @@ class ProjectSerializer < ActiveModel::Serializer
             #  :raster_layer_ids,
             #  :vector_layer_ids,
              :is_mine,
-             :may_edit,
+            #  :may_edit,
              :user_ids,
              :featured,
              :intro,
@@ -41,9 +41,9 @@ class ProjectSerializer < ActiveModel::Serializer
             #  :card_phone_url,
             #  :card_tablet_url
 
-  def is_mine()
-    return instance_options[:resource_owner] == object.user_id.to_i
-  end
+    def is_mine
+        instance_options[:is_mine]
+    end
 
   def card_url()
       return object.card.url

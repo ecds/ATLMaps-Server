@@ -23,7 +23,7 @@ class Api::V1::RasterLayersController < ApplicationController
                 @layers = @layers.by_tags(params[:tags]) if params[:tags].present?
                 @layers = @layers.by_year(params[:start_year].to_i, params[:end_year].to_i) if params[:end_year].present?
                 if params[:bounds] != false
-                    puts params[:bounds]
+                    # TODO Do we really need the present? or do we make that the conditional
                     @layers = @layers.by_bounds(make_polygon(params[:bounds])) if params[:bounds].present?
                 end
             end

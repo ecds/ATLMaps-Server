@@ -18,8 +18,7 @@ gem 'kaminari'
 
 # Authentication
 gem 'devise'
-gem 'doorkeeper'
-gem "omniauth-google-oauth2"
+gem 'rails_api_auth'
 gem 'cancan'
 
 # Content Admin
@@ -30,9 +29,6 @@ gem 'json'
 gem 'rest-client'
 gem 'rack-cors'
 gem 'turbolinks'
-gem 'responders', '~> 2.0'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-#gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'yard',          group: :doc
 
