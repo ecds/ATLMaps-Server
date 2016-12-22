@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161207015352) do
+ActiveRecord::Schema.define(version: 20161221175118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -221,22 +221,19 @@ ActiveRecord::Schema.define(version: 20161207015352) do
   add_index "user_taggeds", ["vector_layer_id"], name: "index_user_taggeds_on_vector_layer_id", using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "username",               limit: 255
-    t.string   "displayname",            limit: 255
-    t.string   "email",                  limit: 255, null: false
+    t.string   "username",            limit: 255
+    t.string   "displayname",         limit: 255
+    t.string   "email",               limit: 255, null: false
     t.integer  "institution_id"
-    t.string   "avatar",                 limit: 255
-    t.string   "twitter",                limit: 255
-    t.integer  "admin",                  limit: 2
-    t.string   "encrypted_password",     limit: 255, null: false
-    t.string   "reset_password_token",   limit: 255
-    t.datetime "reset_password_sent_at"
+    t.string   "avatar",              limit: 255
+    t.string   "twitter",             limit: 255
+    t.integer  "admin",               limit: 2
     t.datetime "remember_created_at"
     t.integer  "sign_in_count"
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",     limit: 255
-    t.string   "last_sign_in_ip",        limit: 255
+    t.string   "current_sign_in_ip",  limit: 255
+    t.string   "last_sign_in_ip",     limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "provider"
@@ -245,7 +242,6 @@ ActiveRecord::Schema.define(version: 20161207015352) do
 
   add_index "users", ["email"], name: "atlmaps_api_dev_users_email1_idx", unique: true, using: :btree
   add_index "users", ["institution_id"], name: "atlmaps_api_dev_users_institution_id3_idx", using: :btree
-  add_index "users", ["reset_password_token"], name: "atlmaps_api_dev_users_reset_password_token2_idx", unique: true, using: :btree
 
   create_table "vector_layer_projects", force: :cascade do |t|
     t.integer  "vector_layer_id"

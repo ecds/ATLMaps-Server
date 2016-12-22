@@ -2,8 +2,7 @@
 module Api
     module V1
         # Controller for repersenting projects
-        class ProjectsController < ApplicationController
-            before_action :authenticate!, only: :create
+        class ProjectsController < MayEditController
             # class for Controller
             def index
                 if params[:name]
@@ -24,12 +23,10 @@ module Api
 
             def show
                 @project = Project.find(params[:id])
-                @is_mine = mine(current_user, @project)
-                @may_edit = collaborator(current_user, @project)
                 # Only return the project if it is published, the user is the owner
                 # or the user is a collaborator.
-                if @project.published == true || @is_mine == true #|| collaborator(@project) == true
-                    render json: @project, root: 'project', is_mine: @is_mine, may_edit: @may_edit
+                if @project.published == true || may_edit(@project) == true #|| collaborator(@project) == true
+                    render json: @project, root: 'project', is_mine: mine(@project), may_edit: may_edit(@project)
                 else
                     head 401
                 end
@@ -51,7 +48,7 @@ module Api
 
             def update
                 @project = Project.find(params[:id])
-                if mayedit(@project) == true
+                if may_edit(@project) == true
                     if @project.update(project_params)
                         render json: {}, status: 204
                     else
@@ -64,7 +61,7 @@ module Api
 
             def destroy
                 project = Project.find(params[:id])
-                if project.user_id == current_user.user.id
+                if may_edit(project)
                     project.destroy
                     head 204
                 else
@@ -78,14 +75,6 @@ module Api
                 params.require(:project).permit(
                     :name, :saved, :description, :center_lat, :center_lng, :zoom_level,
                     :default_base_map, :user_id, :published, :featured, :intro, :media, :photo, :template_id)
-            end
-
-            def mine(user, project)
-                return defined?(user.user.id) && (user.user.id == project.user_id)
-            end
-
-            def collaborator(user, project)
-                return defined?(user.user.id) && (project.collaboration.map(&:user_id).include? user.user.id)
             end
         end
     end

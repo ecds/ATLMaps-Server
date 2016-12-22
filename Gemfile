@@ -13,11 +13,10 @@ gem 'pg_search'
 
 # API Responses
 gem 'active_model_serializers', '~> 0.10.0.rc3'
-gem 'kaminari'
+gem 'kaminari' # For pagination
 # gem 'will_paginate', '~> 3.1.1'
 
 # Authentication
-gem 'devise'
 gem 'rails_api_auth'
 gem 'cancan'
 

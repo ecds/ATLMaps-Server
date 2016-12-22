@@ -91,6 +91,11 @@
   
   
   
+  <dl>
+      <dt>Includes:</dt>
+      <dd>RailsApiAuth::Authentication</dd>
+  </dl>
+  
   
 
   
@@ -179,7 +184,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>TODO We don&#39;t use templates anymore for the intro.</p>
+</div></span>
   
 </li>
 
@@ -188,6 +195,7 @@
   
 
 
+  
   
 
   <div id="instance_method_details" class="method_details_list">
@@ -209,12 +217,12 @@
       <pre class="lines">
 
 
-30
-31
-32</pre>
+32
+33
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/project.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'app/models/project.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_owner'>owner</span>
   <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_displayname'>displayname</span>
@@ -239,12 +247,12 @@
       <pre class="lines">
 
 
-26
-27
-28</pre>
+28
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/project.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'app/models/project.rb', line 28</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_slug'>slug</span>
   <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_name'>name</span><span class='period'>.</span><span class='id identifier rubyid_parameterize'>parameterize</span>
@@ -263,20 +271,31 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>TODO We don&#39;t use templates anymore for the intro</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-34
-35
-36
 37
-38</pre>
+38
+39
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/project.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'app/models/project.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_templateSlug'>templateSlug</span>
     <span class='kw'>if</span> <span class='lparen'>(</span><span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_template'>template</span><span class='rparen'>)</span>
@@ -293,7 +312,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Oct  4 13:51:06 2016 by
+  Generated on Wed Dec 21 11:18:46 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.2.2).
 </div>

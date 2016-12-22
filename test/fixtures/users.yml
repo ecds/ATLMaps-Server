@@ -3,7 +3,6 @@ jay:
   email: jay@email.com
   displayname: Jay Varner
   avatar: some.png
-  encrypted_password: <%= User.new.send(:password_digest, 'password') %>
   sign_in_count: 2
   current_sign_in_at: <%= Time.now %>
 
@@ -11,6 +10,5 @@ ben:
   id: 2
   email: ben@email.com
   displayname: other.png
-  encrypted_password: <%= User.new.send(:password_digest, '12345') %>
   sign_in_count: 5
   current_sign_in_at: <%= Time.now %>
