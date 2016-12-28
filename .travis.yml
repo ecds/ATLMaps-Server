@@ -10,6 +10,7 @@ before_script:
   - cp config/database.yml.travis config/database.yml
   - psql -c 'create database travis_ci_test' -U postgres
   - cp config/application.rb.dist config/application.rb
+  - cp config/initializers/fog.rb.dist config/initializers/fog.rb
   - psql -U postgres -d travis_ci_test -c "create extension postgis"
 sudo: false
 
