@@ -1,0 +1,11 @@
+RailsApiAuth.tap do |raa|
+  raa.user_model_relation = :user
+
+  raa.facebook_app_id       = '1234567890'
+  raa.facebook_app_secret   = 'qwertyuiopasdfghjklzxcvbnm'
+  raa.facebook_redirect_uri = 'http://localhost:4200'
+
+  raa.google_client_id     = '1234567890'
+  raa.google_client_secret = 'qwertyuiopasdfghjklzxcvbnm'
+  raa.google_redirect_uri  = 'http://localhost:4200'
+end
