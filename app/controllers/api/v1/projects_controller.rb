@@ -20,7 +20,7 @@ class Api::V1::ProjectsController < Api::V1::MayEditController
         # Only return the project if it is published, the user is the owner
         # or the user is a collaborator.
         _may_edit = may_edit(@project)
-        puts @project.published
+        puts _may_edit
         if @project.published == true || _may_edit == true
             render json: @project, root: 'project'
         else
