@@ -3,7 +3,8 @@ class Api::V1::MayEditController < ApplicationController
         authenticate! do
             return defined?(current_user.user.id) \
             && (mine(project) \
-            || collaborator(project))
+            || (project.collaboration.map(&:user_id).include? \
+                current_user.user.id))
         end
 
         return false
