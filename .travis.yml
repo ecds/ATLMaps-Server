@@ -14,5 +14,8 @@ before_script:
   - psql -U postgres -d travis_ci_test -c "create extension postgis"
 sudo: false
 
+after_failure:
+  - cat /home/travis/build/emory-libraries-ecds/ATLMaps-Server/log/test.log
+
 # notifications:
 #   slack: litsdevs:CJeGHaEKHbNvp4YCaFTT1iVV
