@@ -16,15 +16,13 @@ class Api::V1::ProjectsController < Api::V1::MayEditController
     end
 
     def show
-        authenticate! do
-            @project = Project.find(params[:id])
-            # Only return the project if it is published, the user is the owner
-            # or the user is a collaborator.
-            if @project.published == true || may_edit(@project) == true
-                render json: @project, root: 'project'
-            else
-                head 401
-            end
+        project = Project.find(params[:id])
+        # Only return the project if it is published, the user is the owner
+        # or the user is a collaborator.
+        if project.published == true || may_edit(project) == true
+            render json: project, root: 'project'
+        else
+            head 401
         end
     end
 
