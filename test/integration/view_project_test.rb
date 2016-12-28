@@ -47,10 +47,6 @@ class ViewProjectTest < ActionDispatch::IntegrationTest
     # Check to see if a project has an intro.
     test 'project with intro' do
         get '/v1/projects/1.json'
-        require 'pp'
-        puts "\n\n\n\n\n\n\n\n\n"
-        pp response
-        puts "\n\n\n\n\n\n\n\n\n"
         project = JSON.parse(response.body)
         assert_not_nil project['project']['intro']
     end
