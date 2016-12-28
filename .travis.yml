@@ -13,6 +13,7 @@ before_script:
   - psql -c 'create database travis_ci_test' -U postgres
   - cp config/application.rb.dist config/application.rb
   - cp config/initializers/fog.rb.dist config/initializers/fog.rb
+  - cp config/initializers/rails_api_auth.rb.dist config/initializers/rails_api_auth.rb
   - psql -U postgres -d travis_ci_test -c "create extension postgis"
 sudo: false
 
