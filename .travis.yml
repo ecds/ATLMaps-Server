@@ -15,7 +15,7 @@ before_script:
 sudo: false
 
 after_failure:
-  - cat /home/travis/build/emory-libraries-ecds/ATLMaps-Server/log/test.log
+  - ls /home/travis/build/emory-libraries-ecds/ATLMaps-Server
 
 # notifications:
 #   slack: litsdevs:CJeGHaEKHbNvp4YCaFTT1iVV
