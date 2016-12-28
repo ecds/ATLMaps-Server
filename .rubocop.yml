@@ -8,6 +8,9 @@ Style/BlockLength:
 Style/ClassLength:
   Enabled: false
 
+Style/ClassAndModuleChildren:
+  Enabled: false
+
 Metrics/MethodLength:
   CountComments: false
   Max: 20
