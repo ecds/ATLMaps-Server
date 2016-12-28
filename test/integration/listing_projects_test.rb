@@ -40,7 +40,6 @@ class ListingProjectsTest < ActionDispatch::IntegrationTest
     #     p_two = projects['projects'][1]
     #     p_three = projects['projects'][2]
     #
-    #     puts p_two
     #
     #     assert p_two['is_mine']
     #     assert p_two['may_edit']
@@ -52,7 +51,6 @@ class ListingProjectsTest < ActionDispatch::IntegrationTest
 
     test 'get projects by user id' do
         get '/v1/projects.json?user_id=1', params: { user_id: 1 }, headers: { Authorization: 'Bearer a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf' }
-        puts request.inspect
         assert_equal 200, response.status
         assert_equal 2, JSON.parse(response.body)['projects'].length
     end

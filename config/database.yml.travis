@@ -1,7 +1,7 @@
 default: &default
-  adapter: postgresql
+  adapter: postgis
 
 test:
-  adapter: postgresql
+  adapter: postgis
   database: travis_ci_test
   username: postgres

@@ -69,8 +69,6 @@ class SearchLayersTest < ActionDispatch::IntegrationTest
     #         text_search: 'streets'
     #     }
     #     results = JSON.parse(response.body)
-    #     puts results
-    #     puts '!!!!!!!'
     #     assert_equal 1, results['searches']['raster_layer_ids'].length
     #     assert_equal 1, results['searches']['vector_layer_ids'].length
     # end

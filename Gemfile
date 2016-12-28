@@ -2,11 +2,11 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.7'
+gem 'rails', '~> 5.0'
 # Use mysql as the database for Active Record
 gem 'pg'
-gem 'activerecord-postgis-adapter', '~> 3.1.4'
-gem 'squeel'
+gem 'activerecord-postgis-adapter', '~> 4.0'
+# gem 'squeel'
 gem 'rgeo-geojson'
 gem 'rgeo'
 gem 'pg_search'
@@ -17,19 +17,16 @@ gem 'kaminari' # For pagination
 # gem 'will_paginate', '~> 3.1.1'
 
 # Authentication
-gem 'rails_api_auth'
+# gem 'rails_api_auth'
+gem 'rails_api_auth', git: 'https://github.com/jayvarner/rails_api_auth.git', branch: 'feature/rails5'
 gem 'cancan'
-
-# Content Admin
-gem 'rails_admin'
-
 
 gem 'json'
 gem 'rest-client'
 gem 'rack-cors'
 gem 'turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'yard',          group: :doc
+gem 'yard', group: :doc
 
 gem 'capistrano-rvm'
 

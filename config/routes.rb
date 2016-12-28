@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-    mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+    # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
     # devise_for :users
 
     namespace :api, path: '/', constraints: { subdomain: 'api' } do
-        mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+        # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
         namespace :v1 do
 
             get '/users/me' => 'users#me'
@@ -51,5 +51,5 @@ Rails.application.routes.draw do
     post '/v1/token', to: 'oauth2#create'
     post '/v1/revoke', to: 'oauth2#destroy'
 
-    root to: redirect('/admin')
+    # root to: redirect('/admin')
 end

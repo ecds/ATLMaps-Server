@@ -31,12 +31,9 @@ class Api::V1::RasterLayerProjectsController < Api::V1::MayEditController
     # end
 
     def create
-        project = Project.find(params[:project_id])
+        project = Project.find(params[:rasterLayerProject][:project_id])
         projectlayer = RasterLayerProject.new(raster_layer_project_params)
         if may_edit(project)
-            puts "\n\n\n\n\n\n\n\n\n\n\n\n********************"
-        puts current_user
-        puts "\n\n\n\n\n\n\n\n\n\n\n\n********************"
             if projectlayer.save
                 # Ember wants some JSON
                 render json: projectlayer, status: 201

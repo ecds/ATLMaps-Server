@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
     # For APIs, you may want to use :null_session instead.
     # protect_from_forgery with: :exception
     # protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
-    skip_before_filter :verify_authenticity_token, if: proc { |c| c.request.format == 'application/json' }
+    # skip_before_filter :verify_authenticity_token, if: proc { |c| c.request.format == 'application/json' }
 
 
     include RailsApiAuth::Authentication
