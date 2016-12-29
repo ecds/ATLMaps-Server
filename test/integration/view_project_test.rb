@@ -15,6 +15,9 @@ class ViewProjectTest < ActionDispatch::IntegrationTest
             headers: {
                 Authorization: 'Bearer a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
             }
+        refute JSON.parse(response.body)['project']['mine']
+        # TODO: Make collaborations work again.
+        assert JSON.parse(response.body)['project']['may_edit']
         assert_equal 200, response.status
     end
 
@@ -24,6 +27,8 @@ class ViewProjectTest < ActionDispatch::IntegrationTest
             headers: {
                 Authorization: 'Bearer 57dd83d2396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13'
             }
+        assert JSON.parse(response.body)['project']['mine']
+        assert JSON.parse(response.body)['project']['may_edit']
         assert_equal 200, response.status
     end
 
@@ -31,6 +36,7 @@ class ViewProjectTest < ActionDispatch::IntegrationTest
     test 'returns 401 for unpublished project unauthenticated' do
         get '/v1/projects/2.json'
         assert_equal 401, response.status
+        assert_equal 0, response.body.length
     end
 
     # A GET request for a single unpublished project from a user not the owner
@@ -41,6 +47,7 @@ class ViewProjectTest < ActionDispatch::IntegrationTest
                 Authorization: 'Bearer 57dd83d2396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13'
             }
         assert_equal 401, response.status
+        assert_equal 0, response.body.length
     end
 
     # Check to see if a project has an intro.

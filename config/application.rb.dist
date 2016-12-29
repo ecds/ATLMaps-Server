@@ -25,7 +25,5 @@ module Atlmaps
     # config.i18n.default_locale = :de
     # config.assets.precompile += %w(rails_admin/rails_admin.css rails_admin/rails_admin.js)
 
-    config.active_record.raise_in_transactional_callbacks = true
-
   end
 end

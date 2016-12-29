@@ -21,7 +21,7 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
         # or the user is a collaborator.
         permissions = ownership(project)
         if project.published == true || permissions[:may_edit] == true
-            render json: project, root: 'project'
+            render json: project, root: 'project', may_edit: permissions[:may_edit], mine: permissions[:mine]
         else
             head 401
         end
@@ -58,7 +58,7 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
     def destroy
         project = Project.find(params[:id])
         permissions = ownership(project)
-        if permissions[:is_mine]
+        if permissions[:mine]
             project.destroy
             head 204
         else
