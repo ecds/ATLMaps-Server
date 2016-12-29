@@ -1,5 +1,5 @@
 # app/controllers/api/v1/projects_controller.rb
-class Api::V1::ProjectsController < Api::V1::MayEditController
+class Api::V1::ProjectsController < Api::V1::PermissionController
     # class for Controller
     def index
         projects = if params[:name]
@@ -19,7 +19,8 @@ class Api::V1::ProjectsController < Api::V1::MayEditController
         project = Project.find(params[:id])
         # Only return the project if it is published, the user is the owner
         # or the user is a collaborator.
-        if project.published == true || may_edit(project) == true
+        permissions = ownership(project)
+        if project.published == true || permissions[:may_edit] == true
             render json: project, root: 'project'
         else
             head 401
@@ -27,25 +28,24 @@ class Api::V1::ProjectsController < Api::V1::MayEditController
     end
 
     def create
-        authenticate! do
-            project = Project.new(project_params)
-            if @current_login
-                if project.save
-                    # Ember wants some JSON
-                    render json: project, status: 201
-                else
-                    head 500
-                end
+        project = Project.new(project_params)
+        if current_user
+            if project.save
+                # Ember wants some JSON
+                render json: project, status: 201
             else
-                head 401
+                head 500
             end
+        else
+            head 401
         end
     end
 
     def update
-        @project = Project.find(params[:id])
-        if may_edit(@project) == true
-            if @project.update(project_params)
+        project = Project.find(params[:id])
+        permissions = ownership(project)
+        if permissions[:may_edit] == true
+            if project.update(project_params)
                 render json: {}, status: 204
             else
                 head 500
@@ -57,7 +57,8 @@ class Api::V1::ProjectsController < Api::V1::MayEditController
 
     def destroy
         project = Project.find(params[:id])
-        if may_edit(project)
+        permissions = ownership(project)
+        if permissions[:is_mine]
             project.destroy
             head 204
         else

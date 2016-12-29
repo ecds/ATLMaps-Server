@@ -1,39 +1,44 @@
-class Api::V1::RasterLayerProjectsController < Api::V1::MayEditController
+class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
     def index
-        if params[:raster_layer_id] && params[:project_id]
-            projectlayers = RasterLayerProject.where(raster_layer_id: params[:raster_layer_id]).where(project_id: params[:project_id]).first
-        elsif params[:project_id]
-            projectlayers = RasterLayerProject.where(project_id: params[:project_id])
-        else
-            projectlayers = RasterLayerProject.all
-        end
+        # TODO: This should be a scope.
+        projectlayers = if params[:raster_layer_id] && params[:project_id]
+                            RasterLayerProject.where(
+                                raster_layer_id: params[:raster_layer_id]
+                            ).where(
+                                project_id: params[:project_id]
+                            ).first
+                        elsif params[:project_id]
+                            RasterLayerProject.where(
+                                project_id: params[:project_id]
+                            )
+                        else
+                            RasterLayerProject.all
+                        end
 
         render json: projectlayers # , include:['raster_layer']
     end
 
     def show
-        if params[:raster_layer_id]
-            @projectlayer = RasterLayerProject.where(raster_layer_id: params[:raster_layer_id]).where(project_id: params[:project_id]).first
-        else
-            @projectlayer = RasterLayerProject.find(params[:id])
-        end
+        # TODO: This should be a scope.
+        projectlayer = if params[:raster_layer_id]
+                           RasterLayerProject.where(
+                               raster_layer_id: params[:raster_layer_id]
+                           ).where(
+                               project_id: params[:project_id]
+                           ).first
+                       else
+                           RasterLayerProject.find(params[:id])
+                       end
 
-        render json: @projectlayer
+        render json: projectlayer
     end
 
-    # def create
-    #   projectlayer = RasterLayerProject.new(raster_layer_project_params)
-    #    if projectlayer.save
-    #       render json: {}, status: 201
-    #   else
-    #     head 401
-    #   end
-    # end
-
     def create
+        # TODO: Something isn't right here.
         project = Project.find(params[:rasterLayerProject][:project_id])
-        projectlayer = RasterLayerProject.new(raster_layer_project_params)
-        if may_edit(project)
+        permissions = ownership(project)
+        if permissions[:may_edit] == true
+            projectlayer = RasterLayerProject.new(raster_layer_project_params)
             if projectlayer.save
                 # Ember wants some JSON
                 render json: projectlayer, status: 201
@@ -46,9 +51,10 @@ class Api::V1::RasterLayerProjectsController < Api::V1::MayEditController
     end
 
     def update
-        project = RasterLayerProject.find(params[:id])
-        if mayedit(project.project) == true
-            if project.update(raster_layer_project_params)
+        project_layer = RasterLayerProject.find(params[:id])
+        permissions = ownership(project_layer.project)
+        if permissions[:may_edit] == true
+            if project_layer.update(raster_layer_project_params)
                 head 204
             else
                 head 500
@@ -59,9 +65,10 @@ class Api::V1::RasterLayerProjectsController < Api::V1::MayEditController
     end
 
     def destroy
-        projectlayer = RasterLayerProject.find(params[:id])
-        if mine(projectlayer.project) == true
-            projectlayer.destroy
+        project_layer = RasterLayerProject.find(params[:id])
+        permissions = ownership(project_layer.project)
+        if permissions[:may_edit] == true
+            project_layer.destroy
             render json: {}, status: 200
         else
             head 401
@@ -71,6 +78,8 @@ class Api::V1::RasterLayerProjectsController < Api::V1::MayEditController
     private
 
     def raster_layer_project_params
-        params.require(:rasterLayerProject).permit(:project_id, :raster_layer_id, :data_format, :position)
+        params.require(:rasterLayerProject).permit(
+            :project_id, :raster_layer_id, :data_format, :position
+        )
     end
 end

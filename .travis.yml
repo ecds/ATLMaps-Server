@@ -7,7 +7,6 @@ script:
   - bundle install
   - bundle exec rake db:schema:load
   - bundle exec rake test
-  - cat /home/travis/build/emory-libraries-ecds/ATLMaps-Server/log/test.log
 before_script:
   - cp config/database.yml.travis config/database.yml
   - psql -c 'create database travis_ci_test' -U postgres
@@ -17,5 +16,5 @@ before_script:
   - psql -U postgres -d travis_ci_test -c "create extension postgis"
 sudo: false
 
-# notifications:
-#   slack: litsdevs:CJeGHaEKHbNvp4YCaFTT1iVV
+notifications:
+  slack: litsdevs:CJeGHaEKHbNvp4YCaFTT1iVV

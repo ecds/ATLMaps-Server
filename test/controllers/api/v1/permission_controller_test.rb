@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Api::V1::MayEditControllerTest < ActionController::TestCase
+class Api::V1::PermissionControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

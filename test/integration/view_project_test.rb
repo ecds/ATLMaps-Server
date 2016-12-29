@@ -6,7 +6,6 @@ class ViewProjectTest < ActionDispatch::IntegrationTest
     # A GET request for a single published project
     test 'returns a single published project unauthenticated' do
         get '/v1/projects/1.json'
-        puts response.body
         assert_equal 200, response.status
     end
 

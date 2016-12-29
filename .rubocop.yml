@@ -11,6 +11,9 @@ Style/ClassLength:
 Style/ClassAndModuleChildren:
   Enabled: false
 
+Metrics/LineLength:
+  Enabled: false
+
 Metrics/MethodLength:
   CountComments: false
   Max: 20
