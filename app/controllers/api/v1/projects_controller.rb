@@ -8,6 +8,10 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
                        Project.where(user_id: params[:user_id])
                    elsif params[:featured]
                        Project.where(featured: true)
+                   elsif params[:collaborations]
+                       Project.joins(:collaboration).where(\
+                           collaborations: { user_id: params[:collaborations] }
+                       )
                    else
                        Project.where(published: true)
                    end

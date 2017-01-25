@@ -19,8 +19,18 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
     end
 
     def show
-        @projectlayer = VectorLayerProject.find(params[:id])
-        render json: @projectlayer
+        # TODO: This should be a scope.
+        projectlayer = if params[:vector_layer_id]
+                           VectorLayerProject.where(
+                              vectorr_layer_id: params[:vector_layer_id]
+                           ).where(
+                               project_id: params[:project_id]
+                           ).first
+                       else
+                           VectorLayerProject.find(params[:id])
+                       end
+
+        render json: projectlayer
     end
 
     def create

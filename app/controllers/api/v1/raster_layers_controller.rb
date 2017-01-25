@@ -1,28 +1,25 @@
 # and the class
 class Api::V1::RasterLayersController < ApplicationController
     def index
-        if params[:query]
-            @layers = RasterLayer.text_search(params[:query])
-        elsif params[:tagem]
-            @layers = RasterLayer.un_tagged
-        elsif params[:name]
-            @layers = RasterLayer.where(name: params[:name])
-        elsif params[:search]
-            # NOTE: the client clears out the local store when none of
-            # search parameters have values.
-            @layers = RasterLayer.active
-            @layers = @layers.browse_text_search(params[:text_search])
-            @layers = @layers.by_institution(params[:institution])
-            @layers = @layers.by_tags(params[:tags])
-            @layers = @layers.by_year(
-                params[:start_year].to_i,
-                params[:end_year].to_i)
-            @layers = @layers.by_bounds(
-                make_polygon(params[:bounds])
-            ) if params[:bounds].present?
-        else
-            @layers = RasterLayer.active
-        end
+        @layers = if params[:query]
+                      RasterLayer.text_search(params[:query])
+                  elsif params[:tagem]
+                      RasterLayer.un_tagged
+                  elsif params[:names]
+                      RasterLayer.where(name: params[:names].split(','))
+                  elsif params[:search]
+                      # NOTE: the client clears out the local store when none of
+                      # search parameters have values.
+                      # TODO: Combine all this into one scope.
+                      RasterLayer.active
+                                 .browse_text_search(params[:text_search])
+                                 .by_institution(params[:institution])
+                                 .by_tags(params[:tags])
+                                 .by_year(params[:start_year].to_i, params[:end_year].to_i)
+                                 .by_bounds(make_polygon(params[:bounds]))
+                  else
+                      RasterLayer.active
+                  end
 
         # If there is a param of `projectID` we're going to send that as
         # an argument to the serializer.

@@ -11,6 +11,9 @@ Style/ClassLength:
 Style/ClassAndModuleChildren:
   Enabled: false
 
+Style/MultilineIfModifier:
+  Enabled: false
+
 Metrics/LineLength:
   Enabled: false
 

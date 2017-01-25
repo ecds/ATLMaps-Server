@@ -1,6 +1,5 @@
 # app/serializers/project_serializer.rb
 class ProjectSerializer < ActiveModel::Serializer
-
     attributes :id,
                :name,
                :description,
@@ -15,6 +14,8 @@ class ProjectSerializer < ActiveModel::Serializer
                :owner,
                :raster_layer_project_ids,
                :vector_layer_project_ids,
+               :raster_layer_ids,
+               :vector_layer_ids,
                :mine,
                :may_edit,
                :user_ids,
@@ -31,17 +32,5 @@ class ProjectSerializer < ActiveModel::Serializer
 
     def may_edit
         instance_options[:may_edit]
-    end
-
-    def card_url
-        return object.card.url
-    end
-
-    def card_phone_url
-        return object.card.phone.url
-    end
-
-    def card_tablet_url
-        return object.card.tablet.url
     end
 end

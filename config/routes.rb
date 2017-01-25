@@ -19,7 +19,7 @@ Rails.application.routes.draw do
                 list_show.resources :searches
                 list_show.resources :categories
                 list_show.resources :year_ranges, path: 'yearRanges'
-                list_show.resources :maps
+                list_show.resources :map_layers
             end
 
             with_options only: [:index, :show, :create, :destroy, :update] do |crud|

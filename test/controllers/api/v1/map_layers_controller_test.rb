@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Api::V1::MapsControllerTest < ActionController::TestCase
+class Api::V1::MapLayersControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

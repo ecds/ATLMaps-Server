@@ -93,39 +93,41 @@ class RasterLayer < ActiveRecord::Base
     # ON  st_intersects(boundingbox, neighborhoods.polygon )
     # {st_intersects(:boundingbox, poly)}
     scope :by_bounds, lambda { |bounds|
-        intersection = Arel::Nodes::NamedFunction.new(
-            'ST_AREA', [
-                Arel::Nodes::NamedFunction.new(
-                    'ST_INTERSECTION', [
-                        RasterLayer.arel_table[:boundingbox],
-                        Arel::Nodes::Quoted.new(bounds)
-                    ]
-                )
-            ]
-        )
+        if bounds.present?
+            intersection = Arel::Nodes::NamedFunction.new(
+                'ST_AREA', [
+                    Arel::Nodes::NamedFunction.new(
+                        'ST_INTERSECTION', [
+                            RasterLayer.arel_table[:boundingbox],
+                            Arel::Nodes::Quoted.new(bounds)
+                        ]
+                    )
+                ]
+            )
 
-        distance_from_center = Arel::Nodes::NamedFunction.new(
-            'ST_DISTANCE', [
-                Arel::Nodes::NamedFunction.new(
-                    'ST_Centroid', [Arel::Nodes::Quoted.new(bounds)]
-                ), Arel::Nodes::NamedFunction.new(
-                    'ST_Centroid', [RasterLayer.arel_table[:boundingbox]]
-                )
-            ]
-        )
+            distance_from_center = Arel::Nodes::NamedFunction.new(
+                'ST_DISTANCE', [
+                    Arel::Nodes::NamedFunction.new(
+                        'ST_Centroid', [Arel::Nodes::Quoted.new(bounds)]
+                    ), Arel::Nodes::NamedFunction.new(
+                        'ST_Centroid', [RasterLayer.arel_table[:boundingbox]]
+                    )
+                ]
+            )
 
-        RasterLayer.select([
-                               RasterLayer.arel_table[Arel.star]
-                           ]).where(
-                               Arel::Nodes::NamedFunction.new(
-                                   'ST_INTERSECTS', [
-                                       RasterLayer.arel_table[:boundingbox],
-                                       Arel::Nodes::Quoted.new(bounds)
-                                   ]
+            RasterLayer.select([
+                                   RasterLayer.arel_table[Arel.star]
+                               ]).where(
+                                   Arel::Nodes::NamedFunction.new(
+                                       'ST_INTERSECTS', [
+                                           RasterLayer.arel_table[:boundingbox],
+                                           Arel::Nodes::Quoted.new(bounds)
+                                       ]
+                                   )
+                               ).order(
+                                   distance_from_center, intersection.desc
                                )
-                           ).order(
-                               distance_from_center, intersection.desc
-                           )
+        end
     }
 
     scope :by_neighborhood, lambda {
