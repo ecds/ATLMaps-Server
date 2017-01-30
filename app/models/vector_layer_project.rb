@@ -2,8 +2,7 @@ class VectorLayerProject < ActiveRecord::Base
     belongs_to :vector_layer
     belongs_to :project
 
-    # FIXME: WTF?
     def data_type
-        return ''
+        return vector_layer[:data_type]
     end
 end

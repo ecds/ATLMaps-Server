@@ -54,7 +54,7 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
 
     # A PUT request to updata a project authenticated as collaborator
     test 'update project as collaborator' do
-        put '/v1/projects/1.json',
+        put '/v1/projects/2.json',
             params: {
                 project: {
                     name: 'Snickers'

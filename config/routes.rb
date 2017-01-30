@@ -4,9 +4,7 @@ Rails.application.routes.draw do
     # devise_for :users
 
     namespace :api, path: '/', constraints: { subdomain: 'api' } do
-        # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
         namespace :v1 do
-
             get '/users/me' => 'users#me'
 
             with_options only: [:index, :show] do |list_show|
@@ -35,8 +33,8 @@ Rails.application.routes.draw do
                 add_update.resources :raster_layers, path: 'rasterLayers'
             end
 
-            with_options only: [:create, :index] do |onlyCreate|
-                onlyCreate.resources :user_taggeds, path: 'userTaggeds'
+            with_options only: [:create, :index] do |only_create|
+                only_create.resources :user_taggeds, path: 'userTaggeds'
             end
         end
     end

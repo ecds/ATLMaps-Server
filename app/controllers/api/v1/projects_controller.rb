@@ -4,7 +4,7 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
     def index
         projects = if params[:name]
                        Project.where(name: params[:name]).first
-                   elsif params[:user_id]
+                   elsif params[:user_id] && params[:user_id].to_i == user_id
                        Project.where(user_id: params[:user_id])
                    elsif params[:featured]
                        Project.where(featured: true)
@@ -13,7 +13,7 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
                            collaborations: { user_id: params[:collaborations] }
                        )
                    else
-                       Project.where(published: true)
+                       Project.featured
                    end
 
         render json: projects

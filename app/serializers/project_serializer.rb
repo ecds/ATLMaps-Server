@@ -23,7 +23,6 @@ class ProjectSerializer < ActiveModel::Serializer
                :intro,
                :media,
                :photo,
-               :templateSlug,
                :template_id
 
     def mine
