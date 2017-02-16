@@ -2,10 +2,10 @@ Style/IndentationWidth:
   # Number of spaces for each indentation level.
   Width: 4
 
-Style/BlockLength:
+Metrics/BlockLength:
   Enabled: false
 
-Style/ClassLength:
+Metrics/ClassLength:
   Enabled: false
 
 Style/ClassAndModuleChildren:
@@ -29,3 +29,7 @@ Style/RedundantReturn:
 
 Rails:
   Enabled: true
+
+AllCops:
+  Exclude:
+    - 'db/**/*'

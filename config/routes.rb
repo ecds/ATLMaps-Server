@@ -5,8 +5,6 @@ Rails.application.routes.draw do
 
     namespace :api, path: '/', constraints: { subdomain: 'api' } do
         namespace :v1 do
-            get '/users/me' => 'users#me'
-
             with_options only: [:index, :show] do |list_show|
                 list_show.resources :layers
                 # list_show.resources :raster_layers, :path => "rasterLayers"

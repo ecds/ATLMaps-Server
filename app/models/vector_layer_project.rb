@@ -3,6 +3,6 @@ class VectorLayerProject < ActiveRecord::Base
     belongs_to :project
 
     def data_type
-        return vector_layer[:data_type]
+        return vector_layer.data_type
     end
 end

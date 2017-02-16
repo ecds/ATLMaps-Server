@@ -37,7 +37,7 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
         project = Project.find(params[:vectorLayerProject][:project_id])
         permissions = ownership(project)
         if permissions[:may_edit] == true
-            projectlayer = RasterLayerProject.new(vector_layer_project_params)
+            projectlayer = VectorLayerProject.new(vector_layer_project_params)
             if projectlayer.save
                 # Ember wants some JSON
                 render json: projectlayer, status: 201
@@ -54,7 +54,7 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
         permissions = ownership(project_layer.project)
         if permissions[:may_edit] == true
             if project_layer.update(vector_layer_project_params)
-                head 204
+                head 200
             else
                 head 500
             end
@@ -68,7 +68,8 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
         permissions = ownership(project_layer.project)
         if permissions[:may_edit] == true
             project_layer.destroy
-            head 200
+            project_layer.destroy
+            render json: {}, status: 204
         else
             head 401
         end

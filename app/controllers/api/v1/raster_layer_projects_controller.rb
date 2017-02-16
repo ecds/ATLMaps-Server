@@ -6,7 +6,7 @@ class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
                                 raster_layer_id: params[:raster_layer_id]
                             ).where(
                                 project_id: params[:project_id]
-                            ).first
+                            ).first || {}
                         elsif params[:project_id]
                             RasterLayerProject.where(
                                 project_id: params[:project_id]
@@ -55,7 +55,7 @@ class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
         permissions = ownership(project_layer.project)
         if permissions[:may_edit] == true
             if project_layer.update(raster_layer_project_params)
-                head 204
+                head 200
             else
                 head 500
             end
@@ -69,7 +69,7 @@ class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
         permissions = ownership(project_layer.project)
         if permissions[:may_edit] == true
             project_layer.destroy
-            render json: {}, status: 200
+            render json: {}, status: 204
         else
             head 401
         end

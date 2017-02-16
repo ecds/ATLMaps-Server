@@ -3,6 +3,10 @@ class Api::V1::PermissionController < ApplicationController
         current_user ? current_user.user.id : false
     end
 
+    def user
+        return current_user ? current_user.user : false
+    end
+
     def ownership(project)
         if current_user
             return {

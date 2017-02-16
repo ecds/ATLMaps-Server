@@ -1,13 +1,14 @@
+# Controller that retunrns users.
+# If the index method sees a parameter of `me` and there is a `current_user`
+# assoiated with the call, the user is returned so the frontend can display
+# the user's info.
 class Api::V1::UsersController < ApplicationController
+    # before_action :authenticate!
     def index
-        @users = if @current_login
-                     # if params[:project_id]
-                     #   projects = Project.where(name: params[:name])
-                     # end
-                     User.where.not(id: @current_login.id) # .where.not('collaboration.project_id' => parmas[:project_id])
+        @users = if current_user && params['me']
+                     User.where(id: current_user.user.id).first
                  else
-                     # @users = User.where.not('project_id' => params[:project_id])
-                     User.all
+                     {}
                  end
         render json: @users
     end
@@ -15,21 +16,5 @@ class Api::V1::UsersController < ApplicationController
     def show
         @user = User.find(params[:id])
         render json: @user
-        # respond_to do |format|
-        #  format.json { render json: layer, status: :ok }
-        # end
-    end
-
-    before_action :authenticate!, only: :me
-    def me
-        user = @current_login.user
-
-        if user.nil?
-            render json: {}, status: 400
-        else
-            render json: user
-            # or render as json:api for ember using the jsonapi-resources gem
-            # render json: JSONAPI::ResourceSerializer.new(UserResource).serialize_to_hash(UserResource.new(user, nil))
-        end
     end
 end

@@ -1,11 +1,12 @@
 # app/controllers/api/v1/projects_controller.rb
 class Api::V1::ProjectsController < Api::V1::PermissionController
     # class for Controller
+    include RailsApiAuth::Authentication
     def index
         projects = if params[:name]
                        Project.where(name: params[:name]).first
-                   elsif params[:user_id] && params[:user_id].to_i == user_id
-                       Project.where(user_id: params[:user_id])
+                   elsif params['user_id'] && current_user
+                       Project.where(user_id: current_user.user.id)
                    elsif params[:featured]
                        Project.where(featured: true)
                    elsif params[:collaborations]
@@ -27,7 +28,7 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
         if project.published == true || permissions[:may_edit] == true
             render json: project, root: 'project', may_edit: permissions[:may_edit], mine: permissions[:mine]
         else
-            head 401
+            render json: { errors: 'permission denied' }.to_json, status: 401
         end
     end
 
