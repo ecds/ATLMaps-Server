@@ -1,0 +1,35 @@
+Style/IndentationWidth:
+  # Number of spaces for each indentation level.
+  Width: 4
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/MultilineIfModifier:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 20
+
+Metrics/AbcSize:
+  Enabled: false
+
+Style/RedundantReturn:
+  Enabled: false
+
+Rails:
+  Enabled: true
+
+AllCops:
+  Exclude:
+    - 'db/**/*'

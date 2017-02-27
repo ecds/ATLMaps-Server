@@ -51,4 +51,12 @@ class VectorLayer < ActiveRecord::Base
     return self.tags.map {|tag| tag.name.parameterize}.join(" ")
   end
 
+  # @!attribute [r] slider_id
+  # @return [String]
+  # Attribute used to make unique identifer for the front end opacity slider.
+  def slider_id
+      slug = name.parameterize
+      return "slider-#{slug}-#{id}"
+  end
+
 end

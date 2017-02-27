@@ -121,7 +121,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#number_tagged-instance_method" title="#number_tagged (instance method)">#<strong>number_tagged</strong>  &#x21d2; Object </a>
+      <a href="#create-instance_method" title="#create (instance method)">#<strong>create</strong>  &#x21d2; Object </a>
     
 
     
@@ -140,6 +140,36 @@
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#number_tagged-instance_method" title="#number_tagged (instance method)">#<strong>number_tagged</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p># def self.from_omniauth(auth) #     where(provider: auth.provider, uid:
+auth.uid).first_or_create do |user| #         user.email = auth.info.email
+#         user.password = Devise.friendly_token[0, 20] #         #
+user.name = auth.info.name   # assuming the user model has a name #        
+# user.image = auth.info.image # assuming the user model has an image #    
+# If you are using confirmable and the provider(s) you use validate emails,
+#         # uncomment the line below to skip the confirmation emails.</p>
+</div></span>
+  
+</li>
+
+      
     </ul>
   
 
@@ -151,9 +181,9 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="number_tagged-instance_method">
+  <h3 class="signature first" id="create-instance_method">
   
-    #<strong>number_tagged</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>create</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -165,15 +195,73 @@
       <pre class="lines">
 
 
-13
-14
-15</pre>
+33
+34
+35
+36
+37
+38
+39
+40</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/models/user.rb', line 13</span>
+      <pre class="code"><span class="info file"># File 'app/models/user.rb', line 33</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
+    <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='const'>User</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_user_params'>user_params</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_save'>save</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_create_login'>create_login</span><span class='lparen'>(</span><span class='id identifier rubyid_login_params'>login_params</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_head'>head</span> <span class='int'>200</span>
+    <span class='kw'>else</span>
+        <span class='id identifier rubyid_head'>head</span> <span class='int'>422</span> <span class='comment'># you&#39;d actually want to return validation errors here
+</span>    <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="number_tagged-instance_method">
+  
+    #<strong>number_tagged</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p># def self.from_omniauth(auth) #     where(provider: auth.provider, uid:
+auth.uid).first_or_create do |user| #         user.email = auth.info.email
+#         user.password = Devise.friendly_token[0, 20] #         #
+user.name = auth.info.name   # assuming the user model has a name #        
+# user.image = auth.info.image # assuming the user model has an image #    
+# If you are using confirmable and the provider(s) you use validate emails,
+#         # uncomment the line below to skip the confirmation emails. #    
+# user.skip_confirmation! #     end # end</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+29
+30
+31</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app/models/user.rb', line 29</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_number_tagged'>number_tagged</span>
-  <span class='kw'>return</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_user_tagged'>user_tagged</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span>
+    <span class='id identifier rubyid_user_tagged'>user_tagged</span><span class='period'>.</span><span class='id identifier rubyid_count'>count</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -185,7 +273,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Oct  4 13:51:05 2016 by
+  Generated on Wed Dec 21 11:18:46 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.2.2).
 </div>

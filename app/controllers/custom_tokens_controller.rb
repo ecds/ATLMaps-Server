@@ -2,15 +2,11 @@
 # Got this code for here http://stackoverflow.com/a/25532347/1792144
 # The point of this is to inject the user's details into the response
 class CustomTokensController < Doorkeeper::TokensController
-  # 
+  #
   # # Overriding create action
   # # POST /oauth/token
   # def create
-  #   puts '!!!!!!!!!!!!!'
-  #   puts server.token_request params[:grant_type]
   #   response = authorize_response
-  #   puts response
-  #   puts '%%%%%%%%%%%%%'
   #   body = response.body
   #
   #   if response.status == :ok

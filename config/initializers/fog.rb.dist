@@ -1,0 +1,8 @@
+CarrierWave.configure do |config|
+  config.fog_credentials = {
+    :provider               => 'AWS',
+    :aws_access_key_id      => '1234567890',
+    :aws_secret_access_key  => 'qwertyuiopasdfghjklzxcvbnm'
+  }
+  config.fog_directory  = 'atlmaps-travis'
+end

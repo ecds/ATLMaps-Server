@@ -241,6 +241,12 @@
   
   
   
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../../ApplicationController.html" title="ApplicationController (class)">ApplicationController</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../ApplicationController.html#current_user-instance_method" title="ApplicationController#current_user (method)">#current_user</a></span></p>
+
+  
+  
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
@@ -280,7 +286,7 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span>
   <span class='id identifier rubyid_projectlayer'>projectlayer</span> <span class='op'>=</span> <span class='const'>VectorLayerProject</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_vector_layer_project_params'>vector_layer_project_params</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='id identifier rubyid_@current_login'>@current_login</span>
+  <span class='kw'>if</span> <span class='ivar'>@current_login</span>
     <span class='kw'>if</span> <span class='id identifier rubyid_projectlayer'>projectlayer</span><span class='period'>.</span><span class='id identifier rubyid_save'>save</span>
       <span class='comment'># Ember wants some JSON
 </span>      <span class='id identifier rubyid_render'>render</span> <span class='label'>json:</span> <span class='id identifier rubyid_projectlayer'>projectlayer</span><span class='comma'>,</span> <span class='label'>status:</span> <span class='int'>201</span>
@@ -469,7 +475,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Oct  4 13:51:07 2016 by
+  Generated on Wed Dec 21 11:18:47 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.2.2).
 </div>

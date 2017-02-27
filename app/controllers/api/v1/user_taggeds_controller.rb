@@ -12,7 +12,6 @@ class Api::V1::UserTaggedsController < ApplicationController
             # Ember wants some JSON
             render json: usertagged, root: 'user_tagged', status: 201
         else
-            puts usertagged.errors.inspect
             render json: usertagged.errors, status: 500
         end
         # else

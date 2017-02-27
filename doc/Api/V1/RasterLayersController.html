@@ -105,7 +105,18 @@
   
 </div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    
+<p>and the class</p>
 
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div>
 
 
 
@@ -142,50 +153,6 @@
 </li>
 
       
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#show-instance_method" title="#show (instance method)">#<strong>show</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#update-instance_method" title="#update (instance method)">#<strong>update</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'></div></span>
-  
-</li>
-
-      
     </ul>
   
 
@@ -195,6 +162,12 @@
   
   
   
+  
+  
+  
+  <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../../ApplicationController.html" title="ApplicationController (class)">ApplicationController</a></span></h3>
+  <p class="inherited"><span class='object_link'><a href="../../ApplicationController.html#current_user-instance_method" title="ApplicationController#current_user (method)">#current_user</a></span></p>
+
   
   
 
@@ -217,11 +190,6 @@
       <pre class="lines">
 
 
-2
-3
-4
-5
-6
 7
 8
 9
@@ -240,55 +208,8 @@
 22
 23
 24
-25</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/api/v1/raster_layers_controller.rb', line 2</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_index'>index</span>
-    <span class='comment'># Not sure this is still needed
-</span>    <span class='comment'># if params[:raster_layer]
-</span>    <span class='comment'># 	@layers = RasterLayer.where(layer: params[:layer])
-</span>    <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:query</span><span class='rbracket'>]</span>
-        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='const'>RasterLayer</span><span class='period'>.</span><span class='id identifier rubyid_text_search'>text_search</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:query</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-    <span class='comment'># elsif params[:tagem].include? &#39;-&#39;
-</span>    <span class='comment'>#     @layers = RasterLayer.where(name: params[:tagem].split(&#39;-&#39;)[1]).first
-</span>  <span class='kw'>elsif</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:tagem</span><span class='rbracket'>]</span>
-        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='const'>RasterLayer</span><span class='period'>.</span><span class='id identifier rubyid_un_taged'>un_taged</span>
-    <span class='kw'>else</span>
-        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='const'>RasterLayer</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>active:</span> <span class='kw'>true</span><span class='rparen'>)</span> <span class='comment'># .includes(:projects, :tags, :institution)
-</span>    <span class='kw'>end</span>
-
-    <span class='comment'># If there is a param of `projectID` we&#39;re going to send that as an argument to
-</span>    <span class='comment'># the serializer.
-</span>    <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:projectID</span><span class='rbracket'>]</span>
-        <span class='id identifier rubyid_render'>render</span> <span class='label'>json:</span> <span class='ivar'>@layers</span><span class='comma'>,</span> <span class='label'>project_id:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:projectID</span><span class='rbracket'>]</span>
-    <span class='comment'># Otherwise, we&#39;re just going to say that the `project_id` is `0` so the
-</span>    <span class='comment'># `active_in_project` attribute will be `false`.
-</span>    <span class='kw'>else</span>
-        <span class='id identifier rubyid_render'>render</span> <span class='label'>json:</span> <span class='ivar'>@layers</span><span class='comma'>,</span> <span class='label'>project_id:</span> <span class='int'>0</span>
-    <span class='kw'>end</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="show-instance_method">
-  
-    #<strong>show</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
+25
+26
 27
 28
 29
@@ -298,62 +219,52 @@
 33
 34
 35
-36</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/api/v1/raster_layers_controller.rb', line 27</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_show'>show</span>
-    <span class='id identifier rubyid_layer'>layer</span> <span class='op'>=</span> <span class='const'>RasterLayer</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-    <span class='comment'># Not sure this conditional is still needed
-</span>    <span class='comment'># if params[:projectID]
-</span>    <span class='comment'># 	render json: layer, root: &#39;raster_layer&#39;, project_id: params[:projectID]
-</span>    <span class='comment'># else
-</span>    <span class='comment'># 	render json: layer, root: &#39;raster_layer&#39;
-</span>    <span class='comment'># end
-</span>    <span class='id identifier rubyid_render'>render</span> <span class='label'>json:</span> <span class='id identifier rubyid_layer'>layer</span><span class='comma'>,</span> <span class='label'>root:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>raster_layer</span><span class='tstring_end'>&#39;</span></span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="update-instance_method">
-  
-    #<strong>update</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
+36
+37
 38
 39
 40
 41
-42
-43
-44
-45
-46</pre>
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app/controllers/api/v1/raster_layers_controller.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'app/controllers/api/v1/raster_layers_controller.rb', line 7</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_update'>update</span>
-    <span class='id identifier rubyid_layer'>layer</span> <span class='op'>=</span> <span class='const'>RasterLayer</span><span class='period'>.</span><span class='id identifier rubyid_find'>find</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-    <span class='kw'>if</span> <span class='id identifier rubyid_layer'>layer</span><span class='period'>.</span><span class='id identifier rubyid_update'>update</span><span class='lparen'>(</span><span class='id identifier rubyid_raster_layer_params'>raster_layer_params</span><span class='rparen'>)</span>
-        <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>what</span><span class='tstring_end'>&#39;</span></span>
-        <span class='id identifier rubyid_head'>head</span> <span class='int'>204</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_index'>index</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:query</span><span class='rbracket'>]</span>
+        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='const'>RasterLayer</span><span class='period'>.</span><span class='id identifier rubyid_text_search'>text_search</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:query</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+    <span class='kw'>elsif</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:tagem</span><span class='rbracket'>]</span>
+        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='const'>RasterLayer</span><span class='period'>.</span><span class='id identifier rubyid_un_tagged'>un_tagged</span>
+    <span class='kw'>elsif</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span>
+        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='const'>RasterLayer</span><span class='period'>.</span><span class='id identifier rubyid_where'>where</span><span class='lparen'>(</span><span class='label'>name:</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:name</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+    <span class='kw'>elsif</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:search</span><span class='rbracket'>]</span>
+        <span class='comment'># FIXME: this seems hacky and unreliable. This is to retun
+</span>        <span class='comment'># nothing when search params are empty.
+</span>        <span class='comment'># We always expect search, subomain, controller, format,
+</span>        <span class='comment'># and action be preesent.
+</span>        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='const'>RasterLayer</span><span class='period'>.</span><span class='id identifier rubyid_none'>none</span> <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&lt;=</span> <span class='int'>5</span>
     <span class='kw'>else</span>
-        <span class='id identifier rubyid_head'>head</span> <span class='int'>500</span>
+        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='const'>RasterLayer</span><span class='period'>.</span><span class='id identifier rubyid_active'>active</span>
+        <span class='comment'># @todo do we need the .present? here and on the
+</span>        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='ivar'>@layers</span><span class='period'>.</span><span class='id identifier rubyid_browse_text_search'>browse_text_search</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:text_search</span><span class='rbracket'>]</span><span class='rparen'>)</span> \
+            <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:text_search</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
+        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='ivar'>@layers</span><span class='period'>.</span><span class='id identifier rubyid_by_institution'>by_institution</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:institution</span><span class='rbracket'>]</span><span class='rparen'>)</span> \
+            <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:institution</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
+        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='ivar'>@layers</span><span class='period'>.</span><span class='id identifier rubyid_by_tags'>by_tags</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:tags</span><span class='rbracket'>]</span><span class='rparen'>)</span> \
+            <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:tags</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
+        <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='ivar'>@layers</span><span class='period'>.</span><span class='id identifier rubyid_by_year'>by_year</span><span class='lparen'>(</span>
+            <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:start_year</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='comma'>,</span>
+            <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:end_year</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span> \
+            <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:end_year</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
+        <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:bounds</span><span class='rbracket'>]</span> <span class='op'>!=</span> <span class='kw'>false</span>
+            <span class='comment'># TODO: Do we really need the present? or do we make
+</span>            <span class='comment'># that the conditional?
+</span>            <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='ivar'>@layers</span><span class='period'>.</span><span class='id identifier rubyid_by_bounds'>by_bounds</span><span class='lparen'>(</span>
+                <span class='id identifier rubyid_make_polygon'>make_polygon</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:bounds</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+            <span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:bounds</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_present?'>present?</span>
+        <span class='kw'>end</span>
     <span class='kw'>end</span>
+    <span class='ivar'>@layers</span> <span class='op'>=</span> <span class='const'>RasterLayer</span><span class='period'>.</span><span class='id identifier rubyid_active'>active</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -365,7 +276,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Oct  4 13:51:06 2016 by
+  Generated on Wed Dec 21 11:18:47 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.2.2).
 </div>

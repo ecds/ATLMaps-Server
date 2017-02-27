@@ -2,6 +2,8 @@ class Api::V1::VectorLayersController < ApplicationController
     def index
         if params[:query]
             @layers = VectorLayer.text_search(params[:query])
+        elsif params[:names]
+            @layers = VectorLayer.where(name: params[:names].split(','))
         elsif params[:search]
             # We always expect search, subomain, controller, format, and action
             # be preesent.
