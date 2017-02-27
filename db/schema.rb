@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170215045033) do
+ActiveRecord::Schema.define(version: 20170223153901) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -257,7 +257,7 @@ ActiveRecord::Schema.define(version: 20170215045033) do
     t.integer  "institution_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "url",            limit: 255
+    t.string   "url",            limit: 500
     t.integer  "year"
     t.string   "title",          limit: 255
     t.string   "data_type",      limit: 255

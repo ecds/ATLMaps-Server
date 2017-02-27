@@ -55,7 +55,7 @@ class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
         permissions = ownership(project_layer.project)
         if permissions[:may_edit] == true
             if project_layer.update(raster_layer_project_params)
-                head 200
+                render json: {}, status: 204
             else
                 head 500
             end

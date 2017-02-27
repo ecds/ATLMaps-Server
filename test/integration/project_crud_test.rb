@@ -19,8 +19,7 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
         post '/v1/projects.json',
              params: {
                  project: {
-                     name: 'foo',
-                     user_id: 2
+                     name: 'foo'
                  }
              },
              headers: {
@@ -141,7 +140,8 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
                      project_id: '2',
                      layer_id: 4,
                      marker: 60,
-                     layer_type: 'geojson'
+                     layer_type: 'geojson',
+                     vector_layer_id: 1
                  }
              },
              headers: {
@@ -167,7 +167,7 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
                headers: {
                    Authorization: 'Bearer a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
                }
-        assert_equal 200, response.status
+        assert_equal 204, response.status
     end
 
     test 'remove raster layer from project as owner' do
@@ -175,7 +175,7 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
                headers: {
                    Authorization: 'Bearer 57dd83d2396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13'
                }
-        assert_equal 200, response.status
+        assert_equal 204, response.status
     end
 
     test 'remove vector layer from project unauthenticated' do

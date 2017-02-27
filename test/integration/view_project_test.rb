@@ -35,8 +35,9 @@ class ViewProjectTest < ActionDispatch::IntegrationTest
     # A GET request for a single unpublished project
     test 'returns 401 for unpublished project unauthenticated' do
         get '/v1/projects/2.json'
+        error = JSON.parse(response.body)
         assert_equal 401, response.status
-        assert_equal 0, response.body.length
+        assert_equal 'permission denied', error['errors']
     end
 
     # A GET request for a single unpublished project from a user not the owner
@@ -46,8 +47,9 @@ class ViewProjectTest < ActionDispatch::IntegrationTest
             headers: {
                 Authorization: 'Bearer 57dd83d2396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13'
             }
+        error = JSON.parse(response.body)
         assert_equal 401, response.status
-        assert_equal 0, response.body.length
+        assert_equal 'permission denied', error['errors']
     end
 
     # Check to see if a project has an intro.

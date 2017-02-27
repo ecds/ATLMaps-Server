@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
     # mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
-    # devise_for :users
-
     namespace :api, path: '/', constraints: { subdomain: 'api' } do
         namespace :v1 do
             with_options only: [:index, :show] do |list_show|
@@ -11,7 +9,6 @@ Rails.application.routes.draw do
                 list_show.resources :vector_layers, path: 'vectorLayers'
                 list_show.resources :tags
                 list_show.resources :institutions
-                list_show.resources :users
                 list_show.resources :searches
                 list_show.resources :categories
                 list_show.resources :year_ranges, path: 'yearRanges'
@@ -28,6 +25,7 @@ Rails.application.routes.draw do
             end
 
             with_options only: [:index, :show, :update, :create] do |add_update|
+                add_update.resource :users
                 add_update.resources :raster_layers, path: 'rasterLayers'
             end
 
@@ -36,13 +34,6 @@ Rails.application.routes.draw do
             end
         end
     end
-
-    # get '/users/sign_up' => 'users#new'
-    # get '/users/sign_in' => 'devise/sessions#new'
-    # post '/user' => 'users#create'
-    # post '/users/sign_in' => 'devise/sessions#create'
-    # # match "/searches" => "searches#index", via: [:get, :post]
-    # delete '/users/sign_out' => 'devise/sessions#destroy'
 
     post '/v1/token', to: 'oauth2#create'
     post '/v1/revoke', to: 'oauth2#destroy'

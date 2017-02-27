@@ -33,8 +33,10 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
     end
 
     def create
-        project = Project.new(project_params)
         if current_user
+            # project_params['user_id'] = current_user.user.id
+            project = Project.new(project_params)
+            project.user = current_user.user
             if project.save
                 # Ember wants some JSON
                 render json: project, status: 201
@@ -76,8 +78,8 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
     def project_params
         params.require(:project).permit(
             :name, :saved, :description, :center_lat, :center_lng, :zoom_level,
-            :default_base_map, :user_id, :published, :featured, :intro, :media,
-            :photo, :template_id
+            :default_base_map, :published, :featured, :intro, :media,
+            :photo
         )
     end
 end
