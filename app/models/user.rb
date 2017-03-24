@@ -1,5 +1,5 @@
+# Model class for a User.
 class User < ActiveRecord::Base
-
     has_one :login
     belongs_to :institution
     has_many :collaboration
@@ -10,18 +10,8 @@ class User < ActiveRecord::Base
         user_tagged.count
     end
 
-    def create
-        user = User.new(user_params)
-        if user.save && user.create_login(login_params)
-            head 200
-        else
-            head 422 # you'd actually want to return validation errors here
-        end
-    end
-
-    private
-
-    def user_params
-        params.require(:user).permit(:first_name, :last_name)
+    def confirmed
+        # Local users will not have a provider.
+        return login.provider? || login.confirm_token.nil?
     end
 end

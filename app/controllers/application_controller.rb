@@ -5,12 +5,12 @@ class ApplicationController < ActionController::Base
     # protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format == 'application/json' }
     # skip_before_filter :verify_authenticity_token, if: proc { |c| c.request.format == 'application/json' }
 
-    include RailsApiAuth::Authentication
+    # include RailsApiAuth::Authentication
 
     # Method to get the user ID associated with the token being used.
     def current_user
         auth_header = request.headers['Authorization']
-        return auth_header ? Login.where(oauth2_token: auth_header.split(' ').last).first! : false
+        return auth_header ? Login.where(oauth2_token: auth_header.split(' ').last).first : false
     end
 
     private
@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
     def default_serializer_options; end
 
     def pagination_dict(object)
-        return {
+        {
             current_page: object.current_page,
             next_page: object.next_page,
             prev_page: object.prev_page,

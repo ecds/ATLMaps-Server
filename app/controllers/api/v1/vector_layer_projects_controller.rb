@@ -1,3 +1,4 @@
+# Controller class for vector layers included in a project.
 class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
     def index
         # TODO: This should be a scope.
@@ -22,7 +23,7 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
         # TODO: This should be a scope.
         projectlayer = if params[:vector_layer_id]
                            VectorLayerProject.where(
-                              vectorr_layer_id: params[:vector_layer_id]
+                               vectorr_layer_id: params[:vector_layer_id]
                            ).where(
                                project_id: params[:project_id]
                            ).first

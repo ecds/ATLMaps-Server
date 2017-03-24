@@ -64,3 +64,16 @@ five:
   published: true
   user_id: 2
   featured: true
+
+six:
+  id: 6
+  name: Yet another
+  description: Marx was right
+  center_lat: 33.754401
+  center_lng: -84.38981
+  zoom_level: 13
+  default_base_map: satellite
+  saved: true
+  published: false
+  user_id: 3
+  featured: false

@@ -7,16 +7,18 @@ class Api::V1::VectorLayersController < ApplicationController
         elsif params[:search]
             # We always expect search, subomain, controller, format, and action
             # be preesent.
-            if params.length <= 5
-                @layers = VectorLayer.none
-            else
-                # @todo do we need the .present? here and on the
-                @layers = VectorLayer.active()
-                @layers = @layers.browse_text_search(params[:text_search]) if params[:text_search].present?
-                @layers = @layers.by_institution(params[:institution]) if params[:institution].present?
-                @layers = @layers.by_tags(params[:tags]) if params[:tags].present?
-                @layers = @layers.by_year(params[:start_year].to_i, params[:end_year].to_i) if params[:end_year].present?
-            end
+            # if params.to_h.length <= 5
+            #     @layers = VectorLayer.none
+            # else
+            # @todo do we need the .present? here and on the
+            @layers = VectorLayer.active()
+            @layers = @layers.browse_text_search(params[:text_search]) if params[:text_search].present?
+            @layers = @layers.by_institution(params[:institution]) if params[:institution].present?
+            @layers = @layers.by_tags(params[:tags]) if params[:tags].present?
+            @layers = @layers.by_year(params[:start_year].to_i, params[:end_year].to_i) if params[:end_year].present?
+            @layers = Kaminari.paginate_array(@layers).page(params[:page]).per(params[:limit] || 10)
+
+            # end
         else
             @layers = VectorLayer.where(active: true).includes(:projects, :tags, :institution)
         end
@@ -29,7 +31,7 @@ class Api::V1::VectorLayersController < ApplicationController
         # `active_in_project` attribute will be `false`.
         else
             # render json: @layers, project_id: 0
-            @layers = @layers.page(params[:page]).per(params[:limit] || 10)
+            @layers = Kaminari.paginate_array(@layers).page(params[:page]).per(params[:limit] || 10)
             render json: @layers, meta: pagination_dict(@layers) # , project_id: 0
         end
     end

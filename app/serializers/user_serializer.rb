@@ -1,9 +1,9 @@
+# Serializer class for users.
 class UserSerializer < ActiveModel::Serializer
+    has_many :projects, embed: :ids
+    # has_many :projects
+    has_many :collaboration
+    has_one :institution
 
-  has_many :projects, embed: :ids
-  # has_many :projects
-  has_many :collaboration
-  has_one :institution
-
-  attributes :id, :email, :displayname, :avatar, :number_tagged
+    attributes :id, :email, :displayname, :avatar, :number_tagged, :confirmed
 end

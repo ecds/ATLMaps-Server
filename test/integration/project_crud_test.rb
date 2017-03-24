@@ -13,8 +13,7 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
         assert_equal 401, response.status
     end
 
-    # A POST request to care a project authenticated
-    # FIXME the user id in the payload is a hack to get test to pass
+    # A POST request to create a project authenticated
     test 'create project authenticated' do
         post '/v1/projects.json',
              params: {
@@ -26,6 +25,20 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
                  Authorization: 'Bearer 57dd83d2396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13'
              }
         assert_equal 201, response.status
+    end
+
+    # A POST request to create a project with unconfirmed account
+    test 'create project unconfirmed account' do
+        post '/v1/projects.json',
+             params: {
+                 project: {
+                     name: 'bar'
+                 }
+             },
+             headers: {
+                 Authorization: 'Bearer 123456789396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13'
+             }
+        assert_equal 401, response.status
     end
 
     # A PUT requst to update a project unauthenticated

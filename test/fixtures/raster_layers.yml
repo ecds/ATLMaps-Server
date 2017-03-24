@@ -2,7 +2,7 @@ one:
   id: 1
   title: Atlanta Airport 1967
   keywords: foo, bar, baz
-  description: This topographic map of the Atlanta Airport hello
+  description: 'There is a theory which states that if ever anyone discovers exactly what the Universe is for and why it is here, it will instantly disappear and be replaced by something even more bizarre and inexplicable. There is another theory which states that this has already happened. Vogon'
   name: atlpm0380_geo
   date: null
   year: 1999
@@ -19,7 +19,7 @@ one:
 two:
   id: 2
   title: Bird's eye view
-  description: Birds eye view of the city of Atlanta
+  description: 'Many were increasingly of the opinion that they’d all made a big mistake in coming down from the trees in the first place. And some said that even the trees had been a bad move, and that no one should ever have left the oceans.'
   name: atl1871
   date: null
   year: 1974
@@ -37,7 +37,7 @@ three:
   id: 3
   title: Butler Street Urban Redevelopment Area Hello
   keywords: Atlanta, Urban Renewal, Highways/Roads
-  description: Depicts streets to be vacated and existing streets to remain.
+  description: '“You know,” said Arthur, “it’s at times like this, when I’m trapped in a Vogon airlock with a man from Betelgeuse, and about to die of asphyxiation in deep space that I really wish I’d listened to what my mother told me when I was young.” “Why, what did she tell you?” “I don’t know, I didn’t listen.”'
   name: atlpm0031d
   date: null
   year: 1992
@@ -53,11 +53,28 @@ three:
 
 four:
   id: 4
-  title: Bird's eye view2
-  description: Birds eye view of the city of Atlanta
+  title: Bird's eye view2 Vogon
+  description: '“Space,” it says, “is big. Really big. You just won’t believe how vastly, hugely, mindbogglingly big it is. I mean, you may think it’s a long way down the road to the chemist’s, but that’s just peanuts to space.”'
   name: atl1871
   date: null
   year: 2000
+  data_format: wms
+  minzoom: 12
+  maxzoom: 18
+  minx: -84.41308472
+  miny: 33.73061309
+  maxx: -84.37179754
+  maxy: 33.77218988
+  active: true
+  institution_id: 2
+
+five:
+  id: 5
+  title: Universe
+  description: 'Curiously enough, the only thing that went through the mind of the bowl of petunias as it fell was Oh no, not again. Many people have speculated that if we knew exactly why the bowl of petunias had thought that we would know a lot more about the nature of the Universe than we do now.'
+  name: atl3456
+  date: null
+  year: 4000
   data_format: wms
   minzoom: 12
   maxzoom: 18

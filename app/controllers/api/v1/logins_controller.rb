@@ -1,13 +1,14 @@
+# Controller to create new login and corrosponding user.
 class Api::V1::LoginsController < ApplicationController
     def create
         login = Login.new(login_params)
-        user = User.new(displayname: 'ATLMaps User')
-        if user.save
-            login.user_id = user.id
-        else
-            head 500
-        end
+        # Create user to associate with the login.
+        login.user = User.create(displayname: 'ATLMaps User')
         if login.save
+            # If the new user created an account, we send a confirmation email.
+            unless login.provider
+                ConfirmLoginMailer.registration_confirmation(login).deliver
+            end
             # Ember wants some JSON
             render json: login, status: 201
         else

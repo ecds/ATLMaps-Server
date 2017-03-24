@@ -2,6 +2,8 @@ one:
   id: 1
   identification: 'foo@bar.com'
   oauth2_token: a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf
+  provider: 'google'
+  confirm_token: 'jduejeue'
   user_id: 1
 
 two:
@@ -9,3 +11,10 @@ two:
   identification: 'my@butt.org'
   oauth2_token: 57dd83d2396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13
   user_id: 2
+
+three:
+  id: 3
+  identification: 'your@butt.org'
+  oauth2_token: 123456789396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13
+  confirm_token: 'kdieuemjru'
+  user_id: 3

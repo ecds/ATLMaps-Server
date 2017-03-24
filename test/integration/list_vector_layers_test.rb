@@ -37,13 +37,6 @@ class ListvectorLayersTest < ActionDispatch::IntegrationTest
         # refute l_two['active_in_project']
     end
 
-    test 'test search' do
-        get '/v1/vectorLayers.json?query=hello'
-        assert_equal 200, response.status
-        results = JSON.parse(response.body)['vector_layers']
-        assert_equal 2, results.length
-    end
-
     test 'view vector layer' do
         get '/v1/vectorLayers/2.json'
         assert_equal 200, response.status

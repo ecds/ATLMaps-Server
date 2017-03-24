@@ -5,17 +5,32 @@
 class Api::V1::UsersController < ApplicationController
     # before_action :authenticate!
     def index
-        @users = if current_user && params['me']
-                     User.where(id: current_user.user.id).first
-                 else
-                     {}
-                 end
-        render json: @users
+        if current_user && params['me'] && current_user.confirmed
+            #  User.where(id: current_user.user.id).first
+            render json: current_user.user
+        elsif !current_user.confirmed
+            render json: { errors: "Check email for #{current_user.identifier} for confirmation email." }.to_json, status: 401
+        else
+            render json: {}.to_json, status: 401
+        end
     end
 
     def show
         # @user = User.find(params[:id])
+        # unless current_user.user.confirmed
+        #     render json: { errors: { msg: 'You must confirm your email.' } }.to_json, status: 200
+        #     return true
+        # end
         render json: current_user.user
+    end
+
+    def create
+        user = User.new(user_params)
+        if user.save && user.create_login(login_params)
+            head 200
+        else
+            head 422 # you'd actually want to return validation errors here
+        end
     end
 
     def update

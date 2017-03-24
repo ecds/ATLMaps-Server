@@ -21,15 +21,26 @@ class ViewProjectTest < ActionDispatch::IntegrationTest
         assert_equal 200, response.status
     end
 
-    # A GET request for a single unpublished project from owner
-    test 'return 200 for unpublished from owner' do
-        get '/v1/projects/4.json',
+    # A GET request for a single project from owner who is unconfirmed.
+    # This should never heppen, but just incase we screw someting else up.
+    test 'return 401 for project owned by unconfirmed user' do
+        get '/v1/projects/6.json',
             headers: {
                 Authorization: 'Bearer 57dd83d2396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13'
             }
-        assert JSON.parse(response.body)['project']['mine']
-        assert JSON.parse(response.body)['project']['may_edit']
-        assert_equal 200, response.status
+        error = JSON.parse(response.body)
+        assert_equal 401, response.status
+        assert_equal 'permission denied', error['errors']
+    end
+
+    # A GET request for a single unpublished project from owner
+    test 'assert mine and may_edit are nil for unconfirmed user.' do
+        get '/v1/projects/1.json',
+            headers: {
+                Authorization: 'Bearer 123456789396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13'
+            }
+        assert_not JSON.parse(response.body)['project']['mine']
+        assert_not JSON.parse(response.body)['project']['may_edit']
     end
 
     # A GET request for a single unpublished project

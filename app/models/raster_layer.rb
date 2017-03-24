@@ -25,7 +25,8 @@ class RasterLayer < ActiveRecord::Base
     has_many :user_taggeds
     belongs_to :institution
 
-    has_and_belongs_to_many :tags, dependent: :destroy
+    # Uses `acts-as-taggable-on` gem.
+    acts_as_taggable
 
     # Scope: by_institution. Seraches layers by institution
     scope :by_institution, lambda { |institution|
@@ -33,10 +34,8 @@ class RasterLayer < ActiveRecord::Base
         if institution.present?
     }
 
-    scope :by_tags, lambda { |tags|
-        joins(:tags).where(tags: { name: tags }) \
-        if tags.present?
-    }
+    # Uses `acts-as-taggable-on` gem.
+    scope :by_tags, ->(tags) { tagged_with(tags, any: true) if tags.present? }
 
     scope :search_by_year, lambda { |start_year, end_year|
         where(year: start_year..end_year)
@@ -62,16 +61,26 @@ class RasterLayer < ActiveRecord::Base
     scope :un_tagged, lambda {
         group('raster_layers.id')
             .having('count( raster_layers ) < 3')
-            .order('RANDOM()')
+            .order('RANDOM()').first
     }
 
-    pg_search_scope :search, against: [:name, :title, :description],
-                             using: {
-                                 tsearch: {
-                                     prefix: true, dictionary: 'english'
-                                 }
-                             }
-    # associated_against: { tags: :name, institution: :name }
+    # TODO: For some reason, in test, the `associated_against` does not work.
+    pg_search_scope :search,
+                    against: {
+                        name: 'A',
+                        title: 'A',
+                        description: 'C'
+                    },
+                    associated_against: {
+                        tags: {
+                            name: 'B'
+                        }
+                    },
+                    using: {
+                        tsearch: {
+                            prefix: true, dictionary: 'english'
+                        }
+                    }
 
     def self.text_search(query)
         # Return no results if query isn't present

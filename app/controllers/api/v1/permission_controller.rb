@@ -1,16 +1,9 @@
+# Controller class to create some common methods to verify the permissions on a request.
 class Api::V1::PermissionController < ApplicationController
-    def user_id
-        current_user ? current_user.user.id : false
-    end
-
-    def user
-        return current_user ? current_user.user : false
-    end
-
     def ownership(project)
-        if current_user
+        if current_user && current_user.user.confirmed
             return {
-                mine: user_id == project.user_id,
+                mine: user_id == project.user.id,
                 may_edit: project.collaboration.map(&:user_id).include?(user_id) || user_id == project.user_id
             }
         else
@@ -19,5 +12,15 @@ class Api::V1::PermissionController < ApplicationController
                 may_edit: false
             }
         end
+    end
+
+    private
+
+    def user_id
+        current_user ? current_user.user.id : false
+    end
+
+    def user
+        return current_user ? current_user.user : false
     end
 end

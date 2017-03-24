@@ -12,3 +12,10 @@ ben:
   displayname: other.png
   sign_in_count: 5
   current_sign_in_at: <%= Time.now %>
+
+megan:
+  id: 3
+  email: megan@emory.ed
+  displayname: megan
+  sign_in_count: 77
+  current_sign_in_at: <%= Time.now %>

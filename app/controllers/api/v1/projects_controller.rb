@@ -33,7 +33,7 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
     end
 
     def create
-        if current_user
+        if current_user && current_user.confirmed
             # project_params['user_id'] = current_user.user.id
             project = Project.new(project_params)
             project.user = current_user.user

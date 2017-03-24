@@ -27,8 +27,8 @@ class Api::V1::RasterLayersController < ApplicationController
             render json: @layers, project_id: params[:projectID]
             # `active_in_project` attribute will be `false`.
         else
-            @layers = @layers.page(params[:page]).per(params[:limit] || 10)
-            render json: @layers, meta: pagination_dict(@layers)
+            @layers = Kaminari.paginate_array(@layers).page(params[:page]).per(params[:limit] || 10)
+            render json: @layers, meta: pagination_dict(@layers) # , project_id: 0
         end
     end
 

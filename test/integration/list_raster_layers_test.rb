@@ -17,7 +17,7 @@ class ListRasterLayersTest < ActionDispatch::IntegrationTest
         refute_includes in_project, true
 
         # Only two are returned because one is not active
-        assert_equal 3, layers['raster_layers'].length
+        assert_equal 4, layers['raster_layers'].length
 
         assert_equal 'Atlanta Airport 1967', layers['raster_layers'][0]['title']
     end
@@ -38,14 +38,6 @@ class ListRasterLayersTest < ActionDispatch::IntegrationTest
     #   refute l_two['active_in_project']
 
     # end
-
-    test 'test search' do
-        get '/v1/rasterLayers.json?search=true&text_search=butler'
-        assert_equal 200, response.status
-
-        layers = JSON.parse(response.body)['raster_layers']
-        assert_equal 1, layers.length
-    end
 
     test 'view raster layer' do
         get '/v1/rasterLayers/2.json'
