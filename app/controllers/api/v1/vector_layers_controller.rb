@@ -3,7 +3,7 @@ class Api::V1::VectorLayersController < ApplicationController
         if params[:query]
             @layers = VectorLayer.text_search(params[:query])
         elsif params[:names]
-            @layers = VectorLayer.where(name: params[:names].split(','))
+            @layers = VectorLayer.where(name: params[:names].split(',')) || []
         elsif params[:search]
             # We always expect search, subomain, controller, format, and action
             # be preesent.
@@ -11,7 +11,7 @@ class Api::V1::VectorLayersController < ApplicationController
             #     @layers = VectorLayer.none
             # else
             # @todo do we need the .present? here and on the
-            @layers = VectorLayer.active()
+            @layers = VectorLayer.active
             @layers = @layers.browse_text_search(params[:text_search]) if params[:text_search].present?
             @layers = @layers.by_institution(params[:institution]) if params[:institution].present?
             @layers = @layers.by_tags(params[:tags]) if params[:tags].present?
@@ -27,6 +27,8 @@ class Api::V1::VectorLayersController < ApplicationController
         # the serializer.
         if params[:projectID]
             render json: @layers, project_id: params[:projectID]
+        elsif @layers.empty?
+            render json: { vector_layers: [] }
         # Otherwise, we're just going to say that the `project_id` is `0` so the
         # `active_in_project` attribute will be `false`.
         else
@@ -36,26 +38,25 @@ class Api::V1::VectorLayersController < ApplicationController
         end
     end
 
-  def show
-      layer = VectorLayer.find(params[:id])
-    #end
-    render json: layer
-    #respond_to do |format|
-    #  format.json { render json: layer, status: :ok }
-    #end
-  end
+    def show
+        layer = VectorLayer.find(params[:id])
+        # end
+        render json: layer
+        # respond_to do |format|
+        #  format.json { render json: layer, status: :ok }
+        # end
+    end
 
-  # I don't think we need this anymore
-  # def update
-  #   project = Project.find(params[:id])
-  #   if project.update_attributes(params[:name])
-  #     head 204, location: project
-  #   end
-  # end
+    # I don't think we need this anymore
+    # def update
+    #   project = Project.find(params[:id])
+    #   if project.update_attributes(params[:name])
+    #     head 204, location: project
+    #   end
+    # end
 
-  #private
-  #  def project_params
-  #    params.permit(:project_ids => [])
-  #  end
-
+    # private
+    #  def project_params
+    #    params.permit(:project_ids => [])
+    #  end
 end
