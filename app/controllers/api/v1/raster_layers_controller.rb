@@ -25,9 +25,8 @@ class Api::V1::RasterLayersController < ApplicationController
         # an argument to the serializer.
         if params[:projectID]
             render json: @layers, project_id: params[:projectID]
-        elsif @layers.length == 0
+        elsif @layers.empty?
             render json: { raster_layers: [] }
-
         else
             @layers = Kaminari.paginate_array(@layers).page(params[:page]).per(params[:limit] || 10)
             render json: @layers, meta: pagination_dict(@layers) # , project_id: 0

@@ -30,12 +30,12 @@ class SearchLayersTest < ActionDispatch::IntegrationTest
         get '/v1/rasterLayers.json', params: { start_year: 2022, end_year: 2080, search: true }
         assert_equal 200, response.status
         results = JSON.parse(response.body)
-        assert_nil results['raster_layers']
+        assert_equal [], results['raster_layers']
 
         get '/v1/vectorLayers.json', params: { start_year: 2022, end_year: 2080, search: true }
         assert_equal 200, response.status
         results = JSON.parse(response.body)
-        assert_nil results['vector_layers']
+        assert_equal [], results['vector_layers']
     end
 
     test 'search by institution' do
@@ -52,7 +52,7 @@ class SearchLayersTest < ActionDispatch::IntegrationTest
         get '/v1/rasterLayers.json', params: { institution: 'Kennesaw State University', search: true }
         assert_equal 200, response.status
         results = JSON.parse(response.body)
-        assert_nil results['raster_layers']
+        assert_equal [], results['raster_layers']
 
         get '/v1/vectorLayers.json', params: { institution: 'Emory University', search: true }
         assert_equal 200, response.status
@@ -67,7 +67,7 @@ class SearchLayersTest < ActionDispatch::IntegrationTest
         get '/v1/vectorLayers.json', params: { institution: 'Kennesaw State University', search: true }
         assert_equal 200, response.status
         results = JSON.parse(response.body)
-        assert_nil results['vector_layers']
+        assert_equal [], results['vector_layers']
     end
 
     test 'text search' do
@@ -90,7 +90,7 @@ class SearchLayersTest < ActionDispatch::IntegrationTest
                                                text_search: 'streets',
                                                search: true }
         results = JSON.parse(response.body)
-        assert_nil results['vector_layers']
+        assert_equal [], results['vector_layers']
     end
 
     test 'weight of search results' do

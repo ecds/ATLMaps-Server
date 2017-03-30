@@ -25,7 +25,7 @@ Rails.application.routes.draw do
             end
 
             with_options only: [:index, :show, :update, :create] do |add_update|
-                add_update.resource :users
+                add_update.resources :users
                 add_update.resources :raster_layers, path: 'rasterLayers'
             end
 
