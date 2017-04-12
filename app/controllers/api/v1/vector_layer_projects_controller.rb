@@ -55,7 +55,7 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
         permissions = ownership(project_layer.project)
         if permissions[:may_edit] == true
             if project_layer.update(vector_layer_project_params)
-                head 200
+                render json: project_layer, status: 201
             else
                 head 500
             end

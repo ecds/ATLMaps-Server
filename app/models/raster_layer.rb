@@ -214,7 +214,7 @@ class RasterLayer < ActiveRecord::Base
     # @return [String]
     # Convience attribute to the GeoServer endpoint
     def url
-        return "#{institution.geoserver}#{workspace}/wms"
+        return "#{institution.geoserver}#{workspace}/gwc/service/wms?tiled=true"
     end
 
     def set_boundingbox(raster)
