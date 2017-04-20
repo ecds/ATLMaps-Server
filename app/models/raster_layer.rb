@@ -35,7 +35,7 @@ class RasterLayer < ActiveRecord::Base
     }
 
     # Uses `acts-as-taggable-on` gem.
-    scope :by_tags, ->(tags) { tagged_with(tags, any: true) if tags.present? }
+    scope :by_tags, ->(tags) { tagged_with(tags, any: true, wild: true) if tags.present? }
 
     scope :search_by_year, lambda { |start_year, end_year|
         where(year: start_year..end_year)
@@ -215,17 +215,6 @@ class RasterLayer < ActiveRecord::Base
     # Convience attribute to the GeoServer endpoint
     def url
         return "#{institution.geoserver}#{workspace}/gwc/service/wms?tiled=true"
-    end
-
-    def set_boundingbox(raster)
-        factory = RGeo::Geographic.simple_mercator_factory
-        nw = factory.point(raster.maxx, raster.maxy)
-        ne = factory.point(raster.minx, raster.maxy)
-        se = factory.point(raster.minx, raster.miny)
-        sw = factory.point(raster.maxx, raster.miny)
-        return factory.polygon(
-            factory.linear_ring([nw, ne, se, sw, nw])
-        )
     end
 
     # @!attribute [r] layers

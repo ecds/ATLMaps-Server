@@ -1,5 +1,7 @@
 # and the class
 class Api::V1::RasterLayersController < ApplicationController
+    include MakePolygon, PaginationDict
+
     def index
         @layers = if params[:query]
                       RasterLayer.text_search(params[:query])
@@ -14,9 +16,9 @@ class Api::V1::RasterLayersController < ApplicationController
                       RasterLayer.active
                                  .browse_text_search(params[:text_search])
                                  .by_institution(params[:institution])
-                                 .by_tags(params[:tags])
                                  .by_year(params[:start_year].to_i, params[:end_year].to_i)
                                  .by_bounds(make_polygon(params[:bounds]))
+                                 .by_tags(params[:tags])
                   else
                       RasterLayer.active
                   end
@@ -28,7 +30,7 @@ class Api::V1::RasterLayersController < ApplicationController
         elsif @layers.empty?
             render json: { raster_layers: [] }
         else
-            @layers = Kaminari.paginate_array(@layers).page(params[:page]).per(params[:limit] || 10)
+            @layers = @layers.page(params[:page]).per(params[:limit] || 10)
             render json: @layers, meta: pagination_dict(@layers) # , project_id: 0
         end
     end
@@ -52,23 +54,6 @@ class Api::V1::RasterLayersController < ApplicationController
     end
 
     private
-
-    def make_polygon(bounds)
-        unless bounds.nil?
-            factory = RGeo::Geographic.simple_mercator_factory
-            return factory.polygon(
-                factory.linear_ring(
-                    [
-                        factory.point(bounds[:w].to_d, bounds[:n].to_d),
-                        factory.point(bounds[:e].to_d, bounds[:n].to_d),
-                        factory.point(bounds[:e].to_d, bounds[:s].to_d),
-                        factory.point(bounds[:w].to_d, bounds[:s].to_d),
-                        factory.point(bounds[:w].to_d, bounds[:n].to_d)
-                    ]
-                )
-            )
-        end
-    end
 
     def raster_layer_params
         params.require(:rasterLayer).permit(tag_ids: [])

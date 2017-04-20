@@ -1,8 +1,12 @@
 # Controller class for Institutions
 class Api::V1::InstitutionsController < ApplicationController
     def index
-        institutions = Institution.all.order('name')
-        render json: institutions
+        @institutions = if params[:q]
+                            Institution.where('name ILIKE ?', "%#{params[:q]}%")
+                        else
+                            Institution.all.order('name')
+                        end
+        render json: @institutions
     end
 
     def show
