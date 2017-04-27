@@ -1,5 +1,6 @@
+# Base serializer for vector and raster layers.
 class LayerSerializer < ActiveModel::Serializer
-    has_one :institution
+    belongs_to :institution
 
     attributes  :id,
                 :name,

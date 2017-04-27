@@ -43,6 +43,47 @@ class Api::V1::VectorLayersController < ApplicationController
         # end
     end
 
+    def create
+        if current_user && current_user.confirmed
+            # project_params['user_id'] = current_user.user.id
+            layer = VcetorLayer.new(layer_params)
+            layer.user = current_user.user
+            if layer.save
+                # Ember wants some JSON
+                render json: layer, status: 201
+            else
+                head 500
+            end
+        else
+            head 401
+        end
+    end
+
+    def update
+        layer = VcetorLayer.find(params[:id])
+        # permissions = ownership(layer)
+        # if permissions[:may_edit] == true
+            if layer.update(layer_params)
+                render json: {}, status: 204
+            else
+                head 500
+            end
+        # else
+            head 401
+        # end
+    end
+
+    def destroy
+        layer = VcetorLayer.find(params[:id])
+        permissions = ownership(layer)
+        if permissions[:mine]
+            layer.destroy
+            head 204
+        else
+            head 401
+        end
+    end
+
     # I don't think we need this anymore
     # def update
     #   project = Project.find(params[:id])
@@ -51,8 +92,9 @@ class Api::V1::VectorLayersController < ApplicationController
     #   end
     # end
 
-    # private
-    #  def project_params
-    #    params.permit(:project_ids => [])
-    #  end
+    private
+
+    def layer_params
+        params.require(:vector_layer).permit(:title, :description, :url)
+    end
 end

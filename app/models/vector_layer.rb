@@ -1,5 +1,8 @@
 # Model class for vector layers.
 class VectorLayer < ActiveRecord::Base
+    # FIXME: This is temp until we decide on a better admin solution.
+    before_create :defaults
+
     # include Filtering
     has_many :vector_layer_project
     has_many :projects, through: :vector_layer_project, dependent: :destroy
@@ -66,6 +69,14 @@ class VectorLayer < ActiveRecord::Base
 
     def tag_slugs
         return tags.map { |tag| tag.name.parameterize }.join(' ')
+    end
+
+    def defaults
+        self.instution = Institution.find(1)
+        self.data_type = 'point-data'
+        self.data_format = 'vector'
+        self.active = true
+        self.name = (0...8).map { (65 + rand(26)).chr }.join.downcase
     end
 
     # @!attribute [r] slider_id
