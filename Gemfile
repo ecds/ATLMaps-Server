@@ -22,7 +22,7 @@ gem 'cancan'
 
 gem 'json'
 gem 'rest-client'
-gem 'rack-cors'
+gem 'rack-cors', :require => 'rack/cors'
 gem 'turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'yard', group: :doc
