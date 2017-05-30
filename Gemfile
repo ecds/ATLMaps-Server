@@ -17,7 +17,7 @@ gem 'kaminari' # For pagination
 
 # Authentication
 # gem 'rails_api_auth'
-gem 'rails_api_auth', git: 'https://github.com/jayvarner/rails_api_auth.git', branch: 'feature/rails5'
+gem 'rails_api_auth', :git => 'git://github.com/jayvarner/rails_api_auth.git', :branch => 'feature/rails5'
 gem 'cancan'
 
 gem 'json'
