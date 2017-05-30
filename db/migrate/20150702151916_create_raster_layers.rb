@@ -1,4 +1,4 @@
-class CreateRasterLayers < ActiveRecord::Migration
+class CreateRasterLayers < ActiveRecord::Migration[4.2]
   def change
     create_table :raster_layers do |t|
       t.string :name

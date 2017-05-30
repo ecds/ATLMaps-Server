@@ -1,4 +1,4 @@
-class CreateRasterLayerProjects < ActiveRecord::Migration
+class CreateRasterLayerProjects < ActiveRecord::Migration[4.2]
   def change
     create_table :raster_layer_projects do |t|
       t.belongs_to :raster_layer

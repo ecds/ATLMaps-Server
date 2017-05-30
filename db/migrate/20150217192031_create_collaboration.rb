@@ -1,4 +1,4 @@
-class CreateCollaboration < ActiveRecord::Migration
+class CreateCollaboration < ActiveRecord::Migration[4.2]
   def change
     create_table :collaborations do |t|
       t.belongs_to :project

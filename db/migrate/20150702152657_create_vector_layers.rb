@@ -1,4 +1,4 @@
-class CreateVectorLayers < ActiveRecord::Migration
+class CreateVectorLayers < ActiveRecord::Migration[4.2]
   def change
     create_table :vector_layers do |t|
     	t.string :name

@@ -1,4 +1,4 @@
-class ExtendUserModel < ActiveRecord::Migration
+class ExtendUserModel < ActiveRecord::Migration[4.2]
   def change
     add_column :users, :username, :string, :after => :id
     add_column :users, :displayname, :string, :after => :username

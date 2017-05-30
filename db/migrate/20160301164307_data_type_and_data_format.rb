@@ -1,4 +1,4 @@
-class DataTypeAndDataFormat < ActiveRecord::Migration
+class DataTypeAndDataFormat < ActiveRecord::Migration[4.2]
   def change
       rename_column :raster_layers, :layer_type, :data_format
       rename_column :vector_layers, :layer_type, :data_format

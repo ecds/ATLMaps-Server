@@ -1,4 +1,4 @@
-class FixBooleanForPostgres < ActiveRecord::Migration
+class FixBooleanForPostgres < ActiveRecord::Migration[4.2]
   def change
     # execute %q(ALTER TABLE "projects" ALTER COLUMN "published" DROP DEFAULT;)
     # execute %q(ALTER TABLE "raster_layers" ALTER COLUMN "active" DROP DEFAULT;)

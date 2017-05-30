@@ -1,4 +1,4 @@
-class CreateLayersTags < ActiveRecord::Migration
+class CreateLayersTags < ActiveRecord::Migration[4.2]
   def change
     # create_table :layers_tags, id: false do |t|
     # #   t.belongs_to :layer, index: true

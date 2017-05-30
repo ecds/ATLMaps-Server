@@ -1,4 +1,4 @@
-class CreateUserTaggeds < ActiveRecord::Migration
+class CreateUserTaggeds < ActiveRecord::Migration[4.2]
   def change
     create_table :user_taggeds do |t|
       t.belongs_to :raster_layer, index: true

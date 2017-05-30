@@ -1,4 +1,4 @@
-class CreateVectorLayerProjects < ActiveRecord::Migration
+class CreateVectorLayerProjects < ActiveRecord::Migration[4.2]
   def change
     create_table :vector_layer_projects do |t|
       t.belongs_to :vector_layer

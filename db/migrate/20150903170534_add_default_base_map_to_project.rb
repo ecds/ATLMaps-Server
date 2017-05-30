@@ -1,4 +1,4 @@
-class AddDefaultBaseMapToProject < ActiveRecord::Migration
+class AddDefaultBaseMapToProject < ActiveRecord::Migration[4.2]
   def change
   	add_column :projects, :default_base_map, :string, :null => false, :default => 'street', :after => :zoom_level
   end

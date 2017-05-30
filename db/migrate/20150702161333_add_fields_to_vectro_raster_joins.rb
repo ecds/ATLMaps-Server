@@ -1,4 +1,4 @@
-class AddFieldsToVectroRasterJoins < ActiveRecord::Migration
+class AddFieldsToVectroRasterJoins < ActiveRecord::Migration[4.2]
   def change
   	add_column :vector_layer_projects, :position, :integer, :after => :project_id
   	add_column :raster_layer_projects, :position, :integer, :after => :project_id
