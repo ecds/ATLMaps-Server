@@ -2,7 +2,6 @@
 *.DS_Store
 config/database.yml
 .capistrano
-config/initializers/devise.rb
 log
 tmp
 public/assets
@@ -26,3 +25,4 @@ config/initializers/rails_api_auth.rb
 doc
 ps_start.sh
 .env
+~gem*
