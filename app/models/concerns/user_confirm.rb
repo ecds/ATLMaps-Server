@@ -1,7 +1,11 @@
-class ApplicationRecord < ActiveRecord::Base
-    self.abstract_class = true
+# /app/models/concerns/user_confirm.rb
+# Concern provides code to ensure a user is confirmed.
+module UserConfirm
+    extend ActiveSupport::Concern
 
-    before_create :confirmation_token
+    included do
+        before_create :confirmation_token
+    end
 
     def confirmed
         return provider.present? || \

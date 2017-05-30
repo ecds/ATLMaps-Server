@@ -16,7 +16,7 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
                             VectorLayerProject.all
                         end
 
-        render json: projectlayers
+        render json: projectlayers, include: ['vector_layer']
     end
 
     def show
@@ -31,17 +31,20 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
                            VectorLayerProject.find(params[:id])
                        end
 
-        render json: projectlayer
+        render json: projectlayer, include: ['vector_layer']
     end
 
     def create
-        project = Project.find(params[:vectorLayerProject][:project_id])
+        project = Project.find(vector_layer_project_params[:project_id])
+        vector_layer = VectorLayer.find(params['data']['relationships']['vector_layer']['data']['id'])
         permissions = ownership(project)
         if permissions[:may_edit] == true
             projectlayer = VectorLayerProject.new(vector_layer_project_params)
+            projectlayer.vector_layer = vector_layer
+            projectlayer.project = project
             if projectlayer.save
                 # Ember wants some JSON
-                render json: projectlayer, status: 201
+                render jsonapi: projectlayer, status: 201
             else
                 head 500
             end
@@ -79,8 +82,15 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
     private
 
     def vector_layer_project_params
-        params.require(:vectorLayerProject).permit(
-            :project_id, :vector_layer_id, :marker, :data_format, :position
-        )
+        # ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: [:displayname])
+        ActiveModelSerializers::Deserialization.jsonapi_parse(params,
+                                                              only: [
+                                                                  :project_id,
+                                                                  :vector_layer_id,
+                                                                  :marker,
+                                                                  :data_format,
+                                                                  :position,
+                                                                  :relationships
+                                                              ])
     end
 end

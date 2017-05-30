@@ -109,4 +109,76 @@ namespace :dbfoo do
             v.save
         end
     end
+
+    task set_raster_bounds: :environment do
+        factory = RGeo::Geographic.simple_mercator_factory
+        RasterLayer.all.each do |r|
+            r.boundingbox = factory.polygon(
+                factory.line_string(
+                    [
+                        factory.point(r.maxx.to_d, r.maxy.to_d),
+                        factory.point(r.minx.to_d, r.maxy.to_d),
+                        factory.point(r.minx.to_d, r.miny.to_d),
+                        factory.point(r.maxx.to_d, r.miny.to_d),
+                        factory.point(r.maxx.to_d, r.maxy.to_d)
+                    ]
+                )
+            )
+            r.save
+        end
+    end
+
+    task set_vector_bounds: :environment do
+        factory = RGeo::Geographic.simple_mercator_factory
+        VectorLayer.active.each do |v|
+            puts v.id
+            v.boundingbox = factory.polygon(
+                factory.line_string(
+                    [
+                        factory.point(v.maxx.to_d, v.maxy.to_d),
+                        factory.point(v.minx.to_d, v.maxy.to_d),
+                        factory.point(v.minx.to_d, v.miny.to_d),
+                        factory.point(v.maxx.to_d, v.miny.to_d),
+                        factory.point(v.maxx.to_d, v.maxy.to_d)
+                    ]
+                )
+            )
+            puts v.boundingbox.area
+        end
+    end
+
+    task import_geojson_features: :environment do
+        # g = JSON.load(open('https://s3.amazonaws.com/atlmaps-data/neighborhoods.json'))
+        # geom = RGeo::GeoJSON.decode(g, json_parser: :json)
+        # grr = geom.first
+        # grr.properties
+        # grr.geometry.coordinates
+        # grr.geometry.geometry_type
+        factory = RGeo::Geographic.simple_mercator_factory
+        VectorLayer.all.each do |v|
+            puts v.id
+            geoj = JSON.load(open(v.url))
+            geom = RGeo::GeoJSON.decode(geoj, json_parser: :json)
+            geom.each do |feature|
+                VectorFeature.create(
+                    properties: feature.properties,
+                    geometry_type: feature.geometry.geometry_type,
+                    geometry_collection: factory.collection([feature.geometry]),
+                    vector_layer: v
+                )
+            end
+        end
+    end
+
+    task vector_boundingbox: :environment do
+        VectorLayer.all.each do |v|
+            next unless v.vector_feature.length > 1
+            group = v.vector_feature[0].geometry_collection
+            v.vector_feature.drop(1).each do |vf|
+                group = group.union(vf.geometry_collection)
+            end
+            v.boundingbox = group.envelope
+            v.save
+        end
+    end
 end

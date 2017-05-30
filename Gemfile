@@ -4,12 +4,12 @@ source 'https://rubygems.org'
 gem 'rails', '~> 5.0'
 # Use postgres with the postgis plugin as the database for Active Record
 gem 'pg'
-gem 'activerecord-postgis-adapter', '~> 4.0'
+gem 'activerecord-postgis-adapter', '~> 5.0'
 # gem 'squeel'
 gem 'rgeo-geojson'
-gem 'rgeo'
+gem 'rgeo', '~> 0.6.0'
 gem 'pg_search'
-gem 'acts-as-taggable-on', '~> 4.0'
+gem 'acts-as-taggable-on', '~> 5.0'
 
 # API Responses
 gem 'active_model_serializers', '~> 0.10.0.rc3'
@@ -27,8 +27,6 @@ gem 'turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'yard', group: :doc
 
-gem 'capistrano-rvm'
-
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring', group: :development
 gem 'web-console', '~> 2.0', group: :development
@@ -42,6 +40,7 @@ gem 'web-console', '~> 2.0', group: :development
 gem 'capistrano-rails', group: :development
 gem 'capistrano-passenger', group: :development
 gem 'seed_dump', group: :development
+gem 'capistrano-rbenv', '~> 2.0', group: :development
 
 gem 'httparty'
 gem 'nokogiri'
@@ -56,3 +55,9 @@ gem 'byebug', group: [:development, :test]
 gem 'carrierwave'
 gem 'fog', '~> 1.38.0'
 gem 'mini_magick'
+
+# for testing
+group :development, :test do
+  gem 'rspec-rails', '~> 3.5'
+  gem 'factory_girl_rails', '~> 4.0'
+end

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Api::V1::ProfilesControllerTest < ActionController::TestCase
+class VectorFeatureTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -1,0 +1,11 @@
+one:
+  id: 1951
+  properties:
+    name: Urban Sounds- Musical Family
+    styleUrl: \#icon-22
+    styleHash: -5d895390
+    description: Dave Jimisons 2010 Urban Sounds project records \seven attempts to reproduce and react to the urban noises found in Atlanta GA\,
+    gx_media_links: //www.youtube.com/embed/C3E66YaEbJg
+  geometry_collection: GEOMETRYCOLLECTION (POINT (-84.309039 33.765413))
+  name: Urban Sounds- Musical Family
+  vector_layer_id: 1

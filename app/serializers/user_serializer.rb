@@ -5,5 +5,5 @@ class UserSerializer < ActiveModel::Serializer
     has_many :collaboration
     has_one :institution
 
-    attributes :id, :email, :displayname, :avatar, :number_tagged, :confirmed
+    attributes :id, :displayname, :confirmed
 end

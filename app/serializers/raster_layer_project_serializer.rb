@@ -1,9 +1,6 @@
 class RasterLayerProjectSerializer < ActiveModel::Serializer
+    belongs_to :raster_layer, serializer: RasterLayerSerializer
+    belongs_to :project
 
-  # has_one :raster_layer, embed: :id, :include => true
-  # has_one :project
-
-  attributes :id, :project_id, :data_format, :position, :raster_layer_id
-
-
+    attributes :id, :data_format, :position
 end

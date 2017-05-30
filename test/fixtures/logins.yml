@@ -3,8 +3,8 @@ one:
   identification: 'foo@bar.com'
   oauth2_token: a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf
   provider: 'google'
-  confirm_token: 'jduejeue'
-  user_id: 1
+  confirm_token: nil
+  user_id: 1,
 
 two:
   id: 2

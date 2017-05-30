@@ -130,7 +130,7 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
     end
 
     test 'add raster layer to project as owner' do
-        post '/v1/rasterLayerProjects.json',
+        post '/v1/raster-layer-projects.json',
              params: {
                  rasterLayerProject: {
                      project_id: '2',
@@ -147,7 +147,7 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
     end
 
     test 'add vector layer to project as owner' do
-        post '/v1/vectorLayerProjects.json',
+        post '/v1/vector-layer-projects.json',
              params: {
                  vectorLayerProject: {
                      project_id: '2',
@@ -165,7 +165,7 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
     end
 
     # test 'adding a vector layer for project 9999999 is denied' do
-    #     post '/v1/vectorLayerProjects.json', vectorLayerProject: {
+    #     post '/v1/vector-layer-projects.json', vectorLayerProject: {
     #             project_id: '9999999',
     #             layer_id: '4',
     #             marker: 60,
@@ -176,7 +176,7 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
     # end
 
     test 'remove vector layer from project as owner' do
-        delete '/v1/vectorLayerProjects/2.json',
+        delete '/v1/vector-layer-projects/2.json',
                headers: {
                    Authorization: 'Bearer a03832787c0c21e46e72c0be225e4a9bb9c189451a3bc002a99d4741425163cf'
                }
@@ -184,7 +184,7 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
     end
 
     test 'remove raster layer from project as owner' do
-        delete '/v1/rasterLayerProjects/2.json',
+        delete '/v1/raster-layer-projects/2.json',
                headers: {
                    Authorization: 'Bearer 57dd83d2396f06fbcce69bd3d0b4d7cd33a7e102faeff5f745fef06427f96a13'
                }
@@ -192,12 +192,12 @@ class ProjectCrudTest < ActionDispatch::IntegrationTest
     end
 
     test 'remove vector layer from project unauthenticated' do
-        delete '/v1/vectorLayerProjects/1.json'
+        delete '/v1/vector-layer-projects/1.json'
         assert_equal 401, response.status
     end
 
     test 'remove raster layer from project unauthenticated' do
-        delete '/v1/rasterLayerProjects/1.json'
+        delete '/v1/raster-layer-projects/1.json'
         assert_equal 401, response.status
     end
 end

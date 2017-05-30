@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
     # skip_before_filter :verify_authenticity_token, if: proc { |c| c.request.format == 'application/json' }
 
     # include RailsApiAuth::Authentication
+    include ActionController::MimeResponds
 
     # Method to get the user ID associated with the token being used.
     def current_user

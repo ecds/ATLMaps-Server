@@ -1,11 +1,13 @@
 # Model class for vector layers.
 class VectorLayer < ActiveRecord::Base
     # FIXME: This is temp until we decide on a better admin solution.
-    before_create :defaults
+    # before_create :defaults
+    # after_create :load_features
 
     # include Filtering
     has_many :vector_layer_project
     has_many :projects, through: :vector_layer_project, dependent: :destroy
+    has_many :vector_feature
     belongs_to :institution
 
     # Uses `acts-as-taggable-on` gem.
@@ -14,11 +16,53 @@ class VectorLayer < ActiveRecord::Base
     scope :by_institution, ->(institution) { joins(:institution).where(institutions: { name: institution }) if institution.present? }
 
     # Uses `acts-as-taggable-on` gem.
-    scope :by_tags, ->(tags) { tagged_with(tags, any: true) if tags.present? }
+    scope :by_tags, ->(tags) { tagged_with(tags, any: true, wild: true) if tags.present? }
     scope :search_by_year, ->(start_year, end_year) { where(year: start_year..end_year) }
     scope :text_search, ->(_text_search) { joins(:text_search) if query.present? }
     scope :active, -> { where(active: true) }
-    scope :by_bounds, ->(bounds) {}
+    scope :by_bounds, lambda { |bounds|
+        if bounds.present?
+            intersection = Arel::Nodes::NamedFunction.new(
+                'ST_AREA', [
+                    Arel::Nodes::NamedFunction.new(
+                        'ST_INTERSECTION', [
+                            VectorLayer.arel_table[:boundingbox],
+                            Arel::Nodes::Quoted.new(bounds)
+                        ]
+                    )
+                ]
+            )
+
+            distance_from_center = Arel::Nodes::NamedFunction.new(
+                'ST_DISTANCE', [
+                    Arel::Nodes::NamedFunction.new(
+                        'ST_Centroid', [Arel::Nodes::Quoted.new(bounds)]
+                    ), Arel::Nodes::NamedFunction.new(
+                        'ST_Centroid', [VectorLayer.arel_table[:boundingbox]]
+                    )
+                ]
+            )
+
+            # area_of_intersection = Arel::Nodes::NamedFunction.new(
+            #     'ST_INTERSECTION', [
+            #
+            #     ]
+            # )
+
+            VectorLayer.select([
+                                   VectorLayer.arel_table[Arel.star]
+                               ]).where(
+                                   Arel::Nodes::NamedFunction.new(
+                                       'ST_INTERSECTS', [
+                                           VectorLayer.arel_table[:boundingbox],
+                                           Arel::Nodes::Quoted.new(bounds)
+                                       ]
+                                   )
+                               ).order(
+                                   distance_from_center, intersection.desc
+                               )
+        end
+    }
 
     def self.by_year(start_year, end_year)
         if end_year > 0
@@ -72,7 +116,7 @@ class VectorLayer < ActiveRecord::Base
     end
 
     def defaults
-        self.instution = Institution.find(1)
+        self.institution = Institution.find(1)
         self.data_type = 'point-data'
         self.data_format = 'vector'
         self.active = true
@@ -87,3 +131,13 @@ class VectorLayer < ActiveRecord::Base
         return "slider-#{slug}-#{id}"
     end
 end
+
+# def depth (a)
+#   return 0 unless a.is_a?(Array)
+#   return 1 + depth(a[0])
+# end
+#
+# def depth (a)
+#   return 0 unless a.is_a?(Array)
+#   return 1 + depth(a[0])
+# end

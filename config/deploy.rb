@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.3.5'
+lock '3.8.1'
 
 set :application, 'ATLMaps'
 set :repo_url, 'git@github.com:emory-libraries-ecds/ATLMaps.git'
@@ -35,14 +35,12 @@ set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/
 set :keep_releases, 5
 
 namespace :deploy do
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
+    after :restart, :clear_cache do
+        on roles(:web), in: :groups, limit: 3, wait: 10 do
+            # Here we can do anything such as:
+            # within release_path do
+            #   execute :rake, 'cache:clear'
+            # end
+        end
     end
-  end
-
 end

@@ -3,13 +3,13 @@ require 'test_helper'
 class ListVectorLayersProjectTest < ActionDispatch::IntegrationTest
     setup { host! 'api.example.com' }
 
-    test 'list vector layer projects' do
-        get '/v1/vectorLayerProjects.json'
-        assert_equal 200, response.status
-
-        results = JSON.parse(response.body)
-        assert_equal 4, results['vector_layer_projects'].length
-    end
+    # test 'list vector layer projects' do
+    #     get '/v1/vectorLayerProjects.json'
+    #     assert_equal 200, response.status
+    #
+    #     results = JSON.parse(response.body)
+    #     assert_equal 4, results['vector_layer_projects'].length
+    # end
 
     test 'showing one layer project relation' do
         get '/v1/vectorLayerProjects/2.json'

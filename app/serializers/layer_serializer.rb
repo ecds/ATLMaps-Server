@@ -1,6 +1,7 @@
 # Base serializer for vector and raster layers.
 class LayerSerializer < ActiveModel::Serializer
     belongs_to :institution
+    has_many :tags
 
     attributes  :id,
                 :name,
@@ -21,7 +22,5 @@ class LayerSerializer < ActiveModel::Serializer
                 :maxy,
                 :tag_slugs,
                 :active,
-                :tag_ids,
-                :project_ids,
                 :slider_id
 end

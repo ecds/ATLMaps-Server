@@ -38,8 +38,6 @@ class Api::V1::UsersController < ApplicationController
     private
 
     def user_params
-        params.require(:user).permit(
-            :displayname
-        )
+        ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: [:displayname])
     end
 end

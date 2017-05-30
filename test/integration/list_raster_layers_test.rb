@@ -5,7 +5,7 @@ class ListRasterLayersTest < ActionDispatch::IntegrationTest
 
     # A GET request for all raster layers
     test 'returns a list of raster layers' do
-        get '/v1/rasterLayers.json'
+        get '/v1/raster-layers.json'
         assert_equal 200, response.status
 
         layers = JSON.parse(response.body)
@@ -26,7 +26,7 @@ class ListRasterLayersTest < ActionDispatch::IntegrationTest
 
     # # A GET request for a all raster layers from within a project
     # test 'some layers should be active in project' do
-    #   get '/v1/rasterLayers.json?projectID=1'
+    #   get '/v1/raster-layers.json?projectID=1'
     #   assert_equal 200, response.status
     #
     #   layers = JSON.parse(response.body)

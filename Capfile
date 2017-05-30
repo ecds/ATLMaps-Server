@@ -15,13 +15,15 @@ require 'capistrano/deploy'
 #   https://github.com/capistrano/rails
 #   https://github.com/capistrano/passenger
 #
-require 'capistrano/rvm'
-# require 'capistrano/rbenv'
-# require 'capistrano/chruby'
+require 'capistrano/rbenv'
+set :rbenv_ruby, File.read('.ruby-version').strip
+set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
+set :rbenv_map_bins, %w{rake gem bundle ruby rails}
+set :rbenv_roles, :all # default value
+
 require 'capistrano/bundler'
-#require 'capistrano/rails/assets'
 require 'capistrano/rails/migrations'
-#require 'capistrano/passenger'
+# require 'capistrano/passenger'
 
 # Load custom tasks from `lib/capistrano/tasks' if you have any defined
 Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }

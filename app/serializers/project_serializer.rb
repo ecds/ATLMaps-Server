@@ -1,5 +1,9 @@
 # app/serializers/project_serializer.rb
 class ProjectSerializer < ActiveModel::Serializer
+    has_many :raster_layer_project
+    has_many :vector_layer_project, serializer: VectorLayerProjectSerializer
+    has_many :raster_layers
+    has_many :vector_layers, serializer: VectorLayerSerializer
     attributes :id,
                :name,
                :description,
@@ -7,23 +11,18 @@ class ProjectSerializer < ActiveModel::Serializer
                :center_lng,
                :zoom_level,
                :default_base_map,
-               :saved,
+               :new_project,
                :published,
                :slug,
                :user_id,
                :owner,
-               :raster_layer_project_ids,
-               :vector_layer_project_ids,
-               :raster_layer_ids,
-               :vector_layer_ids,
                :mine,
                :may_edit,
                :user_ids,
                :featured,
                :intro,
                :media,
-               :photo,
-               :template_id
+               :photo
 
     def mine
         instance_options[:mine]

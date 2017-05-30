@@ -5,8 +5,8 @@ class TagSerializer < ActiveModel::Serializer
     attributes  :id,
                 :name,
                 :heading,
-                :slug,
-                :vector_layer_ids,
-                :raster_layer_ids,
-                :category_ids
+                :slug
+    def slug
+        return :name.to_param
+    end
 end

@@ -4,7 +4,7 @@ module MakePolygon
         return if bounds.nil?
         factory = RGeo::Geographic.simple_mercator_factory
         return factory.polygon(
-            factory.linear_ring(
+            factory.line_string(
                 [
                     factory.point(bounds[:w].to_d, bounds[:n].to_d),
                     factory.point(bounds[:e].to_d, bounds[:n].to_d),
@@ -16,3 +16,11 @@ module MakePolygon
         )
     end
 end
+
+# poly = factory.polygon(
+#     factory.line_string(
+#         [foo.each do |c|
+#             factory.point(c[0], c[1])
+#         end]
+#     )
+# )

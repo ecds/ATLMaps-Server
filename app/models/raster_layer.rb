@@ -17,7 +17,6 @@
 # Required due to AREL bug https://github.com/rails/arel/issues/399
 #
 class RasterLayer < ActiveRecord::Base
-    require 'bigdecimal'
     include PgSearch
 
     has_many :raster_layer_project
@@ -55,6 +54,7 @@ class RasterLayer < ActiveRecord::Base
     end
 
     scope :active, -> { where(active: true) }
+    scope :alpha_sort, -> { order('title ASC') }
 
     # Get random map taht has less than three tags
     scope :test, -> { all unless :tags.empty? }
@@ -123,6 +123,12 @@ class RasterLayer < ActiveRecord::Base
                     )
                 ]
             )
+
+            # area_of_intersection = Arel::Nodes::NamedFunction.new(
+            #     'ST_INTERSECTION', [
+            #
+            #     ]
+            # )
 
             RasterLayer.select([
                                    RasterLayer.arel_table[Arel.star]

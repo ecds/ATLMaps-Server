@@ -5,7 +5,7 @@ class ListvectorLayersTest < ActionDispatch::IntegrationTest
 
     # A GET request for all vector layers
     test 'returns a list of vector layers' do
-        get '/v1/vectorLayers.json'
+        get '/v1/vector-layers.json'
         assert_equal 200, response.status
 
         layers = JSON.parse(response.body)
@@ -25,7 +25,7 @@ class ListvectorLayersTest < ActionDispatch::IntegrationTest
 
     # A GET request for a all vector layers from within a project
     test 'some layers should be active in project' do
-        get '/v1/vectorLayers.json?projectID=1'
+        get '/v1/vector-layers.json?projectID=1'
         assert_equal 200, response.status
 
         # layers = JSON.parse(response.body)

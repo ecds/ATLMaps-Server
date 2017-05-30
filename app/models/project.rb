@@ -5,9 +5,6 @@ class Project < ActiveRecord::Base
 
     belongs_to :user
 
-    # FIXME: do we really hae to have a table for this?
-    belongs_to :template
-
     has_many :raster_layer_project
     has_many :raster_layers, through: :raster_layer_project, dependent: :destroy
 
@@ -32,5 +29,9 @@ class Project < ActiveRecord::Base
 
     def owner
         return user[:displayname]
+    end
+
+    def new_project
+        return created_at == updated_at
     end
 end

@@ -15,7 +15,7 @@ class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
                             RasterLayerProject.all
                         end
 
-        render json: projectlayers # , include:['raster_layer']
+        render json: projectlayers, include: ['raster_layer']
     end
 
     def show
@@ -30,18 +30,36 @@ class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
                            RasterLayerProject.find(params[:id])
                        end
 
-        render json: projectlayer
+        render json: projectlayer, include: ['raster_layer']
     end
 
+    # def create
+    #     # TODO: Something isn't right here.
+    #     project = Project.find(params[:rasterLayerProject][:project_id])
+    #     permissions = ownership(project)
+    #     if permissions[:may_edit] == true
+    #         projectlayer = RasterLayerProject.new(raster_layer_project_params)
+    #         if projectlayer.save
+    #             # Ember wants some JSON
+    #             render json: projectlayer, status: 201
+    #         else
+    #             head 500
+    #         end
+    #     else
+    #         head 301
+    #     end
+    # end
     def create
-        # TODO: Something isn't right here.
-        project = Project.find(params[:rasterLayerProject][:project_id])
+        project = Project.find(raster_layer_project_params[:project_id])
+        raster_layer = RasterLayer.find(params['data']['relationships']['raster_layer']['data']['id'])
         permissions = ownership(project)
         if permissions[:may_edit] == true
             projectlayer = RasterLayerProject.new(raster_layer_project_params)
+            projectlayer.raster_layer = raster_layer
+            projectlayer.project = project
             if projectlayer.save
                 # Ember wants some JSON
-                render json: projectlayer, status: 201
+                render jsonapi: projectlayer, status: 201
             else
                 head 500
             end
@@ -78,8 +96,12 @@ class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
     private
 
     def raster_layer_project_params
-        params.require(:rasterLayerProject).permit(
-            :project_id, :raster_layer_id, :data_format, :position
-        )
+        ActiveModelSerializers::Deserialization.jsonapi_parse(params,
+                           only: [
+                               :project_id,
+                               :raster_layer_id,
+                               :data_format,
+                               :position
+                           ])
     end
 end

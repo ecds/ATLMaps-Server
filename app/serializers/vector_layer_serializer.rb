@@ -1,5 +1,5 @@
 class VectorLayerSerializer < LayerSerializer
-
-  # attributes :hmmm
+  has_many :vector_feature, serializer: VectorFeatureSerializer
+  attributes :id
 
 end
