@@ -20,6 +20,7 @@ class VectorLayer < ActiveRecord::Base
     scope :search_by_year, ->(start_year, end_year) { where(year: start_year..end_year) }
     scope :text_search, ->(_text_search) { joins(:text_search) if query.present? }
     scope :active, -> { where(active: true) }
+    scope :alpha_sort, -> { order('title ASC') }
     scope :by_bounds, lambda { |bounds|
         if bounds.present?
             intersection = Arel::Nodes::NamedFunction.new(
@@ -42,12 +43,6 @@ class VectorLayer < ActiveRecord::Base
                     )
                 ]
             )
-
-            # area_of_intersection = Arel::Nodes::NamedFunction.new(
-            #     'ST_INTERSECTION', [
-            #
-            #     ]
-            # )
 
             VectorLayer.select([
                                    VectorLayer.arel_table[Arel.star]

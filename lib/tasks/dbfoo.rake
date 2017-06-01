@@ -92,6 +92,9 @@ namespace :dbfoo do
     end
 
     task geogson_extents: :environment do
+        # This is only for if you use the node package `gesjsonextents`
+        # to get the boundingbox. Not really needed now that the features
+        # are in the database.
         Dir.glob('data/*json') do |j|
             puts j
             f = File.open(j, 'r')
@@ -116,11 +119,11 @@ namespace :dbfoo do
             r.boundingbox = factory.polygon(
                 factory.line_string(
                     [
-                        factory.point(r.maxx.to_d, r.maxy.to_d),
-                        factory.point(r.minx.to_d, r.maxy.to_d),
-                        factory.point(r.minx.to_d, r.miny.to_d),
-                        factory.point(r.maxx.to_d, r.miny.to_d),
-                        factory.point(r.maxx.to_d, r.maxy.to_d)
+                        factory.point(r.maxx, r.maxy),
+                        factory.point(r.minx, r.maxy),
+                        factory.point(r.minx, r.miny),
+                        factory.point(r.maxx, r.miny),
+                        factory.point(r.maxx, r.maxy)
                     ]
                 )
             )
@@ -129,17 +132,22 @@ namespace :dbfoo do
     end
 
     task set_vector_bounds: :environment do
+        # DO NOT USE!!!
+        # USE vector_boundingbox INSTEAD
         factory = RGeo::Geographic.simple_mercator_factory
         VectorLayer.active.each do |v|
+            # For now we are skipping single point layers because they
+            # do not have an area.
+            next unless v.vector_feature.length > 1
             puts v.id
             v.boundingbox = factory.polygon(
                 factory.line_string(
                     [
-                        factory.point(v.maxx.to_d, v.maxy.to_d),
-                        factory.point(v.minx.to_d, v.maxy.to_d),
-                        factory.point(v.minx.to_d, v.miny.to_d),
-                        factory.point(v.maxx.to_d, v.miny.to_d),
-                        factory.point(v.maxx.to_d, v.maxy.to_d)
+                        factory.point(v.maxx, v.maxy),
+                        factory.point(v.minx, v.maxy),
+                        factory.point(v.minx, v.miny),
+                        factory.point(v.maxx, v.miny),
+                        factory.point(v.maxx, v.maxy)
                     ]
                 )
             )
@@ -148,14 +156,8 @@ namespace :dbfoo do
     end
 
     task import_geojson_features: :environment do
-        # g = JSON.load(open('https://s3.amazonaws.com/atlmaps-data/neighborhoods.json'))
-        # geom = RGeo::GeoJSON.decode(g, json_parser: :json)
-        # grr = geom.first
-        # grr.properties
-        # grr.geometry.coordinates
-        # grr.geometry.geometry_type
         factory = RGeo::Geographic.simple_mercator_factory
-        VectorLayer.all.each do |v|
+        VectorLayer.active.each do |v|
             puts v.id
             geoj = JSON.load(open(v.url))
             geom = RGeo::GeoJSON.decode(geoj, json_parser: :json)
@@ -172,12 +174,15 @@ namespace :dbfoo do
 
     task vector_boundingbox: :environment do
         VectorLayer.all.each do |v|
+            # For now we are skipping single point layers because they
+            # do not have an un.
             next unless v.vector_feature.length > 1
             group = v.vector_feature[0].geometry_collection
             v.vector_feature.drop(1).each do |vf|
                 group = group.union(vf.geometry_collection)
             end
             v.boundingbox = group.envelope
+            puts
             v.save
         end
     end
