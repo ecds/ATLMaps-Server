@@ -31,18 +31,10 @@ cd [project directory]
 bundle
 ```
 
-There might be some issues while you bundle and here are some that I encountered:
-bundler might complain about json gem is not bundled, and this is likely to be caused by a ruby version issue.
-Check Gemfile and Gemfile.lock to find out what versions of the json gem is currently being used in the project. json 1.7.7 is not compatible with ruby 2.3+, and that can result in a bundle failure.
-In order to be aligned with other developers (until we upgrade), you can use rvm to install the specified ruby version or in this case 2.2.2.
-Once you switch to 2.2.2 you may try bundling again.
+**Ruby Version**
+Use rbenv.
+Version defined in `.ruby-version`
 
-```
-rvm install 2.2.2
-rvm use 2.2.2
-gem install bundler
-bundle
-```
 
 If bundle fails on the postgresql then it is more than likely that you would need to install pg correctly.
 The first time I tried the .pkg from postgresql’s official website but it didn’t go too far. Do not recommend using the .pkg.

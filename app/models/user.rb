@@ -6,6 +6,8 @@ class User < ActiveRecord::Base
     has_many :projects, through: :collaboration, dependent: :destroy
     has_many :user_tagged, dependent: :destroy
 
+    validates :email, uniqueness: { allow_blank: true }
+
     # def number_tagged
     #     user_tagged.count
     # end
