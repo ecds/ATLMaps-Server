@@ -19,11 +19,11 @@ class Api::V1::UsersController < ApplicationController
     end
 
     def create
-        user = User.new(user_params)
-        if user.save && user.create_login(login_params)
-            head 200
+        user = Login.new(login_params)
+        if user.save
+            render json: user.user, status: 201
         else
-            head 422 # you'd actually want to return validation errors here
+            render json: user.errors.details, status: 400
         end
     end
 
@@ -31,7 +31,7 @@ class Api::V1::UsersController < ApplicationController
         if current_user.user.update(user_params)
             render json: current_user.user, status: 204
         else
-            head 500
+            head 400
         end
     end
 
@@ -39,5 +39,9 @@ class Api::V1::UsersController < ApplicationController
 
     def user_params
         ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: [:displayname])
+    end
+
+    def login_params
+        ActiveModelSerializers::Deserialization .jsonapi_parse(params, only: [:identification, :password])
     end
 end

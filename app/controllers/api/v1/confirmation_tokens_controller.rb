@@ -9,21 +9,26 @@ class Api::V1::ConfirmationTokensController < ApplicationController
     def index
         # So if a `GET` request
         # comes in with a `confirm_token`, we find the `Login` with that `confirm_token`
-        # and set it to `nil`, which means it is confirmed.
+        # and set it to `nil`, and `email_confirmed` to `true` which means it is confirmed.
         if params['confirm_token']
             login = Login.where(confirm_token: params['confirm_token']).first
             login.confirm_token = nil
+            login.email_confirmed = true
             if login.save
                 render json: {
-                    confirmation_tokens: [
-                        { id: 1 }
+                    data: [
+                        {
+                            id: login.id,
+                            type: 'confirmation_tokens',
+                            attributes: {}
+                        }
                     ]
                 }.to_json, status: 200
             else
-                render json: { errors: { msg: 'Confirmation failed.' } }.to_json, status: 500
+                render json: login.errors.details, status: 400
             end
         else
-            render json: { confirmation_token: { id: 1 } }.to_json, status: 200
+            render json: { data: [{ id: 999, type: 'confirmation_tokens', attributes: {} }] }.to_json, status: 200
         end
     end
 
@@ -34,7 +39,7 @@ class Api::V1::ConfirmationTokensController < ApplicationController
         current_user.confirm_token = SecureRandom.urlsafe_base64.to_s
         if current_user.save
             ConfirmLoginMailer.registration_confirmation(current_user).deliver
-            render json: { confirmation_token: { id: 1 } }.to_json, status: 200
+            render json: { data: { id: 1, type: 'confirmation_tokens', attributes: {} } }.to_json, status: 200
         else
             head 500
         end

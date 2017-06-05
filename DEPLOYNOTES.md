@@ -100,6 +100,9 @@ rbenv global 2
 ruby -v
 ruby 2.2.7p470 (2017-03-28 revision 58194) [x86_64-linux]
 
+#### Ruby Setup
+gem install bundle
+
 ### Install GIS Stuff
 sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 sudo apt update
@@ -122,6 +125,18 @@ sudo -h localhost -u <username> createuser -P <database name>
 Skip this step if you are  importing a dump from an ATLMaps database.
 sudo -u postgres psql -c "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;" <database name>
 
+*Trouble with Spatial Search?*
+
+rails c
+RGeo::Geos.supported?
+
+gem uninstall rgeo
+install libgeos-dev
+gem install rgeo
+
+
+Make sure the `config/database.yml` has
+`adapter: postgis`
 
 #### For Production
 sudo apt install postgresql-client
@@ -129,5 +144,55 @@ Setup PostGIS: http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.Po
 Allow the instance to access the database via the RDS security group.
 
 ### Deploy the ATLMaps-Server
+Make sure the the config are up-to-date.
 
-### Install Nginx
+If new server, add RSA key to the GitHub repo's deploy keys.
+
+### Deploy with Nginx and Passenger
+https://www.phusionpassenger.com/library/install/nginx/install/oss/xenial/
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
+sudo apt install -y apt-transport-https ca-certificates
+sudo sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger xenial main > /etc/apt/sources.list.d/passenger.list'
+sudo apt update
+sudo apt install nginx nginx-extras passenger
+
+Edit /etc/nginx/nginx.conf and uncomment include /etc/nginx/passenger.conf;
+
+Example nginx.conf
+~~~
+server {
+    listen 80;
+    # listen [::]:80;
+    server_name api.atlmaps.com;
+    return 301 https://api.atlmaps.com$request_uri;
+}
+
+server {
+    listen 443;
+    ssl on;
+    ssl_certificate /data/certs/api.atlmaps.com/api.atlmaps.com.chained.crt;
+    ssl_certificate_key /data/certs/api.atlmaps.com/api.atlmaps.com.key;
+
+    server_name api.atlmaps.com;
+    rails_env production;
+    # Tell Nginx and Passenger where your app's 'public' directory is
+    root /data/atlmaps-server/current/public;
+
+    # Turn on Passenger
+    passenger_enabled on;
+    # passenger_ruby /home/deploy/.rbenv/versions/2.2.7/bin/ruby;
+    passenger_ruby /home/deploy/.rbenv/shims/ruby;
+}
+~~~
+*NOTE* the chained cert is created by combining the domain's cert and the the provider's (GoDaddy in this case) bundled certs. Order totally matters!
+`cat cb47a46b3c7438b0.crt gd_bundle-g2-g1.crt > atlmaps.com.chained.crt`
+
+To run rails and rake commands, make sure you are using the rbenv for the app.
+rbenv version
+2.2.7 (set by /data/atlmaps-server/current/.ruby-version)
+
+If it is not the correct version, run:
+rbenv local 2.2.7
+
+And to run rails and rake commands:
+bundle exec rails c

@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/jayvarner/rails_api_auth.git
-  revision: 4eb84929f8518c5857925130d8faa626ec9a36e8
-  branch: feature/rails5
+  revision: adcfbdaa10f5b4e0851eecb145cd6a93c977a087
+  tag: 0.0.8
   specs:
-    rails_api_auth (0.0.6)
+    rails_api_auth (0.0.8)
       bcrypt (~> 3.1.7)
       httparty (~> 0.13.3)
       rails (>= 3.2.6, < 6)

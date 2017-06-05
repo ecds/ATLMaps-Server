@@ -13,8 +13,7 @@ class User < ActiveRecord::Base
     # end
 
     def confirmed
-        return login.provider.present? || \
-               login.provider.nil? && login.confirm_token.nil?
+        return login.email_confirmed? || login.provider?
     end
 
     def confirmation_token
