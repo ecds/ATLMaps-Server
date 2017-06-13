@@ -8,7 +8,9 @@ class VectorFeatureSerializer < ActiveModel::Serializer
                :name,
                :description,
                :images,
+               :image,
                :youtube,
                :vimeo,
-               :audio
+               :audio,
+               :feature_id
 end

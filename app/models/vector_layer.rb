@@ -10,6 +10,8 @@ class VectorLayer < ActiveRecord::Base
     has_many :vector_feature
     belongs_to :institution
 
+    # after_create :set_geos
+
     # Uses `acts-as-taggable-on` gem.
     acts_as_taggable
 
@@ -125,14 +127,38 @@ class VectorLayer < ActiveRecord::Base
         slug = name.parameterize
         return "slider-#{slug}-#{id}"
     end
-end
 
-# def depth (a)
-#   return 0 unless a.is_a?(Array)
-#   return 1 + depth(a[0])
-# end
-#
-# def depth (a)
-#   return 0 unless a.is_a?(Array)
-#   return 1 + depth(a[0])
-# end
+    def filters
+        return unless vector_feature.first.properties['filters']
+        filter_values = vector_feature.map { |f| f.properties['filters'].values }.uniq!.flatten
+        filter_key = vector_feature.map { |f| f.properties['filters'].keys }.uniq!.flatten[0]
+        return { filter_key => filter_values }
+        # vector_feature.first.properties['filters']
+    end
+
+    private
+
+    def set_geos
+        factory = RGeo::Geographic.simple_mercator_factory
+        geoj = JSON.load(open(url))
+        geom = RGeo::GeoJSON.decode(geoj, json_parser: :json)
+        geom.each do |feature|
+            VectorFeature.create(
+                properties: feature.properties,
+                geometry_type: feature.geometry.geometry_type,
+                geometry_collection: factory.collection([feature.geometry]),
+                vector_layer: self
+            )
+        end
+
+        return unless vector_feature.length > 1
+        group = vector_feature[0].geometry_collection
+        vector_feature.drop(1).each do |vf|
+            group = group.union(vf.geometry_collection)
+        end
+        self.boundingbox = group.envelope
+
+        save
+    end
+
+end

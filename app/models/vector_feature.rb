@@ -11,7 +11,7 @@ class VectorFeature < ActiveRecord::Base
     end
 
     def name
-        properties['name'] || properties['NAME'] || properties['title'] || 'Untitled'
+        properties['name'] || properties['NAME'] || properties['title'] || properties['NEIGHBORHO'] || 'Untitled'
     end
 
     def description
@@ -36,7 +36,15 @@ class VectorFeature < ActiveRecord::Base
         properties['images'].to_a
     end
 
+    def image
+        properties['image'].to_h['url']
+    end
+
     def audio
         properties['audio']
+    end
+
+    def feature_id
+        layer_title.parameterize + '-' + id.to_s
     end
 end
