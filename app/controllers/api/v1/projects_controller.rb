@@ -86,7 +86,7 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
                     :zoom_level, :default_base_map,
                     :published, :featured,
                     :intro, :media,
-                    :photo
+                    :photo, :raster_layer_project
                 ]
             )
     end

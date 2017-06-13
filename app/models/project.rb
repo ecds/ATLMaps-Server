@@ -5,11 +5,11 @@ class Project < ActiveRecord::Base
 
     belongs_to :user
 
-    has_many :raster_layer_project
-    has_many :raster_layers, through: :raster_layer_project, dependent: :destroy
+    has_many :raster_layer_project, dependent: :destroy
+    has_many :raster_layers, through: :raster_layer_project
 
-    has_many :vector_layer_project
-    has_many :vector_layers, through: :vector_layer_project, dependent: :destroy
+    has_many :vector_layer_project, dependent: :destroy
+    has_many :vector_layers, through: :vector_layer_project
 
     has_many :collaboration
     has_many :users, through: :collaboration

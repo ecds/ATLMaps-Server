@@ -1,4 +1,6 @@
-class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
+class Api::V1::RasterLayerProjectsController < ApplicationController
+    include Permissions
+
     def index
         # TODO: This should be a scope.
         projectlayers = if params[:raster_layer_id] && params[:project_id]
@@ -33,30 +35,11 @@ class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
         render json: projectlayer, include: ['raster_layer']
     end
 
-    # def create
-    #     # TODO: Something isn't right here.
-    #     project = Project.find(params[:rasterLayerProject][:project_id])
-    #     permissions = ownership(project)
-    #     if permissions[:may_edit] == true
-    #         projectlayer = RasterLayerProject.new(raster_layer_project_params)
-    #         if projectlayer.save
-    #             # Ember wants some JSON
-    #             render json: projectlayer, status: 201
-    #         else
-    #             head 500
-    #         end
-    #     else
-    #         head 301
-    #     end
-    # end
     def create
-        project = Project.find(raster_layer_project_params[:project_id])
-        raster_layer = RasterLayer.find(params['data']['relationships']['raster_layer']['data']['id'])
+        project = Project.find(params['data']['relationships']['project']['data']['id'])
         permissions = ownership(project)
         if permissions[:may_edit] == true
             projectlayer = RasterLayerProject.new(raster_layer_project_params)
-            projectlayer.raster_layer = raster_layer
-            projectlayer.project = project
             if projectlayer.save
                 # Ember wants some JSON
                 render jsonapi: projectlayer, status: 201
@@ -70,7 +53,8 @@ class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
 
     def update
         project_layer = RasterLayerProject.find(params[:id])
-        permissions = ownership(project_layer.project)
+        project = Project.find(params['data']['relationships']['project']['data']['id'])
+        permissions = ownership(project)
         if permissions[:may_edit] == true
             if project_layer.update(raster_layer_project_params)
                 render json: {}, status: 204
@@ -97,11 +81,11 @@ class Api::V1::RasterLayerProjectsController < Api::V1::PermissionController
 
     def raster_layer_project_params
         ActiveModelSerializers::Deserialization.jsonapi_parse(params,
-                           only: [
-                               :project_id,
-                               :raster_layer_id,
-                               :data_format,
-                               :position
-                           ])
+                                                              only: [
+                                                                  :project,
+                                                                  :raster_layer,
+                                                                  :data_format,
+                                                                  :position
+                                                              ])
     end
 end
