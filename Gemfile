@@ -25,6 +25,7 @@ gem 'rest-client'
 gem 'rack-cors', :require => 'rack/cors'
 gem 'turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
+gem 'yard', group: :doc
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring', group: :development
@@ -32,6 +33,14 @@ gem 'web-console', '~> 2.0', group: :development
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# Use unicorn as the app server
+# gem 'unicorn'
+
+# Use Capistrano for deployment
+gem 'capistrano-rails', group: :development
+gem 'capistrano-passenger', group: :development
+gem 'seed_dump', group: :development
+gem 'capistrano-rbenv', '~> 2.0', group: :development
 
 gem 'httparty'
 gem 'nokogiri'
@@ -46,15 +55,6 @@ gem 'byebug', group: [:development, :test]
 gem 'carrierwave'
 gem 'fog', '~> 1.38.0'
 gem 'mini_magick'
-
-group :development do
-    # Use Capistrano for deployment
-    gem 'capistrano-rails'
-    gem 'capistrano-passenger'
-    gem 'capistrano-rbenv', '~> 2.0'
-    gem 'yard'
-
-end
 
 # for testing
 group :development, :test do
