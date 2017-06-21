@@ -1,5 +1,7 @@
 # Controller class for vector layers included in a project.
-class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
+class Api::V1::VectorLayerProjectsController < ApplicationController
+    include Permissions
+
     def index
         # TODO: This should be a scope.
         projectlayers = if params[:vector_layer_id]
@@ -35,13 +37,10 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
     end
 
     def create
-        project = Project.find(vector_layer_project_params[:project_id])
-        vector_layer = VectorLayer.find(params['data']['relationships']['vector_layer']['data']['id'])
+        project = Project.find(params['data']['relationships']['project']['data']['id'])
         permissions = ownership(project)
         if permissions[:may_edit] == true
             projectlayer = VectorLayerProject.new(vector_layer_project_params)
-            projectlayer.vector_layer = vector_layer
-            projectlayer.project = project
             if projectlayer.save
                 # Ember wants some JSON
                 render jsonapi: projectlayer, status: 201
@@ -55,7 +54,8 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
 
     def update
         project_layer = VectorLayerProject.find(params[:id])
-        permissions = ownership(project_layer.project)
+        project = Project.find(params['data']['relationships']['project']['data']['id'])
+        permissions = ownership(project)
         if permissions[:may_edit] == true
             if project_layer.update(vector_layer_project_params)
                 render json: project_layer, status: 201
@@ -82,11 +82,10 @@ class Api::V1::VectorLayerProjectsController < Api::V1::PermissionController
     private
 
     def vector_layer_project_params
-        # ActiveModelSerializers::Deserialization.jsonapi_parse(params, only: [:displayname])
         ActiveModelSerializers::Deserialization.jsonapi_parse(params,
                                                               only: [
-                                                                  :project_id,
-                                                                  :vector_layer_id,
+                                                                  :project,
+                                                                  :vector_layer,
                                                                   :marker,
                                                                   :data_format,
                                                                   :position,

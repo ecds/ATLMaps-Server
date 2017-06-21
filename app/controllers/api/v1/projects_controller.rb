@@ -38,6 +38,7 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
         if current_user && current_user.user.confirmed
             # project_params['user_id'] = current_user.user.id
             project = Project.new(project_params)
+            project.saved = true
             project.user = current_user.user
             if project.save
                 # Ember wants some JSON

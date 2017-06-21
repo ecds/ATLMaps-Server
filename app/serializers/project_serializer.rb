@@ -12,6 +12,7 @@ class ProjectSerializer < ActiveModel::Serializer
                :zoom_level,
                :default_base_map,
                :new_project,
+               :saved,
                :published,
                :slug,
                :owner,
