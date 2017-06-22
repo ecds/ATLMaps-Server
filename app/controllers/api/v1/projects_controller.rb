@@ -36,13 +36,16 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
 
     def create
         if current_user && current_user.user.confirmed
-            # project_params['user_id'] = current_user.user.id
             project = Project.new(project_params)
             project.saved = true
             project.user = current_user.user
             if project.save
+                permissions = ownership(project)
                 # Ember wants some JSON
-                render json: project, status: 201
+                render json: project,
+                       may_edit: permissions[:may_edit],
+                       mine: permissions[:mine],
+                       status: 201
             else
                 head 500
             end
