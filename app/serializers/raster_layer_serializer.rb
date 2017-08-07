@@ -1,3 +1,3 @@
 class RasterLayerSerializer < LayerSerializer
-    attributes :workspace, :layers
+    attributes :workspace, :layers, :thumb
 end

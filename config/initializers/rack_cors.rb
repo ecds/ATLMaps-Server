@@ -5,6 +5,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
                 'http://atlmaps-dev.com',
                 'http://atlmaps.com',
                 'http://localhost:4200',
+                'https://localhost:4200',
                 'http://2c801b74.ngrok.io',
                 'http://atlmaps.ecdsweb.org'
         resource '*', headers: :any,

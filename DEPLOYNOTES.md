@@ -33,7 +33,7 @@ mkdir /data/nginx
 
 the following is from
 https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-16-04
-apt install autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev
+apt install git autoconf bison build-essential libssl-dev libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev libffi-dev libgdbm3 libgdbm-dev
 su - deploy
 
 ~/.profile:
@@ -66,13 +66,14 @@ export PS1="\033[0;32m$MYPS1 \033[0;36m\t \033[0;32m[ \033[0;31m\w\033[0;32m\$(p
 ```
 
 ### RBENV
+~~~bash
 git clone https://github.com/rbenv/rbenv.git ~/.rbenv
 echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
 echo 'eval "$(rbenv init -)"' >> ~/.bashrc
 source ~/.bashrc
 source ~/.profile
 type rbenv
-```
+
 rbenv is a function
 rbenv ()
 {
@@ -90,29 +91,40 @@ rbenv ()
         ;;
     esac
 }
-```
+
 git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 rbenv install 2.2.7
 Take a bathroom break or grab some coffee or beer.
 rbenv global 2
+~~~
 
 #### Verify
+
+~~~bash
 ruby -v
 ruby 2.2.7p470 (2017-03-28 revision 58194) [x86_64-linux]
+~~~
 
 #### Ruby Setup
+~~~bash
 gem install bundle
+~~~
 
 ### Install GIS Stuff
+~~~bash
 sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 sudo apt update
 sudo apt install gdal-bin libgdal-dev libgeos-dev
+~~~
 
 ### PostgreSQL and PostGIS
 *Note, if the `depoly` user does not have sudo rights - not recommend - you will need to run sudo commands with an user that has sudo rights.*
+
+~~~bash
 sudo add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main"
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo apt update
+~~~
 
 For dev, and maybe even for staging, we'll run PostgreSQL locally. In production, we'll use AWS RDS.
 

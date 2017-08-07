@@ -8,6 +8,14 @@ GIT
       httparty (~> 0.13.3)
       rails (>= 3.2.6, < 6)
 
+GIT
+  remote: git://github.com/stympy/faker.git
+  revision: 50db39436124a3fab7a2f38e08e17a9b42afa6cc
+  branch: master
+  specs:
+    faker (1.8.4)
+      i18n (~> 0.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -66,6 +74,9 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.3)
+    bundler-audit (0.5.0)
+      bundler (~> 1.2)
+      thor (~> 0.18)
     byebug (9.0.6)
     cancan (1.6.10)
     capistrano (3.8.1)
@@ -110,8 +121,6 @@ GEM
     factory_girl_rails (4.8.0)
       factory_girl (~> 4.8.0)
       railties (>= 3.0.0)
-    faker (1.7.3)
-      i18n (~> 0.5)
     fission (0.5.0)
       CFPropertyList (~> 2.2)
     fog (1.38.0)
@@ -289,6 +298,7 @@ GEM
       activerecord (>= 4.2)
       activesupport (>= 4.2)
       arel (>= 6)
+    puma (3.9.1)
     rack (2.0.3)
     rack-cors (0.4.1)
     rack-test (0.6.3)
@@ -349,9 +359,6 @@ GEM
       rspec-mocks (~> 3.6.0)
       rspec-support (~> 3.6.0)
     rspec-support (3.6.0)
-    seed_dump (3.2.4)
-      activerecord (>= 4)
-      activesupport (>= 4)
     shoulda-matchers (3.1.1)
       activesupport (>= 4.0.0)
     simplecov (0.14.1)
@@ -403,6 +410,7 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.0.rc3)
   activerecord-postgis-adapter (~> 5.0)
   acts-as-taggable-on (~> 5.0)
+  bundler-audit
   byebug
   cancan
   capistrano-passenger
@@ -412,7 +420,7 @@ DEPENDENCIES
   coveralls
   database_cleaner
   factory_girl_rails (~> 4.0)
-  faker
+  faker!
   fog (~> 1.38.0)
   httparty
   json
@@ -421,6 +429,7 @@ DEPENDENCIES
   nokogiri
   pg
   pg_search
+  puma
   rack-cors
   rails (~> 5.0)
   rails_api_auth!
@@ -428,7 +437,6 @@ DEPENDENCIES
   rgeo (~> 0.6.0)
   rgeo-geojson
   rspec-rails (~> 3.5)
-  seed_dump
   shoulda-matchers (~> 3.1)
   simplecov
   spring
@@ -437,4 +445,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   1.15.0
+   1.15.1

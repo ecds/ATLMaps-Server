@@ -11,7 +11,6 @@ Rails.application.routes.draw do
                 list_show.resources :categories
                 list_show.resources :year_ranges, path: 'year-ranges'
                 list_show.resources :map_layers
-                list_show.resources :vector_features, path: 'vector-features'
             end
 
             with_options only: [:index, :show, :create, :destroy, :update] do |crud|
@@ -20,6 +19,7 @@ Rails.application.routes.draw do
                 crud.resources :raster_layer_projects, path: 'raster-layer-projects'
                 crud.resources :vector_layer_projects, path: 'vector-layer-projects'
                 crud.resources :vector_layers, path: 'vector-layers'
+                crud.resources :vector_features, path: 'vector-features'
                 crud.resources :collaborations
                 crud.resources :logins
             end

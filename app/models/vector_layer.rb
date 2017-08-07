@@ -10,7 +10,9 @@ class VectorLayer < ActiveRecord::Base
     has_many :vector_feature
     belongs_to :institution
 
-    # after_create :set_geos
+    before_create :ensure_name
+    before_save :calculate_boundingbox
+    # after_create :geos
 
     # Uses `acts-as-taggable-on` gem.
     acts_as_taggable
@@ -129,6 +131,7 @@ class VectorLayer < ActiveRecord::Base
     end
 
     def filters
+        return if vector_feature.length
         return unless vector_feature.first.properties['filters']
         filter_values = vector_feature.map { |f| f.properties['filters'].values }.uniq!.flatten
         filter_key = vector_feature.map { |f| f.properties['filters'].keys }.uniq!.flatten[0]
@@ -136,29 +139,29 @@ class VectorLayer < ActiveRecord::Base
         # vector_feature.first.properties['filters']
     end
 
+    def ensure_name
+        # Name is the persistant unique identifier. We have to have one.
+        self.name = SecureRandom.hex(4) if name.nil?
+    end
+
     private
 
-    def set_geos
-        factory = RGeo::Geographic.simple_mercator_factory
-        geoj = JSON.load(open(url))
-        geom = RGeo::GeoJSON.decode(geoj, json_parser: :json)
-        geom.each do |feature|
-            VectorFeature.create(
-                properties: feature.properties,
-                geometry_type: feature.geometry.geometry_type,
-                geometry_collection: factory.collection([feature.geometry]),
-                vector_layer: self
-            )
-        end
-
+    def calculate_boundingbox
+        # Don't bother if the layer has no features.
         return unless vector_feature.length > 1
+        # We use the `union` method from RGeo to combine all the
+        # features. We get the first feature so we have something to
+        # on which to call `union`.
         group = vector_feature[0].geometry_collection
         vector_feature.drop(1).each do |vf|
             group = group.union(vf.geometry_collection)
         end
         self.boundingbox = group.envelope
-
-        save
+        factory = RGeo::Geographic.simple_mercator_factory
+        bb = RGeo::Cartesian::BoundingBox.create_from_geometry(factory.collection([boundingbox]))
+        self.maxx = bb.max_x
+        self.maxy = bb.max_y
+        self.minx = bb.min_x
+        self.miny = bb.min_y
     end
-
 end

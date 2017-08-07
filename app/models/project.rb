@@ -1,3 +1,4 @@
+# app/models/project.rb
 class Project < ActiveRecord::Base
     include RailsApiAuth::Authentication
 
@@ -33,5 +34,9 @@ class Project < ActiveRecord::Base
 
     def new_project
         return created_at == updated_at
+    end
+
+    def intro?
+        return unless intro.nil? && media.nil? && photo.nil?
     end
 end

@@ -22,5 +22,6 @@ class LayerSerializer < ActiveModel::Serializer
                 :maxy,
                 :tag_slugs,
                 :active,
-                :slider_id
+                :slider_id,
+                :attribution
 end

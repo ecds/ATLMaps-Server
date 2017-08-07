@@ -186,4 +186,50 @@ namespace :dbfoo do
             v.save
         end
     end
+
+    task make_thumbnails: :environment do
+        require 'httparty'
+        factory = RGeo::Geographic.simple_mercator_factory
+
+        RasterLayer.all.each do |r|
+            next unless r.thumb.file.nil?
+            # Zoom 17: http://wiki.openstreetmap.org/wiki/Zoom_levels
+            neighborhood = { min_width: 1501, max_width: 9000, scale: 1.193 }
+            # Cut out the ouside of the map with the hope that the thumbnil will
+            # look more interesting.
+            xdiff = (r.maxx - r.minx) * 0.25
+            ydiff = (r.maxy - r.miny) * 0.25
+            width = factory.point(r.maxx, r.maxy).distance(factory.point(r.minx, r.maxy)).to_f
+            height = factory.point(r.minx, r.miny).distance(factory.point(r.minx, r.maxy)).to_f
+
+            # So the downloaded images aren't crazy big, we cap the width or height
+            # to 1500 pi
+            if width > 1500.00 || height > 1500.00
+                if width > height
+                    height = 1500.00 / (width / height)
+                    width = 1500.00
+                else
+                    width = 1500.00 / (height / width)
+                    height = 1500.00
+                end
+            end
+
+            size = { width: (width / neighborhood[:scale].to_f).to_i, height: (height / neighborhood[:scale].to_f).to_i }
+
+            request = "#{r.institution.geoserver}#{r.workspace}/wms?service=WMS&version=1.1.0&request=GetMap&layers=#{r.workspace}:#{r.name}&styles=&bbox=#{r.minx + xdiff},#{r.miny + ydiff},#{r.maxx - xdiff},#{r.maxy - ydiff}&width=#{size[:width]}&height=#{size[:height]}&srs=EPSG:4326&format=image%2Fpng"
+            p request
+            next unless HTTParty.get(request).headers['content-type'] == 'image/png'
+            response = nil
+            filename = "/data/tmp/#{r.name}.png"
+            File.open(filename, 'wb') do |file|
+                response = HTTParty.get(request, stream_body: true) do |fragment|
+                    file.write(fragment)
+                end
+                r.thumb = file
+                r.save!
+                file.close
+            end
+            # File.delete(filename)
+        end
+    end
 end

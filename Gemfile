@@ -39,15 +39,11 @@ gem 'web-console', '~> 2.0', group: :development
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
 gem 'capistrano-passenger', group: :development
-gem 'seed_dump', group: :development
 gem 'capistrano-rbenv', '~> 2.0', group: :development
 
 gem 'httparty'
 gem 'nokogiri'
 
-# gem 'ci_reporter'
-gem 'simplecov' # , group: :test
-gem 'coveralls', require: false
 # Use debugger
 gem 'byebug', group: [:development, :test]
 
@@ -56,14 +52,21 @@ gem 'carrierwave'
 gem 'fog', '~> 1.38.0'
 gem 'mini_magick'
 
+group :development do
+   gem 'puma'
+end
+
 # for testing
 group :development, :test do
   gem 'rspec-rails', '~> 3.5'
+  gem 'bundler-audit'
 end
 
 group :test do
   gem 'factory_girl_rails', '~> 4.0'
   gem 'shoulda-matchers', '~> 3.1'
-  gem 'faker'
+  gem 'faker', :git => 'git://github.com/stympy/faker.git', :branch => 'master'
   gem 'database_cleaner'
+  gem 'simplecov'
+  gem 'coveralls', require: false
 end

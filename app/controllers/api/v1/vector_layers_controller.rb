@@ -1,6 +1,6 @@
 # API response for VectorLayer objects
 class Api::V1::VectorLayersController < ApplicationController
-    include MakePolygon, PaginationDict
+    include MakePolygon, PaginationDict, Permissions
 
     def index
         @layers = if params[:query]
@@ -43,18 +43,43 @@ class Api::V1::VectorLayersController < ApplicationController
     end
 
     def create
-        if current_user && current_user.confirmed
+        # permissions = ownership(project)
+        # if permissions[:may_edit] == true
             # project_params['user_id'] = current_user.user.id
-            layer = VcetorLayer.new(layer_params)
-            layer.user = current_user.user
+            layer = VectorLayer.new(layer_params)
             if layer.save
-                # Ember wants some JSON
-                render json: layer, status: 201
-            else
-                head 500
+                render jsonapi: layer, status: 201
             end
+            # puts feature_params
+            # if layer.save
+            #     # Ember wants some JSON
+            #     render json: layer, status: 201
+            # else
+            #     head 500
+            # end
+        # else
+        #     head 401
+        # end
+    end
+
+    def update
+        if @layer.update(layer_params)
+            # render json: @stop
+            head :no_content
         else
-            head 401
+            render json: @layer.errors, status: :unprocessable_entity
         end
+    end
+
+    private
+
+    def layer_params
+        ActiveModelSerializers::Deserialization
+            .jsonapi_parse(
+                params, only: [
+                    :title, :description,
+                    :active, :attribution
+                ]
+            )
     end
 end

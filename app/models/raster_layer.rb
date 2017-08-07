@@ -18,6 +18,8 @@
 #
 class RasterLayer < ActiveRecord::Base
     include PgSearch
+    HTTParty::Basement.default_options.update(verify: false)
+    mount_uploader :thumb, RasterThumbnailUploader
 
     has_many :raster_layer_project
     has_many :projects, through: :raster_layer_project, dependent: :destroy
@@ -26,6 +28,8 @@ class RasterLayer < ActiveRecord::Base
 
     # Uses `acts-as-taggable-on` gem.
     acts_as_taggable
+
+    # before_save :create_thumbnail
 
     # Scope: by_institution. Seraches layers by institution
     scope :by_institution, lambda { |institution|
@@ -228,5 +232,31 @@ class RasterLayer < ActiveRecord::Base
     # Convience attribute. Used in WMS call.
     def layers
         return "#{workspace}:#{name}"
+    end
+
+    private
+
+    def create_thumbnail
+        puts "^^^^^^^^^^^^^^^^^^^ #{name} ^^^^^^^^^^^^^^^^^^^"
+        factory = RGeo::Geographic.simple_mercator_factory
+        nw = factory.point(maxx, maxy)
+        ne = factory.point(minx, maxy)
+        se = factory.point(minx, miny)
+        # 9.547 = Zoom level 14
+        # http://wiki.openstreetmap.org/wiki/Zoom_levels
+        height = (ne.distance(se) / 19.093).to_i
+        width = (ne.distance(nw) / 19.093).to_i
+        request = "#{institution.geoserver}#{workspace}/wms?service=WMS&version=1.1.0&request=GetMap&layers=#{workspace}:#{name}&styles=&bbox=#{minx},#{miny},#{maxx},#{maxy}&width=#{width}&height=#{height}&srs=EPSG:4326&format=image%2Fpng"
+        puts "&&&&&&&&&&&& #{request} &&&&&&&&&&&&&&&&&"
+        response = nil
+        filename = "/data/tmp/#{name}.png"
+        puts "************** #{filename} ************************"
+        File.open(filename, 'wb') do |file|
+            response = HTTParty.get(request, stream_body: true) do |fragment|
+                file.write(fragment)
+            end
+            self.thumb = file
+            # file.delete
+        end
     end
 end

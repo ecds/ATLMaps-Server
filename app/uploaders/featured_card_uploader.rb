@@ -1,5 +1,4 @@
-# encoding: utf-8
-
+# app/uploaders/featured_card_uploader.rb
 class FeaturedCardUploader < CarrierWave::Uploader::Base
     include CarrierWave::MiniMagick
 
