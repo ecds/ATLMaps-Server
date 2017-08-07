@@ -7,6 +7,9 @@ env:
   - DB=postgresql
 addons:
   postgresql: '9.6'
+  apt:
+    packages:
+      - postgresql-9.5-postgis-2.3
 script:
   - bundle install --jobs=3 --retry=3
   - bundle exec rake db:schema:load
