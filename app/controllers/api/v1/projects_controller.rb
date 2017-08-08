@@ -1,7 +1,7 @@
 # app/controllers/api/v1/projects_controller.rb
-class Api::V1::ProjectsController < Api::V1::PermissionController
+class Api::V1::ProjectsController < ApplicationController
     # class for Controller
-    include RailsApiAuth::Authentication
+    include RailsApiAuth::Authentication, Permissions
     def index
         render json: if params['user_id'] && current_user
                          Project.where(user_id: current_user.user.id)
@@ -47,7 +47,7 @@ class Api::V1::ProjectsController < Api::V1::PermissionController
                        mine: permissions[:mine],
                        status: 201
             else
-                head 500
+                render json: project.errors.details, status: 400
             end
         else
             head 401

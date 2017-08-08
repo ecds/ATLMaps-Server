@@ -14,6 +14,10 @@ module Permissions
         end
     end
 
+    def admin?
+        current_user.user.admin if current_user.present?
+    end
+
     def user_id
         current_user ? current_user.user.id : false
     end
