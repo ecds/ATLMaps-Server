@@ -1,6 +1,7 @@
 # Modle calss to hold the features for the vector layers.
 class VectorFeature < ActiveRecord::Base
     belongs_to :vector_layer
+    after_save :update_vector_layer
 
     def geojson
         RGeo::GeoJSON.encode(geometry_collection)
@@ -46,5 +47,11 @@ class VectorFeature < ActiveRecord::Base
 
     def feature_id
         layer_title.parameterize + '-' + id.to_s
+    end
+
+    private
+
+    def update_vector_layer
+        vector_layer.save
     end
 end

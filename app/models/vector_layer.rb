@@ -11,6 +11,7 @@ class VectorLayer < ActiveRecord::Base
     belongs_to :institution
 
     before_create :ensure_name
+    # after_create :calculate_boundingbox_on_create
     before_save :calculate_boundingbox
     # after_create :geos
 
@@ -157,11 +158,17 @@ class VectorLayer < ActiveRecord::Base
             group = group.union(vf.geometry_collection)
         end
         self.boundingbox = group.envelope
+        puts boundingbox
         factory = RGeo::Geographic.simple_mercator_factory
         bb = RGeo::Cartesian::BoundingBox.create_from_geometry(factory.collection([boundingbox]))
         self.maxx = bb.max_x
         self.maxy = bb.max_y
         self.minx = bb.min_x
         self.miny = bb.min_y
+    end
+
+    def calculate_boundingbox_on_create
+        # calculate_boundingbox
+        save
     end
 end
