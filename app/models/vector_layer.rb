@@ -1,10 +1,8 @@
 # Model class for vector layers.
 class VectorLayer < ActiveRecord::Base
-    # FIXME: This is temp until we decide on a better admin solution.
-    # before_create :defaults
-    # after_create :load_features
+    # Use Set to determine the types of features.
+    require 'set'
 
-    # include Filtering
     has_many :vector_layer_project
     has_many :projects, through: :vector_layer_project, dependent: :destroy
     has_many :vector_feature
@@ -13,7 +11,7 @@ class VectorLayer < ActiveRecord::Base
     before_create :ensure_name
     # after_create :calculate_boundingbox_on_create
     before_save :calculate_boundingbox
-    # after_create :geos
+    before_save :find_data_type
 
     # Uses `acts-as-taggable-on` gem.
     acts_as_taggable
@@ -147,6 +145,15 @@ class VectorLayer < ActiveRecord::Base
 
     private
 
+    def find_data_type
+        types = vector_feature.pluck(:geometry_type).uniq
+        self.data_type = if types.length == 1
+                             types[0]
+                         else
+                             'GeometryCollection'
+                         end
+    end
+
     def calculate_boundingbox
         # Don't bother if the layer has no features.
         return unless vector_feature.length > 1
@@ -158,17 +165,11 @@ class VectorLayer < ActiveRecord::Base
             group = group.union(vf.geometry_collection)
         end
         self.boundingbox = group.envelope
-        puts boundingbox
         factory = RGeo::Geographic.simple_mercator_factory
         bb = RGeo::Cartesian::BoundingBox.create_from_geometry(factory.collection([boundingbox]))
         self.maxx = bb.max_x
         self.maxy = bb.max_y
         self.minx = bb.min_x
         self.miny = bb.min_y
-    end
-
-    def calculate_boundingbox_on_create
-        # calculate_boundingbox
-        save
     end
 end
