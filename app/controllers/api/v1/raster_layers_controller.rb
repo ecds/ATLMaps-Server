@@ -13,7 +13,6 @@ class Api::V1::RasterLayersController < ApplicationController
                       # NOTE: the client clears out the local store when none of
                       # search parameters have values.
                       # TODO: Combine all this into one scope.
-                      puts params[:bounds]
                       RasterLayer.active
                                  .browse_text_search(params[:text_search])
                                  .by_institution(params[:institution])

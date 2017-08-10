@@ -16,9 +16,6 @@ class Api::V1::VectorFeaturesController < ApplicationController
         # vector_layer: v
         geojson = params[:data][:attributes][:geojson]
         coordinates = geojson[:geometry][:coordinates]
-        puts '&&&&&&&&'
-        puts geojson['properties']
-        puts '&&&&&&&&'
         feature = VectorFeature.new(
             properties: geojson[:properties],
             geometry_type: geojson[:geometry][:type],
