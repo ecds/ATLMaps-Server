@@ -57,6 +57,7 @@ class Api::V1::VectorLayersController < ApplicationController
 
     def update
         if admin?
+            @layer = VectorLayer.find(params[:id])
             if @layer.update(layer_params)
                 # render json: @stop
                 head :no_content
@@ -65,6 +66,16 @@ class Api::V1::VectorLayersController < ApplicationController
             end
         else
             render json: 'Bad credentials', status: 401
+        end
+    end
+
+    def destroy
+        if admin?
+            @layer = VectorLayer.find(params[:id])
+            @layer.destroy
+            head 204
+        else
+            head 401
         end
     end
 
