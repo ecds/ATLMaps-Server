@@ -130,7 +130,7 @@ class VectorLayer < ActiveRecord::Base
     end
 
     def filters
-        return if vector_feature.length
+        return if vector_feature.empty?
         return unless vector_feature.first.properties['filters']
         filter_values = vector_feature.map { |f| f.properties['filters'].values }.uniq!.flatten
         filter_key = vector_feature.map { |f| f.properties['filters'].keys }.uniq!.flatten[0]

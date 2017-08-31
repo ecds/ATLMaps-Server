@@ -86,7 +86,8 @@ class Api::V1::VectorLayersController < ApplicationController
             .jsonapi_parse(
                 params, only: [
                     :title, :description,
-                    :active, :attribution
+                    :active, :attribution,
+                    :data_format
                 ]
             )
     end
