@@ -2,7 +2,7 @@
 lock '3.8.1'
 
 set :application, 'ATLMaps'
-set :repo_url, 'git@github.com:emory-libraries-ecds/ATLMaps.git'
+set :repo_url, 'git@github.com:ecds/ATLMaps-Server.git'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
