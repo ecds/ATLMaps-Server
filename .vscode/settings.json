@@ -1,0 +1,30 @@
+{
+  "files.exclude": {
+    "*.DS_Store": "explorerExcludedFiles",
+    "config/database.yml": "explorerExcludedFiles",
+    ".capistrano": "explorerExcludedFiles",
+    "log": "explorerExcludedFiles",
+    "tmp": "explorerExcludedFiles",
+    "public/assets": "explorerExcludedFiles",
+    "config/application.rb": "explorerExcludedFiles",
+    "log/development.log": "explorerExcludedFiles",
+    "tmp/pids/server.pid": "explorerExcludedFiles",
+    "npm-debug.log": "explorerExcludedFiles",
+    "node_modules": "explorerExcludedFiles",
+    "lib/tasks/gs_*": "explorerExcludedFiles",
+    "db/seeds.rb": "explorerExcludedFiles",
+    "atlmaps.load": "explorerExcludedFiles",
+    "atlmaps.sql": "explorerExcludedFiles",
+    "coverage": "explorerExcludedFiles",
+    "dump": "explorerExcludedFiles",
+    "config/initializers/fog.rb": "explorerExcludedFiles",
+    "config/secrets.yml": "explorerExcludedFiles",
+    "config/initializers/rails_api_auth.rb": "explorerExcludedFiles",
+    "config/initializers/rack_cors.rb": "explorerExcludedFiles",
+    ".yardoc": "explorerExcludedFiles",
+    "doc": "explorerExcludedFiles",
+    "ps_start.sh": "explorerExcludedFiles",
+    ".env": "explorerExcludedFiles",
+    "~gem*": "explorerExcludedFiles"
+  }
+}

@@ -38,5 +38,4 @@ Rails.application.configure do
 
     config.action_mailer.default_url_options = { host: 'atlmaps-dev.com', port: 7000 }
     # config.force_ssl = true
-
 end

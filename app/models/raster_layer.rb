@@ -16,7 +16,7 @@
 # Include Arel::OrderPredications
 # Required due to AREL bug https://github.com/rails/arel/issues/399
 #
-class RasterLayer < ActiveRecord::Base
+class RasterLayer < ApplicationRecord
     include PgSearch
     HTTParty::Basement.default_options.update(verify: false)
     mount_uploader :thumb, RasterThumbnailUploader
@@ -30,6 +30,7 @@ class RasterLayer < ActiveRecord::Base
     acts_as_taggable
 
     # before_save :create_thumbnail
+    before_save :calculate_boundingbox
 
     # Scope: by_institution. Seraches layers by institution
     scope :by_institution, lambda { |institution|
@@ -224,6 +225,7 @@ class RasterLayer < ActiveRecord::Base
     # @return [String]
     # Convience attribute to the GeoServer endpoint
     def url
+        # return 'foo'
         return "#{institution.geoserver}#{workspace}/gwc/service/wms?tiled=true"
     end
 
@@ -237,7 +239,6 @@ class RasterLayer < ActiveRecord::Base
     private
 
     def create_thumbnail
-        puts "^^^^^^^^^^^^^^^^^^^ #{name} ^^^^^^^^^^^^^^^^^^^"
         factory = RGeo::Geographic.simple_mercator_factory
         nw = factory.point(maxx, maxy)
         ne = factory.point(minx, maxy)
@@ -247,10 +248,8 @@ class RasterLayer < ActiveRecord::Base
         height = (ne.distance(se) / 19.093).to_i
         width = (ne.distance(nw) / 19.093).to_i
         request = "#{institution.geoserver}#{workspace}/wms?service=WMS&version=1.1.0&request=GetMap&layers=#{workspace}:#{name}&styles=&bbox=#{minx},#{miny},#{maxx},#{maxy}&width=#{width}&height=#{height}&srs=EPSG:4326&format=image%2Fpng"
-        puts "&&&&&&&&&&&& #{request} &&&&&&&&&&&&&&&&&"
         response = nil
         filename = "/data/tmp/#{name}.png"
-        puts "************** #{filename} ************************"
         File.open(filename, 'wb') do |file|
             response = HTTParty.get(request, stream_body: true) do |fragment|
                 file.write(fragment)
@@ -259,4 +258,19 @@ class RasterLayer < ActiveRecord::Base
             # file.delete
         end
     end
+
+def calculate_boundingbox(maxx, maxy, miny, minx)
+    factory = RGeo::Geographic.simple_mercator_factory
+    return factory.polygon(
+        factory.line_string(
+            [
+                factory.point(maxx, maxy),
+                factory.point(minx, maxy),
+                factory.point(minx, miny),
+                factory.point(maxx, miny),
+                factory.point(maxx, maxy)
+            ]
+        )
+    )
+end
 end

@@ -129,13 +129,25 @@ sudo apt update
 For dev, and maybe even for staging, we'll run PostgreSQL locally. In production, we'll use AWS RDS.
 
 #### For Dev/Staging
-sudo apt install postgresql-9.6 postgresql-contrib-9.6
+
+~~~bash
+sudo apt install postgresql-9.6 postgresql-contrib-9.6 postgis
+~~~
 
 Create a database and user. You'll need to make note of this later for the `database.yaml`
+
+~~~bash
 sudo -h localhost -u <username> createuser -P <database name>
+~~~
 
 Skip this step if you are  importing a dump from an ATLMaps database.
+
+~~~bash
 sudo -u postgres psql -c "CREATE EXTENSION postgis; CREATE EXTENSION postgis_topology;" <database name>
+~~~
+
+*Trouble importing dump?*
+[Try this...](https://dba.stackexchange.com/a/60911)
 
 *Trouble with Spatial Search?*
 

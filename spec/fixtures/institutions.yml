@@ -1,0 +1,10 @@
+emory:
+  id: 1
+  name: Emory University
+  geoserver: httsp://someuri.com
+  icon: foo.png
+gsu:
+  id: 2
+  name: Georgia State University
+  geoserver: http://someotheruri.com
+  icon: bar.png

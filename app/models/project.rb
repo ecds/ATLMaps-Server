@@ -1,5 +1,5 @@
 # app/models/project.rb
-class Project < ActiveRecord::Base
+class Project < ApplicationRecord
     include RailsApiAuth::Authentication
 
     mount_uploader :card, FeaturedCardUploader

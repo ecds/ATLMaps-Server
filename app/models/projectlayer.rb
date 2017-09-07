@@ -1,5 +1,5 @@
-class Projectlayer < ActiveRecord::Base
-  belongs_to :project
+class Projectlayer < ApplicationRecord
+    belongs_to :project
 
-  default_scope {order("position DESC") }
+    default_scope { order('position DESC') }
 end

@@ -3,13 +3,13 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0'
 # Use postgres with the postgis plugin as the database for Active Record
-gem 'pg'
 gem 'activerecord-postgis-adapter', '~> 5.0'
+gem 'pg'
 # gem 'squeel'
-gem 'rgeo-geojson'
-gem 'rgeo', '~> 0.6.0'
-gem 'pg_search'
 gem 'acts-as-taggable-on', '~> 5.0'
+gem 'pg_search'
+gem 'rgeo', '~> 0.6.0'
+gem 'rgeo-geojson'
 
 # API Responses
 gem 'active_model_serializers', '~> 0.10.0.rc3'
@@ -17,12 +17,12 @@ gem 'kaminari' # For pagination
 
 # Authentication
 # gem 'rails_api_auth'
-gem 'rails_api_auth', :git => 'git://github.com/jayvarner/rails_api_auth.git', :tag => '0.0.9'
 gem 'cancan'
+gem 'rails_api_auth', git: 'git://github.com/jayvarner/rails_api_auth.git', tag: '0.0.9'
 
 gem 'json'
+gem 'rack-cors', require: 'rack/cors'
 gem 'rest-client'
-gem 'rack-cors', :require => 'rack/cors'
 gem 'turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'yard', group: :doc
@@ -37,15 +37,15 @@ gem 'web-console', '~> 2.0', group: :development
 # gem 'unicorn'
 
 # Use Capistrano for deployment
-gem 'capistrano-rails', group: :development
 gem 'capistrano-passenger', group: :development
+gem 'capistrano-rails', group: :development
 gem 'capistrano-rbenv', '~> 2.0', group: :development
 
 gem 'httparty'
 gem 'nokogiri'
 
 # Use debugger
-gem 'byebug', group: [:development, :test]
+gem 'byebug', group: %i[development test]
 
 # For file uploads
 gem 'carrierwave'
@@ -53,20 +53,20 @@ gem 'fog', '~> 1.38.0'
 gem 'mini_magick'
 
 group :development do
-   gem 'puma'
+    gem 'puma'
 end
 
 # for testing
 group :development, :test do
-  gem 'rspec-rails', '~> 3.5'
-  gem 'bundler-audit'
+    gem 'bundler-audit'
+    gem 'rspec-rails', '~> 3.5'
 end
 
 group :test do
-  gem 'factory_girl_rails', '~> 4.0'
-  gem 'shoulda-matchers', '~> 3.1'
-  gem 'faker', :git => 'git://github.com/stympy/faker.git', :branch => 'master'
-  gem 'database_cleaner'
-  gem 'simplecov'
-  gem 'coveralls', require: false
+    gem 'coveralls', require: false
+    gem 'database_cleaner'
+    gem 'factory_girl_rails', '~> 4.0'
+    gem 'faker', git: 'git://github.com/stympy/faker.git', branch: 'master'
+    gem 'shoulda-matchers', '~> 3.1'
+    gem 'simplecov'
 end

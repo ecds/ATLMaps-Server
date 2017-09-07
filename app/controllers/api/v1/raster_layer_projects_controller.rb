@@ -81,11 +81,11 @@ class Api::V1::RasterLayerProjectsController < ApplicationController
 
     def raster_layer_project_params
         ActiveModelSerializers::Deserialization.jsonapi_parse(params,
-                                                              only: [
-                                                                  :project,
-                                                                  :raster_layer,
-                                                                  :data_format,
-                                                                  :position
+                                                              only: %i[
+                                                                  project
+                                                                  raster_layer
+                                                                  data_format
+                                                                  position
                                                               ])
     end
 end

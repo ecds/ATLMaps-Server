@@ -1,5 +1,5 @@
 # Modle calss to hold the features for the vector layers.
-class VectorFeature < ActiveRecord::Base
+class VectorFeature < ApplicationRecord
     belongs_to :vector_layer
     after_save :update_vector_layer
 

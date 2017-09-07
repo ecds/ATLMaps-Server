@@ -1,2 +1,2 @@
-class Neighborhood < ActiveRecord::Base
+class Neighborhood < ApplicationRecord
 end

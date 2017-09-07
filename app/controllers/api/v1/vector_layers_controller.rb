@@ -1,6 +1,8 @@
 # API response for VectorLayer objects
 class Api::V1::VectorLayersController < ApplicationController
-    include MakePolygon, PaginationDict, Permissions
+    include Permissions
+    include PaginationDict
+    include MakePolygon
 
     def index
         @layers = if params[:query]
@@ -84,10 +86,10 @@ class Api::V1::VectorLayersController < ApplicationController
     def layer_params
         ActiveModelSerializers::Deserialization
             .jsonapi_parse(
-                params, only: [
-                    :title, :description,
-                    :active, :attribution,
-                    :data_format
+                params, only: %i[
+                    title description
+                    active attribution
+                    data_format
                 ]
             )
     end

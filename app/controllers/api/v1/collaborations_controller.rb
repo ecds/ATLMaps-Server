@@ -27,6 +27,6 @@ class Api::V1::CollaborationsController < ApplicationController
     private
 
     def collaboration_params
-        ActiveModelSerializers::Deserialization .jsonapi_parse(params, only: [:project_id, :user_id])
+        ActiveModelSerializers::Deserialization .jsonapi_parse(params, only: %i[project_id user_id])
     end
 end

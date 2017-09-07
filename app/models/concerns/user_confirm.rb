@@ -13,7 +13,7 @@ module UserConfirm
     end
 
     def confirmation_token
-        return unless confirm_token.blank?
+        return if confirm_token.present?
         self.confirm_token = SecureRandom.urlsafe_base64.to_s
     end
 end

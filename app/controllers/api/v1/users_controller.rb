@@ -42,6 +42,6 @@ class Api::V1::UsersController < ApplicationController
     end
 
     def login_params
-        ActiveModelSerializers::Deserialization .jsonapi_parse(params, only: [:identification, :password])
+        ActiveModelSerializers::Deserialization .jsonapi_parse(params, only: %i[identification password])
     end
 end

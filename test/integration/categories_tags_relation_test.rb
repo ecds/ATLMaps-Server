@@ -12,7 +12,6 @@ class CategoriesTagsRelationTest < ActionDispatch::IntegrationTest
         assert_equal categories['categories'].length, 3
 
         assert_equal categories['categories'][0]['tag_ids'].length, 3
-
     end
 
     test 'returns list of single category' do
@@ -22,5 +21,4 @@ class CategoriesTagsRelationTest < ActionDispatch::IntegrationTest
         category = JSON.parse(response.body)
         assert_equal category['category']['tag_ids'].length, 2
     end
-
 end

@@ -83,13 +83,13 @@ class Api::V1::VectorLayerProjectsController < ApplicationController
 
     def vector_layer_project_params
         ActiveModelSerializers::Deserialization.jsonapi_parse(params,
-                                                              only: [
-                                                                  :project,
-                                                                  :vector_layer,
-                                                                  :marker,
-                                                                  :data_format,
-                                                                  :position,
-                                                                  :relationships
+                                                              only: %i[
+                                                                  project
+                                                                  vector_layer
+                                                                  marker
+                                                                  data_format
+                                                                  position
+                                                                  relationships
                                                               ])
     end
 end

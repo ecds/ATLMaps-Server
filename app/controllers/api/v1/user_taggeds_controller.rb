@@ -1,8 +1,7 @@
 class Api::V1::UserTaggedsController < ApplicationController
-
     def index
-      @usertagged = UserTagged.where(user_id: params[:user_id], raster_layer_id: params[:raster_layer_id])
-      render json: @usertagged, root: 'user_taggeds', status: 200
+        @usertagged = UserTagged.where(user_id: params[:user_id], raster_layer_id: params[:raster_layer_id])
+        render json: @usertagged, root: 'user_taggeds', status: 200
     end
 
     def create

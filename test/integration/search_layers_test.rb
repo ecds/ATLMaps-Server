@@ -84,11 +84,11 @@ class SearchLayersTest < ActionDispatch::IntegrationTest
 
     test 'all filters' do
         get '/v1/vector-layers.json', params: { tags: ['History', 'Turner Field'],
-                                               name: 'Emory University',
-                                               start_year: 1922,
-                                               end_year: 1999,
-                                               text_search: 'streets',
-                                               search: true }
+                                                name: 'Emory University',
+                                                start_year: 1922,
+                                                end_year: 1999,
+                                                text_search: 'streets',
+                                                search: true }
         results = JSON.parse(response.body)
         assert_equal [], results['vector_layers']
     end

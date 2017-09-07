@@ -17,5 +17,4 @@ class ApplicationController < ActionController::Base
     private
 
     def default_serializer_options; end
-
 end

@@ -39,8 +39,8 @@ class Api::V1::VectorFeaturesController < ApplicationController
     def feature_params
         ActiveModelSerializers::Deserialization
             .jsonapi_parse(
-                params, only: [
-                    :geojson, :vector_layer
+                params, only: %i[
+                    geojson vector_layer
                 ]
             )
     end

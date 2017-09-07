@@ -1,4 +1,4 @@
-class VectorLayerProject < ActiveRecord::Base
+class VectorLayerProject < ApplicationRecord
     belongs_to :vector_layer
     belongs_to :project
 

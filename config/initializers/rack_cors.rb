@@ -9,13 +9,13 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
                 'http://2c801b74.ngrok.io',
                 'http://atlmaps.ecdsweb.org'
         resource '*', headers: :any,
-                      methods: [
-                          :get,
-                          :post,
-                          :put,
-                          :delete,
-                          :options,
-                          :patch
+                      methods: %i[
+                          get
+                          post
+                          put
+                          delete
+                          options
+                          patch
                       ],
                       max_age: 0
     end

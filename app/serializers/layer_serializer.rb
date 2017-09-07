@@ -20,6 +20,7 @@ class LayerSerializer < ActiveModel::Serializer
                 :miny,
                 :maxx,
                 :maxy,
+                :boundingbox,
                 :tag_slugs,
                 :active,
                 :slider_id,

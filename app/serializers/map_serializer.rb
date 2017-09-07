@@ -1,3 +1,3 @@
 class MapSerializer < ActiveModel::Serializer
-  attributes :id
+    attributes :id
 end

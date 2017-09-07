@@ -1,7 +1,8 @@
 # app/controllers/api/v1/projects_controller.rb
 class Api::V1::ProjectsController < ApplicationController
     # class for Controller
-    include RailsApiAuth::Authentication, Permissions
+    include Permissions
+    include RailsApiAuth::Authentication
     def index
         render json: if params['user_id'] && current_user
                          Project.where(user_id: current_user.user.id)
@@ -84,13 +85,13 @@ class Api::V1::ProjectsController < ApplicationController
     def project_params
         ActiveModelSerializers::Deserialization
             .jsonapi_parse(
-                params, only: [
-                    :name, :saved, :description,
-                    :center_lat, :center_lng,
-                    :zoom_level, :default_base_map,
-                    :published, :featured,
-                    :intro, :media,
-                    :photo, :raster_layer_project
+                params, only: %i[
+                    name saved description
+                    center_lat center_lng
+                    zoom_level default_base_map
+                    published featured
+                    intro media
+                    photo raster_layer_project
                 ]
             )
     end

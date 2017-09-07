@@ -1,6 +1,7 @@
 # and the class
 class Api::V1::RasterLayersController < ApplicationController
-    include MakePolygon, PaginationDict
+    include PaginationDict
+    include MakePolygon
 
     def index
         @layers = if params[:query]

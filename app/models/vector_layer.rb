@@ -1,5 +1,5 @@
 # Model class for vector layers.
-class VectorLayer < ActiveRecord::Base
+class VectorLayer < ApplicationRecord
     # Use Set to determine the types of features.
     require 'set'
 

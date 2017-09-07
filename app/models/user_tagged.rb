@@ -1,4 +1,4 @@
-class UserTagged < ActiveRecord::Base
+class UserTagged < ApplicationRecord
     belongs_to :raster_layer
     belongs_to :vector_layer
     belongs_to :tag

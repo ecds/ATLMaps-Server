@@ -1,10 +1,9 @@
-class Institution < ActiveRecord::Base
-  has_many :users
-  has_many :vector_layers
-  has_many :raster_layers
+class Institution < ApplicationRecord
+    has_many :users
+    has_many :vector_layers
+    has_many :raster_layers
 
-  def slug
-    return self.name.parameterize
-  end
-
+    def slug
+        return name.parameterize
+    end
 end

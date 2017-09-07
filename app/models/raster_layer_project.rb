@@ -1,4 +1,4 @@
-class RasterLayerProject < ActiveRecord::Base
+class RasterLayerProject < ApplicationRecord
     belongs_to :raster_layer
     belongs_to :project
 

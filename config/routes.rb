@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
     namespace :api, path: '/', constraints: { subdomain: 'api' } do
         namespace :v1 do
-            with_options only: [:index, :show] do |list_show|
+            with_options only: %i[index show] do |list_show|
                 list_show.resources :layers
                 # list_show.resources :raster_layers, :path => "rasterLayers"
                 list_show.resources :tags
@@ -13,7 +13,7 @@ Rails.application.routes.draw do
                 list_show.resources :map_layers
             end
 
-            with_options only: [:index, :show, :create, :destroy, :update] do |crud|
+            with_options only: %i[index show create destroy update] do |crud|
                 crud.resources :projects
                 # crud.resources :projectlayers
                 crud.resources :raster_layer_projects, path: 'raster-layer-projects'
@@ -24,16 +24,16 @@ Rails.application.routes.draw do
                 crud.resources :logins
             end
 
-            with_options only: [:index, :show, :update, :create] do |add_update|
+            with_options only: %i[index show update create] do |add_update|
                 add_update.resources :users
                 add_update.resources :raster_layers, path: 'raster-layers'
             end
 
-            with_options only: [:create, :index] do |only_create|
+            with_options only: %i[create index] do |only_create|
                 only_create.resources :user_taggeds, path: 'user-taggeds'
             end
 
-            with_options only: [:show, :index] do |only_update|
+            with_options only: %i[show index] do |only_update|
                 only_update.resources :confirmation_tokens, path: 'confirmation-tokens'
             end
         end

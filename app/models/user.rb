@@ -1,5 +1,5 @@
 # Model class for a User.
-class User < ActiveRecord::Base
+class User < ApplicationRecord
     has_one :login
     belongs_to :institution
     has_many :collaboration
@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
     end
 
     def confirmation_token
-        return unless login.confirm_token.blank?
+        return if login.confirm_token.present?
         login.confirm_token = SecureRandom.urlsafe_base64.to_s
     end
 end
