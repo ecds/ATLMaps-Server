@@ -1,4 +1,4 @@
-class Api::V1::MapLayersController < ApplicationController
+class V1::MapLayersController < ApplicationController
     def index
         @layers = {}
         @layers[:raster_layer_ids] = []

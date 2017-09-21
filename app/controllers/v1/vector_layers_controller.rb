@@ -1,5 +1,5 @@
 # API response for VectorLayer objects
-class Api::V1::VectorLayersController < ApplicationController
+class V1::VectorLayersController < ApplicationController
     include Permissions
     include PaginationDict
     include MakePolygon

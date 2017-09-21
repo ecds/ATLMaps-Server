@@ -6,7 +6,6 @@ Rails.application.routes.draw do
         resources :users
         get 'users/me', to: 'users#me'
         resources :categories
-        resources :tags
         resources :institutions
         resources :logins
         resources :projects
@@ -15,8 +14,6 @@ Rails.application.routes.draw do
         resources :users
         resources :vector_layers, path: 'vector-layers'
         resources :vector_layer_projects, path: 'vector-layer-projects'
-        resources :year_ranges, path: 'year-ranges'
-        resources :confirmation_tokens, path: 'confirmation-tokens'
     end
 
     # Additional version for testing

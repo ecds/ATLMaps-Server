@@ -10,16 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807214625) do
+ActiveRecord::Schema.define(version: 20170920234452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "postgis"
   enable_extension "fuzzystrmatch"
-  enable_extension "postgis_tiger_geocoder"
+  enable_extension "postgis"
   enable_extension "postgis_topology"
 
-  create_table "categories", force: :cascade do |t|
+  create_table "categories", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -32,22 +31,23 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["tag_id"], name: "index_categories_tags_on_tag_id"
   end
 
-  create_table "collaborations", force: :cascade do |t|
+  create_table "collaborations", id: :serial, force: :cascade do |t|
     t.integer "project_id"
     t.integer "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "institutions", force: :cascade do |t|
+  create_table "institutions", id: :serial, force: :cascade do |t|
     t.string "name", limit: 510
     t.string "geoserver", limit: 510
     t.string "icon", limit: 510
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "srid"
   end
 
-  create_table "layers", force: :cascade do |t|
+  create_table "layers", id: :serial, force: :cascade do |t|
     t.string "name", limit: 510
     t.string "slug", limit: 510
     t.string "keywords", limit: 510
@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.integer "tag_id"
   end
 
-  create_table "logins", force: :cascade do |t|
+  create_table "logins", id: :serial, force: :cascade do |t|
     t.string "identification", null: false
     t.string "password_digest"
     t.string "oauth2_token", null: false
@@ -88,14 +88,13 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["user_id"], name: "index_logins_on_user_id"
   end
 
-  create_table "neighborhoods", force: :cascade do |t|
+  create_table "neighborhoods", id: :serial, force: :cascade do |t|
     t.string "name"
-    t.geometry "polygon", limit: {:srid=>0, :type=>"multi_polygon"}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "oauth_access_grants", force: :cascade do |t|
+  create_table "oauth_access_grants", id: :serial, force: :cascade do |t|
     t.integer "resource_owner_id", null: false
     t.integer "application_id", null: false
     t.string "token", limit: 510, null: false
@@ -107,7 +106,7 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["token"], name: "oauth_access_grants_token_key", unique: true
   end
 
-  create_table "oauth_access_tokens", force: :cascade do |t|
+  create_table "oauth_access_tokens", id: :serial, force: :cascade do |t|
     t.integer "resource_owner_id"
     t.integer "application_id"
     t.string "token", limit: 510, null: false
@@ -120,7 +119,7 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["token"], name: "oauth_access_tokens_token_key", unique: true
   end
 
-  create_table "oauth_applications", force: :cascade do |t|
+  create_table "oauth_applications", id: :serial, force: :cascade do |t|
     t.string "name", limit: 510, null: false
     t.string "uid", limit: 510, null: false
     t.string "secret", limit: 510, null: false
@@ -131,7 +130,7 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["uid"], name: "oauth_applications_uid_key", unique: true
   end
 
-  create_table "projectlayers", force: :cascade do |t|
+  create_table "projectlayers", id: :serial, force: :cascade do |t|
     t.integer "layer_id"
     t.integer "project_id"
     t.integer "position"
@@ -141,7 +140,7 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.datetime "updated_at"
   end
 
-  create_table "projects", force: :cascade do |t|
+  create_table "projects", id: :serial, force: :cascade do |t|
     t.string "name", limit: 510
     t.string "description", limit: 500
     t.decimal "center_lat", precision: 10, scale: 8, default: "33.754401", null: false
@@ -162,7 +161,7 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["template_id"], name: "index_projects_on_template_id"
   end
 
-  create_table "raster_layer_projects", force: :cascade do |t|
+  create_table "raster_layer_projects", id: :serial, force: :cascade do |t|
     t.integer "raster_layer_id"
     t.integer "project_id"
     t.integer "marker"
@@ -173,7 +172,7 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["raster_layer_id"], name: "index_raster_layer_projects_on_raster_layer_id"
   end
 
-  create_table "raster_layers", force: :cascade do |t|
+  create_table "raster_layers", id: :serial, force: :cascade do |t|
     t.string "name", limit: 510
     t.string "keywords", limit: 510
     t.text "description"
@@ -193,19 +192,18 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.datetime "updated_at"
     t.integer "year"
     t.string "data_type", limit: 255
-    t.geometry "boundingbox", limit: {:srid=>0, :type=>"geometry"}
     t.string "thumb"
     t.string "attribution"
-    t.index ["boundingbox"], name: "index_raster_layers_on_boundingbox", using: :gist
+    t.geometry "boundingbox", limit: {:srid=>3857, :type=>"st_polygon"}
     t.index ["institution_id"], name: "index_raster_layers_on_institution_id"
   end
 
-  create_table "raster_layers_tags", force: :cascade do |t|
+  create_table "raster_layers_tags", id: :serial, force: :cascade do |t|
     t.integer "raster_layer_id"
     t.integer "tag_id"
   end
 
-  create_table "taggings", force: :cascade do |t|
+  create_table "taggings", id: :serial, force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
     t.integer "taggable_id"
@@ -224,7 +222,7 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
 
-  create_table "tags", force: :cascade do |t|
+  create_table "tags", id: :serial, force: :cascade do |t|
     t.string "name", limit: 510
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -234,16 +232,16 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
-  create_table "tags_vector_layers", force: :cascade do |t|
+  create_table "tags_vector_layers", id: :serial, force: :cascade do |t|
     t.integer "vector_layer_id"
     t.integer "tag_id"
   end
 
-  create_table "templates", force: :cascade do |t|
+  create_table "templates", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
   end
 
-  create_table "user_taggeds", force: :cascade do |t|
+  create_table "user_taggeds", id: :serial, force: :cascade do |t|
     t.integer "raster_layer_id"
     t.integer "vector_layer_id"
     t.integer "tag_id"
@@ -256,7 +254,7 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["vector_layer_id"], name: "index_user_taggeds_on_vector_layer_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string "username", limit: 510
     t.string "displayname", limit: 510
     t.string "email", default: ""
@@ -277,17 +275,17 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["email"], name: "users_email_key", unique: true
   end
 
-  create_table "vector_features", force: :cascade do |t|
+  create_table "vector_features", id: :serial, force: :cascade do |t|
     t.string "name"
     t.json "properties"
     t.string "geometry_type"
-    t.geometry "geometry_collection", limit: {:srid=>0, :type=>"geometry_collection"}
     t.integer "vector_layer_id"
+    t.geometry "geometry_collection", limit: {:srid=>3857, :type=>"geometry_collection"}
     t.index ["vector_layer_id"], name: "belongs_to_vector_layer"
     t.index ["vector_layer_id"], name: "index_vector_features_on_vector_layer_id"
   end
 
-  create_table "vector_layer_projects", force: :cascade do |t|
+  create_table "vector_layer_projects", id: :serial, force: :cascade do |t|
     t.integer "vector_layer_id"
     t.integer "project_id"
     t.integer "marker"
@@ -298,7 +296,7 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.index ["vector_layer_id"], name: "index_vector_layer_projects_on_vector_layer_id"
   end
 
-  create_table "vector_layers", force: :cascade do |t|
+  create_table "vector_layers", id: :serial, force: :cascade do |t|
     t.string "name", limit: 510
     t.string "keywords", limit: 510
     t.text "description"
@@ -318,8 +316,8 @@ ActiveRecord::Schema.define(version: 20170807214625) do
     t.integer "year"
     t.string "title", limit: 255
     t.string "data_type", limit: 255
-    t.geometry "boundingbox", limit: {:srid=>4326, :type=>"st_polygon"}
     t.string "attribution"
+    t.geometry "boundingbox", limit: {:srid=>3857, :type=>"st_polygon"}
     t.index ["institution_id"], name: "index_vector_layers_on_institution_id"
   end
 

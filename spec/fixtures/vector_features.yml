@@ -1,0 +1,84 @@
+---
+a:
+  name: name
+  properties: "{'name': 'Shaun Thurston\'s Wall', 'description': 'Artist(s): <a href=\'http://livingwallsatl.com/artists/shaun-thurston/\'> Shaun Thurston</a> <br> ', 'image': {'url': 'http://livingwallsatl.com/wp-content/uploads/2013/07/0120', 'credit': 'Dustin Chambers'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0d40a79c 'GEOMETRYCOLLECTION (POINT (-84.29675800000001 33.762403))'>
+  vector_layer_id: 1
+b:
+  name: name
+  properties: "{'name': 'Faber\'s Wall', 'description': 'Artist(s): <a href=\'http://livingwallsatl.com/artists/faber/\'> Faber</a> <br> At 142 Walker st', 'image': {'url': 'http://livingwallsatl.com/wp-content/uploads/2013/07/Faber', 'credit': 'Dustin Chambers'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0dde152c 'GEOMETRYCOLLECTION (POINT (-84.40024900000003 33.750549))'>
+  vector_layer_id: 1
+c:
+  name: name
+  properties: "{'name': 'Michi Meko\'s Castlebury Hill Wall', 'description': 'Artist(s): <a href=\'http://livingwallsatl.com/artists/michi-meko/\'> Michi Meko</a> <br> ', 'image': {'url': 'http://livingwallsatl.com/wp-content/uploads/2013/07/07', 'credit': 'Dustin Chambers'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0dde07bc 'GEOMETRYCOLLECTION (POINT (-84.40121469999997 33.7500573))'>
+  vector_layer_id: 1
+d:
+  name: name
+  properties: "{'name': 'Eme\'s Wall', 'description': 'Artist(s): <a href=\'http://livingwallsatl.com/artists/eme/\'> Eme</a> <br> ', 'image': {'url': 'http://livingwallsatl.com/wp-content/uploads/2013/07/eme-4204', 'credit': 'Dustin Chambers'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0de264c4 'GEOMETRYCOLLECTION (POINT (-84.31964725255966 33.76259801954538))'>
+  vector_layer_id: 2
+e:
+  name: name
+  properties: "{'name': 'Sarah Emerson\'s Wall', 'description': 'Artist(s): <a href=\'http://livingwallsatl.com/artists/sarah-emerson/\'> Sarah Emerson</a> <br> Beltline Bridge Underpass', 'image': {'url': 'http://livingwallsatl.com/wp-content/uploads/2013/07/emerson-3648', 'credit': 'Dustin Chambers'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0de2ff60 'GEOMETRYCOLLECTION (POINT (-84.35711400000002 33.749693))'>
+  vector_layer_id: 2
+f:
+  name: name
+  properties: "{'name': 'Molly Rose Freeman\'s Wall', 'description': 'Artist(s): <a href=\'http://livingwallsatl.com/artists/molly-rose-freeman/\'> Molly Rose Freeman</a> <br> Here it is! On the Whiteford Bridge at Dekalb & Whiteford in Decatur.', 'image': {'url': 'http://livingwallsatl.com/wp-content/uploads/Artist-Images/Molly-Rose-Freeman/Molly-Rose-Freeman-01', 'credit': 'Dustin Chambers'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0de2f1f0 'GEOMETRYCOLLECTION (POINT (-84.34182870000001 33.7617881))'>
+  vector_layer_id: 2
+  name: name
+  properties: "{'name': 'JD Koth\'s Installation', 'description': 'Artist(s): <a href=\'http://livingwallsatl.com/artists/jd-koth/\'> JD Koth</a> <br> ', 'image': {'url': 'http://livingwallsatl.com/wp-content/uploads/2013/07/IMG_0846', 'credit': 'Dustin Chambers'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0de6fcb4 'GEOMETRYCOLLECTION (POINT (-84.34604555368423 33.74069017910222))'>
+  vector_layer_id: 3
+g:
+  name: name
+  properties: "{'name': 'Molly Rose Freeman\'s East Atlanta Wall', 'description': 'Artist(s): <a href=\'http://livingwallsatl.com/artists/molly-rose-freeman/\'> Molly Rose Freeman</a> <br> ', 'image': {'url': 'http://livingwallsatl.com/wp-content/uploads/2013/05/IMG_5887', 'credit': 'Dustin Chambers'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0de6ef44 'GEOMETRYCOLLECTION (POINT (-84.34679388999939 33.7403377724305))'>
+  vector_layer_id: 3
+h:
+  name: name
+  properties: "{'name': 'Christopher Derek Bruno\'s East Atlanta Wall', 'description': 'Artist(s): <a href=\'http://livingwallsatl.com/artists/christopher-derek-bruno/\'> Christopher Derek Bruno</a> <br> On the back side of Graveyard.', 'image': {'url': 'http://livingwallsatl.com/wp-content/uploads/2013/07/20130313_LW_GRAVEYARD_stitch_final2_med', 'credit': 'Dustin Chambers'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0de6e1d4 'GEOMETRYCOLLECTION (POINT (-84.34674561023712 33.73982923366871))'>
+  vector_layer_id: 3
+i:
+  name: name
+  properties: "{'name': '1. Old Stone Church', 'styleUrl': '#icon-22', 'styleHash': '-42c450a1', 'description': 'Antioch East Baptist Church members circa 1950.  Note the broken stain glass windows.<br><br><br>Today located at 470 Candler Park Dr. N.E., the original 50-ft. x 110-ft. lot was purchased by Antioch East Baptist Church Trustees in 1918 from Joe A. Hill; the street was then called Mayson Ave.(N).  The Antioch East Congregation hand-built the Stone Church with granite from Stone Mountain between 1918 and 1922, after their first wooden church on old Whitefoord N. (today’s Oakdale Rd.) burned to the ground in 1916.<br><br>Antioch East was a vital presence in the Old Stone Church until circa 1951, when they were “edged out” of the neighborhood and moved “south of the railroad tracks” to today’s Edgewood Community.<br> <br>A private, Caucasian-only corporation, called both Candler Park Improvement Corporation and Candler Park (Men’s) Civic Club, took over the sanctuary  in 1951 and made it their official clubhouse. During its time in the building, the corporation removed the bell housing, baptismal pool, and the stained glass windows. It also acquired four adjacent land lots that were included with the sale of the Old Stone Church in 1977 to Phoenix Unitarian Fellowship.<br> <br>In 1980, First Existentialist Congregation of Atlanta secured the mortgage from Phoenix Unitarian. Today, First E maintains its commitment to human liberation, diversity, and responsible stewardship of the Old Stone Church. <br>                               www.FirstExistentialist.org <br> <br>Antioch East Baptist Church is now located at 1223 Hardee St. in the Edgewood Community.<br>                                   www.AntiochEast.org<br>biracialhistoryproject.org', 'image': {'url': 'http://farm7.static.flickr.com/6240/6307998652_9f35b298ed.jpg'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0de807bc 'GEOMETRYCOLLECTION (POINT (-84.339798 33.767089))'>
+  vector_layer_id: 4
+j:
+  name: name
+  properties: "{'name': '2. Rose Hill Community: Mason Ave./Rose Savage Ave. Subdivision', 'styleUrl': '#icon-22', 'styleHash': '-42c450a1', 'description': 'This open expanse of rolling hill and excavated ball fields belies the presence of African American settlement of Rose Hill, here from 1890s to 1940s.<br><br><br>9.5 acres at the southwest corner of today’s Candler Park (at Candler Park Dr. and McLendon Ave.) were purchased from John Goldsmith in 1880 by Mrs. Frances (Fannie) Mayson, a Caucasian Georgia matron. Over the next two decades she boldly sold lots to African American families. Plat and county maps from 1893, 1915, 1941 name the African American property owners in the Subdivision. Antioch East members, property deeds, US Census and Atlanta City Directories offer details about the Black residents. Remembered as Rose Hill in the Black community, the subdivision was home to Antioch East founders, a Black Lodge - Edgewood Evening Star Lodge - and possibly a Black school.<br> <br>With the creation of the city-owned, Caucasian-only Candler Park Golf Course in the mid 1920s, pressures on Black residents increased.  Atlanta City Council passed the 1942 Slum Clearance Ordinance, facilitating citywide removal of selected homes lacking plumbing and needing repair. This paved the way for the City’s acquisition of all the residences in the Mayson Ave. Subdivision in the 1940s and the incorporation of those properties into Candler Park.<br>biracialhistoryproject.org', 'image': {'url': 'http://farm7.static.flickr.com/6037/6307477439_33428614d8.jpg'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0d384da4 'GEOMETRYCOLLECTION (POINT (-84.339187 33.765038))'>
+  vector_layer_id: 4
+k:
+  name: name
+  properties: "{'name': '3.  Edgewood Evening Star Lodge No. 1', 'styleUrl': '#icon-22', 'styleHash': '-42c450a1', 'description': 'This excavated slope from Candler Park Dr. to the ball fields leaves scant evidence of the Edgewood Evening Star Lodge that stood here.<br><br>  It served as an anchor to the surrounding Black Community from the 1890s. Once located at the intersection of today’s Candler Park Dr. and Miller Ave., the Edgewood Evening Star Lodge No. 1 was chartered in DeKalb County in 1892 as an association approved “for social and moral improvement, as well as for charity” and “the erection of a Lodge building.” An African American neighborhood institution within the Mayson Ave. Subdivision, the Lodge was built on land sold to it in 1893 for $1.00 by Subdivision residents Dan McNeal and Rev. Charles Weldon.<br><br> After Antioch East’s wooden church burned in 1916, the congregation met at the Evening Star Lodge until 1922, while building their Stone Church across the street. The Lodge had electricity, and as Elders recall, it was a two-story wooden structure where Lodge members and Boy Scouts would hold their meetings. City of Atlanta documents show the Lodge remained at this location in the Subdivision at least until 1930.<br><br> As self-governing bodies, African American Lodges served as outlets for Black leadership, where members could speak freely and find support for their ideas. Set up like a corporation, a lodge provided insurance, sick and death benefits to its members through subscriptions. During times of public resistance to the formation of Black businesses, the Lodge was one of the few platforms for Black entrepreneurs.<br><br>biracialhistoryproject.org', 'image': {'url': 'http://farm7.static.flickr.com/6039/6308080300_b781c901dc.jpg'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0de892a4 'GEOMETRYCOLLECTION (POINT (-84.339252 33.765966))'>
+  vector_layer_id: 4
+l:
+  name: name
+  properties: "{'name': '4. 420 Oakdale Rd NE', 'styleUrl': '#icon-22', 'styleHash': '-42c450a1', 'description': '420 Oakdale Rd., now home to local historian Kelly Jordan, was the site of Antioch East’s first church building. Circa 1879, Antioch made a “brush harbor” here on 1/16 acre belonging to Pastor A.L. Bryan(t). DeKalb County real estate records show the 1883 purchase of this site (then on Bell St, later Whitefoord, now Oakdale Rd.) for $1.00 from “A. L. Bryan” by “Antioch Baptist Church of Edgewood.”  The deed states a church structure was on the site at that time.<br><br> According to Antioch East History and Elders, the wooden church they built here burned to the ground in 1916.  Details surrounding the fire are mysterious. Antioch sold the property to Sallie Miller in 1917. Kelly Jordan purchased the current house and property in 1984. The oldest existing foundation stones may have been supports for the original wooden church. We plan to research these stones with an Archaeological Society.<br><br> The early Edgewood community’s African American school was likely located in the church’s basement. The 1883 deed of sale to Antioch allowed “for church and school purposes only.” 1898-1908 City of Edgewood Council Minutes document the existence of a separate school for African American children in a basement on the north side of the RR tracks. The Edgewood Museum’s Commemorative Booklet also links Antioch with the early Black school on Bell St.<br><br>biracialhistoryproject.org', 'image': {'url': 'http://farm7.static.flickr.com/6103/6307593259_a44622a41f.jpg'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0de884d0 'GEOMETRYCOLLECTION (POINT (-84.34210500000002 33.76574300000001))'>
+  vector_layer_id: 5
+m:
+  name: name
+  properties: "{'name': '5. \'Hooperville\'', 'styleUrl': '#icon-22', 'styleHash': '-42c450a1', 'description': 'Many Antioch East Baptist Church Elders and current members were born and lived on this street, and still remember it as “Hooperville”.<br><br>Located off Oakdale Rd., Hooper Ave. was the most enduring, entirely Black residential area in Candler Park.  From the late 1800s into the late 20th century, it was a thriving African American neighborhood.  Many Antioch East Baptist Church Elders and current members were born and lived on this street, and remember it as Hooperville.<br><br> Two houses built in 1900 and a few from circa 1925 are still recognizable. Most have had extreme makeovers or been torn down and replaced by large spec homes. Today, there is a profound absence of Black residents on Hooper.<br><br>biracialhistoryproject.org', 'image': {'url': 'http://farm7.static.flickr.com/6105/6308123938_1f0b327b9e.jpg'}}"
+  geometry_type: Point
+  geometry_collection: #<RGeo::Geos::CAPIGeometryCollectionImpl:0x2adf0de93b3c 'GEOMETRYCOLLECTION (POINT (-84.342878 33.767768))'>
+  vector_layer_id: 5

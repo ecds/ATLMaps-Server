@@ -80,6 +80,9 @@ class VectorLayer < ApplicationRecord
                     associated_against: {
                         tags: {
                             name: 'B'
+                        },
+                        vector_feature: {
+                            properties: 'C'
                         }
                     },
                     using: {
@@ -132,6 +135,7 @@ class VectorLayer < ApplicationRecord
     def filters
         return if vector_feature.empty?
         return unless vector_feature.first.properties['filters']
+        return if vector_feature.first.properties['filters'].empty?
         filter_values = vector_feature.map { |f| f.properties['filters'].values }.uniq!.flatten
         filter_key = vector_feature.map { |f| f.properties['filters'].keys }.uniq!.flatten[0]
         return { filter_key => filter_values }
@@ -165,7 +169,7 @@ class VectorLayer < ApplicationRecord
             group = group.union(vf.geometry_collection)
         end
         self.boundingbox = group.envelope
-        factory = RGeo::Geographic.simple_mercator_factory
+        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
         bb = RGeo::Cartesian::BoundingBox.create_from_geometry(factory.collection([boundingbox]))
         self.maxx = bb.max_x
         self.maxy = bb.max_y

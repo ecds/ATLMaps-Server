@@ -2,7 +2,7 @@
 module MakePolygon
     def make_polygon(bounds)
         return if bounds.nil?
-        factory = RGeo::Geographic.simple_mercator_factory
+        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
         return factory.polygon(
             factory.line_string(
                 [

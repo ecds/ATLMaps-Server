@@ -114,7 +114,8 @@ namespace :dbfoo do
     end
 
     task set_raster_bounds: :environment do
-        factory = RGeo::Geographic.simple_mercator_factory
+        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
+        puts factory
         RasterLayer.all.each do |r|
             r.boundingbox = factory.polygon(
                 factory.line_string(
@@ -134,7 +135,7 @@ namespace :dbfoo do
     task set_vector_bounds: :environment do
         # DO NOT USE!!!
         # USE vector_boundingbox INSTEAD
-        factory = RGeo::Geographic.simple_mercator_factory
+        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
         VectorLayer.active.each do |v|
             # For now we are skipping single point layers because they
             # do not have an area.
@@ -156,9 +157,10 @@ namespace :dbfoo do
     end
 
     task import_geojson_features: :environment do
-        factory = RGeo::Geographic.simple_mercator_factory
+        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
         VectorLayer.active.each do |v|
             puts v.id
+            next unless v.url
             geoj = JSON.load(open(v.url))
             geom = RGeo::GeoJSON.decode(geoj, json_parser: :json)
             geom.each do |feature|
@@ -189,7 +191,7 @@ namespace :dbfoo do
 
     task make_thumbnails: :environment do
         require 'httparty'
-        factory = RGeo::Geographic.simple_mercator_factory
+        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
 
         RasterLayer.all.each do |r|
             next unless r.thumb.file.nil?
@@ -216,7 +218,7 @@ namespace :dbfoo do
 
             size = { width: (width / neighborhood[:scale].to_f).to_i, height: (height / neighborhood[:scale].to_f).to_i }
 
-            request = "#{r.institution.geoserver}#{r.workspace}/wms?service=WMS&version=1.1.0&request=GetMap&layers=#{r.workspace}:#{r.name}&styles=&bbox=#{r.minx + xdiff},#{r.miny + ydiff},#{r.maxx - xdiff},#{r.maxy - ydiff}&width=#{size[:width]}&height=#{size[:height]}&srs=EPSG:4326&format=image%2Fpng"
+            request = "#{r.institution.geoserver}#{r.workspace}/wms?service=WMS&version=1.1.0&request=GetMap&layers=#{r.workspace}:#{r.name}&styles=&bbox=#{r.minx + xdiff},#{r.miny + ydiff},#{r.maxx - xdiff},#{r.maxy - ydiff}&width=#{size[:width]}&height=#{size[:height]}&srs=EPSG:3857&format=image%2Fpng"
             p request
             next unless HTTParty.get(request).headers['content-type'] == 'image/png'
             response = nil

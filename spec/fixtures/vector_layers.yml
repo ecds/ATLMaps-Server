@@ -1,0 +1,71 @@
+one:
+  id: 1
+  name: a03c2ecf
+  description: Some Description
+  active: false
+  institution_id: 1
+  title: lll
+  data_type: GeometryCollection
+two:
+  id: 2
+  name: p8b03
+  description: Some Description
+  url: https://s3.amazonaws.com/atlmaps-data/livingwalls_2010.json
+  data_format: vector
+  minx: -84.4012147
+  miny: 33.73982923
+  maxx: -84.296758
+  maxy: 33.762403
+  active: true
+  institution_id: 1
+  title: Living Walls - 2010
+  data_type: Point
+  boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2adf0cf873c8 POLYGON ((-84.40121469999997 33.73982923366871, -84.29675800000001 33.73982923366871, -84.29675800000001 33.762403, -84.40121469999997 33.762403, -84.40121469999997 33.73982923366871))>
+
+three:
+ id: 3
+ name: pb3ab
+ description: Some Description
+ url: https://s3.amazonaws.com/atlmaps-data/livingwalls_2012.json
+ data_format: vector
+ minx: -84.4238181
+ miny: 33.71389868
+ maxx: -84.31964725
+ maxy: 33.79180057
+ active: true
+ institution_id: 1
+ title: Living Walls - 2012
+ data_type: Point
+ boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2adf0cfbe828 POLYGON ((-84.4238181 33.71389868418264, -84.31964725255966 33.71389868418264, -84.31964725255966 33.791800567017965, -84.4238181 33.791800567017965, -84.4238181 33.71389868418264))>
+
+four:
+ id: 4
+ name: p339b
+ description: Some Description
+ url: https://s3.amazonaws.com/atlmaps-data/livingwalls_2013.json
+ data_format: vector
+ minx: -84.4041288
+ miny: 33.736531
+ maxx: -84.34475005
+ maxy: 33.7576029
+ active: true
+ institution_id: 1
+ title: Living Walls - 2013
+ data_type: Point
+ boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2adf0cfa2240 POLYGON ((-84.40412879999997 33.736531, 4.34475004673004 33.736531, 4.34475004673004 33.7576029, 4.40412879999997 33.7576029, 4.40412879999997 33.736531))>}
+
+five:
+ id: 5
+ name: p8472
+ description:
+ url: https://s3.amazonaws.com/atlmaps-data/edgewood_candlerpark.json
+ data_format: vector
+ minx: -84.342878
+ miny: 33.765038
+ maxx: -84.339187
+ maxy: 33.769667
+ active: true
+ institution_id: 1
+ title: Early Edgewood and Candler Park
+ data_type: Point
+ boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2adf0cfc5f10 POLYGON ((-84.342878 33.765038, 4.339187 33.765038, 4.339187 33.769667, 4.342878 33.769667, 4.342878 33.765038))>

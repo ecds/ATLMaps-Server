@@ -1,5 +1,5 @@
 # Controller class for vector layers included in a project.
-class Api::V1::VectorLayerProjectsController < ApplicationController
+class V1::VectorLayerProjectsController < ApplicationController
     include Permissions
 
     def index

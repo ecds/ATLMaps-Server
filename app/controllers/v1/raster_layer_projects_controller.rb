@@ -1,4 +1,4 @@
-class Api::V1::RasterLayerProjectsController < ApplicationController
+class V1::RasterLayerProjectsController < ApplicationController
     include Permissions
 
     def index

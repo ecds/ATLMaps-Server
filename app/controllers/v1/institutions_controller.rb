@@ -1,5 +1,5 @@
 # Controller class for Institutions
-class Api::V1::InstitutionsController < ApplicationController
+class V1::InstitutionsController < ApplicationController
     def index
         @institutions = if params[:q]
                             Institution.where('name ILIKE ?', "%#{params[:q]}%")

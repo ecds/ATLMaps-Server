@@ -1,5 +1,5 @@
 # Controller to create new login and corrosponding user.
-class Api::V1::LoginsController < ApplicationController
+class V1::LoginsController < ApplicationController
     def create
         login = Login.new(login_params)
         # Create user to associate with the login.

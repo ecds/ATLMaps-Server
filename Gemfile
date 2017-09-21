@@ -22,8 +22,8 @@ gem 'rails_api_auth', git: 'git://github.com/jayvarner/rails_api_auth.git', tag:
 
 gem 'json'
 gem 'rack-cors', require: 'rack/cors'
-gem 'rest-client'
-gem 'turbolinks'
+# gem 'rest-client'
+# gem 'turbolinks'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'yard', group: :doc
 
@@ -54,6 +54,7 @@ gem 'mini_magick'
 
 group :development do
     gem 'puma'
+    gem 'seed_dump'
 end
 
 # for testing

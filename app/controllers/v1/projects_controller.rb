@@ -1,5 +1,5 @@
 # app/controllers/api/v1/projects_controller.rb
-class Api::V1::ProjectsController < ApplicationController
+class V1::ProjectsController < ApplicationController
     # class for Controller
     include Permissions
     include RailsApiAuth::Authentication

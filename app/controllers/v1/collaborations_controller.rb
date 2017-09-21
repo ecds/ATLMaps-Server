@@ -1,4 +1,4 @@
-class Api::V1::CollaborationsController < ApplicationController
+class V1::CollaborationsController < ApplicationController
     def index
         collaborations = if params[:project_id]
                              Collaboration.where(user_id: params[:user_id]).where(project_id: params[:project_id]).limit(1)

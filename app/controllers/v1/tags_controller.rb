@@ -1,5 +1,5 @@
 # tags
-class Api::V1::TagsController < ApplicationController
+class V1::TagsController < ApplicationController
     def index
         @tags = Tag.all.order('name')
         render json: @tags

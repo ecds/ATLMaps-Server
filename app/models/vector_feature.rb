@@ -34,11 +34,15 @@ class VectorFeature < ApplicationRecord
     end
 
     def images
+        return nil if properties['images'].is_a? String
         properties['images'].to_a
     end
 
     def image
+        return nil if properties['images'].is_a? String
         properties['image'].to_h['url']
+    rescue
+        return nil
     end
 
     def audio

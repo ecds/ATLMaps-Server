@@ -74,7 +74,8 @@ class RasterLayer < ApplicationRecord
                     against: {
                         name: 'A',
                         title: 'A',
-                        description: 'C'
+                        description: 'C',
+                        attribution: 'D'
                     },
                     associated_against: {
                         tags: {
@@ -102,12 +103,9 @@ class RasterLayer < ApplicationRecord
         end
     end
 
-    # SELECT raster_layers.title, neighborhoods.name
-    # FROM raster_layers INNER JOIN neighborhoods
-    # ON  st_intersects(boundingbox, neighborhoods.polygon )
-    # {st_intersects(:boundingbox, poly)}
     scope :by_bounds, lambda { |bounds|
         if bounds.present?
+            # The area of the intersection of the viewable bounds and the bounds of a layer.
             intersection = Arel::Nodes::NamedFunction.new(
                 'ST_AREA', [
                     Arel::Nodes::NamedFunction.new(
@@ -119,6 +117,7 @@ class RasterLayer < ApplicationRecord
                 ]
             )
 
+            # The distance from the center of a layer and the center of the viewable area.
             distance_from_center = Arel::Nodes::NamedFunction.new(
                 'ST_DISTANCE', [
                     Arel::Nodes::NamedFunction.new(
@@ -129,11 +128,48 @@ class RasterLayer < ApplicationRecord
                 ]
             )
 
-            # area_of_intersection = Arel::Nodes::NamedFunction.new(
-            #     'ST_INTERSECTION', [
-            #
-            #     ]
-            # )
+            # Area of the viewable bounds.
+            layer_bounding_box_area = Arel::Nodes::NamedFunction.new(
+                'ST_AREA', [RasterLayer.arel_table[:boundingbox]]
+            )
+
+            # Area of the bounds to be searched.
+            bounds_area = Arel::Nodes::NamedFunction.new(
+                'ST_AREA', [Arel::Nodes::Quoted.new(bounds)]
+            )
+
+            diff_intersection_layer = Arel::Nodes::NamedFunction.new(
+                'ABS', [
+                    Arel::Nodes::Subtraction.new(
+                        intersection,
+                        layer_bounding_box_area
+                    )
+                ]
+            )
+
+            # Difference of the areas
+            # We get the absolute value because we don't know if the minuend is greater than
+            # or less than the summand.
+            diff_areas = Arel::Nodes::NamedFunction.new(
+                'ABS', [
+                    Arel::Nodes::Subtraction.new(
+                        bounds_area,
+                        layer_bounding_box_area
+                    )
+                ]
+            )
+
+            # The score is:
+            # area of the map minus the area of the intersection of the map and the searched bounds
+            # plus the distance between the center of the the map and the searched bounds
+            # plus the area of the map minus the area of the searched bounds
+            score = Arel::Nodes::Addition.new(
+                Arel::Nodes::Addition.new(
+                    diff_intersection_layer,
+                    distance_from_center
+                ),
+                diff_areas
+            )
 
             RasterLayer.select([
                                    RasterLayer.arel_table[Arel.star]
@@ -145,7 +181,7 @@ class RasterLayer < ApplicationRecord
                                        ]
                                    )
                                ).order(
-                                   distance_from_center, intersection.desc
+                                   score
                                )
         end
     }
@@ -193,6 +229,16 @@ class RasterLayer < ApplicationRecord
         )
     }
 
+    def area(bounds)
+        return 'ST_DISTANCE', [
+            Arel::Nodes::NamedFunction.new(
+                'ST_Centroid', [Arel::Nodes::Quoted.new(bounds)]
+            ), Arel::Nodes::NamedFunction.new(
+                'ST_Centroid', [RasterLayer.arel_table[:boundingbox]]
+            )
+        ]
+    end
+
     # Attribute to use for html classes
     def slug
         slug = name.parameterize
@@ -236,10 +282,25 @@ class RasterLayer < ApplicationRecord
         return "#{workspace}:#{name}"
     end
 
+    def calculate_boundingbox
+        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
+        self.boundingbox = factory.polygon(
+            factory.line_string(
+                [
+                    factory.point(maxx, maxy),
+                    factory.point(minx, maxy),
+                    factory.point(minx, miny),
+                    factory.point(maxx, miny),
+                    factory.point(maxx, maxy)
+                ]
+            )
+        )
+    end
+
     private
 
     def create_thumbnail
-        factory = RGeo::Geographic.simple_mercator_factory
+        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
         nw = factory.point(maxx, maxy)
         ne = factory.point(minx, maxy)
         se = factory.point(minx, miny)
@@ -247,7 +308,7 @@ class RasterLayer < ApplicationRecord
         # http://wiki.openstreetmap.org/wiki/Zoom_levels
         height = (ne.distance(se) / 19.093).to_i
         width = (ne.distance(nw) / 19.093).to_i
-        request = "#{institution.geoserver}#{workspace}/wms?service=WMS&version=1.1.0&request=GetMap&layers=#{workspace}:#{name}&styles=&bbox=#{minx},#{miny},#{maxx},#{maxy}&width=#{width}&height=#{height}&srs=EPSG:4326&format=image%2Fpng"
+        request = "#{institution.geoserver}#{workspace}/wms?service=WMS&version=1.1.0&request=GetMap&layers=#{workspace}:#{name}&styles=&bbox=#{minx},#{miny},#{maxx},#{maxy}&width=#{width}&height=#{height}&srs=EPSG:#{institution.srid}&format=image%2Fpng"
         response = nil
         filename = "/data/tmp/#{name}.png"
         File.open(filename, 'wb') do |file|
@@ -258,19 +319,4 @@ class RasterLayer < ApplicationRecord
             # file.delete
         end
     end
-
-def calculate_boundingbox(maxx, maxy, miny, minx)
-    factory = RGeo::Geographic.simple_mercator_factory
-    return factory.polygon(
-        factory.line_string(
-            [
-                factory.point(maxx, maxy),
-                factory.point(minx, maxy),
-                factory.point(minx, miny),
-                factory.point(maxx, miny),
-                factory.point(maxx, maxy)
-            ]
-        )
-    )
-end
 end

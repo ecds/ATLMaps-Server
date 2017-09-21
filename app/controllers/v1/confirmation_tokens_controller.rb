@@ -1,7 +1,7 @@
 # Class to manage wheather or not a user has confirmed their address.
 # FIXME: This feels pretty hacky, but I need to get this out. On the client
 # side, we need a better way to hit an endpoint without having an acutal object.
-class Api::V1::ConfirmationTokensController < ApplicationController
+class V1::ConfirmationTokensController < ApplicationController
     # This is the hacky part. Given Eber Data, we have to have an object to update,
     # we can just call save on a model with no objects. So we make up a bullshit
     # object so we can call `save()` on it to make a `PATCH` request. We can't

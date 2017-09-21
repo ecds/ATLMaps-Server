@@ -1,5 +1,5 @@
 # Controller class to create some common methods to verify the permissions on a request.
-class Api::V1::PermissionController < ApplicationController
+class V1::PermissionController < ApplicationController
     def ownership(project)
         if current_user && current_user.user.confirmed
             return {

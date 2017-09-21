@@ -1,5 +1,5 @@
 # app/controllers/api/v1/vector_features_controller.rb
-class Api::V1::VectorFeaturesController < ApplicationController
+class V1::VectorFeaturesController < ApplicationController
     include Permissions
     def show
         @feature = VectorFeature.find(params[:id])
@@ -7,7 +7,7 @@ class Api::V1::VectorFeaturesController < ApplicationController
     end
 
     def create
-        factory = RGeo::Geographic.simple_mercator_factory
+        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
         geojson = params[:data][:attributes][:geojson]
         coordinates = geojson[:geometry][:coordinates]
         feature = VectorFeature.new(

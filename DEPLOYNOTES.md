@@ -151,20 +151,30 @@ sudo -u postgres psql -c "CREATE EXTENSION postgis; CREATE EXTENSION postgis_top
 
 *Trouble with Spatial Search?*
 
+~~~bash
 rails c
+~~~
+
+~~~ruby
 RGeo::Geos.supported?
+~~~
 
+~~~bash
 gem uninstall rgeo
-install libgeos-dev
+apt install libgeos-dev
 gem install rgeo
-
+~~~
 
 Make sure the `config/database.yml` has
 `adapter: postgis`
 
 #### For Production
+~~~bash
 sudo apt install postgresql-client
-Setup PostGIS: http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.PostgreSQL.CommonDBATasks.html#Appendix.PostgreSQL.CommonDBATasks.PostGIS
+~~~
+
+##### Setup PostGIS: http://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Appendix.PostgreSQL.CommonDBATasks.html#Appendix.PostgreSQL.CommonDBATasks.PostGIS
+
 Allow the instance to access the database via the RDS security group.
 
 ### Deploy the ATLMaps-Server

@@ -1,5 +1,5 @@
 # and the class
-class Api::V1::RasterLayersController < ApplicationController
+class V1::RasterLayersController < ApplicationController
     include PaginationDict
     include MakePolygon
 
