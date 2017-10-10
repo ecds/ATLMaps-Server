@@ -1,5 +1,6 @@
 {
   "files.exclude": {
+    ".vscode": "explorerExcludedFiles",
     "*.DS_Store": "explorerExcludedFiles",
     "config/database.yml": "explorerExcludedFiles",
     ".capistrano": "explorerExcludedFiles",
