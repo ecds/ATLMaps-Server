@@ -15,6 +15,7 @@ Rails.application.routes.draw do
         resources :users
         resources :vector_layers, path: 'vector-layers'
         resources :vector_layer_projects, path: 'vector-layer-projects'
+        resources :vector_features, path: 'vector-features'
         resources :year_ranges, path: 'year-ranges'
         resources :confirmation_tokens, path: 'confirmation-tokens'
     end

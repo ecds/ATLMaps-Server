@@ -13,6 +13,12 @@ module RequestSpecHelper
         json['attributes']
     end
 
+    def names
+        rs = []
+        json.each { |r| rs.push(r['attributes']['name']) }
+        return rs
+    end
+
     def hash_to_json_api(model, attributes)
         {
             data: {

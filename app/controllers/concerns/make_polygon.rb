@@ -2,7 +2,7 @@
 module MakePolygon
     def make_polygon(bounds)
         return if bounds.nil?
-        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
+        factory = RGeo::Geographic.simple_mercator_factory
         return factory.polygon(
             factory.line_string(
                 [
@@ -15,12 +15,6 @@ module MakePolygon
             )
         )
     end
+    # bounds = make_polygon({:s=>33.77443867330882, :n=>33.76844992095692, :w=>-84.35952365398408, :e=>-84.3503075838089})
+    # rs = RasterLayer.by_bounds(bounds: bounds)
 end
-
-# poly = factory.polygon(
-#     factory.line_string(
-#         [foo.each do |c|
-#             factory.point(c[0], c[1])
-#         end]
-#     )
-# )

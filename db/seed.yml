@@ -1,0 +1,30 @@
+Category.create!([
+  {name: "Cultural"},
+  {name: "Demographics"},
+  {name: "Historic Events and Sites"},
+  {name: "Infrastructure"},
+  {name: "Land Use"},
+  {name: "Political"},
+  {name: "Transportation"}
+])
+Category.create!([
+  {name: "Political"}
+])
+RasterLayer.create!([
+  {name: "atlpm0320", keywords: nil, description: "Map of five year plan for Neighborhood Planning Unit N. Area includes Cabbagetown, Reynoldstown, Inman Park, Poncey Highlands, Candler Park, Druid Hills, and Lake Claire. Shows various residential, commercial, industrial, institutional. Back of map gives a brief written analysis of the plan and its goals.", workspace: "atlmaps", title: "Neighborhood Plan Neighborhood Planning Unit N-1979 Five Year Plan", date: nil, data_format: "raster", minzoom: nil, maxzoom: nil, minx: "-84.37484197", miny: "33.720063", maxx: "-84.31301082", maxy: "33.78766295", active: true, institution_id: 1, year: nil, data_type: "wms", thumb: "atlpm0320.png", attribution: nil, boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2ac7ec5ddd40 "POLYGON ((-84.31301082 33.78766295, -84.37484197 33.78766295, -84.37484197 33.720063, -84.31301082 33.720063, -84.31301082 33.78766295))">}
+])
+RasterLayer.create!([
+  {name: "atlpp0202_522", keywords: nil, description: "This map shows NPU N in Atlanta in 2002.", workspace: "atlmaps", title: "City of Atlanta: NPU N", date: nil, data_format: "raster", minzoom: nil, maxzoom: nil, minx: "-84.37884072", miny: "33.74083529", maxx: "-84.30241813", maxy: "33.78282329", active: true, institution_id: 1, year: nil, data_type: "wms", thumb: "atlpp0202_522.png", attribution: nil, boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2ac7ec4ecc4c "POLYGON ((-84.30241813 33.78282329, -84.37884072 33.78282329, -84.37884072 33.74083529, -84.30241813 33.74083529, -84.30241813 33.78282329))">}
+])
+RasterLayer.create!([
+  {name: "atlpp0219_15", keywords: nil, description: "This map shows the year a structure was built by blocks in Atlanta, GA in 1940", workspace: "atlmaps", title: "Atlanta, GA 1940 Year Built by Blocks (Part 1)", date: nil, data_format: "raster", minzoom: nil, maxzoom: nil, minx: "-84.41510492", miny: "33.75313449", maxx: "-84.31429492", maxy: "33.81334449", active: true, institution_id: 1, year: nil, data_type: "wms", thumb: "atlpp0219_15.png", attribution: nil, boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2ac7ec48fd58 "POLYGON ((-84.31429492 33.81334449, -84.41510492 33.81334449, -84.41510492 33.75313449, -84.31429492 33.75313449, -84.31429492 33.81334449))">}
+])
+RasterLayer.create!([
+  {name: "atlpp0355_131", keywords: nil, description: "This map depicts locations sensitive to noise pollution surrounding Interstate 485.", workspace: "atlmaps", title: "Interstate 485: Sensitive Noise Level Areas", date: nil, data_format: "raster", minzoom: nil, maxzoom: nil, minx: "-84.39037653", miny: "33.75233241", maxx: "-84.32836953", maxy: "33.79296641", active: true, institution_id: 1, year: nil, data_type: "wms", thumb: "atlpp0355_131.png", attribution: nil, boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2ac7ec43cdd8 "POLYGON ((-84.32836953 33.79296641, -84.39037653 33.79296641, -84.39037653 33.75233241, -84.32836953 33.75233241, -84.32836953 33.79296641))">}
+])
+RasterLayer.create!([
+  {name: "atlpp0448_75", keywords: nil, description: "This map depicts proposed street modifications on Moreland, Euclid, Seminole, McLendon, and Colquitt Avenues.", workspace: "atlmaps", title: "Street Modifications", date: nil, data_format: "raster", minzoom: nil, maxzoom: nil, minx: "-84.35275485", miny: "33.7635699", maxx: "-84.34784185", maxy: "33.7699469", active: true, institution_id: 1, year: nil, data_type: "wms", thumb: "atlpp0448_75.png", attribution: nil, boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2ac7ec3f3430 "POLYGON ((-84.34784185 33.7699469, -84.35275485 33.7699469, -84.35275485 33.7635699, -84.34784185 33.7635699, -84.34784185 33.7699469))">}
+])
+RasterLayer.create!([
+  {name: "acs_wpa_td2_sheet30", keywords: nil, description: "Atlanta Cadastral Survey features property lines, curb lines, city limit lines, tax district lines, undeveloped streets, concrete and masonry walls, building lines, hedges, fences, railroads, streetcar tracts, streams, trees along property lines, iron pins, wooden stakes, rock and concrete monuments, fire plugs, churches, schools, building and house numbers, and railroad right-of-ways.  The Atlanta Cadastral Survey is divided into tax district blocks.", workspace: "wpamaps", title: "Atlanta Cadastral Survey, Tax District 2, Sheet 30", date: nil, data_format: "raster", minzoom: nil, maxzoom: nil, minx: "-84.35762116", miny: "33.76754254", maxx: "-84.35211041", maxy: "33.77145734", active: true, institution_id: 1, year: nil, data_type: "wms", thumb: "acs_wpa_td2_sheet30.png", attribution: nil, boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2ac7ec369e88 "POLYGON ((-84.35211041 33.77145734, -84.35762116 33.77145734, -84.35762116 33.76754254, -84.35211041 33.76754254, -84.35211041 33.77145734))">}
+])

@@ -9,6 +9,15 @@ GIT
       rails (>= 3.2.6, < 6)
 
 GIT
+  remote: git://github.com/jayvarner/rgeo-activerecord.git
+  revision: 6f23af064a361b52029837cb83d7840fcfeb3c3f
+  branch: develop
+  specs:
+    rgeo-activerecord (5.1.0)
+      activerecord (~> 5.0)
+      rgeo (~> 0.3)
+
+GIT
   remote: git://github.com/stympy/faker.git
   revision: 50db39436124a3fab7a2f38e08e17a9b42afa6cc
   branch: master
@@ -328,9 +337,6 @@ GEM
       nokogiri (~> 1.5)
       trollop (~> 2.1)
     rgeo (0.6.0)
-    rgeo-activerecord (5.1.0)
-      activerecord (~> 5.0)
-      rgeo (~> 0.3)
     rgeo-geojson (0.4.3)
       rgeo (~> 0.5)
     rspec-core (3.6.0)
@@ -422,6 +428,7 @@ DEPENDENCIES
   rails (~> 5.0)
   rails_api_auth!
   rgeo (~> 0.6.0)
+  rgeo-activerecord!
   rgeo-geojson
   rspec-rails (~> 3.5)
   seed_dump

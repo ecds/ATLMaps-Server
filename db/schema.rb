@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170920234452) do
+ActiveRecord::Schema.define(version: 20171010141310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,7 +194,7 @@ ActiveRecord::Schema.define(version: 20170920234452) do
     t.string "data_type", limit: 255
     t.string "thumb"
     t.string "attribution"
-    t.geometry "boundingbox", limit: {:srid=>3857, :type=>"st_polygon"}
+    t.geometry "boundingbox", limit: {:srid=>4326, :type=>"st_polygon"}
     t.index ["institution_id"], name: "index_raster_layers_on_institution_id"
   end
 
@@ -280,7 +280,7 @@ ActiveRecord::Schema.define(version: 20170920234452) do
     t.json "properties"
     t.string "geometry_type"
     t.integer "vector_layer_id"
-    t.geometry "geometry_collection", limit: {:srid=>3857, :type=>"geometry_collection"}
+    t.geometry "geometry_collection", limit: {:srid=>4326, :type=>"geometry_collection"}
     t.index ["vector_layer_id"], name: "belongs_to_vector_layer"
     t.index ["vector_layer_id"], name: "index_vector_features_on_vector_layer_id"
   end
@@ -317,7 +317,7 @@ ActiveRecord::Schema.define(version: 20170920234452) do
     t.string "title", limit: 255
     t.string "data_type", limit: 255
     t.string "attribution"
-    t.geometry "boundingbox", limit: {:srid=>3857, :type=>"st_polygon"}
+    t.geometry "boundingbox", limit: {:srid=>4326, :type=>"st_polygon"}
     t.index ["institution_id"], name: "index_vector_layers_on_institution_id"
   end
 

@@ -1,7 +1,7 @@
 # Modle calss to hold the features for the vector layers.
 class VectorFeature < ApplicationRecord
-    belongs_to :vector_layer
-    after_save :update_vector_layer
+    belongs_to :vector_layer, autosave: true
+    # after_save :update_vector_layer
 
     def geojson
         RGeo::GeoJSON.encode(geometry_collection)
@@ -12,7 +12,7 @@ class VectorFeature < ApplicationRecord
     end
 
     def name
-        properties['name'] || properties['NAME'] || properties['title'] || properties['NEIGHBORHO'] || 'Untitled'
+        properties['name'] || properties['NAME'] || properties['title'] || properties['NEIGHBORHOOD'] || 'Untitled'
     end
 
     def description
@@ -20,10 +20,9 @@ class VectorFeature < ApplicationRecord
     end
 
     def youtube
-        return properties['gx_media_links'] if properties['gx_media_links'].include? 'youtube'
-        properties['video'].include? 'youtube'
-    rescue
-        return nil
+        return nil unless properties['gx_media_links'] || properties['video']
+        return properties['gx_media_links'] if properties.key?('gx_media_links') and properties['gx_media_links'].include? 'youtube'
+        return properties['video'] if properties.key?('video') and properties['video'].include? 'youtube'
     end
 
     def vimeo
