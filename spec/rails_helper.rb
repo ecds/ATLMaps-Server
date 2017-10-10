@@ -50,8 +50,8 @@ RSpec.configure do |config|
     # start by truncating all the tables but then use the faster transaction strategy the rest of the time.
     config.before(:suite) do
         DatabaseCleaner.clean
-        DatabaseCleaner.clean_with(:truncation)
-        DatabaseCleaner.strategy = :transaction
+        DatabaseCleaner.clean_with(:truncation, except: %w(spatial_ref_sys))
+        DatabaseCleaner.strategy = :transaction#, { except: %w[spatial_ref_sys] }
     end
 
     # start the transaction strategy as examples are run

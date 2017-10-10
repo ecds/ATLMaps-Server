@@ -1,10 +1,8 @@
+# app/models/tag.rb
 class Tag < ApplicationRecord
-    has_and_belongs_to_many :layers, dependent: :destroy
-    has_and_belongs_to_many :raster_layers, -> { distinct }, dependent: :destroy
-    has_and_belongs_to_many :vector_layers, -> { distinct }, dependent: :destroy
-
-    has_and_belongs_to_many :categories
-
+    has_many :categories_tags
+    has_many :categories, through: :categories_tags
+    # Assotiations are handled by acts-as-taggable-on gem
     def slug
         name.parameterize
     end

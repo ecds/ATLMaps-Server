@@ -18,6 +18,7 @@
 #
 class RasterLayer < ApplicationRecord
     include PgSearch
+    include RGeo::Geographic::ProjectedGeometryMethods
     HTTParty::Basement.default_options.update(verify: false)
     mount_uploader :thumb, RasterThumbnailUploader
 
@@ -103,88 +104,154 @@ class RasterLayer < ApplicationRecord
         end
     end
 
-    scope :by_bounds, lambda { |bounds|
-        if bounds.present?
-            # The area of the intersection of the viewable bounds and the bounds of a layer.
-            intersection = Arel::Nodes::NamedFunction.new(
-                'ST_AREA', [
-                    Arel::Nodes::NamedFunction.new(
-                        'ST_INTERSECTION', [
-                            RasterLayer.arel_table[:boundingbox],
-                            Arel::Nodes::Quoted.new(bounds)
-                        ]
-                    )
-                ]
-            )
-
-            # The distance from the center of a layer and the center of the viewable area.
-            distance_from_center = Arel::Nodes::NamedFunction.new(
-                'ST_DISTANCE', [
-                    Arel::Nodes::NamedFunction.new(
-                        'ST_Centroid', [Arel::Nodes::Quoted.new(bounds)]
-                    ), Arel::Nodes::NamedFunction.new(
-                        'ST_Centroid', [RasterLayer.arel_table[:boundingbox]]
-                    )
-                ]
-            )
-
-            # Area of the viewable bounds.
-            layer_bounding_box_area = Arel::Nodes::NamedFunction.new(
-                'ST_AREA', [RasterLayer.arel_table[:boundingbox]]
-            )
-
-            # Area of the bounds to be searched.
-            bounds_area = Arel::Nodes::NamedFunction.new(
-                'ST_AREA', [Arel::Nodes::Quoted.new(bounds)]
-            )
-
-            diff_intersection_layer = Arel::Nodes::NamedFunction.new(
-                'ABS', [
-                    Arel::Nodes::Subtraction.new(
-                        intersection,
-                        layer_bounding_box_area
-                    )
-                ]
-            )
-
-            # Difference of the areas
-            # We get the absolute value because we don't know if the minuend is greater than
-            # or less than the summand.
-            diff_areas = Arel::Nodes::NamedFunction.new(
-                'ABS', [
-                    Arel::Nodes::Subtraction.new(
-                        bounds_area,
-                        layer_bounding_box_area
-                    )
-                ]
-            )
-
-            # The score is:
-            # area of the map minus the area of the intersection of the map and the searched bounds
-            # plus the distance between the center of the the map and the searched bounds
-            # plus the area of the map minus the area of the searched bounds
-            score = Arel::Nodes::Addition.new(
+    scope :lucene, lambda { |params|
+        if params[:bounds].present?
+            distance_from_center = Arel::Nodes::Grouping.new(
                 Arel::Nodes::Addition.new(
-                    diff_intersection_layer,
-                    distance_from_center
+                    Arel::Nodes::NamedFunction.new(
+                        'ST_DISTANCE', [
+                            Arel::Nodes::NamedFunction.new(
+                                'ST_Centroid', [Arel::Nodes::Quoted.new(params[:bounds])]
+                            ),
+                            RasterLayer.arel_table[:boundingbox].st_centroid
+                        ]
+                    ),
+                    1
+                )
+            )
+            # http://svn.code.sf.net/p/geoportal/code/Geoportal/trunk/src/com/esri/gpt/catalog/lucene/SpatialRankingValueSource.java
+            # double intersectionArea = width * height;
+            # double queryRatio  = intersectionArea / this.qryArea;
+            # double targetRatio = intersectionArea / tgtArea;
+            # double queryFactor  = Math.pow(queryRatio,this.qryPower);
+            # double targetFactor = Math.pow(targetRatio,this.tgtPower);
+            # score = queryFactor * targetFactor * 10000.0;
+            query_ratio = Arel::Nodes::Division.new(
+                Arel::Nodes::NamedFunction.new(
+                    'ST_Area', [
+                        RasterLayer.arel_table[:boundingbox].st_intersection(Arel::Nodes::Quoted.new(params[:bounds])),
+                        Arel::Nodes::SqlLiteral.new('false') # set `use_spheroid` to false. There should be a better way to do this.
+                    ]
                 ),
-                diff_areas
+                Arel::Nodes::Quoted.new(params[:bounds].area)
             )
 
-            RasterLayer.select([
-                                   RasterLayer.arel_table[Arel.star]
-                               ]).where(
-                                   Arel::Nodes::NamedFunction.new(
-                                       'ST_INTERSECTS', [
-                                           RasterLayer.arel_table[:boundingbox],
-                                           Arel::Nodes::Quoted.new(bounds)
-                                       ]
-                                   )
-                               ).order(
-                                   score
-                               )
+            target_ratio = Arel::Nodes::Division.new(
+                Arel::Nodes::NamedFunction.new(
+                    'ST_Area', [
+                        RasterLayer.arel_table[:boundingbox].st_intersection(Arel::Nodes::Quoted.new(params[:bounds])),
+                        Arel::Nodes::SqlLiteral.new('false') # set `use_spheroid` to false. There should be a better way to do this.
+                    ]
+                ),
+                Arel::Nodes::NamedFunction.new(
+                    'ST_Area', [
+                        RasterLayer.arel_table[:boundingbox],
+                        Arel::Nodes::SqlLiteral.new('false') # set `use_spheroid` to false. There should be a better way to do this.
+                    ]
+                )
+            )
+
+            lucene_score = Arel::Nodes::Division.new(
+                Arel::Nodes::Multiplication.new(
+                    target_ratio,
+                    query_ratio
+                ),
+                distance_from_center
+                # 10_000
+            )
+
+            # select([RasterLayer.arel_table[:name], query_ratio, target_ratio, lucene_score])
+            where(RasterLayer
+                .arel_table[:boundingbox]
+                .st_intersects(Arel::Nodes::Quoted.new(params[:bounds])))
+                .order(
+                    lucene_score.desc
+                )
         end
     }
+
+    scope :by_bounds, lambda { |params|
+    if params[:bounds].present?
+        # The area of the intersection of the viewable bounds and the bounds of a layer.
+        intersection = Arel::Nodes::NamedFunction.new(
+            'ST_AREA', [
+                Arel::Nodes::NamedFunction.new(
+                    'ST_INTERSECTION', [
+                        RasterLayer.arel_table[:boundingbox],
+                        Arel::Nodes::Quoted.new(params[:bounds])
+                    ]
+                )
+            ]
+        )
+
+        # The distance from the center of a layer and the center of the viewable area.
+        distance_from_center = Arel::Nodes::NamedFunction.new(
+            'ST_DISTANCE', [
+                Arel::Nodes::NamedFunction.new(
+                    'ST_Centroid', [Arel::Nodes::Quoted.new(params[:bounds])]
+                ), Arel::Nodes::NamedFunction.new(
+                    'ST_Centroid', [RasterLayer.arel_table[:boundingbox]]
+                )
+            ]
+        )
+
+        # Area of the viewable bounds.
+        layer_bounding_box_area = Arel::Nodes::NamedFunction.new(
+            'ST_AREA', [RasterLayer.arel_table[:boundingbox]]
+        )
+
+        # Area of the bounds to be searched.
+        bounds_area = Arel::Nodes::NamedFunction.new(
+            'ST_AREA', [Arel::Nodes::Quoted.new(params[:bounds])]
+        )
+
+        diff_intersection_layer = Arel::Nodes::NamedFunction.new(
+            'ABS', [
+                Arel::Nodes::Subtraction.new(
+                    intersection,
+                    layer_bounding_box_area
+                )
+            ]
+        )
+
+        # Difference of the areas
+        # We get the absolute value because we don't know if the minuend is greater than
+        # or less than the summand.
+        diff_areas = Arel::Nodes::NamedFunction.new(
+            'ABS', [
+                Arel::Nodes::Subtraction.new(
+                    bounds_area,
+                    layer_bounding_box_area
+                )
+            ]
+        )
+
+        # The score is:
+        # area of the map minus the area of the intersection of the map and the searched bounds
+        # plus the distance between the center of the the map and the searched bounds
+        # plus the area of the map minus the area of the searched bounds
+        score = Arel::Nodes::Addition.new(
+            Arel::Nodes::Addition.new(
+                diff_intersection_layer,
+                distance_from_center
+            ),
+            diff_areas
+        )
+
+        RasterLayer.select([
+                               RasterLayer.arel_table[Arel.star]
+                           ]).where(
+                               Arel::Nodes::NamedFunction.new(
+                                   'ST_INTERSECTS', [
+                                       RasterLayer.arel_table[:boundingbox],
+                                       Arel::Nodes::Quoted.new(params[:bounds])
+                                   ]
+                               )
+                           ).order(
+                               score
+                           )
+    end
+}
 
     scope :by_neighborhood, lambda {
         intersection = Arel::Nodes::NamedFunction.new(
@@ -283,7 +350,7 @@ class RasterLayer < ApplicationRecord
     end
 
     def calculate_boundingbox
-        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
+        factory = RGeo::Geographic.simple_mercator_factory
         self.boundingbox = factory.polygon(
             factory.line_string(
                 [
@@ -295,6 +362,15 @@ class RasterLayer < ApplicationRecord
                 ]
             )
         )
+    end
+
+    def score(bounds)
+        # return unless bounds
+        bounds.area
+    end
+
+    def query_area
+        boundingbox.area
     end
 
     private

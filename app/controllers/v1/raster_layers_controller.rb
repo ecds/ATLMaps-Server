@@ -13,12 +13,11 @@ class V1::RasterLayersController < ApplicationController
                   elsif params[:search]
                       # NOTE: the client clears out the local store when none of
                       # search parameters have values.
-                      # TODO: Combine all this into one scope.
                       RasterLayer.active
                                  .browse_text_search(params[:text_search])
                                  .by_institution(params[:institution])
                                  .by_year(params[:start_year].to_i, params[:end_year].to_i)
-                                 .by_bounds(make_polygon(params[:bounds]))
+                                 .lucene(bounds: make_polygon(params[:bounds]), zoom: params[:zoom])
                                  .by_tags(params[:tags])
                   else
                       RasterLayer.active.alpha_sort

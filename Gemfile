@@ -9,6 +9,7 @@ gem 'pg'
 gem 'acts-as-taggable-on', '~> 5.0'
 gem 'pg_search'
 gem 'rgeo', '~> 0.6.0'
+gem 'rgeo-activerecord', git: 'git://github.com/jayvarner/rgeo-activerecord.git', branch: 'develop'
 gem 'rgeo-geojson'
 
 # API Responses

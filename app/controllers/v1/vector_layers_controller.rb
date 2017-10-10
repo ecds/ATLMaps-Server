@@ -89,7 +89,7 @@ class V1::VectorLayersController < ApplicationController
                 params, only: %i[
                     title description
                     active attribution
-                    data_format
+                    data_format url
                 ]
             )
     end

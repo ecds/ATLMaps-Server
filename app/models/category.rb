@@ -2,7 +2,8 @@
 class Category < ApplicationRecord
     # @association relatedObjs ['tags']
     # @todo can this just be an `has_many`?
-    has_and_belongs_to_many :tags
+    has_many :categories_tags
+    has_many :tags, through: :categories_tags
 
     # @!attribute slug
     #   @return [String] parameterized version of of `category.name`.
