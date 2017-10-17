@@ -4,7 +4,7 @@ class VectorFeature < ApplicationRecord
     # after_save :update_vector_layer
 
     def geojson
-        RGeo::GeoJSON.encode(geometry_collection)
+        RGeo::GeoJSON.encode(geometry_collection.projection)
     end
 
     def layer_title
