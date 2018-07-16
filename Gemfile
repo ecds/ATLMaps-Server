@@ -13,7 +13,7 @@ gem 'rgeo-activerecord', git: 'git://github.com/jayvarner/rgeo-activerecord.git'
 gem 'rgeo-geojson'
 
 # API Responses
-gem 'active_model_serializers', '~> 0.10.0.rc3'
+gem 'active_model_serializers', '~> 0.10.7'
 gem 'kaminari' # For pagination
 
 # Authentication
