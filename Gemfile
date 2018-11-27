@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0'
+gem 'rails', '~> 5.2'
 # Use postgres with the postgis plugin as the database for Active Record
 gem 'activerecord-postgis-adapter', '~> 5.0'
 gem 'pg'
