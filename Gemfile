@@ -14,7 +14,7 @@ gem 'rgeo-geojson'
 gem 'roo', "~> 2.7.0"
 
 # API Responses
-gem 'active_model_serializers', '~> 0.10.0.rc3'
+gem 'active_model_serializers', '~> 0.10.9'
 gem 'kaminari' # For pagination
 
 # Authentication
