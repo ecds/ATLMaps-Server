@@ -11,6 +11,7 @@ gem 'pg_search'
 gem 'rgeo', '~> 0.6.0'
 gem 'rgeo-activerecord', git: 'git://github.com/jayvarner/rgeo-activerecord.git', branch: 'develop'
 gem 'rgeo-geojson'
+gem 'roo', "~> 2.7.0"
 
 # API Responses
 gem 'active_model_serializers', '~> 0.10.0.rc3'

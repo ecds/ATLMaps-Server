@@ -4,6 +4,6 @@ class Tag < ApplicationRecord
     has_many :categories, through: :categories_tags
     # Assotiations are handled by acts-as-taggable-on gem
     def slug
-        name.parameterize
+        return name.parameterize
     end
 end

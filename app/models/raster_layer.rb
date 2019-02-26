@@ -16,8 +16,8 @@
 # Include Arel::OrderPredications
 # Required due to AREL bug https://github.com/rails/arel/issues/399
 #
-class RasterLayer < ApplicationRecord
-    include PgSearch
+class RasterLayer < Layer
+    # include PgSearch
     include RGeo::Geographic::ProjectedGeometryMethods
     HTTParty::Basement.default_options.update(verify: false)
     mount_uploader :thumb, RasterThumbnailUploader
@@ -25,150 +25,155 @@ class RasterLayer < ApplicationRecord
     has_many :raster_layer_project
     has_many :projects, through: :raster_layer_project, dependent: :destroy
     has_many :user_taggeds
-    belongs_to :institution
+    # belongs_to :institution
 
     # Uses `acts-as-taggable-on` gem.
-    acts_as_taggable
+    # acts_as_taggable
 
     # before_save :create_thumbnail
     before_save :calculate_boundingbox
 
     # Scope: by_institution. Seraches layers by institution
-    scope :by_institution, lambda { |institution|
-        joins(:institution).where(institutions: { name: institution }) \
-        if institution.present?
-    }
+    # scope :by_institution, lambda { |institution|
+    #     joins(:institution).where(institutions: { name: institution }) \
+    #     if institution.present?
+    # }
 
-    # Uses `acts-as-taggable-on` gem.
-    scope :by_tags, ->(tags) { tagged_with(tags, any: true, wild: true) if tags.present? }
+    # # Uses `acts-as-taggable-on` gem.
+    # scope :by_tags, ->(tags) { tagged_with(tags, any: true, wild: true) if tags.present? }
 
-    scope :search_by_year, lambda { |start_year, end_year|
-        where(year: start_year..end_year)
-    }
+    # scope :search_by_year, lambda { |start_year, end_year|
+    #     where(year: start_year..end_year)
+    # }
 
     # @!method search_by_year(yyyy, yyyy)
     # @param [Integer] start_year, four digit year for lower bound search.
     # @param [Integer] end_year, for digit year for upper bound of search
     # Validates the incoming parameters and calls the `by_year` scope.
     # @todo This works, but should it be returning something?
-    def self.by_year(start_year, end_year)
-        if end_year > 0
-            search_by_year(start_year, end_year)
-        else
-            all
-        end
-    end
+    # def self.by_year(start_year, end_year)
+    #     if end_year > 0
+    #         search_by_year(start_year, end_year)
+    #     else
+    #         all
+    #     end
+    # end
 
-    scope :active, -> { where(active: true) }
-    scope :alpha_sort, -> { order('title ASC') }
+    # scope :active, -> { where(active: true) }
+    # scope :alpha_sort, -> { order('title ASC') }
 
     # Get random map taht has less than three tags
     scope :test, -> { all unless :tags.empty? }
-    scope :un_tagged, lambda {
-        group('raster_layers.id')
-            .having('count( raster_layers ) < 3')
-            .order('RANDOM()').first
-    }
+    # scope :un_tagged, lambda {
+    #     group('raster_layers.id')
+    #         .having('count( raster_layers ) < 3')
+    #         .order('RANDOM()').first
+    # }
 
     # TODO: For some reason, in test, the `associated_against` does not work.
-    pg_search_scope :search,
-                    against: {
-                        name: 'A',
-                        title: 'A',
-                        description: 'C',
-                        attribution: 'D'
-                    },
-                    associated_against: {
-                        tags: {
-                            name: 'B'
-                        }
-                    },
-                    using: {
-                        tsearch: {
-                            prefix: true, dictionary: 'english'
-                        }
-                    }
+    # pg_search_scope :search,
+    #                 against: {
+    #                     name: 'A',
+    #                     title: 'A',
+    #                     description: 'C',
+    #                     attribution: 'D'
+    #                 },
+    #                 associated_against: {
+    #                     tags: {
+    #                         name: 'B'
+    #                     }
+    #                 },
+    #                 using: {
+    #                     tsearch: {
+    #                         prefix: true, dictionary: 'english'
+    #                     }
+    #                 }
 
-    def self.text_search(query)
-        # Return no results if query isn't present
-        search(query)
-    end
+    # def self.text_search(query)
+    #     # Return no results if query isn't present
+    #     search(query)
+    # end
 
-    def self.browse_text_search(query)
-        # If there is no query, return everything.
-        # Not everything will be returned becuae other filters will be present.
-        if query.present?
-            search(query)
-        else
-            all
-        end
-    end
+    # def self.browse_text_search(query)
+    #     # If there is no query, return everything.
+    #     # Not everything will be returned becuae other filters will be present.
+    #     if query.present?
+    #         search(query)
+    #     else
+    #         all
+    #     end
+    # end
 
-    scope :lucene, lambda { |params|
-        if params[:bounds].present?
-            distance_from_center = Arel::Nodes::Grouping.new(
-                Arel::Nodes::Addition.new(
-                    Arel::Nodes::NamedFunction.new(
-                        'ST_DISTANCE', [
-                            Arel::Nodes::NamedFunction.new(
-                                'ST_Centroid', [Arel::Nodes::Quoted.new(params[:bounds])]
-                            ),
-                            RasterLayer.arel_table[:boundingbox].st_centroid
-                        ]
-                    ),
-                    1
-                )
-            )
-            # http://svn.code.sf.net/p/geoportal/code/Geoportal/trunk/src/com/esri/gpt/catalog/lucene/SpatialRankingValueSource.java
-            # double intersectionArea = width * height;
-            # double queryRatio  = intersectionArea / this.qryArea;
-            # double targetRatio = intersectionArea / tgtArea;
-            # double queryFactor  = Math.pow(queryRatio,this.qryPower);
-            # double targetFactor = Math.pow(targetRatio,this.tgtPower);
-            # score = queryFactor * targetFactor * 10000.0;
-            query_ratio = Arel::Nodes::Division.new(
-                Arel::Nodes::NamedFunction.new(
-                    'ST_Area', [
-                        RasterLayer.arel_table[:boundingbox].st_intersection(Arel::Nodes::Quoted.new(params[:bounds])),
-                        Arel::Nodes::SqlLiteral.new('false') # set `use_spheroid` to false. There should be a better way to do this.
-                    ]
-                ),
-                Arel::Nodes::Quoted.new(params[:bounds].area)
-            )
+    # scope :lucene, lambda { |params|
+    #     if params[:bounds].present?
+    #         distance_from_center = Arel::Nodes::Grouping.new(
+    #             Arel::Nodes::Addition.new(
+    #                 Arel::Nodes::NamedFunction.new(
+    #                     'ST_DISTANCE', [
+    #                         Arel::Nodes::NamedFunction.new(
+    #                             'ST_Centroid', [Arel::Nodes::Quoted.new(params[:bounds])]
+    #                         ),
+    #                         RasterLayer.arel_table[:boundingbox].st_centroid
+    #                     ]
+    #                 ),
+    #                 1
+    #             )
+    #         )
+    #         # http://svn.code.sf.net/p/geoportal/code/Geoportal/trunk/src/com/esri/gpt/catalog/lucene/SpatialRankingValueSource.java
+    #         # double intersectionArea = width * height;
+    #         # double queryRatio  = intersectionArea / this.qryArea;
+    #         # double targetRatio = intersectionArea / tgtArea;
+    #         # double queryFactor  = Math.pow(queryRatio,this.qryPower);
+    #         # double targetFactor = Math.pow(targetRatio,this.tgtPower);
+    #         # score = queryFactor * targetFactor * 10000.0;
+    #         query_ratio = Arel::Nodes::Division.new(
+    #             Arel::Nodes::NamedFunction.new(
+    #                 'ST_Area', [
+    #                     RasterLayer.arel_table[:boundingbox].st_intersection(Arel::Nodes::Quoted.new(params[:bounds])),
+    #                     Arel::Nodes::SqlLiteral.new('false') # set `use_spheroid` to false. There should be a better way to do this.
+    #                 ]
+    #             ),
+    #             Arel::Nodes::Quoted.new(params[:bounds].area)
+    #         )
 
-            target_ratio = Arel::Nodes::Division.new(
-                Arel::Nodes::NamedFunction.new(
-                    'ST_Area', [
-                        RasterLayer.arel_table[:boundingbox].st_intersection(Arel::Nodes::Quoted.new(params[:bounds])),
-                        Arel::Nodes::SqlLiteral.new('false') # set `use_spheroid` to false. There should be a better way to do this.
-                    ]
-                ),
-                Arel::Nodes::NamedFunction.new(
-                    'ST_Area', [
-                        RasterLayer.arel_table[:boundingbox],
-                        Arel::Nodes::SqlLiteral.new('false') # set `use_spheroid` to false. There should be a better way to do this.
-                    ]
-                )
-            )
+    #         target_ratio = Arel::Nodes::Division.new(
+    #             Arel::Nodes::NamedFunction.new(
+    #                 'ST_Area', [
+    #                     RasterLayer.arel_table[:boundingbox].st_intersection(Arel::Nodes::Quoted.new(params[:bounds])),
+    #                     Arel::Nodes::SqlLiteral.new('false') # set `use_spheroid` to false. There should be a better way to do this.
+    #                 ]
+    #             ),
+    #             Arel::Nodes::NamedFunction.new(
+    #                 'ST_Area', [
+    #                     RasterLayer.arel_table[:boundingbox],
+    #                     Arel::Nodes::SqlLiteral.new('false') # set `use_spheroid` to false. There should be a better way to do this.
+    #                 ]
+    #             )
+    #         )
 
-            lucene_score = Arel::Nodes::Division.new(
-                Arel::Nodes::Multiplication.new(
-                    target_ratio,
-                    query_ratio
-                ),
-                distance_from_center
-                # 10_000
-            )
+    #         lucene_score = Arel::Nodes::Division.new(
+    #             Arel::Nodes::Multiplication.new(
+    #                 target_ratio,
+    #                 query_ratio
+    #             ),
+    #             distance_from_center
+    #             # 10_000
+    #         )
 
-            # select([RasterLayer.arel_table[:name], query_ratio, target_ratio, lucene_score])
-            where(RasterLayer
-                .arel_table[:boundingbox]
-                .st_intersects(Arel::Nodes::Quoted.new(params[:bounds])))
-                .order(
-                    lucene_score.desc
-                )
-        end
-    }
+    #         select([
+    #                    RasterLayer.arel_table[Arel.star]
+    #                ]).where(
+    #                    Arel::Nodes::NamedFunction.new(
+    #                        'ST_INTERSECTS', [
+    #                            RasterLayer.arel_table[:boundingbox],
+    #                            Arel::Nodes::Quoted.new(params[:bounds])
+    #                        ]
+    #                    )
+    #                ).order(
+    #                    lucene_score.desc
+    #                )
+    #     end
+    # }
 
     scope :by_bounds, lambda { |params|
     if params[:bounds].present?

@@ -1,12 +1,12 @@
 # Model class for vector layers.
-class VectorLayer < ApplicationRecord
+class VectorLayer < Layer
     # Use Set to determine the types of features.
     require 'set'
 
     has_many :vector_layer_project
     has_many :projects, through: :vector_layer_project, dependent: :destroy
     has_many :vector_feature
-    belongs_to :institution
+    # belongs_to :institution
 
     before_create :ensure_name
     # after_create :calculate_boundingbox_on_create
@@ -14,16 +14,17 @@ class VectorLayer < ApplicationRecord
     before_save :find_data_type
 
     # Uses `acts-as-taggable-on` gem.
-    acts_as_taggable
+    # acts_as_taggable
 
-    scope :by_institution, ->(institution) { joins(:institution).where(institutions: { name: institution }) if institution.present? }
 
     # Uses `acts-as-taggable-on` gem.
-    scope :by_tags, ->(tags) { tagged_with(tags, any: true, wild: true) if tags.present? }
-    scope :search_by_year, ->(start_year, end_year) { where(year: start_year..end_year) }
-    scope :text_search, ->(_text_search) { joins(:text_search) if query.present? }
-    scope :active, -> { where(active: true) }
-    scope :alpha_sort, -> { order('title ASC') }
+    # json search
+    # vl.vector_feature.where("properties #>> '{filters,grade}' = 'A'")
+    # scope :by_tags, ->(tags) { tagged_with(tags, any: true, wild: true) if tags.present? }
+    # scope :search_by_year, ->(start_year, end_year) { where(year: start_year..end_year) }
+    # scope :text_search, ->(_text_search) { joins(:text_search) if query.present? }
+    # scope :active, -> { where(active: true) }
+    # scope :alpha_sort, -> { order('title ASC') }
     scope :by_bounds, lambda { |bounds|
         if bounds.present?
             intersection = Arel::Nodes::NamedFunction.new(
@@ -62,49 +63,49 @@ class VectorLayer < ApplicationRecord
         end
     }
 
-    def self.by_year(start_year, end_year)
-        if end_year > 0
-            search_by_year(start_year, end_year)
-        else
-            all
-        end
-    end
+    # def self.by_year(start_year, end_year)
+    #     if end_year > 0
+    #         search_by_year(start_year, end_year)
+    #     else
+    #         all
+    #     end
+    # end
 
-    include PgSearch
-    pg_search_scope :search,
-                    against: {
-                        name: 'A',
-                        title: 'A',
-                        description: 'C'
-                    },
-                    associated_against: {
-                        tags: {
-                            name: 'B'
-                        },
-                        vector_feature: {
-                            properties: 'C'
-                        }
-                    },
-                    using: {
-                        tsearch: {
-                            prefix: true, dictionary: 'english'
-                        }
-                    }
+    # include PgSearch
+    # pg_search_scope :search,
+    #                 against: {
+    #                     name: 'A',
+    #                     title: 'A',
+    #                     description: 'C'
+    #                 },
+    #                 associated_against: {
+    #                     tags: {
+    #                         name: 'B'
+    #                     },
+    #                     vector_feature: {
+    #                         properties: 'C'
+    #                     }
+    #                 },
+    #                 using: {
+    #                     tsearch: {
+    #                         prefix: true, dictionary: 'english'
+    #                     }
+    #                 }
 
-    def self.text_search(query)
-        # Return no results if query isn't present
-        search(query)
-    end
+    # def self.text_search(query)
+    #     # Return no results if query isn't present
+    #     search(query)
+    # end
 
-    def self.browse_text_search(query)
-        # If there is no query, return everything.
-        # Not everything will be returned becuae other filters will be present.
-        if query.present?
-            search(query)
-        else
-            all
-        end
-    end
+    # def self.browse_text_search(query)
+    #     # If there is no query, return everything.
+    #     # Not everything will be returned becuae other filters will be present.
+    #     if query.present?
+    #         search(query)
+    #     else
+    #         all
+    #     end
+    # end
 
     # Attribute to use for html classes
     def slug
@@ -136,10 +137,14 @@ class VectorLayer < ApplicationRecord
         return if vector_feature.empty?
         return unless vector_feature.first.properties['filters']
         return if vector_feature.first.properties['filters'].empty?
-        filter_values = vector_feature.map { |f| f.properties['filters'].values }.uniq!.flatten
+        filter_values = vector_feature.map { |f| f.properties['filters'].values }.uniq!.flatten.sort
         filter_key = vector_feature.map { |f| f.properties['filters'].keys }.uniq!.flatten[0]
-        return { filter_key => filter_values }
+        return filter_key => filter_values
         # vector_feature.first.properties['filters']
+    end
+
+    def holc_colors
+        self
     end
 
     def ensure_name
@@ -164,16 +169,22 @@ class VectorLayer < ApplicationRecord
         # We use the `union` method from RGeo to combine all the
         # features. We get the first feature so we have something to
         # on which to call `union`.
-        group = vector_feature[0].geometry_collection
-        vector_feature.drop(1).each do |vf|
-            group = group.union(vf.geometry_collection)
-        end
-        self.boundingbox = group.envelope
-        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
+        # group = vector_feature[0].geometry_collection
+        # vector_feature.drop(1).each do |vf|
+        #     group = group.union(vf.geometry_collection)
+        # end
+        # self.boundingbox = group.envelope
+        self.boundingbox = ActiveRecord::Base.connection.execute("SELECT ST_SetSRID(ST_Extent(#{data_type.underscore}),4326)::geometry as extent  FROM vector_features WHERE vector_layer_id = #{id}").first['extent']
+        factory = RGeo::Geographic.simple_mercator_factory
         bb = RGeo::Cartesian::BoundingBox.create_from_geometry(factory.collection([boundingbox]))
         self.maxx = bb.max_x
         self.maxy = bb.max_y
         self.minx = bb.min_x
         self.miny = bb.min_y
+    end
+
+    def remote_geojson
+        return unless url && vector_feature.length.zero?
+        JSON.load(open(url))
     end
 end

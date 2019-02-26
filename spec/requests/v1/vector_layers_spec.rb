@@ -4,7 +4,6 @@ RSpec.describe 'V1::RasterLayers', type: :request do
     describe 'GET /vector_layers with vector_features' do
         let!(:vector_layer) { create_list(:vector_layer_with_features, 10) }
         it 'returns a vector_layer with features' do
-            # VectorLayer.all.each(&:save)
             VectorLayer.all.each do |v|
                 v.save
                 expect(v.boundingbox).to be_a_kind_of(RGeo::Geographic::ProjectedPolygonImpl)

@@ -6,7 +6,4 @@ class TagSerializer < ActiveModel::Serializer
                 :name,
                 :heading,
                 :slug
-    def slug
-        return :name.to_param
-    end
 end

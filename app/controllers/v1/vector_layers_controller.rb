@@ -17,7 +17,7 @@ class V1::VectorLayersController < ApplicationController
                                  .browse_text_search(params[:text_search])
                                  .by_institution(params[:institution])
                                  .by_year(params[:start_year].to_i, params[:end_year].to_i)
-                                 .by_bounds(make_polygon(params[:bounds]))
+                                 .vector_lucene(bounds: make_polygon(params[:bounds]))
                                  .by_tags(params[:tags])
                   else
                       VectorLayer.active.alpha_sort

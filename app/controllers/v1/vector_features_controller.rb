@@ -7,7 +7,7 @@ class V1::VectorFeaturesController < ApplicationController
     end
 
     def create
-        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
+        factory = RGeo::Geographic.simple_mercator_factory
         geojson = params[:data][:attributes][:geojson]
         coordinates = geojson[:geometry][:coordinates]
         feature = VectorFeature.new(
@@ -17,6 +17,7 @@ class V1::VectorFeaturesController < ApplicationController
             geometry_collection: factory.collection([factory.point(coordinates[0], coordinates[1])]),
             vector_layer: VectorLayer.find(params[:data][:relationships][:vector_layer][:data][:id])
         )
+        # fampov.merge!(row['Cnsus Tract'].gsub(/[^0-9]/, ''): row['Percentage of Families in Poverty'])
         render jsonapi: feature, status: 201 if feature.save
     end
 
@@ -40,7 +41,7 @@ class V1::VectorFeaturesController < ApplicationController
         ActiveModelSerializers::Deserialization
             .jsonapi_parse(
                 params, only: %i[
-                    geojson vector_layer
+                    geojson vector_layer properties
                 ]
             )
     end

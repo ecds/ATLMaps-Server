@@ -10,7 +10,7 @@ class Project < ApplicationRecord
     has_many :raster_layers, through: :raster_layer_project
 
     has_many :vector_layer_project, dependent: :destroy
-    has_many :vector_layers, through: :vector_layer_project
+    has_many :vector_layers, through: :vector_layer_project, dependent: :destroy
 
     has_many :collaboration
     has_many :users, through: :collaboration
@@ -25,7 +25,8 @@ class Project < ApplicationRecord
     #                             message: 'Not a valid YouTube embed code.' }, if: 'media.present?'
 
     def slug
-        return name.parameterize
+        return 'untitled' if name.nil?
+        name.parameterize
     end
 
     def owner

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171010141310) do
+ActiveRecord::Schema.define(version: 20180619190615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -275,12 +275,36 @@ ActiveRecord::Schema.define(version: 20171010141310) do
     t.index ["email"], name: "users_email_key", unique: true
   end
 
+  create_table "vector_feature_group_features", force: :cascade do |t|
+    t.bigint "vector_features_id"
+    t.bigint "vector_feature_groups_id"
+    t.string "filter_value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["vector_feature_groups_id"], name: "index_vector_feature_group_features_on_vector_feature_groups_id"
+    t.index ["vector_features_id"], name: "index_vector_feature_group_features_on_vector_features_id"
+  end
+
+  create_table "vector_feature_groups", force: :cascade do |t|
+    t.bigint "vector_layer_id"
+    t.string "filter_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["vector_layer_id"], name: "index_vector_feature_groups_on_vector_layer_id"
+  end
+
   create_table "vector_features", id: :serial, force: :cascade do |t|
     t.string "name"
     t.json "properties"
     t.string "geometry_type"
     t.integer "vector_layer_id"
     t.geometry "geometry_collection", limit: {:srid=>4326, :type=>"geometry_collection"}
+    t.geometry "point", limit: {:srid=>4326, :type=>"st_point"}
+    t.geometry "multi_point", limit: {:srid=>4326, :type=>"multi_point"}
+    t.geometry "polygon", limit: {:srid=>4326, :type=>"st_polygon"}
+    t.geometry "multi_polygon", limit: {:srid=>4326, :type=>"multi_polygon"}
+    t.geometry "line_string", limit: {:srid=>4326, :type=>"line_string"}
+    t.geometry "multi_line_string", limit: {:srid=>4326, :type=>"multi_line_string"}
     t.index ["vector_layer_id"], name: "belongs_to_vector_layer"
     t.index ["vector_layer_id"], name: "index_vector_features_on_vector_layer_id"
   end
@@ -318,6 +342,7 @@ ActiveRecord::Schema.define(version: 20171010141310) do
     t.string "data_type", limit: 255
     t.string "attribution"
     t.geometry "boundingbox", limit: {:srid=>4326, :type=>"st_polygon"}
+    t.json "geojson"
     t.index ["institution_id"], name: "index_vector_layers_on_institution_id"
   end
 

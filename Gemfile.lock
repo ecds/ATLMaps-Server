@@ -339,6 +339,9 @@ GEM
     rgeo (0.6.0)
     rgeo-geojson (0.4.3)
       rgeo (~> 0.5)
+    roo (2.7.1)
+      nokogiri (~> 1)
+      rubyzip (~> 1.1, < 2.0.0)
     rspec-core (3.6.0)
       rspec-support (~> 3.6.0)
     rspec-expectations (3.6.0)
@@ -356,6 +359,7 @@ GEM
       rspec-mocks (~> 3.6.0)
       rspec-support (~> 3.6.0)
     rspec-support (3.6.0)
+    rubyzip (1.2.1)
     seed_dump (3.2.4)
       activerecord (>= 4)
       activesupport (>= 4)
@@ -430,6 +434,7 @@ DEPENDENCIES
   rgeo (~> 0.6.0)
   rgeo-activerecord!
   rgeo-geojson
+  roo (~> 2.7.0)
   rspec-rails (~> 3.5)
   seed_dump
   shoulda-matchers (~> 3.1)

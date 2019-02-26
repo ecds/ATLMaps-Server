@@ -4,7 +4,7 @@ class VectorFeatureSerializer < ActiveModel::Serializer
                :geometry_type,
                :properties,
                :geojson,
-               :layer_title,
+               :filters,
                :name,
                :description,
                :images,
@@ -12,5 +12,7 @@ class VectorFeatureSerializer < ActiveModel::Serializer
                :youtube,
                :vimeo,
                :audio,
-               :feature_id
+               :feature_id,
+               :color_name,
+               :color_hex
 end

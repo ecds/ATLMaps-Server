@@ -156,8 +156,10 @@ namespace :dbfoo do
         end
     end
 
+    #vf.geometry_collection.geometry_n(0).geometry_type.to_s.underscore
+
     task import_geojson_features: :environment do
-        factory = RGeo::Geographic.simple_mercator_factory.projection_factory
+        factory = RGeo::Geographic.simple_mercator_factory
         VectorLayer.active.each do |v|
             puts v.id
             next unless v.url
@@ -174,19 +176,26 @@ namespace :dbfoo do
         end
     end
 
+    task convert_geo_types: :environment do
+VectorFeature.all.each do |vf|
+    geometry = vf.geometry_collection.geometry_n(0)
+    vf.public_send("#{geometry.geometry_type.to_s.underscore}=", geometry)
+    vf.save
+end
+    end
+
     task vector_boundingbox: :environment do
-        VectorLayer.all.each do |v|
-            # For now we are skipping single point layers because they
-            # do not have an un.
-            next unless v.vector_feature.length > 1
-            group = v.vector_feature[0].geometry_collection
-            v.vector_feature.drop(1).each do |vf|
-                group = group.union(vf.geometry_collection)
-            end
-            v.boundingbox = group.envelope
-            puts
-            v.save
-        end
+VectorLayer.all.each do |v|
+    # For now we are skipping single point layers because they
+    # do not have an un.
+    next unless v.vector_feature.length > 1
+    group = v.vector_feature[0].public_send(v.data_type.downcase)
+    v.vector_feature.drop(1).each do |vf|
+        group = group.union(vf.public_send(v.data_type.downcase))
+    end
+    v.boundingbox = group.envelope
+    v.save
+end
     end
 
     task remote_vector_boundingbox: :environment do

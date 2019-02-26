@@ -17,7 +17,7 @@ class V1::RasterLayersController < ApplicationController
                                  .browse_text_search(params[:text_search])
                                  .by_institution(params[:institution])
                                  .by_year(params[:start_year].to_i, params[:end_year].to_i)
-                                 .lucene(bounds: make_polygon(params[:bounds]), zoom: params[:zoom])
+                                 .raster_lucene(bounds: make_polygon(params[:bounds]), zoom: params[:zoom])
                                  .by_tags(params[:tags])
                   else
                       RasterLayer.active.alpha_sort
@@ -30,7 +30,7 @@ class V1::RasterLayersController < ApplicationController
         elsif @layers.empty?
             render json: { data: [] }
         else
-            @layers = @layers.page(params[:page]).per(params[:limit] || 10)
+            @layers = @layers.page(params[:page]).per(params[:limit] || 25)
             render json: @layers, meta: pagination_dict(@layers) # , project_id: 0
         end
     end
@@ -41,6 +41,6 @@ class V1::RasterLayersController < ApplicationController
         elsif params[:tagem]
             @layers = RasterLayer.un_tagged
         end
-        render json: @layer, root: 'raster_layer', include: ['institution']
+        render json: @layer, root: 'raster_layer', include: ['institution', 'tags']
     end
 end

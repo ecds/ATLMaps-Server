@@ -1,10 +1,13 @@
 # Modle calss to hold the features for the vector layers.
 class VectorFeature < ApplicationRecord
-    belongs_to :vector_layer, autosave: true
+    include Nokogiri
+    belongs_to :vector_layer # , autosave: true
     # after_save :update_vector_layer
 
     def geojson
-        RGeo::GeoJSON.encode(geometry_collection.projection)
+        geojson = RGeo::GeoJSON.encode(public_send(geometry_type.to_s.underscore))
+        geojson['properties'] = properties
+        return geojson
     end
 
     def layer_title
@@ -16,6 +19,9 @@ class VectorFeature < ApplicationRecord
     end
 
     def description
+    #     Nokogiri::HTML.fragment(properties['description']).children.first.text
+    # rescue NoMethodError =>
+    #     properties['description']
         properties['description']
     end
 
@@ -40,12 +46,44 @@ class VectorFeature < ApplicationRecord
     def image
         return nil if properties['images'].is_a? String
         properties['image'].to_h['url']
-    rescue
-        return nil
+    # rescue
+    #     return nil
     end
 
     def audio
         properties['audio']
+    end
+
+    def filters
+        properties['filters']
+    end
+
+    def color_name
+        return if filters.nil?
+        color_name = if filters['grade'] == 'A'
+                         'green-500'
+                     elsif filters['grade'] == 'B'
+                         'blue-600'
+                     elsif filters['grade'] == 'C'
+                         'yellow-500'
+                     elsif filters['grade'] == 'D'
+                         'red-600'
+                     end
+        return color_name
+    end
+
+    def color_hex
+        return if filters.nil?
+        color_hex = if filters['grade'] == 'A'
+                        '#4CAF50'
+                    elsif filters['grade'] == 'B'
+                        '#1E88E5'
+                    elsif filters['grade'] == 'C'
+                        '#FFEB3B'
+                    elsif filters['grade'] == 'D'
+                        '#D81B60'
+                    end
+        return color_hex
     end
 
     def feature_id

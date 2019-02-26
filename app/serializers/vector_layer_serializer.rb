@@ -1,5 +1,5 @@
 # app/serializers/vector_layer_serializer.rb
 class VectorLayerSerializer < LayerSerializer
     has_many :vector_feature, serializer: VectorFeatureSerializer
-    attributes :id, :filters
+    attributes :id, :filters, :geojson, :remote_geojson
 end
