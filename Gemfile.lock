@@ -303,7 +303,7 @@ GEM
       activesupport (>= 4.2)
       arel (>= 6)
     puma (3.9.1)
-    rack (2.0.3)
+    rack (2.0.7)
     rack-cors (0.4.1)
     rack-test (0.6.3)
       rack (>= 1.0)
