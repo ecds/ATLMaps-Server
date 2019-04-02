@@ -399,7 +399,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
     xml-simple (1.1.5)
-    yard (0.9.9)
+    yard (0.9.19)
 
 PLATFORMS
   ruby
