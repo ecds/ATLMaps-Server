@@ -11,7 +11,6 @@ addons:
     packages:
       - postgresql-9.6-postgis-2.3
 script:
-  - gem install bundler -v 2.1.0
   - bundle install --jobs=3 --retry=3
   - bundle exec rake db:schema:load
   - bundle exec rspec spec
@@ -24,4 +23,5 @@ before_install:
   - cp config/initializers/rails_api_auth.rb.dist config/initializers/rails_api_auth.rb
   - cp config/secrets.yml.dist config/initializers/secrets.yml
   - psql -U postgres -d travis_ci_test -c "create extension postgis"
+  - gem install bundler -v 2.1.0
 sudo: false
