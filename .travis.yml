@@ -25,6 +25,3 @@ before_install:
   - cp config/secrets.yml.dist config/initializers/secrets.yml
   - psql -U postgres -d travis_ci_test -c "create extension postgis"
 sudo: false
-
-# notifications:
-#   slack: litsdevs:CJeGHaEKHbNvp4YCaFTT1iVV
