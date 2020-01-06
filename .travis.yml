@@ -23,5 +23,5 @@ before_install:
   - cp config/initializers/rails_api_auth.rb.dist config/initializers/rails_api_auth.rb
   - cp config/secrets.yml.dist config/initializers/secrets.yml
   - psql -U postgres -d travis_ci_test -c "create extension postgis"
-  - gem install bundler -v 2.1.0
+  - gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
 sudo: false
