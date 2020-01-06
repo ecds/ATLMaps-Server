@@ -17,7 +17,7 @@
 # Required due to AREL bug https://github.com/rails/arel/issues/399
 #
 class RasterLayer < Layer
-    # include PgSearch
+    # include PgSearch::Model
     include RGeo::Geographic::ProjectedGeometryMethods
     HTTParty::Basement.default_options.update(verify: false)
     mount_uploader :thumb, RasterThumbnailUploader

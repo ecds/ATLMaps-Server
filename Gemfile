@@ -1,17 +1,18 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0'
+gem 'rails', '~> 5.2'
+gem 'bootsnap'
 # Use postgres with the postgis plugin as the database for Active Record
-gem 'activerecord-postgis-adapter', '~> 5.0'
+gem 'activerecord-postgis-adapter'
 gem 'pg'
 # gem 'squeel'
-gem 'acts-as-taggable-on', '~> 5.0'
+gem 'acts-as-taggable-on'
 gem 'pg_search'
-gem 'rgeo', '~> 0.6.0'
+gem 'rgeo'
 gem 'rgeo-activerecord', git: 'git://github.com/jayvarner/rgeo-activerecord.git', branch: 'develop'
 gem 'rgeo-geojson'
-gem 'roo', "~> 2.7.0"
+gem 'roo'
 
 # API Responses
 gem 'active_model_serializers', '~> 0.10.0.rc3'
@@ -31,7 +32,7 @@ gem 'yard', group: :doc
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring', group: :development
-gem 'web-console', '~> 2.0', group: :development
+gem 'web-console', group: :development
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -41,7 +42,7 @@ gem 'web-console', '~> 2.0', group: :development
 # Use Capistrano for deployment
 gem 'capistrano-passenger', group: :development
 gem 'capistrano-rails', group: :development
-gem 'capistrano-rbenv', '~> 2.0', group: :development
+gem 'capistrano-rbenv', group: :development
 
 gem 'httparty'
 gem 'nokogiri'
@@ -51,25 +52,26 @@ gem 'byebug', group: %i[development test]
 
 # For file uploads
 gem 'carrierwave'
-gem 'fog', '~> 1.38.0'
+gem 'fog'
 gem 'mini_magick'
 
 group :development do
     gem 'puma'
     gem 'seed_dump'
+    gem 'listen'
 end
 
 # for testing
 group :development, :test do
     gem 'bundler-audit'
-    gem 'rspec-rails', '~> 3.5'
+    gem 'rspec-rails'
 end
 
 group :test do
     gem 'coveralls', require: false
     gem 'database_cleaner'
-    gem 'factory_girl_rails', '~> 4.0'
+    gem 'factory_bot_rails'
     gem 'faker', git: 'git://github.com/stympy/faker.git', branch: 'master'
-    gem 'shoulda-matchers', '~> 3.1'
+    gem 'shoulda-matchers'
     gem 'simplecov'
 end

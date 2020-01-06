@@ -1,13 +1,14 @@
 # spec/factories/vector_layers.rb
-FactoryGirl.define do
+FactoryBot.define do
     factory :vector_layer do
-        title { Faker::RickAndMorty.character }
-        name { Faker::HitchhikersGuideToTheGalaxy.location }
-        description { Faker::RickAndMorty.quote }
+        title { Faker::TvShows::RickAndMorty.character }
+        name { Faker::Movies::HitchhikersGuideToTheGalaxy.location }
+        description { Faker::TvShows::RickAndMorty.quote }
+        institution { create(:institution) }
 
         factory :vector_layer_with_features do
             transient do
-                features_count 5
+                features_count { 5 }
             end
 
             after(:create) do |vector_layer, evaluator|

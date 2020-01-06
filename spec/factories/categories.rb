@@ -1,11 +1,11 @@
 # spec/factories/categories.rb
-FactoryGirl.define do
+FactoryBot.define do
     factory :category do
         name { Faker::Beer.style }
 
         factory :with_tags do
             transient do
-                tag_count 5
+                tag_count { 5 }
             end
 
             after(:create) do |category, evaluator|

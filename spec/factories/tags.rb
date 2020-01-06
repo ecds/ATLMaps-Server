@@ -1,5 +1,5 @@
 # spec/factories/tags.rb
-FactoryGirl.define do
+FactoryBot.define do
     factory :tag do
         name { Faker::Name.unique.first_name }
     end

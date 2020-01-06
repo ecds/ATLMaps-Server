@@ -1,16 +1,16 @@
 # spec/factories/raster_layers.rb
-FactoryGirl.define do
+FactoryBot.define do
     factory :raster_layer do
-        title { Faker::HitchhikersGuideToTheGalaxy.marvin_quote }
-        name { Faker::HitchhikersGuideToTheGalaxy.location }
-        workspace { Faker::HitchhikersGuideToTheGalaxy.planet }
+        title { Faker::Movies::HitchhikersGuideToTheGalaxy.marvin_quote }
+        name { Faker::Movies::HitchhikersGuideToTheGalaxy.location }
+        workspace { Faker::Movies::HitchhikersGuideToTheGalaxy.planet }
         institution { create(:institution) }
-        active false
+        active { false }
 
         factory :raster_with_tags do
-            active true
+            active { true }
             transient do
-                tags_count 5
+                tags_count { 5 }
             end
 
             # before(:create) do |raster_layer, evaluator|

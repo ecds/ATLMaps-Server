@@ -71,26 +71,26 @@ class VectorLayer < Layer
     #     end
     # end
 
-    # include PgSearch
-    # pg_search_scope :search,
-    #                 against: {
-    #                     name: 'A',
-    #                     title: 'A',
-    #                     description: 'C'
-    #                 },
-    #                 associated_against: {
-    #                     tags: {
-    #                         name: 'B'
-    #                     },
-    #                     vector_feature: {
-    #                         properties: 'C'
-    #                     }
-    #                 },
-    #                 using: {
-    #                     tsearch: {
-    #                         prefix: true, dictionary: 'english'
-    #                     }
-    #                 }
+    # include PgSearch::Model
+    pg_search_scope :search,
+                    against: {
+                        name: 'A',
+                        title: 'A',
+                        description: 'C'
+                    },
+                    associated_against: {
+                        tags: {
+                            name: 'B'
+                        },
+                        vector_feature: {
+                            properties: 'C'
+                        }
+                    },
+                    using: {
+                        tsearch: {
+                            prefix: true, dictionary: 'english'
+                        }
+                    }
 
     # def self.text_search(query)
     #     # Return no results if query isn't present

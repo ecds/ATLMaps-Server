@@ -1,29 +1,29 @@
 # spec/factories/vector_features.rb
-FactoryGirl.define do
+FactoryBot.define do
     @geo_factory = RGeo::Geographic.simple_mercator_factory
     factory :vector_feature do
         # geometry_type 'Point'
-        name { Faker::HitchhikersGuideToTheGalaxy.location }
+        name { Faker::Movies::HitchhikersGuideToTheGalaxy.location }
         geometry_collection { RGeo::Geographic.simple_mercator_factory.collection([RGeo::Geographic.simple_mercator_factory.point(Faker::Address.longitude.to_d, Faker::Address.latitude.to_d)]) }
         transient do
-            with_media false
-            with_youtube false
-            with_youtube_embed false
-            with_vimeo false
-            with_images false
-            with_image false
-            with_audio false
-            with_gx_media_links false
+            with_media { false }
+            with_youtube { false }
+            with_youtube_embed { false }
+            with_vimeo { false }
+            with_images { false }
+            with_image { false }
+            with_audio { false }
+            with_gx_media_links { false }
         end
 
         properties do
             hash = {
-                name: Faker::HitchhikersGuideToTheGalaxy.planet,
-                description: Faker::Hipster.paragraph(2, true, 4)
+                name: Faker::Movies::HitchhikersGuideToTheGalaxy.planet,
+                description: Faker::Hipster.paragraph(sentence_count: 2)
             }
 
             hash.deep_merge!(
-                video: Faker::Internet.url('youtube.com')
+                video: Faker::Internet.url(host: 'youtube.com')
             ) if with_youtube
 
             hash.deep_merge!(
@@ -31,7 +31,7 @@ FactoryGirl.define do
             ) if with_youtube_embed
 
             hash.deep_merge!(
-                gx_media_links: Faker::Internet.url('youtube.com')
+                gx_media_links: Faker::Internet.url(host: 'youtube.com')
             ) if with_gx_media_links
 
             hash.deep_merge!(

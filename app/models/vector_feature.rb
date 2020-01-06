@@ -6,6 +6,7 @@ class VectorFeature < ApplicationRecord
 
     def geojson
         geojson = RGeo::GeoJSON.encode(public_send(geometry_type.to_s.underscore))
+        return if geojson.nil?
         geojson['properties'] = properties
         return geojson
     end
@@ -44,7 +45,8 @@ class VectorFeature < ApplicationRecord
     end
 
     def image
-        return nil if properties['images'].is_a? String
+        return if properties['images'].nil?
+        return if properties['images'].is_a? String
         properties['image'].to_h['url']
     # rescue
     #     return nil

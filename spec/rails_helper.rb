@@ -43,8 +43,8 @@ RSpec.configure do |config|
     # instead of true.
     config.use_transactional_fixtures = true
 
-    # add `FactoryGirl` methods
-    config.include FactoryGirl::Syntax::Methods
+    # add `FactoryBot` methods
+    config.include FactoryBot::Syntax::Methods
     config.include RequestSpecHelper, type: :request
 
     # start by truncating all the tables but then use the faster transaction strategy the rest of the time.

@@ -1,6 +1,6 @@
 class Layer < ApplicationRecord
 
-  include PgSearch
+  include PgSearch::Model
 
   acts_as_taggable
   belongs_to :institution

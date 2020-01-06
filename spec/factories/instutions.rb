@@ -1,7 +1,7 @@
 # spec/factories/institutions.rb
-FactoryGirl.define do
+FactoryBot.define do
     factory :institution do
-        geoserver { Faker::HitchhikersGuideToTheGalaxy.specie }
-        name { Faker::HitchhikersGuideToTheGalaxy.specie }
+        geoserver { Faker::Movies::HitchhikersGuideToTheGalaxy.specie }
+        name { Faker::Movies::HitchhikersGuideToTheGalaxy.specie }
     end
 end

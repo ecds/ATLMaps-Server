@@ -2,7 +2,7 @@ dist: trusty
 sudo: false
 language: ruby
 rvm:
-  - 2.2.7
+  - 2.5.3
 env:
   - DB=postgresql
 addons:
@@ -11,9 +11,10 @@ addons:
     packages:
       - postgresql-9.6-postgis-2.3
 script:
+  - gem install bundler -v 2.1.0
   - bundle install --jobs=3 --retry=3
   - bundle exec rake db:schema:load
-  - bundle exec rspec
+  - bundle exec rspec spec
 before_install:
   - cp config/database.yml.travis config/database.yml
   - psql -c 'create database travis_ci_test' -U postgres

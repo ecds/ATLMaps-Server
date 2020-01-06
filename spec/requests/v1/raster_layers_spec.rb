@@ -9,7 +9,7 @@ RSpec.describe 'V1::RasterLayers', type: :request do
             it 'returns raster layers near auburn and hill' do
                 expect(json).not_to be_empty
                 expect(json.size).to eq(12)
-                expect([names]).to contain_exactly(%w(lightblue purple wheat atlpp0355_131_blue black deeppink yellow atlpp0219_15_green atlpp0202_522_red atlpm0320_purple))
+                expect([names]).to contain_exactly(%w(lightblue purple wheat atlpp0355_131_blue black deeppink yellow atlpp0219_15_green atlpp0202_522_red atlpm0320_purple lime fuchsia))
             end
         end
     end
@@ -20,7 +20,7 @@ RSpec.describe 'V1::RasterLayers', type: :request do
             it 'returns raster layers in reynoldstown' do
                 expect(json).not_to be_empty
                 expect(json.size).to eq(14)
-                expect([names]).to contain_exactly(%w(green atlpp0202_522_red black orange darkblue yellow atlpm0320_purple red brown purple))
+                expect([names]).to contain_exactly(%w(green atlpp0202_522_red black orange darkblue yellow atlpm0320_purple red brown purple atlpp0355_131_blue lime fuchsia atlpp0219_15_green))
             end
         end
     end
@@ -39,10 +39,10 @@ RSpec.describe 'V1::RasterLayers', type: :request do
     describe 'GET /raster_layers around emory' do
         context 'focused on emory' do
             before { get '/raster-layers?search=true&bounds%5Bs%5D=33.78298184257755&bounds%5Bn%5D=33.80061838317273&bounds%5Be%5D=-84.30071353912355&bounds%5Bw%5D=-84.34184789657594' }
-            it 'returns raster layers within the lime bounds' do
+            it 'returns raster layers near emory' do
                 expect(json).not_to be_empty
                 expect(json.size).to eq(8)
-                expect([names]).to contain_exactly(%w(gold atlpp0219_15_green atlpp0355_131_blue atlpm0320_purple lime yellow fuchsia darkred deeppink grey))
+                expect([names]).to contain_exactly(%w(gold atlpp0219_15_green atlpp0355_131_blue atlpm0320_purple lime yellow fuchsia darkred))
             end
         end
     end
