@@ -15,6 +15,7 @@ script:
   - bundle exec rake db:schema:load
   - bundle exec rspec spec
 before_install:
+  - sudo apt-get install libproj-dev
   - cp config/database.yml.travis config/database.yml
   - psql -c 'create database travis_ci_test' -U postgres
   - cp config/application.rb.dist config/application.rb
@@ -24,4 +25,3 @@ before_install:
   - cp config/secrets.yml.dist config/initializers/secrets.yml
   - psql -U postgres -d travis_ci_test -c "create extension postgis"
   - gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
-sudo: false
