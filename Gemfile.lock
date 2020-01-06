@@ -1,21 +1,12 @@
 GIT
-  remote: git://github.com/jayvarner/rails_api_auth.git
-  revision: 48181fb07f13121abde48844d39598920c90822d
-  tag: 0.0.9
-  specs:
-    rails_api_auth (0.0.9)
-      bcrypt (~> 3.1.7)
-      httparty (~> 0.13.3)
-      rails (>= 3.2.6, < 6)
-
-GIT
-  remote: git://github.com/jayvarner/rgeo-activerecord.git
-  revision: 6f23af064a361b52029837cb83d7840fcfeb3c3f
+  remote: git://github.com/ecds/rails_api_auth.git
+  revision: d0dc664e919f72e6a24735288c57b79edd746d04
   branch: develop
   specs:
-    rgeo-activerecord (5.1.0)
-      activerecord (~> 5.0)
-      rgeo (~> 0.3)
+    rails_api_auth (0.1.0)
+      bcrypt (~> 3.1.7)
+      httparty (~> 0.13.3)
+      rails (>= 3.2.6, < 7)
 
 GIT
   remote: git://github.com/stympy/faker.git
@@ -29,65 +20,77 @@ GEM
   remote: https://rubygems.org/
   specs:
     CFPropertyList (2.3.6)
-    actioncable (5.2.4.1)
-      actionpack (= 5.2.4.1)
+    actioncable (6.0.2.1)
+      actionpack (= 6.0.2.1)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
-    actionmailer (5.2.4.1)
-      actionpack (= 5.2.4.1)
-      actionview (= 5.2.4.1)
-      activejob (= 5.2.4.1)
+    actionmailbox (6.0.2.1)
+      actionpack (= 6.0.2.1)
+      activejob (= 6.0.2.1)
+      activerecord (= 6.0.2.1)
+      activestorage (= 6.0.2.1)
+      activesupport (= 6.0.2.1)
+      mail (>= 2.7.1)
+    actionmailer (6.0.2.1)
+      actionpack (= 6.0.2.1)
+      actionview (= 6.0.2.1)
+      activejob (= 6.0.2.1)
       mail (~> 2.5, >= 2.5.4)
       rails-dom-testing (~> 2.0)
-    actionpack (5.2.4.1)
-      actionview (= 5.2.4.1)
-      activesupport (= 5.2.4.1)
+    actionpack (6.0.2.1)
+      actionview (= 6.0.2.1)
+      activesupport (= 6.0.2.1)
       rack (~> 2.0, >= 2.0.8)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.0, >= 1.0.2)
-    actionview (5.2.4.1)
-      activesupport (= 5.2.4.1)
+      rails-html-sanitizer (~> 1.0, >= 1.2.0)
+    actiontext (6.0.2.1)
+      actionpack (= 6.0.2.1)
+      activerecord (= 6.0.2.1)
+      activestorage (= 6.0.2.1)
+      activesupport (= 6.0.2.1)
+      nokogiri (>= 1.8.5)
+    actionview (6.0.2.1)
+      activesupport (= 6.0.2.1)
       builder (~> 3.1)
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
-      rails-html-sanitizer (~> 1.0, >= 1.0.3)
+      rails-html-sanitizer (~> 1.1, >= 1.2.0)
     active_model_serializers (0.10.10)
       actionpack (>= 4.1, < 6.1)
       activemodel (>= 4.1, < 6.1)
       case_transform (>= 0.2)
       jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
-    activejob (5.2.4.1)
-      activesupport (= 5.2.4.1)
+    activejob (6.0.2.1)
+      activesupport (= 6.0.2.1)
       globalid (>= 0.3.6)
-    activemodel (5.2.4.1)
-      activesupport (= 5.2.4.1)
-    activerecord (5.2.4.1)
-      activemodel (= 5.2.4.1)
-      activesupport (= 5.2.4.1)
-      arel (>= 9.0)
-    activerecord-postgis-adapter (5.0.3)
-      activerecord (~> 5.1)
-      rgeo-activerecord (~> 5.1)
-    activestorage (5.2.4.1)
-      actionpack (= 5.2.4.1)
-      activerecord (= 5.2.4.1)
+    activemodel (6.0.2.1)
+      activesupport (= 6.0.2.1)
+    activerecord (6.0.2.1)
+      activemodel (= 6.0.2.1)
+      activesupport (= 6.0.2.1)
+    activerecord-postgis-adapter (6.0.0)
+      activerecord (~> 6.0)
+      rgeo-activerecord (~> 6.0)
+    activestorage (6.0.2.1)
+      actionpack (= 6.0.2.1)
+      activejob (= 6.0.2.1)
+      activerecord (= 6.0.2.1)
       marcel (~> 0.3.1)
-    activesupport (5.2.4.1)
+    activesupport (6.0.2.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    acts-as-taggable-on (5.0.0)
-      activerecord (>= 4.2.8)
+      zeitwerk (~> 2.2)
+    acts-as-taggable-on (6.5.0)
+      activerecord (>= 5.0, < 6.1)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
-    arel (9.0.0)
     bcrypt (3.1.13)
-    binding_of_caller (0.8.0)
-      debug_inspector (>= 0.0.1)
+    bindex (0.8.1)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
     builder (3.2.4)
@@ -121,17 +124,18 @@ GEM
     case_transform (0.2)
       activesupport
     concurrent-ruby (1.1.5)
-    coveralls (0.8.23)
-      json (>= 1.8, < 3)
-      simplecov (~> 0.16.1)
-      term-ansicolor (~> 1.3)
-      thor (>= 0.19.4, < 2.0)
-      tins (~> 1.6)
+    coveralls (0.7.1)
+      multi_json (~> 1.3)
+      rest-client
+      simplecov (>= 0.7)
+      term-ansicolor
+      thor
     crass (1.0.5)
     database_cleaner (1.7.0)
-    debug_inspector (0.0.3)
     diff-lcs (1.3)
     docile (1.3.2)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
     dry-inflector (0.2.0)
     erubi (1.9.0)
     excon (0.71.1)
@@ -143,16 +147,20 @@ GEM
     ffi (1.11.3)
     fission (0.5.0)
       CFPropertyList (~> 2.2)
-    fog (1.38.0)
+    fog (1.41.0)
       fog-aliyun (>= 0.1.0)
       fog-atmos
       fog-aws (>= 0.6.0)
       fog-brightbox (~> 0.4)
       fog-cloudatcost (~> 0.1.0)
-      fog-core (~> 1.32)
+      fog-core (~> 1.45)
+      fog-digitalocean (>= 0.3.0)
+      fog-dnsimple (~> 1.0)
       fog-dynect (~> 0.0.2)
       fog-ecloud (~> 0.1)
       fog-google (<= 0.1.0)
+      fog-internet-archive
+      fog-joyent
       fog-json
       fog-local
       fog-openstack
@@ -172,6 +180,7 @@ GEM
       fog-xenserver
       fog-xml (~> 0.1.1)
       ipaddress (~> 0.5)
+      json (>= 1.8, < 2.0)
     fog-aliyun (0.3.5)
       fog-core
       fog-json
@@ -199,6 +208,14 @@ GEM
       builder
       excon (~> 0.58)
       formatador (~> 0.2)
+    fog-digitalocean (0.4.0)
+      fog-core
+      fog-json
+      fog-xml
+      ipaddress (>= 0.5)
+    fog-dnsimple (1.0.0)
+      fog-core (~> 1.38)
+      fog-json (~> 1.0)
     fog-dynect (0.0.3)
       fog-core
       fog-json
@@ -210,6 +227,13 @@ GEM
       fog-core
       fog-json
       fog-xml
+    fog-internet-archive (0.0.1)
+      fog-core
+      fog-json
+      fog-xml
+    fog-joyent (0.0.1)
+      fog-core (~> 1.42)
+      fog-json (>= 1.0)
     fog-json (1.2.0)
       fog-core
       multi_json (~> 1.10)
@@ -273,6 +297,9 @@ GEM
     formatador (0.2.5)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    http-accept (1.7.0)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
     httparty (0.13.7)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
@@ -321,6 +348,7 @@ GEM
     net-scp (2.0.0)
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
+    netrc (0.11.0)
     nio4r (2.5.2)
     nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
@@ -337,30 +365,32 @@ GEM
       rack (>= 2.0.0)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
-    rails (5.2.4.1)
-      actioncable (= 5.2.4.1)
-      actionmailer (= 5.2.4.1)
-      actionpack (= 5.2.4.1)
-      actionview (= 5.2.4.1)
-      activejob (= 5.2.4.1)
-      activemodel (= 5.2.4.1)
-      activerecord (= 5.2.4.1)
-      activestorage (= 5.2.4.1)
-      activesupport (= 5.2.4.1)
+    rails (6.0.2.1)
+      actioncable (= 6.0.2.1)
+      actionmailbox (= 6.0.2.1)
+      actionmailer (= 6.0.2.1)
+      actionpack (= 6.0.2.1)
+      actiontext (= 6.0.2.1)
+      actionview (= 6.0.2.1)
+      activejob (= 6.0.2.1)
+      activemodel (= 6.0.2.1)
+      activerecord (= 6.0.2.1)
+      activestorage (= 6.0.2.1)
+      activesupport (= 6.0.2.1)
       bundler (>= 1.3.0)
-      railties (= 5.2.4.1)
+      railties (= 6.0.2.1)
       sprockets-rails (>= 2.0.0)
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.3.0)
       loofah (~> 2.3)
-    railties (5.2.4.1)
-      actionpack (= 5.2.4.1)
-      activesupport (= 5.2.4.1)
+    railties (6.0.2.1)
+      actionpack (= 6.0.2.1)
+      activesupport (= 6.0.2.1)
       method_source
       rake (>= 0.8.7)
-      thor (>= 0.19.0, < 2.0)
+      thor (>= 0.20.3, < 2.0)
     rake (13.0.1)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
@@ -370,12 +400,22 @@ GEM
       json (>= 1.8)
       nokogiri (~> 1.5)
       optimist (~> 3.0)
-    rgeo (0.6.0)
-    rgeo-geojson (0.4.3)
-      rgeo (~> 0.5)
-    roo (2.7.1)
+    rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
+    rgeo (2.1.1)
+    rgeo-activerecord (6.2.1)
+      activerecord (>= 5.0)
+      rgeo (>= 1.0.0)
+    rgeo-geojson (2.1.1)
+      rgeo (>= 1.0.0)
+    rgeo-proj4 (2.0.0)
+      rgeo (~> 2.0)
+    roo (2.8.2)
       nokogiri (~> 1)
-      rubyzip (~> 1.1, < 2.0.0)
+      rubyzip (>= 1.2.1, < 2.0.0)
     rspec-core (3.9.1)
       rspec-support (~> 3.9.1)
     rspec-expectations (3.9.0)
@@ -399,9 +439,9 @@ GEM
     seed_dump (3.3.1)
       activerecord (>= 4)
       activesupport (>= 4)
-    shoulda-matchers (3.1.3)
-      activesupport (>= 4.0.0)
-    simplecov (0.16.1)
+    shoulda-matchers (4.1.2)
+      activesupport (>= 4.2.0)
+    simplecov (0.17.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
@@ -426,24 +466,28 @@ GEM
       sync
     tzinfo (1.2.6)
       thread_safe (~> 0.1)
-    web-console (2.3.0)
-      activemodel (>= 4.0)
-      binding_of_caller (>= 0.7.2)
-      railties (>= 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.6)
+    web-console (4.0.1)
+      actionview (>= 6.0.0)
+      activemodel (>= 6.0.0)
+      bindex (>= 0.4.0)
+      railties (>= 6.0.0)
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
     xml-simple (1.1.5)
     xmlrpc (0.3.0)
     yard (0.9.23)
+    zeitwerk (2.2.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_model_serializers (~> 0.10.0.rc3)
-  activerecord-postgis-adapter
+  active_model_serializers (~> 0.10.0)
+  activerecord-postgis-adapter (~> 6.0.0)
   acts-as-taggable-on
   bootsnap
   bundler-audit
@@ -468,11 +512,12 @@ DEPENDENCIES
   pg_search
   puma
   rack-cors
-  rails (~> 5.2)
+  rails (~> 6.0)
   rails_api_auth!
   rgeo
-  rgeo-activerecord!
+  rgeo-activerecord
   rgeo-geojson
+  rgeo-proj4
   roo
   rspec-rails
   seed_dump
@@ -483,4 +528,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   2.1.0
+   2.1.2

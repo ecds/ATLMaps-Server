@@ -200,32 +200,32 @@ end
 
     task remote_vector_boundingbox: :environment do
         VectorLayer.all.each do |v|
-            # For now we are skipping single point layers because they
-            # do no have an un.
-            next if v.vector_feature.length > 1
-            next if v.url.nil?
-            factory = RGeo::Geographic.simple_mercator_factory.projection_factory
-            features = []
-            geoj = JSON.load(open(v.url))
-            geom = RGeo::GeoJSON.decode(geoj, json_parser: :json)
-            next unless geom.count > 2
-            geom.each do |feature|
-                features.push(factory.collection([feature.geometry]))
-            end
-            geom = nil
-            group = features[0]
-            features.drop(1).each do |f|
-                group = group.union(f)
-            end
-            v.boundingbox = group.envelope
-            bb = RGeo::Cartesian::BoundingBox.create_from_geometry(factory.collection([v.boundingbox]))
-            v.maxx = bb.max_x
-            v.maxy = bb.max_y
-            v.minx = bb.min_x
-            v.miny = bb.min_y
-            p v.title
-            p v.maxx
-            p v.boundingbox
+# For now we are skipping single point layers because they
+# do no have an un.
+next if v.vector_feature.length > 1
+next if v.url.nil?
+factory = RGeo::Geographic.simple_mercator_factory.projection_factory
+features = []
+geoj = JSON.load(open(v.url))
+geom = RGeo::GeoJSON.decode(geoj, json_parser: :json)
+next unless geom.count > 2
+geom.each do |feature|
+    features.push(factory.collection([feature.geometry]))
+end
+geom = nil
+group = features[0]
+features.drop(1).each do |f|
+    group = group.union(f)
+end
+v.boundingbox = group.envelope
+bb = RGeo::Cartesian::BoundingBox.create_from_geometry(factory.collection([v.boundingbox]))
+v.maxx = bb.max_x
+v.maxy = bb.max_y
+v.minx = bb.min_x
+v.miny = bb.min_y
+p v.title
+p v.maxx
+p v.boundingbox
             # v.save
         end
     end

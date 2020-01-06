@@ -1,27 +1,28 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 6.0'
 gem 'bootsnap'
 # Use postgres with the postgis plugin as the database for Active Record
-gem 'activerecord-postgis-adapter'
+gem 'activerecord-postgis-adapter', '~> 6.0.0'
 gem 'pg'
 # gem 'squeel'
 gem 'acts-as-taggable-on'
 gem 'pg_search'
 gem 'rgeo'
-gem 'rgeo-activerecord', git: 'git://github.com/jayvarner/rgeo-activerecord.git', branch: 'develop'
+gem 'rgeo-proj4'
+gem 'rgeo-activerecord'
 gem 'rgeo-geojson'
 gem 'roo'
 
 # API Responses
-gem 'active_model_serializers', '~> 0.10.0.rc3'
+gem 'active_model_serializers', '~> 0.10.0'
 gem 'kaminari' # For pagination
 
 # Authentication
 # gem 'rails_api_auth'
 gem 'cancan'
-gem 'rails_api_auth', git: 'git://github.com/jayvarner/rails_api_auth.git', tag: '0.0.9'
+gem 'rails_api_auth', git: 'git://github.com/ecds/rails_api_auth.git', branch: 'develop'
 
 gem 'json'
 gem 'rack-cors', require: 'rack/cors'
