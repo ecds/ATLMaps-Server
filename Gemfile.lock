@@ -479,7 +479,7 @@ GEM
     websocket-extensions (0.1.4)
     xml-simple (1.1.5)
     xmlrpc (0.3.0)
-    yard (0.9.23)
+    yard (0.9.24)
     zeitwerk (2.2.2)
 
 PLATFORMS
