@@ -10,11 +10,11 @@ GIT
 
 GIT
   remote: git://github.com/stympy/faker.git
-  revision: f1c19a6a1a1d18682de5d358d3d8dea9e075cfff
+  revision: 1c761ad14fff7f20341bcff93c34859f9f557cf8
   branch: master
   specs:
     faker (2.10.0)
-      i18n (>= 1.6, < 1.8)
+      i18n (>= 1.6, < 2)
 
 GEM
   remote: https://rubygems.org/
@@ -303,7 +303,7 @@ GEM
     httparty (0.13.7)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
-    i18n (1.7.1)
+    i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     image_processing (1.10.0)
       mini_magick (>= 4.9.5, < 5)
