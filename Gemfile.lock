@@ -123,7 +123,7 @@ GEM
       mini_mime (>= 0.1.3)
     case_transform (0.2)
       activesupport
-    concurrent-ruby (1.1.5)
+    concurrent-ruby (1.1.6)
     coveralls (0.7.1)
       multi_json (~> 1.3)
       rest-client
@@ -311,22 +311,22 @@ GEM
     ipaddress (0.8.3)
     json (1.8.6)
     jsonapi-renderer (0.2.2)
-    kaminari (1.2.0)
+    kaminari (1.2.1)
       activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.2.0)
-      kaminari-activerecord (= 1.2.0)
-      kaminari-core (= 1.2.0)
-    kaminari-actionview (1.2.0)
+      kaminari-actionview (= 1.2.1)
+      kaminari-activerecord (= 1.2.1)
+      kaminari-core (= 1.2.1)
+    kaminari-actionview (1.2.1)
       actionview
-      kaminari-core (= 1.2.0)
-    kaminari-activerecord (1.2.0)
+      kaminari-core (= 1.2.1)
+    kaminari-activerecord (1.2.1)
       activerecord
-      kaminari-core (= 1.2.0)
-    kaminari-core (1.2.0)
+      kaminari-core (= 1.2.1)
+    kaminari-core (1.2.1)
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.4.0)
+    loofah (2.5.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -341,7 +341,7 @@ GEM
     mini_magick (4.10.1)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    minitest (5.14.0)
+    minitest (5.14.1)
     msgpack (1.3.1)
     multi_json (1.14.1)
     multi_xml (0.6.0)
@@ -463,7 +463,7 @@ GEM
     thread_safe (0.3.6)
     tins (1.23.0)
       sync
-    tzinfo (1.2.6)
+    tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
@@ -479,7 +479,7 @@ GEM
     xml-simple (1.1.5)
     xmlrpc (0.3.0)
     yard (0.9.24)
-    zeitwerk (2.2.2)
+    zeitwerk (2.3.0)
 
 PLATFORMS
   ruby
