@@ -1,6 +1,6 @@
 # app/models/project.rb
 class Project < ApplicationRecord
-    include RailsApiAuth::Authentication
+    include EcdsRailsAuthEngine::CurrentUser
 
     mount_uploader :card, FeaturedCardUploader
 

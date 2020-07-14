@@ -1,0 +1,42 @@
+# frozen_string_literal: true
+
+#
+# <Description>
+#
+class VectorLayerDataGroup < ApplicationRecord
+  before_save :set_color_map
+  belongs_to :vector_layer_project
+
+  def vector_layer
+    return vector_layer_project.vector_layer
+  end
+
+  private
+
+  def set_color_map
+    return unless vector_layer.vector_features.first.geojson['properties'][property].is_a? Numeric
+
+    min = vector_layer.vector_features.collect(&:geojson)
+                      .map { |feature| feature['properties'][property] }
+                      .min.floor
+
+    max = vector_layer.vector_features.collect(&:geojson)
+                      .map { |feature| feature['properties'][property] }
+                      .max.ceil
+
+    range = min..max
+
+    groups = range
+             .each_slice(max / steps)
+             .with_index
+             .with_object({}) do |(step, index), group|
+               group[index] = {
+                 bottom: step.first,
+                 top: step.last,
+                 color: ColorBrewer.new.brew[brewer_scheme.to_sym][index]
+               }
+             end
+
+    self.color_map = groups
+  end
+end

@@ -25,7 +25,6 @@ Rails.application.routes.draw do
         resources :projects, only: :index
     end
 
-    post '/v1/token', to: 'oauth2#create'
-    post '/v1/revoke', to: 'oauth2#destroy'
+    mount EcdsRailsAuthEngine::Engine => "/ecds_rails_auth_engine"
 
 end

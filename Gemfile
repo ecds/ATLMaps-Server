@@ -22,7 +22,8 @@ gem 'kaminari' # For pagination
 # Authentication
 # gem 'rails_api_auth'
 gem 'cancan'
-gem 'rails_api_auth', git: 'git://github.com/ecds/rails_api_auth.git', branch: 'develop'
+# gem 'rails_api_auth', git: 'git://github.com/ecds/rails_api_auth.git', branch: 'develop'
+gem 'ecds_rails_auth_engine', path: '/data/ecds_auth_engine'
 
 gem 'json'
 gem 'rack-cors', require: 'rack/cors'

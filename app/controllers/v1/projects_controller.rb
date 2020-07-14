@@ -2,7 +2,7 @@
 class V1::ProjectsController < ApplicationController
     # class for Controller
     include Permissions
-    include RailsApiAuth::Authentication
+    include EcdsRailsAuthEngine::CurrentUser
     def index
         render json: if params['user_id'] && current_user
                          Project.where(user_id: current_user.user.id)
