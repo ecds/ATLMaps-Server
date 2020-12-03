@@ -145,7 +145,6 @@ GEM
       railties (>= 5.0.0)
     faker (2.15.1)
       i18n (>= 1.6, < 2)
-    gdal (3.0.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     hashdiff (1.0.1)
@@ -333,7 +332,6 @@ DEPENDENCIES
   ecds_rails_auth_engine!
   factory_bot_rails
   faker
-  gdal
   httparty
   json
   kaminari

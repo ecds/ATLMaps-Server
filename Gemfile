@@ -44,12 +44,6 @@ gem('rgeo-proj4')
 # https://github.com/rgeo/rgeo-shapfile
 gem('rgeo-shapefile')
 
-# Native bindings for GDAL/OGR for ruby.
-# GDAL is a translator library for raster and vector geospatial data format
-# https://github.com/zhm/gdal-ruby
-# https://gdal.org/
-gem('gdal')
-
 # ActiveModelSerializers brings convention over configuration to your JSON generation.
 # https://github.com/rails-api/active_model_serializers/tree/0-10-stable
 gem('active_model_serializers', '~> 0.10.0')
