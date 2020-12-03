@@ -1,5 +1,7 @@
-PATH
-  remote: /data/ecds_auth_engine
+GIT
+  remote: git://github.com/ecds/ecds_rails_auth_engine.git
+  revision: c5392efddaf97459522bdb79fb92f15fc0cbe13a
+  branch: feature/fauxoauth
   specs:
     ecds_rails_auth_engine (0.1.6)
       cancancan
