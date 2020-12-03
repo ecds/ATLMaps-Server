@@ -60,8 +60,9 @@ gem('kaminari')
 # Authentication
 # gem 'rails_api_auth'
 gem('cancan')
-# gem 'rails_api_auth', git: 'git://github.com/ecds/rails_api_auth.git', branch: 'develop'
-gem('ecds_rails_auth_engine', path: '/data/ecds_auth_engine')
+# The ECDS Auth Engine
+gem 'rails_api_auth', git: 'git://github.com/ecds/ecds_rails_auth_engine.git', branch: 'feature/fauxoauth'
+# gem('ecds_rails_auth_engine', path: '/data/ecds_auth_engine')
 
 # JSON
 gem('json')
