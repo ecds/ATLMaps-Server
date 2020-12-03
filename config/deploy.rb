@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # config valid only for current version of Capistrano
-lock('3.8.1')
+lock('3.14.1')
 
 set(:application, 'ATLMaps')
 set(:repo_url, 'git@github.com:ecds/ATLMaps-Server.git')
@@ -25,7 +25,7 @@ set(:deploy_to, '/data/atlmaps-server')
 # set :pty, true
 
 # Default value for :linked_files is []
-set(:linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/secrets.yml', 'config/application.rb', 'config/initializers/rails_api_auth.rb', 'config/initializers/fog.rb'))
+set(:linked_files, fetch(:linked_files, []).push('config/master.key', 'config/secrets.yml', 'config/application.rb', 'config/database.yml'))
 
 # Default value for linked_dirs is []
 # set :linked_dirs, fetch(:linked_dirs, []).push('bin', 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
