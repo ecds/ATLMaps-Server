@@ -1,5 +1,7 @@
-require 'rails_helper'
+# frozen_string_literal: true
 
-RSpec.describe 'V1::RasterLayers', type: :request do
-    ##
+require('rails_helper')
+
+RSpec.describe('V1::RasterLayers', type: :request) do
+  ##
 end

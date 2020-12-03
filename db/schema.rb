@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_12_124702) do
+ActiveRecord::Schema.define(version: 2020_12_01_151231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -18,6 +18,27 @@ ActiveRecord::Schema.define(version: 2020_06_12_124702) do
   enable_extension "postgis"
   enable_extension "postgis_tiger_geocoder"
   enable_extension "postgis_topology"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
 
   create_table "categories", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
@@ -49,6 +70,15 @@ ActiveRecord::Schema.define(version: 2020_06_12_124702) do
     t.index ["user_id"], name: "index_ecds_rails_auth_engine_logins_on_user_id"
   end
 
+  create_table "historic_downtown", primary_key: "ogc_fid", id: :serial, force: :cascade do |t|
+    t.string "originalproperties"
+    t.string "title"
+    t.string "images"
+    t.string "description"
+    t.geometry "wkb_geometry", limit: {:srid=>4326, :type=>"st_point"}
+    t.index ["wkb_geometry"], name: "historic_downtown_wkb_geometry_geom_idx", using: :gist
+  end
+
   create_table "institutions", id: :serial, force: :cascade do |t|
     t.string "name", limit: 510
     t.string "geoserver", limit: 510
@@ -61,7 +91,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_124702) do
   create_table "layers", id: :serial, force: :cascade do |t|
     t.string "name", limit: 510
     t.string "slug", limit: 510
-    t.string "keywords", limit: 510
+    t.text "keywords"
     t.string "description", limit: 510
     t.string "url", limit: 510
     t.string "layer", limit: 510
@@ -184,12 +214,11 @@ ActiveRecord::Schema.define(version: 2020_06_12_124702) do
 
   create_table "raster_layers", id: :serial, force: :cascade do |t|
     t.string "name", limit: 510
-    t.string "keywords", limit: 510
+    t.text "keywords"
     t.text "description"
     t.string "workspace", limit: 510
     t.string "title", limit: 510
     t.datetime "date"
-    t.string "data_format", limit: 510
     t.integer "minzoom"
     t.integer "maxzoom"
     t.decimal "minx", precision: 100, scale: 8
@@ -201,7 +230,6 @@ ActiveRecord::Schema.define(version: 2020_06_12_124702) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "year"
-    t.string "data_type", limit: 255
     t.geometry "boundingbox", limit: {:srid=>4326, :type=>"st_polygon"}
     t.string "thumb"
     t.string "attribution"
@@ -316,7 +344,6 @@ ActiveRecord::Schema.define(version: 2020_06_12_124702) do
     t.integer "vector_layer_id"
     t.integer "project_id"
     t.integer "marker"
-    t.string "data_format", limit: 510
     t.integer "position"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -325,15 +352,17 @@ ActiveRecord::Schema.define(version: 2020_06_12_124702) do
     t.integer "steps"
     t.jsonb "color_map", default: {}
     t.integer "order"
+    t.string "brewer_group"
+    t.boolean "manual_steps"
+    t.text "color"
   end
 
   create_table "vector_layers", id: :serial, force: :cascade do |t|
     t.string "name", limit: 510
-    t.string "keywords", limit: 510
+    t.text "keywords"
     t.text "description"
     t.string "url", limit: 500
     t.datetime "date"
-    t.string "data_format", limit: 510
     t.integer "minzoom"
     t.integer "maxzoom"
     t.decimal "minx", precision: 100, scale: 8
@@ -346,9 +375,18 @@ ActiveRecord::Schema.define(version: 2020_06_12_124702) do
     t.datetime "updated_at"
     t.integer "year"
     t.string "title", limit: 255
-    t.string "data_type", limit: 255
+    t.string "tmp_type", limit: 255
     t.geometry "boundingbox", limit: {:srid=>4326, :type=>"st_polygon"}
     t.string "attribution"
+    t.string "workspace"
+    t.string "property_id"
+    t.string "default_break_property"
+    t.jsonb "color_map"
+    t.integer "data_type"
+    t.integer "geometry_type"
+    t.jsonb "tmp_geojson"
+    t.integer "data_format"
+    t.boolean "remote"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -362,4 +400,5 @@ ActiveRecord::Schema.define(version: 2020_06_12_124702) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
 end

@@ -1,190 +1,175 @@
+# frozen_string_literal: true
+
+require 'cgi'
+
 # Model class for vector layers.
 class VectorLayer < Layer
-    # Use Set to determine the types of features.
-    require 'set'
+  has_many :vector_layer_project, dependent: :destroy
+  has_many :projects, through: :vector_layer_project
 
-    has_many :vector_layer_project
-    has_many :projects, through: :vector_layer_project, dependent: :destroy
-    has_many :vector_feature
-    # belongs_to :institution
+  has_many :vector_features
 
-    before_create :ensure_name
-    # after_create :calculate_boundingbox_on_create
-    before_save :calculate_boundingbox
-    before_save :find_data_type
+  before_save :find_tmp_type, :find_keywords, :guess_data_type
+  before_create :ensure_name
 
-    # Uses `acts-as-taggable-on` gem.
-    # acts_as_taggable
+  enum geometry_type: { GeometryCollection: 0, LineString: 1, MultiLineString: 2, MultiPolygon: 3, Point: 4 }
+  enum data_format: { geojson: 0, pbf: 1, remote: 2 }
+  enum data_type: { qualitative: 0, quantitative: 1 }
 
+  scope :qualitative_layers, -> { where(data_type: 'qualitative') }
+  scope :quantitative_layers, -> { where(data_type: 'quantitative') }
+  scope :by_data_type, ->(type) { where(data_type: type) }
 
-    # Uses `acts-as-taggable-on` gem.
-    # json search
-    # vl.vector_feature.where("properties #>> '{filters,grade}' = 'A'")
-    # scope :by_tags, ->(tags) { tagged_with(tags, any: true, wild: true) if tags.present? }
-    # scope :search_by_year, ->(start_year, end_year) { where(year: start_year..end_year) }
-    # scope :text_search, ->(_text_search) { joins(:text_search) if query.present? }
-    # scope :active, -> { where(active: true) }
-    # scope :alpha_sort, -> { order('title ASC') }
-    scope :by_bounds, lambda { |bounds|
-        if bounds.present?
-            intersection = Arel::Nodes::NamedFunction.new(
-                'ST_AREA', [
-                    Arel::Nodes::NamedFunction.new(
-                        'ST_INTERSECTION', [
-                            VectorLayer.arel_table[:boundingbox],
-                            Arel::Nodes::Quoted.new(bounds)
-                        ]
-                    )
-                ]
-            )
+  #
+  # Geoserver endpoint for Protobuff Vector Tiles
+  #
+  # @return [String] geoserver endpoint
+  #
+  def geo_url
+    return "#{institution.geoserver}/gwc/service/tms/1.0.0/#{workspace}:#{title}@EPSG:900913@pbf/{z}/{x}/{-y}.pbf"
+  end
 
-            distance_from_center = Arel::Nodes::NamedFunction.new(
-                'ST_DISTANCE', [
-                    Arel::Nodes::NamedFunction.new(
-                        'ST_Centroid', [Arel::Nodes::Quoted.new(bounds)]
-                    ), Arel::Nodes::NamedFunction.new(
-                        'ST_Centroid', [VectorLayer.arel_table[:boundingbox]]
-                    )
-                ]
-            )
+  #
+  # GeoJSON representation of layer.
+  #
+  # TODO: There will be other cases to handle.
+  # TODO: Should this return a RGeo::GeoJSON object>
+  #
+  # @return [JSON] GeoJSON representation of layer
+  #
+  def geojson
+    case data_format
+    when 'geojson'
+      return tmp_geojson
+    when 'pbf'
+      return geo_url
+    when 'remote'
+      return remote_geojson
+    else
+      return nil
+    end
+  end
 
-            VectorLayer.select([
-                                   VectorLayer.arel_table[Arel.star]
-                               ]).where(
-                                   Arel::Nodes::NamedFunction.new(
-                                       'ST_INTERSECTS', [
-                                           VectorLayer.arel_table[:boundingbox],
-                                           Arel::Nodes::Quoted.new(bounds)
-                                       ]
-                                   )
-                               ).order(
-                                   distance_from_center, intersection.desc
-                               )
+  #
+  # Collection of properties from the related features.
+  #
+  # @return [Array] data properties
+  #
+  def properties
+    return if geojson.nil?
+
+    return if geojson['features'].nil?
+
+    props = geojson['features'].map { |feature| feature['properties'].keys }.flatten.sort.uniq!
+    return if props.nil?
+
+    props.map { |prop| { "#{prop}": geojson['features'].map { |feature| feature['properties'][prop] }.uniq } }
+  end
+
+  #
+  # Temporary color.
+  #
+  # @return [String] hex color value.
+  #
+  def tmp_color
+    return ColorBrewer.new.random
+  end
+
+  private
+
+  def remote_geojson
+    if workspace.present?
+      geo_url = "#{institution.geoserver}#{workspace}/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=#{workspace}:#{name}&maxFeatures=10000&outputFormat=application%2Fjson"
+      return JSON.parse(HTTParty.get(geo_url).body)
+    else
+      begin
+        return JSON.parse(HTTParty.get(url).body)
+      rescue StandardError
+        return
+      end
+    end
+  end
+
+  #
+  # Set type based on feature types
+  #
+  def find_tmp_type
+    return if geojson.nil?
+
+    begin
+      types = geojson['features'].map { |f| f['geometry']['type'] }.uniq
+
+      self.geometry_type =
+        if types.length == 1
+          types[0]
+        else
+          'GeometryCollection'
         end
-    }
-
-    # def self.by_year(start_year, end_year)
-    #     if end_year > 0
-    #         search_by_year(start_year, end_year)
-    #     else
-    #         all
-    #     end
-    # end
-
-    # include PgSearch::Model
-    pg_search_scope :search,
-                    against: {
-                        name: 'A',
-                        title: 'A',
-                        description: 'C'
-                    },
-                    associated_against: {
-                        tags: {
-                            name: 'B'
-                        },
-                        vector_feature: {
-                            properties: 'C'
-                        }
-                    },
-                    using: {
-                        tsearch: {
-                            prefix: true, dictionary: 'english'
-                        }
-                    }
-
-    # def self.text_search(query)
-    #     # Return no results if query isn't present
-    #     search(query)
-    # end
-
-    # def self.browse_text_search(query)
-    #     # If there is no query, return everything.
-    #     # Not everything will be returned becuae other filters will be present.
-    #     if query.present?
-    #         search(query)
-    #     else
-    #         all
-    #     end
-    # end
-
-    # Attribute to use for html classes
-    def slug
-        slug = title.parameterize
-        return "#{slug}-#{id}"
+    rescue NoMethodError
+      self.tmp_type = nil
     end
+  end
 
-    def tag_slugs
-        return tags.map { |tag| tag.name.parameterize }.join(' ')
+  #
+  # Guess the data type based on typs of geometry.
+  #
+  # @return [String] Type of data layer
+  #
+  def guess_data_type
+    return if data_type.present?
+    self.data_type = geometry_type.include?('Point') ? 'qualitative' : 'quantitative'
+  end
+
+  #
+  # Generates a random string for the name if needed.
+  #
+  def ensure_name
+    # Name is the persistant unique identifier. We have to have one.
+    self.name = SecureRandom.hex(4) if name.nil?
+  end
+
+  #
+  # Calculates the bounding box based on the features.
+  #
+  # rubocop:disable Metrics/CyclomaticComplexity
+  def calculate_boundingbox
+    return if geojson.nil?
+
+    begin
+      self.maxx = RGeo::GeoJSON.decode(geojson).map { |feature| RGeo::Cartesian::BoundingBox.create_from_geometry(feature.geometry.envelope).max_x }.max
+      self.maxy = RGeo::GeoJSON.decode(geojson).map { |feature| RGeo::Cartesian::BoundingBox.create_from_geometry(feature.geometry.envelope).max_y }.max
+      self.minx = RGeo::GeoJSON.decode(geojson).map { |feature| RGeo::Cartesian::BoundingBox.create_from_geometry(feature.geometry.envelope).min_x }.min
+      self.miny = RGeo::GeoJSON.decode(geojson).map { |feature| RGeo::Cartesian::BoundingBox.create_from_geometry(feature.geometry.envelope).min_y }.min
+
+      factory = RGeo::Geographic.simple_mercator_factory
+      max_point = factory.point(maxx, maxy)
+      min_point = factory.point(minx, miny)
+      # If the min and max points are the the same, we need to bump one so the box will be a polygon.
+      min_point = factory.point(minx + 3, miny + 3) if max_point.distance(min_point).zero?
+      self.boundingbox = RGeo::Cartesian::BoundingBox.create_from_points(max_point, min_point).to_geometry
+    rescue NoMethodError
+      nil
     end
+  end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
-    def defaults
-        self.institution = Institution.find(1)
-        self.data_type = 'point-data'
-        self.data_format = 'vector'
-        self.active = true
-        self.name = (0...8).map { (65 + rand(26)).chr }.join.downcase
-    end
+  #
+  # Collects all the descriptions, filters all the stopwords
+  # sets the keywords property.
+  #
+  def find_keywords
+    return if geojson.nil? || geojson['features'].nil?
 
-    # @!attribute [r] slider_id
-    # @return [String]
-    # Attribute used to make unique identifer for the front end opacity slider.
-    def slider_id
-        slug = name.parameterize
-        return "slider-#{slug}-#{id}"
-    end
+    titles = geojson['features'].map { |l| ActionView::Base.full_sanitizer.sanitize(l['properties']['title']) }.join(' ').split
+    descriptions = geojson['features'].map { |l| ActionView::Base.full_sanitizer.sanitize(l['properties']['description']) }.join(' ').split
+    self.keywords = Stopwords.new.filter(titles + descriptions)
+  end
 
-    def filters
-        return if vector_feature.empty?
-        return unless vector_feature.first.properties['filters']
-        return if vector_feature.first.properties['filters'].empty?
-        filter_values = vector_feature.map { |f| f.properties['filters'].values }.uniq!.flatten.sort
-        filter_key = vector_feature.map { |f| f.properties['filters'].keys }.uniq!.flatten[0]
-        return filter_key => filter_values
-        # vector_feature.first.properties['filters']
-    end
-
-    def holc_colors
-        self
-    end
-
-    def ensure_name
-        # Name is the persistant unique identifier. We have to have one.
-        self.name = SecureRandom.hex(4) if name.nil?
-    end
-
-    private
-
-    def find_data_type
-        types = vector_feature.pluck(:geometry_type).uniq
-        self.data_type = if types.length == 1
-                             types[0]
-                         else
-                             'GeometryCollection'
-                         end
-    end
-
-    def calculate_boundingbox
-        # Don't bother if the layer has no features.
-        return unless vector_feature.length > 1
-        # We use the `union` method from RGeo to combine all the
-        # features. We get the first feature so we have something to
-        # on which to call `union`.
-        # group = vector_feature[0].geometry_collection
-        # vector_feature.drop(1).each do |vf|
-        #     group = group.union(vf.geometry_collection)
-        # end
-        # self.boundingbox = group.envelope
-        self.boundingbox = ActiveRecord::Base.connection.execute("SELECT ST_SetSRID(ST_Extent(#{data_type.underscore}),4326)::geometry as extent  FROM vector_features WHERE vector_layer_id = #{id}").first['extent']
-        factory = RGeo::Geographic.simple_mercator_factory
-        bb = RGeo::Cartesian::BoundingBox.create_from_geometry(factory.collection([boundingbox]))
-        self.maxx = bb.max_x
-        self.maxy = bb.max_y
-        self.minx = bb.min_x
-        self.miny = bb.min_y
-    end
-
-    def remote_geojson
-        return unless url && vector_feature.length.zero?
-        JSON.load(open(url))
-    end
+  # def defaults
+  #   self.institution = Institution.find(1)
+  #   self.tmp_type = 'Point'
+  #   self.data_format = 'vector'
+  #   self.active = true
+  #   self.name = (0...8).map { rand(65..90).chr }.join.downcase
+  # end
 end

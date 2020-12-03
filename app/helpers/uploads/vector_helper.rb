@@ -1,0 +1,2 @@
+module Uploads::VectorHelper
+end

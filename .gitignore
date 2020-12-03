@@ -20,6 +20,7 @@ coverage
 dump
 config/initializers/fog.rb
 config/secrets.yml
+config/storage.yml
 config/initializers/rails_api_auth.rb
 config/initializers/rack_cors.rb
 .yardoc
@@ -27,3 +28,5 @@ doc
 ps_start.sh
 .env
 ~gem*
+
+/config/master.key

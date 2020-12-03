@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 # Serializer class for users.
 class UserSerializer < ActiveModel::Serializer
-    has_many :projects, embed: :ids
-    # has_many :projects
-    has_many :collaboration
-    has_one :institution
+  has_many :projects, embed: :ids
+  # has_many :projects
+  has_many :collaboration
+  has_one :institution
 
-    attributes :id, :displayname, :confirmed
+  attributes :id, :displayname, :confirmed
 end

@@ -1,31 +1,29 @@
+# frozen_string_literal: true
+
+# ColorBrewer colors for ATLMaps
+#
+# Adapated from https://github.com/gka/chroma.js
+#
+# Copyright (c) 2002 Cynthia Brewer, Mark Harrower, and The
+# Pennsylvania State University.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software distributed
+# under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+# CONDITIONS OF ANY KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations under the License.
+
+#
+# Service to provide the Colorbrewer schemes.
+#
 class ColorBrewer
-  require 'json'
-
-  # def initialize
-  #   _json_file = File.read('app/services/color_brewer.json')
-  #  @colors = JSON.parse(_json_file)
-  # end
-
-  # def colors
-  #   return @colors
-  # end
-
-  # def diverging
-  #   @colors.select { |key, value| value['type'] == 'div'}.keys
-  # end
-
-  # def sequential
-  #   @colors.select { |key, value| value['type'] == 'seq'}.keys
-  # end
-
-  # def qualitative
-  #   @colors.select { |key, value| value['type'] == 'qual'}.keys
-  # end
-
-  # def combo_count(key)
-  #   @colors[key].length
-  # end
-
+  #
+  # Define all the schemes
+  #
   def initialize
     @schemes = {
       # sequential
@@ -70,18 +68,33 @@ class ColorBrewer
       Dark2: ['#1b9e77', '#d95f02', '#7570b3', '#e7298a', '#66a61e', '#e6ab02', '#a6761d', '#666666'],
       Paired: ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#e31a1c', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928'],
       Pastel2: ['#b3e2cd', '#fdcdac', '#cbd5e8', '#f4cae4', '#e6f5c9', '#fff2ae', '#f1e2cc', '#cccccc'],
-      Pastel1: ['#fbb4ae', '#b3cde3', '#ccebc5', '#decbe4', '#fed9a6', '#ffffcc', '#e5d8bd', '#fddaec', '#f2f2f2'],
+      Pastel1: ['#fbb4ae', '#b3cde3', '#ccebc5', '#decbe4', '#fed9a6', '#ffffcc', '#e5d8bd', '#fddaec', '#f2f2f2']
     }
 
-    downcase_schemes = {}
-    @schemes.each do |scheme, colors|
-      downcase_schemes[scheme.downcase] = @schemes[scheme]
-    end
+    #  Provide case-insenstive lookups.
+    # downcase_schemes = {}
+    # @schemes.each do |scheme|
+    #   downcase_schemes[scheme.downcase] = @schemes[scheme]
+    # end
 
-    @schemes.merge! downcase_schemes
+    # @schemes.merge!(downcase_schemes)
   end
 
+  #
+  # Return the schemes
+  #
+  # @return [Hash] Color schemes
+  #
   def brew
     return @schemes
+  end
+
+  #
+  # Random color from the Paired scheme.
+  #
+  # @return [String] hex value for color.
+  #
+  def random
+    return brew[:Paired].sample
   end
 end
