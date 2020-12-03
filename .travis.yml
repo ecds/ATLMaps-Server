@@ -20,7 +20,6 @@ before_install:
   - psql -c 'create database travis_ci_test' -U postgres
   - cp config/application.rb.dist config/application.rb
   - cp config/initializers/rack_cors.rb.dist config/initializers/rack_cors.rb
-  - cp config/initializers/rails_api_auth.rb.dist config/initializers/rails_api_auth.rb
   - cp config/secrets.yml.dist config/initializers/secrets.yml
   - rm config/credentials.yml.enc
   - cp config/travis.key config/master.key
