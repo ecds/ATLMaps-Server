@@ -7,7 +7,7 @@ class VectorLayer < Layer
   has_many :vector_layer_project, dependent: :destroy
   has_many :projects, through: :vector_layer_project
 
-  has_many :vector_features
+  # has_many :vector_features
 
   before_save :find_tmp_type, :find_keywords, :guess_data_type
   before_create :ensure_name
