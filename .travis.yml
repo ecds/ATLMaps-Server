@@ -22,5 +22,8 @@ before_install:
   - cp config/initializers/rack_cors.rb.dist config/initializers/rack_cors.rb
   - cp config/initializers/rails_api_auth.rb.dist config/initializers/rails_api_auth.rb
   - cp config/secrets.yml.dist config/initializers/secrets.yml
+  - rm config/credentials.yml.enc
+  - cp config/travis.key config/master.key
+  - cp config/travis_credentials.yml.enc config/credentials.yml.enc
   - psql -U postgres -d travis_ci_test -c "create extension postgis"
   - gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
