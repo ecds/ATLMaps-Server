@@ -45,8 +45,6 @@ class V1::RasterLayersController < ApplicationController
   end
 
   def show
-    default_url_options[:host] = 'https://api.atlmaps-dev.com'
-
     @layer = RasterLayer.find(params[:id])
     render(json: @layer, root: 'raster_layer', include: %w[institution])
   end

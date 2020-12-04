@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
   include ActionController::Cookies
   include ActionController::RequestForgeryProtection
 
+  before_action :set_host_for_active_storage
+
   # protect_from_forgery with: :exception
 
   # Method to get the user ID associated with the token being used.
@@ -34,5 +36,9 @@ class ApplicationController < ActionController::Base
       same_site: :none,
       secure: 'Secure'
     }
+  end
+
+  def set_host_for_active_storage
+    Rails.application.routes.default_url_options[:host] = request.base_url
   end
 end

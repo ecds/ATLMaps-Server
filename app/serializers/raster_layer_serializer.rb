@@ -11,7 +11,6 @@ class RasterLayerSerializer < LayerSerializer
   #
   def thumb_url
     if object.thumbnail.attached?
-      default_url_options[:host] = 'https://api.atlmaps-dev.com'
       return Rails.application.routes.url_helpers.rails_blob_url(object.thumbnail)
       # variant = object.thumbnail.variant(resize: '100x100')
       # file = rails_representation_url(variant, only_path: true).to_s
