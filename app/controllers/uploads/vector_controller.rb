@@ -14,7 +14,7 @@ class Uploads::VectorController < ApplicationController
   def parse
     vu = VectorUpload.new(file: params[:fileToParse])
     render(json: { attributes: vu.set_attributes }, status: :ok)
-  rescue VectorUploadException => e
+  rescue StandardError => e
     render(json: { message: e }, status: :bad_request)
   end
 
@@ -61,7 +61,7 @@ class Uploads::VectorController < ApplicationController
       # vu.make_shapefile
       layer = vu.make_vector_layer(params)
 
-      render(json: { message: 'success', layerId: layer.id }, status: :ok)
+      render(json: { message: 'success', layerId: layer.title }, status: :ok)
     end
   end
 end

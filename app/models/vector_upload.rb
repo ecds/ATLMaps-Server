@@ -73,12 +73,10 @@ class VectorUpload
       geojson = type == 'zip' ? to_geojson : file
       json = JSON.parse(File.read(geojson))
 
-      # rubocop:disable Style/MissingElse
       if mapped_attributes['break'].present?
         break_property = mapped_attributes.delete('break')
         json['breakProperty'] = validate_value(break_property)
       end
-      # rubocop:enable Style/MissingElse
 
       json['features'].each do |feature|
         original_properties = feature['properties']
@@ -121,13 +119,15 @@ class VectorUpload
   #
   def make_vector_layer(options)
     geojson, title, description = options.values_at(:geojson, :title, :description)
+    geojson = JSON.parse(geojson) if geojson.is_a?(String)
     layer = VectorLayer.create!(
       tmp_geojson: geojson,
       name: SecureRandom.uuid,
       title: title,
       description: description,
       institution: Institution.second,
-      data_format: 'geojson'
+      data_format: 'geojson',
+      active: true
     )
     layer.save!
     return layer
@@ -199,6 +199,7 @@ class VectorUpload
     return attrs
   end
 
+  # rubocop:disable Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   def build_geojson
     geojson = { type: 'FeatureCollection', features: [] }
     spreadsheet = Roo::Spreadsheet.open(file)
@@ -215,10 +216,12 @@ class VectorUpload
         when 'longitude'
           lng = get_coordinates(row[value])
           next if row[value].nil?
+
           feature[:geometry][:coordinates][0] = lng
         when 'latitude'
           lat = get_coordinates(row[value])
           next if row[value].nil?
+
           feature[:geometry][:coordinates][1] = lat
         else
           feature[:properties][key.to_sym] = validate_value(row[value])
@@ -229,6 +232,7 @@ class VectorUpload
     return geojson
   end
 end
+# rubocop:enable Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
 def empty_feature
   return {

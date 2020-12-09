@@ -9,7 +9,7 @@ class VectorLayer < Layer
 
   # has_many :vector_features
 
-  before_save :find_tmp_type, :find_keywords, :guess_data_type
+  before_save :find_tmp_type, :find_keywords, :guess_data_type, :create_default_color_map
   before_create :ensure_name
 
   enum geometry_type: { GeometryCollection: 0, LineString: 1, MultiLineString: 2, MultiPolygon: 3, Point: 4 }
@@ -46,7 +46,7 @@ class VectorLayer < Layer
     when 'remote'
       return remote_geojson
     else
-      return nil
+      return
     end
   end
 
@@ -163,6 +163,12 @@ class VectorLayer < Layer
     titles = geojson['features'].map { |l| ActionView::Base.full_sanitizer.sanitize(l['properties']['title']) }.join(' ').split
     descriptions = geojson['features'].map { |l| ActionView::Base.full_sanitizer.sanitize(l['properties']['description']) }.join(' ').split
     self.keywords = Stopwords.new.filter(titles + descriptions)
+  end
+
+  def create_default_color_map
+    return if qualitative? || default_break_property.nil?
+
+    self.color_map = ColorMap.new(geojson: geojson, property: default_break_property).create_map
   end
 
   # def defaults
