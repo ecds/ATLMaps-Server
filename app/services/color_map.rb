@@ -81,12 +81,13 @@ class ColorMap
   # @return [Array] Array of Hashes
   #
   def slice_data
-    @range.each_slice(@range.max / @steps)
-          .with_index
+    groups = @range.each_slice(@range.max / @steps)
+    @steps = groups.count
+    groups.with_index
           .with_object({}) do |(step, index), group|
             group[index] = {
               bottom: step.first,
-              top: step.last,
+              top: step.last + 0.999,
               color: offset_color(index)
             }
           end

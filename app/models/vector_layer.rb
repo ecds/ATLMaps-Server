@@ -117,6 +117,7 @@ class VectorLayer < Layer
   #
   def guess_data_type
     return if data_type.present?
+
     self.data_type = geometry_type.include?('Point') ? 'qualitative' : 'quantitative'
   end
 
