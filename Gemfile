@@ -46,7 +46,7 @@ gem('rgeo-shapefile')
 
 # ActiveModelSerializers brings convention over configuration to your JSON generation.
 # https://github.com/rails-api/active_model_serializers/tree/0-10-stable
-gem('active_model_serializers', '~> 0.10.0')
+gem('active_model_serializers', '~> 0.10.11')
 
 # For pagination
 gem('kaminari')
