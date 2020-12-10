@@ -54,17 +54,21 @@ class ColorMap
   def calculate_range
     min = @geojson['features']
           .map { |feature| feature['properties'][@property] }
-          .min.floor
+          .compact
+          .min
+          .floor
 
     max = @geojson['features']
           .map { |feature| feature['properties'][@property] }
-          .max.ceil
+          .compact
+          .max
+          .ceil
 
     return min..max
   end
 
   def random_brew
-    ColorBrewer.new.brew.to_a.sample(1).to_h.keys.first.to_s if @brewer_scheme.nil?
+    ColorBrewer.new.brew.to_a[0..18].sample(1).to_h.keys.first.to_s if @brewer_scheme.nil?
   end
 
   #

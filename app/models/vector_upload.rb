@@ -79,15 +79,15 @@ class VectorUpload
       end
 
       json['features'].each do |feature|
-        original_properties = feature['properties']
-        feature['properties'] = { originalProperties: {} }
+        # original_properties = feature['properties']
+        # feature['properties'] = { originalProperties: {} }
 
-        original_properties.each do |key, _value|
-          feature['properties'][:originalProperties][key] = validate_value(original_properties[key])
-        end
+        # original_properties.each do |key, _value|
+        #   feature['properties'][:originalProperties][key] = validate_value(original_properties[key])
+        # end
 
         mapped_attributes.each do |key, value|
-          feature['properties'][key] = validate_value(original_properties[value])
+          feature['properties'][key] = validate_value(feature['properties'][value])
         end
       end
       return json
@@ -127,7 +127,8 @@ class VectorUpload
       description: description,
       institution: Institution.second,
       data_format: 'geojson',
-      active: true
+      active: true,
+      default_break_property: geojson['breakProperty']
     )
     layer.save!
     return layer
@@ -178,7 +179,7 @@ class VectorUpload
       raise(VectorUploadException, 'Zip files must contain .shp file.')
     end
 
-    return attrs
+    return attrs.uniq
   end
 
   def attributes_from_spreadsheet
