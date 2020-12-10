@@ -130,6 +130,12 @@ class VectorUpload
       active: true,
       default_break_property: geojson['breakProperty']
     )
+    if geojson['breakProperty']
+      layer.tmp_geojson['features'].each do |feature|
+        feature['properties']['breakProperty'] = geojson['breakProperty']
+        feature['properties']['breakValue'] = feature['properties'][geojson['breakProperty']]
+      end
+    end
     layer.save!
     return layer
   end
