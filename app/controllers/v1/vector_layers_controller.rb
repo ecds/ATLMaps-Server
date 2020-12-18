@@ -7,6 +7,12 @@ class V1::VectorLayersController < ApplicationController
   include MakePolygon
 
   def index
+    @serializer =
+      if params[:names]
+        VectorLayerSerializer
+      else
+        VectorLayerBaseSerializer
+      end
     @layers =
       # if params[:query]
       #   VectorLayer.text_search(params[:query])
@@ -34,7 +40,7 @@ class V1::VectorLayersController < ApplicationController
       render(json: { data: [] })
     else
       @layers = @layers.page(params[:page]).per(params[:limit] || 10)
-      render(json: @layers, meta: pagination_dict(@layers), each_serializer: VectorLayerBaseSerializer) # , include: ['vector_feature']) # , project_id: 0
+      render(json: @layers, meta: pagination_dict(@layers), each_serializer: @serializer) # , include: ['vector_feature']) # , project_id: 0
     end
   end
 

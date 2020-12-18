@@ -7,6 +7,8 @@ class VectorLayer < Layer
   has_many :vector_layer_project, dependent: :destroy
   has_many :projects, through: :vector_layer_project
 
+  serialize :tmp_geojson, HashSerializer
+
   # has_many :vector_features
 
   before_save :find_tmp_type, :find_keywords, :guess_data_type, :create_default_color_map

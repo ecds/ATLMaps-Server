@@ -11,7 +11,9 @@ Rails.application.config.middleware.insert_before(0, Rack::Cors) do
             'http://2c801b74.ngrok.io',
             'http://atlmaps.ecdsweb.org',
             'https://lvh.me:4200',
-            'http://localhost:3000'
+            'http://localhost:3000',
+            'https://atlmaps.ecdsdev.org',
+            'https://atlmaps-upload.ecdsdev.org'
     resource '*',
              headers: :any,
              methods: %i[

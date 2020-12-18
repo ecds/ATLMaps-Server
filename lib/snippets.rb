@@ -27,7 +27,7 @@ wiki_data['query']['categorymembers'].map {|n| n['title']}
 
 geo = Faraday.get 'https://geoserver.ecds.emory.edu/ATLMaps/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=ATLMaps:Atlanta%20Neighborhoods&maxFeatures=500&outputFormat=application%2Fjson'
 geo_data = JSON.parse(geo.body)
-geo_data['features'].select {|n| n['properties']['NAME'] == 'Reynoldstown'}
+geo_data[:features].select {|n| n[:properties]['NAME'] == 'Reynoldstown'}
 
 missing2 = []
 wiki_data['query']['categorymembers'].each do |hood|
@@ -41,13 +41,13 @@ wiki_data['query']['categorymembers'].each do |hood|
     next
   end
   hood_name = hood['title'].split(',').first.gsub(' (Atlanta)', '')
-  hood_geo = geo_data['features'].select {|n| n['properties']['NAME'] == hood_name}
+  hood_geo = geo_data[:features].select {|n| n[:properties]['NAME'] == hood_name}
   if hood_geo.empty?
     missing2.push(hood_name)
     next
   end
   link = "https://en.wikipedia.org/wiki/#{hood['title'].gsub(' ', '_')}"
-  hood_geo.first['properties']['description'] = "#{wiki_content['extract']} <p>Source: <a href='#{link}>Wikipedia</a><p>"
+  hood_geo.first[:properties]['description'] = "#{wiki_content['extract']} <p>Source: <a href='#{link}>Wikipedia</a><p>"
 end; nil
 
 wiki_data['query']['categorymembers'].each do |hood|
@@ -59,36 +59,59 @@ wiki_data['query']['categorymembers'].each do |hood|
 end; nil
 
 missing = []
-vl.tmp_geojson['features'].each do |f|
-  if f['properties']['description'].nil?
-    missing.push(f['properties']['title'])
+vl.tmp_geojson[:features].each do |f|
+  if f[:properties]['description'].nil?
+    missing.push(f[:properties]['title'])
   end
 end
 
 title = 'Druid Hills'
 wiki_title = 'Druid_Hills,_Georgia'
 id = '110038'
-r = vl.tmp_geojson['features'].select {|n| n['properties']['title'] == title}.first
+r = vl.tmp_geojson[:features].select {|n| n[:properties]['title'] == title}.first
 url = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&pageids=#{id}"
 wiki = HTTParty.get(url)
 w = JSON.parse(wiki.body)
 content = w['query']['pages'][id]['extract']
-r['properties']['description'] = "#{content}<p>Source: <a href='https://en.wikipedia.org/wiki/#{wiki_title}'>Wikipedia</a></p>"
-puts(r['properties']['description'])
+r[:properties]['description'] = "#{content}<p>Source: <a href='https://en.wikipedia.org/wiki/#{wiki_title}'>Wikipedia</a></p>"
+puts(r[:properties]['description'])
 
 
-rows = CSV.read('geocoder.csv', headers: true, header_converters: :symbol)
+rows = CSV.read('/data/geocoder.csv', headers: true, header_converters: :symbol)
 b = VectorLayer.find(570)
-RGeo::GeoJSON.decode(b.geojson['features'].first['geometry'])
+geojson = JSON.parse(HTTParty.get(geoserver_url).body, symbolize_names: true)
+RGeo::GeoJSON.decode(b.geojson[:features].first['geometry'])
 factory = RGeo::Geographic.simple_mercator_factory
 factory.point(rows.first[:latitude].to_f, rows.first[:longitude].to_f)
 
-building = nil
-poly = RGeo::GeoJSON.decode(b.geojson['features'].first['geometry'])
+buildings = []
+poly = RGeo::GeoJSON.decode(geojson[:features].first[:geometry].to_json)
 rows.each do |r|
-  point = factory.point(r[:latitude].to_f, r[:longitude].to_f)
-  point.within? poly
-  building = r
+  point = factory.point(r[:longitude].to_f, r[:latitude].to_f)
+  if point.within?(poly)
+    puts(point)
+    buildings.push(r)
+  end
+end
+
+rows.each do |r|
+  next if r[:longitude].to_f.nil?
+  next if r[:latitude].to_f.nil?
+  r[:point] = factory.point(r[:longitude].to_f, r[:latitude].to_f)
+end
+
+geojson[:features].each do |feature|
+  poly = RGeo::GeoJSON.decode(feature[:geometry].to_json, geo_factory: factory)
+  next if poly.nil?
+  feature[:properties][:occupants] = []
+  rows.each do |r|
+    next if r[:point].nil?
+    if r[:point].within? poly
+      puts(r[:stnam])
+      buildings.push(r[:stnam])
+      feature[:properties][:occupants].push(r.to_h)
+    end
+  end
 end
 
 
@@ -96,8 +119,8 @@ VectorLayer.all.each do |vl|
   if vl.url.nil? && vl.vector_features.count > 0
     vl.tmp_geojson = {type: 'FeatureCollection', features: []}
     vl.vector_features.each do |f|
-      feature = {type: 'Feature', geometry: {type: f.geojson['geometries'].first['type'], coordinates: f.geojson['geometries'].first['coordinates'] } , properties: f.geojson['properties']}
-      vl.tmp_geojson['features'].push(feature)
+      feature = {type: 'Feature', geometry: {type: f.geojson['geometries'].first['type'], coordinates: f.geojson['geometries'].first['coordinates'] } , properties: f.geojson[:properties]}
+      vl.tmp_geojson[:features].push(feature)
     end
     vl.save
   end
@@ -106,8 +129,8 @@ end
 VectorLayer.all.each do |vl|
   puts vl.id
   if vl.tmp_geojson.nil? && vl.geojson
-    if vl.geojson['features']first['geometry'].is_a? Array
-      vl.geojson['features'].each do |f|
+    if vl.geojson[:features]first['geometry'].is_a? Array
+      vl.geojson[:features].each do |f|
         f['geometry'] = f['geometry'].first
       end
     end
@@ -115,3 +138,56 @@ VectorLayer.all.each do |vl|
     vl.save
   end
 end
+
+
+VectorLayer.all.each do |vl|
+  next if vl.tmp_geojson.nil?
+    vl.tmp_geojson[:features].each do |f|
+      next if f[:properties]['image'].nil?
+      f[:properties][:images] = [f[:properties]['image']]
+      f[:properties].delete('image')
+    end
+  vl.save
+end
+
+
+vl.tmp_geojson[:features].each do |f|
+  images = f[:properties][:images]
+  f[:properties][:images] = []
+  images.each do |i|
+    f[:properties][:images].push({url: i})
+  end
+  vl.save
+end
+
+VectorLayer.all.each do |vl|
+  next if vl.tmp_geojson.nil?
+  next if vl.tmp_geojson[:features].nil?
+  if vl.tmp_geojson[:features].first[:properties][:gx_media_links].present?
+    puts('Updating')
+    vl.tmp_geojson[:features].each do |f|
+      f[:properties][:youtube] = f[:properties][:gx_media_links]
+      f[:properties].delete(:gx_media_links)
+    end
+    vl.save
+  end
+end; nil
+
+VectorLayer.all.each do |vl|
+  next if vl.tmp_geojson.nil?
+  next if vl.tmp_geojson[:features].nil?
+  if vl.tmp_geojson[:features].first[:properties][:images].is_a?(Array) && vl.tmp_geojson[:features].first[:properties][:images].first.is_a?(String)
+    puts('Updating')
+    vl.tmp_geojson[:features].each do |f|
+      images = f[:properties][:images]
+      next if images.nil?
+      f[:properties][:images] = []
+      images.each do |i|
+        f[:properties][:images].push({url: i})
+      end
+      puts(f[:properties][:images])
+    end
+    vl.save
+  end
+end; nil
+
