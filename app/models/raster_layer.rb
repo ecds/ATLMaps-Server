@@ -28,6 +28,8 @@ class RasterLayer < Layer
   has_many :raster_layer_project, dependent: :destroy
   has_many :projects, through: :raster_layer_project
 
+  enum data_format: { wms: 0, tile: 1 }
+
   # Get random map that has less than three tags
   scope :test, -> { all unless :tags.empty? }
 

@@ -9,8 +9,6 @@ class VectorLayer < Layer
 
   serialize :tmp_geojson, HashSerializer
 
-  # has_many :vector_features
-
   before_save :find_tmp_type, :find_keywords, :guess_data_type, :create_default_color_map
   before_create :ensure_name
 
@@ -21,6 +19,15 @@ class VectorLayer < Layer
   scope :qualitative_layers, -> { where(data_type: 'qualitative') }
   scope :quantitative_layers, -> { where(data_type: 'quantitative') }
   scope :by_data_type, ->(type) { where(data_type: type) }
+
+  #
+  # Default factory to use when createing features.
+  #
+  # @return [RGeo::Geographic::Factory] https://www.rubydoc.info/github/dazuma/rgeo/RGeo%2FGeographic.simple_mercator_factory
+  #
+  def geo_factory
+    RGeo::Geographic.simple_mercator_factory
+  end
 
   #
   # Geoserver endpoint for Protobuff Vector Tiles
@@ -81,7 +88,7 @@ class VectorLayer < Layer
 
   def remote_geojson
     if workspace.present?
-      geo_url = "#{institution.geoserver}#{workspace}/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=#{workspace}:#{name}&maxFeatures=10000&outputFormat=application%2Fjson"
+      geo_url = "#{institution.geoserver}#{workspace}/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=#{workspace}:#{name}&outputFormat=application%2Fjson"
       return JSON.parse(HTTParty.get(geo_url).body)
     else
       begin
@@ -134,9 +141,11 @@ class VectorLayer < Layer
   #
   # Calculates the bounding box based on the features.
   #
-  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
   def calculate_boundingbox
     return if geojson.nil?
+
+    return if pbf?
 
     begin
       self.maxx = RGeo::GeoJSON.decode(geojson).map { |feature| RGeo::Cartesian::BoundingBox.create_from_geometry(feature.geometry.envelope).max_x }.max
@@ -144,17 +153,16 @@ class VectorLayer < Layer
       self.minx = RGeo::GeoJSON.decode(geojson).map { |feature| RGeo::Cartesian::BoundingBox.create_from_geometry(feature.geometry.envelope).min_x }.min
       self.miny = RGeo::GeoJSON.decode(geojson).map { |feature| RGeo::Cartesian::BoundingBox.create_from_geometry(feature.geometry.envelope).min_y }.min
 
-      factory = RGeo::Geographic.simple_mercator_factory
-      max_point = factory.point(maxx, maxy)
-      min_point = factory.point(minx, miny)
+      max_point = geo_factory.point(maxx, maxy)
+      min_point = geo_factory.point(minx, miny)
       # If the min and max points are the the same, we need to bump one so the box will be a polygon.
-      min_point = factory.point(minx + 3, miny + 3) if max_point.distance(min_point).zero?
+      min_point = geo_factory.point(minx + 3, miny + 3) if max_point.distance(min_point).zero?
       self.boundingbox = RGeo::Cartesian::BoundingBox.create_from_points(max_point, min_point).to_geometry
     rescue NoMethodError
       nil
     end
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
+  # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
   #
   # Collects all the descriptions, filters all the stopwords

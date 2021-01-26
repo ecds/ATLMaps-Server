@@ -79,15 +79,16 @@ class VectorUpload
       end
 
       json['features'].each do |feature|
-        # original_properties = feature['properties']
-        # feature['properties'] = { originalProperties: {} }
-
-        # original_properties.each do |key, _value|
-        #   feature['properties'][:originalProperties][key] = validate_value(original_properties[key])
-        # end
-
         mapped_attributes.each do |key, value|
-          feature['properties'][key] = validate_value(feature['properties'][value])
+          if key == 'dataAttributes' && mapped_attributes['dataAttributes'].is_a?(Array)
+            # feature['properties']['dataAttributes'] = feature['properties'][value[0]]
+            feature['properties']['dataAttributes'] = {}
+            mapped_attributes['dataAttributes'].each do |datum|
+              feature['properties']['dataAttributes'][datum] = feature['properties'][datum]
+            end
+          else
+            feature['properties'][key] = validate_value(feature['properties'][value])
+          end
         end
       end
       return json

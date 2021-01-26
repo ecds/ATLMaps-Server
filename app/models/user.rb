@@ -4,8 +4,8 @@
 class User < ApplicationRecord
   has_one :login
   belongs_to :institution, optional: true
-  has_many :collaboration
-  has_many :projects, through: :collaboration, dependent: :destroy
+  has_many :projects
+  # has_many :projects, through: :collaboration, dependent: :destroy
   has_many :user_tagged, dependent: :destroy
 
   validates :email, uniqueness: { allow_blank: true }

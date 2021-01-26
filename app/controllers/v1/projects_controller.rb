@@ -6,11 +6,7 @@ class V1::ProjectsController < ApplicationController
   include Permissions
   include EcdsRailsAuthEngine::CurrentUser
   def index
-    render(json: if params['user_id'] && current_user
-                   Project.where(user_id: current_user.user.id)
-                 else
-                   Project.featured
-                 end)
+    render(json: Project.featured)
   end
 
   def show
@@ -37,15 +33,15 @@ class V1::ProjectsController < ApplicationController
         ]
       )
     else
-      render(json: { errors: 'permission denied' }.to_json, status: :unauthorized)
+      head(401)
     end
   end
 
   def create
-    if current_user&.user&.confirmed
+    if current_user #&.user&.confirmed
       project = Project.new(project_params)
       project.saved = true
-      project.user = current_user.user
+      project.user = current_user #.user
       if project.save
         permissions = ownership(project)
         # Ember wants some JSON
@@ -108,6 +104,7 @@ class V1::ProjectsController < ApplicationController
           media
           photo
           raster_layer_project
+          user
         ]
       )
   end

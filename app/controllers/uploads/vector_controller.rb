@@ -32,12 +32,13 @@ class Uploads::VectorController < ApplicationController
       mapped_attributes = JSON.parse(params[:mappedAttributes]).compact
       begin
         vu = VectorUpload.new(file: params[:file], mapped_attributes: mapped_attributes)
-      rescue VectorUploadException => e
+      rescue Exception => e
         render(json: { message: e }, status: :bad_request)
+        return
       end
       begin
         render(json: vu.amend_attributes, status: :ok)
-      rescue VectorUploadException => e
+      rescue Exception => e
         render(json: { message: e }, status: :bad_request)
       end
     end

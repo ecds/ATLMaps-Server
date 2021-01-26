@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_01_151231) do
+ActiveRecord::Schema.define(version: 2021_01_15_150818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -233,6 +233,7 @@ ActiveRecord::Schema.define(version: 2020_12_01_151231) do
     t.geometry "boundingbox", limit: {:srid=>4326, :type=>"st_polygon"}
     t.string "thumb"
     t.string "attribution"
+    t.integer "data_format", default: 0
     t.index ["boundingbox"], name: "index_raster_layers_on_boundingbox", using: :gist
   end
 

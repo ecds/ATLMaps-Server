@@ -50,10 +50,11 @@ class V1::UsersController < ApplicationController
   # @return [<Type>] <description>
   #
   def update
-    if current_user.user.update(user_params)
-      render(json: current_user.user, status: :no_content)
+    if current_user.id.to_s == params[:id]
+      current_user.update!(user_params)
+      render(json: current_user, status: :no_content)
     else
-      head(400)
+      render(json: { cu: current_user.id, pid: params[:id] })
     end
   end
 
