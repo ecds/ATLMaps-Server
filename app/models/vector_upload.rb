@@ -71,23 +71,25 @@ class VectorUpload
       return build_geojson
     else
       geojson = type == 'zip' ? to_geojson : file
-      json = JSON.parse(File.read(geojson))
+      json = JSON.parse(File.read(geojson), symbolize_names: true)
 
-      if mapped_attributes['break'].present?
-        break_property = mapped_attributes.delete('break')
-        json['breakProperty'] = validate_value(break_property)
+      if mapped_attributes[:break].present?
+        break_property = mapped_attributes.delete(:break)
+        json[:breakProperty] = validate_value(break_property)
       end
 
-      json['features'].each do |feature|
+      json[:features].each do |feature|
+        feature = fix_feature(feature) if feature[:type] != 'Feature'
+
         mapped_attributes.each do |key, value|
-          if key == 'dataAttributes' && mapped_attributes['dataAttributes'].is_a?(Array)
-            # feature['properties']['dataAttributes'] = feature['properties'][value[0]]
-            feature['properties']['dataAttributes'] = {}
-            mapped_attributes['dataAttributes'].each do |datum|
-              feature['properties']['dataAttributes'][datum] = feature['properties'][datum]
+          if key == :dataAttributes && mapped_attributes[:dataAttributes].is_a?(Array)
+            # feature[:properties][:dataAttributes] = feature[:properties][value[0]]
+            feature[:properties][:dataAttributes] = {}
+            mapped_attributes[:dataAttributes].each do |datum|
+              feature[:properties][:dataAttributes][datum.to_sym] = feature[:properties][datum.to_sym]
             end
           else
-            feature['properties'][key] = validate_value(feature['properties'][value])
+            feature[:properties][key.to_sym] = validate_value(feature[:properties][value.to_sym])
           end
         end
       end
@@ -204,7 +206,7 @@ class VectorUpload
       attrs.concat(feature['properties'].map { |key, _value| key })
     end
 
-    return attrs
+    return attrs.uniq
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
@@ -215,18 +217,18 @@ class VectorUpload
     rows.each_with_index do |row, index|
       next if index.zero?
 
-      next if row[mapped_attributes['longitude']].nil? || row[mapped_attributes['latitude']].nil?
+      next if row[mapped_attributes[:longitude]].nil? || row[mapped_attributes[:latitude]].nil?
 
       feature = empty_feature
 
       mapped_attributes.each do |key, value|
         case key
-        when 'longitude'
+        when :longitude
           lng = get_coordinates(row[value])
           next if row[value].nil?
 
           feature[:geometry][:coordinates][0] = lng
-        when 'latitude'
+        when :latitude
           lat = get_coordinates(row[value])
           next if row[value].nil?
 
@@ -239,38 +241,94 @@ class VectorUpload
     end
     return geojson
   end
+
+  def empty_feature
+    return {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [0, 0]
+      },
+      properties: {}
+    }
+  end
+
+  def get_coordinates(num)
+    Float(num)
+  rescue ArgumentError
+    raise(VectorUploadException, "Values for longitude and latitude must be numbers. You provided #{num}")
+  end
+
+  def validate_value(value)
+    sanitizer = Rails::Html::SafeListSanitizer.new
+    # rubocop:disable Style/CaseLikeIf, Style/EmptyElse
+    if value.is_a?(String)
+      sanitizer.sanitize(value)
+    elsif value.is_a?(Numeric)
+      value
+    else
+      nil
+    end
+    # rubocop:enable Style/CaseLikeIf, Style/EmptyElse
+  end
+
+  #
+  # Some GeoJSON from the ArcGIS Open Data platform have invalid GeoJSON
+  # For example
+  #
+  # "features": [{
+  #   "type": "GeometryCollection", <-- Only "Feature" is allowed
+  #   "geometries": [{ <-- should be "geometry" and must be a Hash
+  #     "type": "MultiPolygon",
+  #     "coordinates": [[[
+  #         [-84.34816523074365, 33.805053839298864],
+  #         [-84.3481640099526, 33.80503519896642],
+  #         ...
+  #     ]]]
+  #   }],
+  #   "properties": {}
+  # }]
+  #
+  # So, we have to clean it up and make it look like:
+  #
+  # "features": [{
+  #   "type": "Feature",
+  #   "geometry": {
+  #     "type": "GeometryCollection",
+  #     "geometries": [
+  #       {
+  #         "type": "MultiPolygon",
+  #         "coordinates": [[[
+  #             [-84.34816523074365, 33.805053839298864],
+  #             [-84.3481640099526, 33.80503519896642],
+  #             ...
+  #         ]]]
+  #       }
+  #     ]
+  #   },
+  #   "properties": {}
+  # }]
+  #
+  # @param [Hash] feature GeoJSON Feature object
+  #
+  # @return [Hash] GeoJSON Feature object
+  #
+  def fix_feature(feature)
+    if feature.key?(:geometries) && feature[:geometries].is_a?(Array)
+      geometries = feature[:geometries]
+      geometries.push(features[:geometry]) if feature.key?(:geometry)
+      feature[:geometry] = {
+        type: 'GeometryCollection',
+        geometries: geometries
+      }
+      feature[:type] = 'Feature'
+    end
+    feature
+  end
 end
 # rubocop:enable Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
-def empty_feature
-  return {
-    type: 'Feature',
-    geometry: {
-      type: 'Point',
-      coordinates: [0, 0]
-    },
-    properties: {}
-  }
-end
 
-def get_coordinates(num)
-  Float(num)
-rescue ArgumentError
-  raise(VectorUploadException, "Values for longitude and latitude must be numbers. You provided #{num}")
-end
-
-def validate_value(value)
-  sanitizer = Rails::Html::SafeListSanitizer.new
-  # rubocop:disable Style/CaseLikeIf, Style/EmptyElse
-  if value.is_a?(String)
-    sanitizer.sanitize(value)
-  elsif value.is_a?(Numeric)
-    value
-  else
-    nil
-  end
-  # rubocop:enable Style/CaseLikeIf, Style/EmptyElse
-end
 
 #
 # Exception class for Vector Upoads

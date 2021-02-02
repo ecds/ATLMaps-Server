@@ -67,6 +67,8 @@ class V1::VectorLayersController < ApplicationController
   end
 
   def update
+    Rails.logger.debug("PARMS????!!!: #{params}")
+    # Rails.logger.debug("LAYER PARMS????: #{layer_params}")
     if admin?
       @layer = VectorLayer.find(params[:id])
       if @layer.update(layer_params)
@@ -81,6 +83,7 @@ class V1::VectorLayersController < ApplicationController
   end
 
   def destroy
+    Rails.logger.debug("ADMIN????: #{admin?}")
     if admin?
       @layer = VectorLayer.find(params[:id])
       @layer.destroy

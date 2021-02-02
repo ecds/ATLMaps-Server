@@ -31,7 +31,7 @@ module Permissions
   # @return [<Type>] <description>
   #
   def admin?
-    current_user.user.admin if current_user.present?
+    current_user.admin if current_user.present?
   end
 
   #

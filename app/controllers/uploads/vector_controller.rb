@@ -29,7 +29,7 @@ class Uploads::VectorController < ApplicationController
     elsif params[:file].nil?
       render(json: { message: 'Missing layer file.' }, status: :bad_request)
     else
-      mapped_attributes = JSON.parse(params[:mappedAttributes]).compact
+      mapped_attributes = JSON.parse(params[:mappedAttributes], symbolize_names: true).compact
       begin
         vu = VectorUpload.new(file: params[:file], mapped_attributes: mapped_attributes)
       rescue Exception => e
@@ -39,6 +39,7 @@ class Uploads::VectorController < ApplicationController
       begin
         render(json: vu.amend_attributes, status: :ok)
       rescue Exception => e
+        Rails.logger.debug("GRRRR: #{e.backtrace}")
         render(json: { message: e }, status: :bad_request)
       end
     end

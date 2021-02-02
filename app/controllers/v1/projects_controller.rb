@@ -13,9 +13,9 @@ class V1::ProjectsController < ApplicationController
     project = Project.find(params[:id])
     # Only return the project if it is published, the user is the owner
     # or the user is a collaborator.
-    Rails.logger.debug("CURRENT USER: #{current_user}")
+    # Rails.logger.debug("CURRENT USER: #{current_user}")
     permissions = ownership(project)
-    Rails.logger.debug("PERMISSIONS: #{permissions}")
+    # Rails.logger.debug("PERMISSIONS: #{permissions}")
     if project.published == true || permissions[:may_edit] == true
       render(
         json: project,
@@ -60,6 +60,8 @@ class V1::ProjectsController < ApplicationController
   end
 
   def update
+    Rails.logger.debug("PARMS????!!!: #{params[:data]}")
+
     @project = Project.find(params[:id])
     permissions = ownership(@project)
     if permissions[:may_edit] == true

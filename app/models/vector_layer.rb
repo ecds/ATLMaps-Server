@@ -9,6 +9,8 @@ class VectorLayer < Layer
 
   serialize :tmp_geojson, HashSerializer
 
+  before_create :clean_geojson
+
   before_save :find_tmp_type, :find_keywords, :guess_data_type, :create_default_color_map
   before_create :ensure_name
 
@@ -84,7 +86,7 @@ class VectorLayer < Layer
     return ColorBrewer.new.random
   end
 
-  private
+  # private
 
   def remote_geojson
     if workspace.present?
@@ -106,7 +108,13 @@ class VectorLayer < Layer
     return if geojson.nil?
 
     begin
-      types = geojson['features'].map { |f| f['geometry']['type'] }.uniq
+      types =
+        if geojson[:features].first.key?(:geometry)
+          geojson[:features].map { |f| f[:geometry][:type] }.uniq
+        elsif geojson[:features].first.key?(:geometries)
+          geometries = geojson[:features].pluck(:geometries)
+          geometries.flatten.pluck(:type).uniq
+        end
 
       self.geometry_type =
         if types.length == 1
@@ -180,6 +188,19 @@ class VectorLayer < Layer
     return if qualitative? || default_break_property.nil?
 
     self.color_map = ColorMap.new(geojson: geojson, property: default_break_property).create_map
+  end
+
+  #
+  # <Description>
+  #
+  # @return [<Type>] <description>
+  #
+  def clean_geojson
+    return if tmp_geojson.nil?
+
+    tmp_geojson[:features].each do |feature|
+      feature.delete(:geometries)
+    end
   end
 
   # def defaults

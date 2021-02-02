@@ -11,7 +11,6 @@ class V1::RasterLayersController < ApplicationController
   # @return [<Type>] <description>
   #
   def index
-    Rails.logger.debug("$$$$$$$$$$$$ #{params[:tags]}")
     @layers =
       # if params[:query]
       #   RasterLayer.text_search(params[:query])
