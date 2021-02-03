@@ -54,13 +54,13 @@ class ColorMap
   def calculate_range
     min = @geojson['features']
           .map { |feature| feature['properties'][@property] }
-          .compact
+          .compact(&:nil?)
           .min
           .floor
 
     max = @geojson['features']
           .map { |feature| feature['properties'][@property] }
-          .compact
+          .compact(&:nil?)
           .max
           .ceil
 
@@ -81,16 +81,8 @@ class ColorMap
   # @return [Array] Array of Hashes
   #
   def slice_data
-    groups = @range.each_slice(@range.max / @steps)
-    @steps = groups.count
-    groups.with_index
-          .with_object({}) do |(step, index), group|
-            group[index] = {
-              bottom: step.first,
-              top: step.last + 0.999,
-              color: offset_color(index)
-            }
-          end
+    range_diff = @range.max - @range.min
+    range_diff > @steps ? whole_slice : fractional_slice
   end
 
   #
@@ -114,5 +106,37 @@ class ColorMap
     raise(ArgumentError, 'geojson MUST be valid GeoJSON.') unless @geojson['features'].is_a?(Array)
     raise(ArgumentError, 'Break property must be a Numeric') unless @geojson['features'].first['properties'][@property].is_a?(Numeric)
     raise(ArgumentError, 'Steps property must be a Numeric') unless @steps.is_a?(Numeric)
+  end
+
+  def whole_slice
+    groups = @range.each_slice(@range.max / @steps)
+    @steps = groups.count
+    groups.with_index
+          .with_object({}) do |(step, index), group|
+            group[index] = {
+              bottom: step.first,
+              top: step.last + 0.999,
+              color: offset_color(index)
+            }
+          end
+  end
+
+  def fractional_slice
+    @range = Float(@range.min)..Float(@range.max)
+    range_steps = @range.max / @steps + 0.1
+    breaks = []
+    groups = []
+    @range.step(range_steps) { |step| breaks.push(step) }
+    breaks.map.with_index do |group, index|
+      top = group.equal?(breaks.last) ? @range.max : breaks[index + 1] - 0.0001
+      groups.push(
+        {
+          bottom: group,
+          top: top,
+          color: offset_color(index)
+        }
+      )
+    end
+    groups
   end
 end

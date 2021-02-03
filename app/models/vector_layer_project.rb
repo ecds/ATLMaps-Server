@@ -47,10 +47,12 @@ class VectorLayerProject < ApplicationRecord
 
     min = vector_layer.geojson['features']
                       .map { |feature| feature['properties'][property] }
+                      .compact(&:nil?)
                       .min.floor
 
     max = vector_layer.geojson['features']
                       .map { |feature| feature['properties'][property] }
+                      .compact(&:nil?)
                       .max.ceil
 
     range = min..max

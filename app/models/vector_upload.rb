@@ -6,6 +6,7 @@
 class VectorUpload
   include ActiveModel::Model
   include ActiveModel::AttributeMethods
+  include FixGeojsonFeature
 
   attr_accessor :type, :file, :attributes, :mapped_attributes, :geojson, :title, :file_name
 
@@ -71,6 +72,7 @@ class VectorUpload
       return build_geojson
     else
       geojson = type == 'zip' ? to_geojson : file
+      # TODO: Since we are no longer adding to GeoServer, we don't need to make a file on disk.
       json = JSON.parse(File.read(geojson), symbolize_names: true)
 
       if mapped_attributes[:break].present?
@@ -94,22 +96,6 @@ class VectorUpload
         end
       end
       return json
-    end
-  end
-
-  #
-  # <Description>
-  #
-  # @return [<Type>] <description>
-  #
-  def make_shapefile
-    geojson_file = File.join('/data/tmp', "#{file_name}.json")
-    FileUtils.mkdir_p(File.join('/data/tmp', file_name))
-    new_shapefile = File.join('/data/tmp', file_name, "#{file_name}.shp")
-    File.open(geojson_file, 'w') do |f|
-      f.write(geojson)
-      f.close
-      system("ogr2ogr -f 'ESRI SHAPEFILE' #{new_shapefile} '#{f.path}'")
     end
   end
 
@@ -192,7 +178,7 @@ class VectorUpload
   end
 
   def attributes_from_spreadsheet
-    spreadsheet = Roo::Spreadsheet.open(file)
+    spreadsheet = Roo::Spreadsheet.open(file, { csv_options: { encoding: 'bom|utf-8' } })
     rows = spreadsheet.is_a?(Roo::CSV) ? spreadsheet.parse(headers: true) : spreadsheet.sheet(0).parse(headers: true)
     return rows.first.keys.compact
   end
@@ -212,7 +198,7 @@ class VectorUpload
   # rubocop:disable Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
   def build_geojson
     geojson = { type: 'FeatureCollection', features: [] }
-    spreadsheet = Roo::Spreadsheet.open(file)
+    spreadsheet = Roo::Spreadsheet.open(file, { csv_options: { encoding: 'bom|utf-8' } })
     rows = spreadsheet.is_a?(Roo::CSV) ? spreadsheet.parse(headers: true) : spreadsheet.sheet(0).parse(headers: true)
     rows.each_with_index do |row, index|
       next if index.zero?
@@ -220,7 +206,6 @@ class VectorUpload
       next if row[mapped_attributes[:longitude]].nil? || row[mapped_attributes[:latitude]].nil?
 
       feature = empty_feature
-
       mapped_attributes.each do |key, value|
         case key
         when :longitude
@@ -270,60 +255,6 @@ class VectorUpload
       nil
     end
     # rubocop:enable Style/CaseLikeIf, Style/EmptyElse
-  end
-
-  #
-  # Some GeoJSON from the ArcGIS Open Data platform have invalid GeoJSON
-  # For example
-  #
-  # "features": [{
-  #   "type": "GeometryCollection", <-- Only "Feature" is allowed
-  #   "geometries": [{ <-- should be "geometry" and must be a Hash
-  #     "type": "MultiPolygon",
-  #     "coordinates": [[[
-  #         [-84.34816523074365, 33.805053839298864],
-  #         [-84.3481640099526, 33.80503519896642],
-  #         ...
-  #     ]]]
-  #   }],
-  #   "properties": {}
-  # }]
-  #
-  # So, we have to clean it up and make it look like:
-  #
-  # "features": [{
-  #   "type": "Feature",
-  #   "geometry": {
-  #     "type": "GeometryCollection",
-  #     "geometries": [
-  #       {
-  #         "type": "MultiPolygon",
-  #         "coordinates": [[[
-  #             [-84.34816523074365, 33.805053839298864],
-  #             [-84.3481640099526, 33.80503519896642],
-  #             ...
-  #         ]]]
-  #       }
-  #     ]
-  #   },
-  #   "properties": {}
-  # }]
-  #
-  # @param [Hash] feature GeoJSON Feature object
-  #
-  # @return [Hash] GeoJSON Feature object
-  #
-  def fix_feature(feature)
-    if feature.key?(:geometries) && feature[:geometries].is_a?(Array)
-      geometries = feature[:geometries]
-      geometries.push(features[:geometry]) if feature.key?(:geometry)
-      feature[:geometry] = {
-        type: 'GeometryCollection',
-        geometries: geometries
-      }
-      feature[:type] = 'Feature'
-    end
-    feature
   end
 end
 # rubocop:enable Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity

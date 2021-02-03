@@ -4,12 +4,14 @@ require 'cgi'
 
 # Model class for vector layers.
 class VectorLayer < Layer
+  include FixGeojsonFeature
+
   has_many :vector_layer_project, dependent: :destroy
   has_many :projects, through: :vector_layer_project
 
   serialize :tmp_geojson, HashSerializer
 
-  before_create :clean_geojson
+  before_validation :clean_geojson
 
   before_save :find_tmp_type, :find_keywords, :guess_data_type, :create_default_color_map
   before_create :ensure_name
@@ -196,9 +198,11 @@ class VectorLayer < Layer
   # @return [<Type>] <description>
   #
   def clean_geojson
-    return if tmp_geojson.nil?
+    return if tmp_geojson.nil? || tmp_geojson[:features].nil?
 
     tmp_geojson[:features].each do |feature|
+      next unless feature.keys.include?('geometries')
+
       feature.delete(:geometries)
     end
   end

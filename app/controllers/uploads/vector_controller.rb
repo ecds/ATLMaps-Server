@@ -60,10 +60,9 @@ class Uploads::VectorController < ApplicationController
     else
       vu = VectorUpload.new(file: params[:file])
 
-      # vu.make_shapefile
       layer = vu.make_vector_layer(params)
 
-      render(json: { message: 'success', layerId: layer.title }, status: :ok)
+      render(json: { message: 'success', layerId: layer.id, layerTitle: layer.title }, status: :ok)
     end
   end
 end

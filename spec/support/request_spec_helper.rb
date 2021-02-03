@@ -3,6 +3,10 @@
 # spec/support/request_spec_helper
 module RequestSpecHelper
   # Parse JSON response to ruby hash
+  def response_data
+    JSON.parse(response.body, symbolize_names: true)
+  end
+  # Parse JSON-API response to ruby hash
   def json
     JSON.parse(response.body)['data']
   end
