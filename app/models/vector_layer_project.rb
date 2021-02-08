@@ -40,64 +40,7 @@ class VectorLayerProject < ApplicationRecord
     self.marker = nil if color_map.present?
     return if property.nil? || steps.nil? || brewer_scheme.nil? || vector_layer.qualitative?
 
-    # random brewer scheme
-    # ColorBrewer.new.brew.to_a.sample(1).to_h.keys.first.to_s
-
-    return unless vector_layer.geojson['features'].first['properties'][property].is_a?(Numeric)
-
-    min = vector_layer.geojson['features']
-                      .map { |feature| feature['properties'][property] }
-                      .compact(&:nil?)
-                      .min.floor
-
-    max = vector_layer.geojson['features']
-                      .map { |feature| feature['properties'][property] }
-                      .compact(&:nil?)
-                      .max.ceil
-
-    range = min..max
-
-    groups = slice_data(range)
-
-    self.marker = nil
-    self.color_map = groups.flatten.delete_if { |g| g.is_a?(Integer) }
-  end
-
-  #
-  # Slices the range of data values and matches them up
-  # with the apporiate color.
-  #
-  # @param [Range] range Range of max and min for
-  # the data property being used for steps.
-  #
-  # @return [Array] Array of Hashes
-  #
-  def slice_data(range)
-    range.each_slice(range.max / steps)
-         .with_index
-         .with_object({}) do |(step, index), group|
-           group[index] = {
-             bottom: step.first,
-             top: step.last,
-             color: offset_color(index)
-           }
-         end
-  end
-
-  #
-  # The colors in a ColorBrewer scheme (sequential and diverging)
-  # are darker at the end. This selectes the darkest color possiable
-  # from the sheme.
-  #
-  # @param [Intiger] index index of step in color_map
-  #
-  # @return [String] hex value of color
-  #
-  def offset_color(index)
-    cb_scheme = ColorBrewer.new.brew[brewer_scheme.to_sym]
-    scheme_count = cb_scheme.length
-    offset = scheme_count + index - steps
-    cb_scheme[offset]
+    self.color_map = ColorMap.new(geojson: vector_layer.geojson, property: property, brewer_scheme: brewer_scheme, steps: steps).create_map
   end
 
   #

@@ -13,10 +13,19 @@ class VectorLayer < Layer
 
   before_validation :clean_geojson
 
-  before_save :find_tmp_type, :find_keywords, :guess_data_type, :create_default_color_map
+  before_save :set_geometry_type, :find_keywords, :guess_data_type, :create_default_color_map
   before_create :ensure_name
 
-  enum geometry_type: { GeometryCollection: 0, LineString: 1, MultiLineString: 2, MultiPolygon: 3, Point: 4 }
+  enum geometry_type: {
+    GeometryCollection: 0,
+    LineString: 1,
+    MultiLineString: 2,
+    MultiPolygon: 3,
+    Point: 4,
+    Position: 5,
+    MultiPoint: 6,
+    Polygon: 7
+  }
   enum data_format: { geojson: 0, pbf: 1, remote: 2 }
   enum data_type: { qualitative: 0, quantitative: 1 }
 
@@ -90,6 +99,11 @@ class VectorLayer < Layer
 
   # private
 
+  #
+  # Fetch GeoJSON from remote URL
+  #
+  # @return [Hash] GeoJSON as Hash
+  #
   def remote_geojson
     if workspace.present?
       geo_url = "#{institution.geoserver}#{workspace}/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=#{workspace}:#{name}&outputFormat=application%2Fjson"
@@ -106,18 +120,11 @@ class VectorLayer < Layer
   #
   # Set type based on feature types
   #
-  def find_tmp_type
+  def set_geometry_type
     return if geojson.nil?
 
     begin
-      types =
-        if geojson[:features].first.key?(:geometry)
-          geojson[:features].map { |f| f[:geometry][:type] }.uniq
-        elsif geojson[:features].first.key?(:geometries)
-          geometries = geojson[:features].pluck(:geometries)
-          geometries.flatten.pluck(:type).uniq
-        end
-
+      types = geojson[:features].map { |f| f[:geometry][:type] }.uniq
       self.geometry_type =
         if types.length == 1
           types[0]
@@ -125,7 +132,7 @@ class VectorLayer < Layer
           'GeometryCollection'
         end
     rescue NoMethodError
-      self.tmp_type = nil
+      self.geometry_type = nil
     end
   end
 
@@ -136,6 +143,8 @@ class VectorLayer < Layer
   #
   def guess_data_type
     return if data_type.present?
+
+    return if geometry_type.nil?
 
     self.data_type = geometry_type.include?('Point') ? 'qualitative' : 'quantitative'
   end
@@ -201,6 +210,7 @@ class VectorLayer < Layer
     return if tmp_geojson.nil? || tmp_geojson[:features].nil?
 
     tmp_geojson[:features].each do |feature|
+      feature = fix_feature(feature) if feature[:type] != 'Feature'
       next unless feature.keys.include?('geometries')
 
       feature.delete(:geometries)

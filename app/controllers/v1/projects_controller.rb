@@ -38,10 +38,10 @@ class V1::ProjectsController < ApplicationController
   end
 
   def create
-    if current_user #&.user&.confirmed
+    if current_user
       project = Project.new(project_params)
       project.saved = true
-      project.user = current_user #.user
+      project.user = current_user
       if project.save
         permissions = ownership(project)
         # Ember wants some JSON

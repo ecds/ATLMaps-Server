@@ -8,6 +8,7 @@ FactoryBot.define do
     description { Faker::TvShows::RickAndMorty.quote }
     institution { create(:institution) }
     geometry_type { 'Point' }
+    data_format { 'geojson' }
 
     factory :vector_layer_with_features do
       transient do
