@@ -1,7 +1,6 @@
 .vscode
 *.DS_Store
 .capistrano
-.circleci
 log
 tmp
 public/assets
