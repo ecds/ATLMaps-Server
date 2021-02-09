@@ -5,7 +5,6 @@
 log
 tmp
 public/assets
-config/application.rb
 public/assets
 log/development.log
 tmp/pids/server.pid
