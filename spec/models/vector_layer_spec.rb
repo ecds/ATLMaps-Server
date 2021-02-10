@@ -40,9 +40,9 @@ RSpec.describe(VectorLayer, type: :model) do
     expect(vl.color_map).to(be_instance_of(Array))
     expect(vl.color_map.count).to(eq(5))
     expect(vl.color_map.first['bottom']).to(eq(5.0))
-    expect(vl.color_map.first['top']).to(eq(24.9))
+    expect(vl.color_map.first['top']).to(eq(23.9))
     expect(vl.color_map.first['color']).not_to(be(nil))
-    expect(vl.color_map.last['bottom']).to(eq(85.0))
+    expect(vl.color_map.last['bottom']).to(eq(81.0))
     expect(vl.color_map.last['top']).to(eq(100.0))
     expect(vl.color_map.last['color']).not_to(be(nil))
   end

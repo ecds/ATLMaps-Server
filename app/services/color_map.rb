@@ -49,7 +49,7 @@ class ColorMap
     @groups.flatten.delete_if { |g| g.is_a?(Integer) }
   end
 
-  private
+  # private
 
   def calculate_range
     min = @geojson['features']
@@ -82,10 +82,11 @@ class ColorMap
   #
   def slice_data
     @range = Float(@range.min)..Float(@range.max)
-    range_steps = @range.max / @steps
+    range_steps = (@range.max - @range.min) / @steps
     breaks = []
     groups = []
     @range.step(range_steps) { |step| breaks.push(step) }
+    puts(groups)
     breaks.map.with_index do |group, index|
       top = group.equal?(breaks.last) ? @range.max : breaks[index + 1] - 0.1
       groups.push(
