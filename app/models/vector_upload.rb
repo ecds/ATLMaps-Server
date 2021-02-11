@@ -7,6 +7,7 @@ class VectorUpload
   include ActiveModel::Model
   include ActiveModel::AttributeMethods
   include FixGeojsonFeature
+  include Sanitize
 
   attr_accessor :type, :file, :attributes, :mapped_attributes, :geojson, :title, :file_name
 
@@ -77,7 +78,7 @@ class VectorUpload
 
       if mapped_attributes[:break].present?
         break_property = mapped_attributes.delete(:break)
-        json[:breakProperty] = validate_value(break_property)
+        json[:breakProperty] = sanitize_value(break_property)
       end
 
       json[:features].each do |feature|
@@ -91,7 +92,7 @@ class VectorUpload
               feature[:properties][:dataAttributes][datum.to_sym] = feature[:properties][datum.to_sym]
             end
           else
-            feature[:properties][key.to_sym] = validate_value(feature[:properties][value.to_sym])
+            feature[:properties][key.to_sym] = sanitize_value(feature[:properties][value.to_sym])
           end
         end
       end
@@ -219,7 +220,7 @@ class VectorUpload
 
           feature[:geometry][:coordinates][1] = lat
         else
-          feature[:properties][key.to_sym] = validate_value(row[value])
+          feature[:properties][key.to_sym] = sanitize_value(row[value])
         end
       end
       geojson[:features].push(feature)
@@ -242,19 +243,6 @@ class VectorUpload
     Float(num)
   rescue ArgumentError
     raise(VectorUploadException, "Values for longitude and latitude must be numbers. You provided #{num}")
-  end
-
-  def validate_value(value)
-    sanitizer = Rails::Html::SafeListSanitizer.new
-    # rubocop:disable Style/CaseLikeIf, Style/EmptyElse
-    if value.is_a?(String)
-      sanitizer.sanitize(value)
-    elsif value.is_a?(Numeric)
-      value
-    else
-      nil
-    end
-    # rubocop:enable Style/CaseLikeIf, Style/EmptyElse
   end
 end
 # rubocop:enable Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity

@@ -5,6 +5,9 @@
 #
 class Layer < ApplicationRecord
   include PgSearch::Model
+  include Sanitize
+
+  before_validation :sanitize_data
 
   before_save :calculate_boundingbox
 
@@ -155,6 +158,15 @@ class Layer < ApplicationRecord
 
   def calculate_boundingbox
     raise StandardError.new('calculate_bounding_box must be overridden.')
+  end
+
+  #
+  # Remove any unnessary HTML tags from the description
+  #
+  # @return [String] clean HTML string
+  #
+  def sanitize_data
+    self.description = sanitize_value(description)
   end
 
   # scope :by_neighborhood,

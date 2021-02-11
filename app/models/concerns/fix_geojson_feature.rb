@@ -3,7 +3,6 @@
 # /app/models/concerns/user_confirm.rb
 # Concern provides code to ensure a user is confirmed.
 module FixGeojsonFeature
-
   #
   # Some GeoJSON from the ArcGIS Open Data platform have invalid GeoJSON
   # For example

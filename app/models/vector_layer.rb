@@ -107,10 +107,10 @@ class VectorLayer < Layer
   def remote_geojson
     if workspace.present?
       geo_url = "#{institution.geoserver}#{workspace}/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=#{workspace}:#{name}&outputFormat=application%2Fjson"
-      return JSON.parse(HTTParty.get(geo_url).body)
+      return JSON.parse(HTTParty.get(geo_url).body).with_indifferent_access
     else
       begin
-        return JSON.parse(HTTParty.get(url).body)
+        return JSON.parse(HTTParty.get(url).body).with_indifferent_access
       rescue StandardError
         return
       end

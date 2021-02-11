@@ -68,4 +68,11 @@ RSpec.describe(VectorLayer, type: :model) do
     features = RGeo::GeoJSON.decode(JSON.dump(vl.tmp_geojson))
     expect(features.count).not_to(be_zero)
   end
+
+  it 'sanitizes HTML for the description' do
+    content = Faker::TvShows::RickAndMorty.quote
+    html = "<script></script><p style=\"text-align:start;\"><span style=\"color: rgb(20,20,20);\">#{content}</span></p>"
+    vl = create(:vector_layer, description: html)
+    expect(vl.description).to(eq("<p><span>#{content}</span></p>"))
+  end
 end
