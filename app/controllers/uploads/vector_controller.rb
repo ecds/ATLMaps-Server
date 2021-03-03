@@ -13,7 +13,7 @@ class Uploads::VectorController < ApplicationController
   #
   def parse
     vu = VectorUpload.new(file: params[:fileToParse])
-    render(json: { attributes: vu.set_attributes }, status: :ok)
+    render(json: vu.set_attributes, status: :ok)
   rescue StandardError => e
     render(json: { message: e }, status: :bad_request)
   end

@@ -28,10 +28,10 @@ RSpec.describe('Upload::Vectors', type: :request) do
     before { post '/uploads/vector/parse', params: { fileToParse: shapefile } }
     it 'returns a list of attributes' do
       expect(response).to(have_http_status(200))
-      expect(response_data[:attributes]).to(be_instance_of(Array))
-      expect(response_data[:attributes]).to(include('ACRES'))
-      expect(response_data[:attributes]).to(include('ZONING'))
-      expect(response_data[:attributes]).to(include('DIST_1'))
+      expect(response_data).to(be_instance_of(Array))
+      expect(response_data).to(include('ACRES'))
+      expect(response_data).to(include('ZONING'))
+      expect(response_data).to(include('DIST_1'))
     end
   end
 
@@ -39,11 +39,11 @@ RSpec.describe('Upload::Vectors', type: :request) do
     before { post '/uploads/vector/parse', params: { fileToParse: csv } }
     it 'returns a list of attributes' do
       expect(response).to(have_http_status(200))
-      expect(response_data[:attributes]).to(be_instance_of(Array))
-      expect(response_data[:attributes]).to(include('Description'))
-      expect(response_data[:attributes]).to(include('Name'))
-      expect(response_data[:attributes]).to(include('Latitude'))
-      expect(response_data[:attributes]).to(include('Longitude'))
+      expect(response_data).to(be_instance_of(Array))
+      expect(response_data).to(include('Description'))
+      expect(response_data).to(include('Name'))
+      expect(response_data).to(include('Latitude'))
+      expect(response_data).to(include('Longitude'))
     end
   end
 
@@ -51,11 +51,11 @@ RSpec.describe('Upload::Vectors', type: :request) do
     before { post '/uploads/vector/parse', params: { fileToParse: xlsx } }
     it 'returns a list of attributes' do
       expect(response).to(have_http_status(200))
-      expect(response_data[:attributes]).to(be_instance_of(Array))
-      expect(response_data[:attributes]).to(include('Description'))
-      expect(response_data[:attributes]).to(include('Location Name'))
-      expect(response_data[:attributes]).to(include('Latitude'))
-      expect(response_data[:attributes]).to(include('Longitude'))
+      expect(response_data).to(be_instance_of(Array))
+      expect(response_data).to(include('Description'))
+      expect(response_data).to(include('Location Name'))
+      expect(response_data).to(include('Latitude'))
+      expect(response_data).to(include('Longitude'))
     end
   end
 

@@ -2,7 +2,7 @@
 
 require('rails_helper')
 
-RSpec.describe('V1::RasterLayers', type: :request) do
+RSpec.describe('V1::Catagories', type: :request) do
   let!(:category) { create(:with_tags) }
   let!(:tag_a) { category.tags.first }
   let!(:tag_b) { category.tags.last }

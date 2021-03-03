@@ -6,6 +6,7 @@ module RequestSpecHelper
   def response_data
     JSON.parse(response.body, symbolize_names: true)
   end
+
   # Parse JSON-API response to ruby hash
   def json
     JSON.parse(response.body)['data']

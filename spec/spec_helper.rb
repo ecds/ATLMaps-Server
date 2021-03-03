@@ -208,5 +208,6 @@ RSpec.configure do |config|
 
     stub_request(:get, 'http://points.org').to_return(status: 200, body: geojson_point.to_json)
     stub_request(:get, 'http://polygons.org').to_return(status: 200, body: geojson_polygon.to_json)
+    stub_request(:get, /.*geoserver.io.*/).to_return(status: 200, body: File.open(Rails.root.join('spec/fixtures/sq4pd.png')))
   end
 end

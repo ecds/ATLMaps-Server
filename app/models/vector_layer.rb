@@ -124,7 +124,7 @@ class VectorLayer < Layer
     return if geojson.nil?
 
     begin
-      types = geojson[:features].map { |f| f[:geometry][:type] }.uniq
+      types = geojson[:features].map { |f| f[:geometry][:type].gsub('Multi', '') }.uniq
       self.geometry_type =
         if types.length == 1
           types[0]
@@ -146,7 +146,11 @@ class VectorLayer < Layer
 
     return if geometry_type.nil?
 
-    self.data_type = geometry_type.include?('Point') ? 'qualitative' : 'quantitative'
+    if geometry_type.include?('Point') || default_break_property.is_a?(String)
+      self.data_type = 'qualitative'
+    else
+      self.data_type = 'quantitative'
+    end
   end
 
   #
@@ -196,7 +200,7 @@ class VectorLayer < Layer
   end
 
   def create_default_color_map
-    return if qualitative? || default_break_property.nil?
+    return if default_break_property.nil?
 
     self.color_map = ColorMap.new(geojson: geojson, property: default_break_property).create_map
   end

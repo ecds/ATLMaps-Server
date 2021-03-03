@@ -86,7 +86,6 @@ class ColorMap
     breaks = []
     groups = []
     @range.step(range_steps) { |step| breaks.push(step) }
-    puts(groups)
     breaks.map.with_index do |group, index|
       top = group.equal?(breaks.last) ? @range.max : breaks[index + 1] - 0.1
       groups.push(

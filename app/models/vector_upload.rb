@@ -79,6 +79,7 @@ class VectorUpload
       if mapped_attributes[:break].present?
         break_property = mapped_attributes.delete(:break)
         json[:breakProperty] = sanitize_value(break_property)
+        json[:colorMap] = mapped_attributes[:colorMap]
       end
 
       json[:features].each do |feature|
@@ -91,6 +92,9 @@ class VectorUpload
             mapped_attributes[:dataAttributes].each do |datum|
               feature[:properties][:dataAttributes][datum.to_sym] = feature[:properties][datum.to_sym]
             end
+          elsif key == :colorMap && mapped_attributes[:colorMap].is_a?(Hash)
+            break_value = feature[:properties][json[:breakProperty].to_sym].to_sym
+            feature[:properties][:color] = mapped_attributes[:colorMap][break_value][:color]
           else
             feature[:properties][key.to_sym] = sanitize_value(feature[:properties][value.to_sym])
           end
@@ -118,7 +122,8 @@ class VectorUpload
       institution: Institution.second,
       data_format: 'geojson',
       active: true,
-      default_break_property: geojson['breakProperty']
+      default_break_property: geojson['breakProperty'],
+      color_map: geojson['colorMap']
     )
     if geojson['breakProperty']
       layer.tmp_geojson['features'].each do |feature|
@@ -193,7 +198,7 @@ class VectorUpload
       attrs.concat(feature['properties'].map { |key, _value| key })
     end
 
-    return attrs.uniq
+    return { attributes: attrs.uniq, data: json['features'] }
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
@@ -219,6 +224,8 @@ class VectorUpload
           next if row[value].nil?
 
           feature[:geometry][:coordinates][1] = lat
+        when :color_map
+          next
         else
           feature[:properties][key.to_sym] = sanitize_value(row[value])
         end

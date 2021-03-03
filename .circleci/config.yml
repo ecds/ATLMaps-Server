@@ -48,5 +48,11 @@ jobs:
             bundle exec rake db:schema:load
 
       - run:
+          name: Make Tmp Directory
+          command: |
+            sudo mkdir -p /data/tmp
+            sudo chown $USER:$USER /data/tmp
+
+      - run:
           name: Parallel RSpec
           command: bundle exec rspec spec

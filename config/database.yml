@@ -17,13 +17,9 @@ test:
   database: <%= ENV['TEST_DB_NAME'] %>
 
 production:
-  adapter: postgis
-  postgis_extension: true
-  encoding: utf8
-  pool: 50
+  <<: *default
   database: <%= ENV['RDS_DB_NAME'] %>
   username: <%= ENV['RDS_USERNAME'] %>
   password: <%= ENV['RDS_PASSWORD'] %>
   host: <%= ENV['RDS_HOSTNAME'] %>
   port: <%= ENV['RDS_PORT'] %>
-  schema_search_path: public, postgis

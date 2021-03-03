@@ -5,7 +5,7 @@ FactoryBot.define do
   factory :raster_layer do
     title { Faker::Movies::HitchhikersGuideToTheGalaxy.marvin_quote }
     name { Faker::Movies::HitchhikersGuideToTheGalaxy.location }
-    workspace { Faker::Movies::HitchhikersGuideToTheGalaxy.planet }
+    workspace { Faker::Movies::HitchhikersGuideToTheGalaxy.planet.gsub(' ', '') }
     institution { create(:institution) }
     active { false }
     maxx { -84.37832072 }
