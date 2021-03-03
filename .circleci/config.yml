@@ -51,6 +51,7 @@ jobs:
           name: Make Tmp Directory
           command: |
             sudo mkdir -p /data/tmp
+            sudo chmod 777 /data/tmp
             sudo chown $USER:$USER /data/tmp
 
       - run:
