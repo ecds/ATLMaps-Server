@@ -24,7 +24,7 @@ RSpec.describe(VectorLayerProject, type: :model) do
     expect(vlp.color_map.first['color']).to(eq(cb_scheme[5]))
     expect(vlp.color_map.last['color']).to(eq(cb_scheme[-1]))
     expect(vlp.color_map.first['bottom']).to(eq(0.0))
-    expect(vlp.color_map.first['top']).to(eq(170.2333))
+    expect(vlp.color_map.first['top']).to(eq(170.3332))
     expect(vlp.color_map.last['bottom']).to(eq(851.6667))
     expect(vlp.color_map.last['top']).to(eq(1022.0))
   end

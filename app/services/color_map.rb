@@ -53,13 +53,13 @@ class ColorMap
 
   def calculate_range
     min = @geojson['features']
-          .map { |feature| feature['properties'][@property] }
+          .map { |feature| Float(feature['properties'][@property]) if feature['properties'][@property].present? }
           .compact(&:nil?)
           .min
           .floor
 
     max = @geojson['features']
-          .map { |feature| feature['properties'][@property] }
+          .map { |feature| Float(feature['properties'][@property]) if feature['properties'][@property].present? }
           .compact(&:nil?)
           .max
           .ceil
@@ -87,13 +87,13 @@ class ColorMap
     groups = []
     @range.step(range_steps) { |step| breaks.push(step) }
     breaks.map.with_index do |group, index|
-      top = group.equal?(breaks.last) ? @range.max : breaks[index + 1] - 0.1
+      top = group.equal?(breaks.last) ? @range.max : breaks[index + 1] - 0.0001
       groups.push(
         {
           bottom: group.round(4),
           top: top.round(4),
           color: offset_color(index)
-        }
+        }.with_indifferent_access
       )
     end
     if groups.count > @steps
@@ -121,8 +121,8 @@ class ColorMap
 
   def validate!
     raise(ArgumentError, 'geojosn MUST be a Hash.') unless @geojson.is_a?(Hash)
-    raise(ArgumentError, 'geojson MUST be valid GeoJSON.') unless @geojson['features'].is_a?(Array)
-    raise(ArgumentError, 'Break property must be a Numeric') unless @geojson['features'].first['properties'][@property].is_a?(Numeric)
-    raise(ArgumentError, 'Steps property must be a Numeric') unless @steps.is_a?(Numeric)
+    raise(ArgumentError, 'geojson MUST be valid GeoJSON.') unless @geojson[:features].is_a?(Array)
+    raise(ArgumentError, 'Break property must be a Numeric') unless Float(@geojson[:features].first[:properties][@property.to_sym]).is_a?(Numeric)
+    raise(ArgumentError, 'Steps property must be a Numeric') unless Float(@steps).is_a?(Numeric)
   end
 end

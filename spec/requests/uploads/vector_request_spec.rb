@@ -18,6 +18,7 @@ RSpec.describe('Upload::Vectors', type: :request) do
     it 'returns a list of attributes' do
       expect(response).to(have_http_status(200))
       expect(response_data[:attributes]).to(be_instance_of(Array))
+      expect(response_data[:data]).to(be_instance_of(Array))
       expect(response_data[:attributes]).to(include('ACRES'))
       expect(response_data[:attributes]).to(include('ZONING'))
       expect(response_data[:attributes]).to(include('DIST_1'))
@@ -28,10 +29,11 @@ RSpec.describe('Upload::Vectors', type: :request) do
     before { post '/uploads/vector/parse', params: { fileToParse: shapefile } }
     it 'returns a list of attributes' do
       expect(response).to(have_http_status(200))
-      expect(response_data).to(be_instance_of(Array))
-      expect(response_data).to(include('ACRES'))
-      expect(response_data).to(include('ZONING'))
-      expect(response_data).to(include('DIST_1'))
+      expect(response_data[:attributes]).to(be_instance_of(Array))
+      expect(response_data[:data]).to(be_instance_of(Array))
+      expect(response_data[:attributes]).to(include('ACRES'))
+      expect(response_data[:attributes]).to(include('ZONING'))
+      expect(response_data[:attributes]).to(include('DIST_1'))
     end
   end
 
@@ -39,11 +41,12 @@ RSpec.describe('Upload::Vectors', type: :request) do
     before { post '/uploads/vector/parse', params: { fileToParse: csv } }
     it 'returns a list of attributes' do
       expect(response).to(have_http_status(200))
-      expect(response_data).to(be_instance_of(Array))
-      expect(response_data).to(include('Description'))
-      expect(response_data).to(include('Name'))
-      expect(response_data).to(include('Latitude'))
-      expect(response_data).to(include('Longitude'))
+      expect(response_data[:attributes]).to(be_instance_of(Array))
+      expect(response_data[:data]).to(be_instance_of(Array))
+      expect(response_data[:attributes]).to(include('Description'))
+      expect(response_data[:attributes]).to(include('Name'))
+      expect(response_data[:attributes]).to(include('Latitude'))
+      expect(response_data[:attributes]).to(include('Longitude'))
     end
   end
 
@@ -51,20 +54,45 @@ RSpec.describe('Upload::Vectors', type: :request) do
     before { post '/uploads/vector/parse', params: { fileToParse: xlsx } }
     it 'returns a list of attributes' do
       expect(response).to(have_http_status(200))
-      expect(response_data).to(be_instance_of(Array))
-      expect(response_data).to(include('Description'))
-      expect(response_data).to(include('Location Name'))
-      expect(response_data).to(include('Latitude'))
-      expect(response_data).to(include('Longitude'))
+      expect(response_data[:attributes]).to(be_instance_of(Array))
+      expect(response_data[:data]).to(be_instance_of(Array))
+      expect(response_data[:attributes]).to(include('Description'))
+      expect(response_data[:attributes]).to(include('Location Name'))
+      expect(response_data[:attributes]).to(include('Latitude'))
+      expect(response_data[:attributes]).to(include('Longitude'))
     end
   end
 
   context 'POST /uploads/vector/preview assuming geojson original' do
-    before { post '/uploads/vector/preview', params: { file: geojson, mappedAttributes: '{ "title": "DIST_1" }' } }
-    it 'returns a list of attributes' do
+    before do
+      data = JSON.parse(File.read(Rails.root.join('spec/fixtures/geojson.json')), symbolize_names: true)
+      data[:breakProperty] = 'ZONING'
+      color_map = '{"A": {"color": "blue"},"B": {"color": "green"},"C": {"color": "yellow"},"D": {"color": "red"}}'
+      tmp_data_path = Rails.root.join('spec/fixtures/tmp.json')
+      File.open(Rails.root.join(tmp_data_path), 'w') do |file|
+        file.write(data.to_json)
+      end
+      tmp_data = fixture_file_upload(tmp_data_path)
+      post '/uploads/vector/preview', params: { file: tmp_data, mappedAttributes: "{ \"title\": \"DIST_1\", \"break\": \"ZONING\", \"colorMap\": #{color_map} }" }
+      File.delete(tmp_data_path)
+    end
+
+    it 'returns geojson colored by qualitative property' do
       expect(response).to(have_http_status(200))
       expect(response_data).to(be_instance_of(Hash))
       expect(response_data[:features].first[:properties][:title]).to(eq('Sunset Avenue'))
+      response_data[:features].each do |feature|
+        case feature[:properties][:ZONING]
+        when 'A'
+          expect(feature[:properties][:color]).to(eq('blue'))
+        when 'B'
+          expect(feature[:properties][:color]).to(eq('green'))
+        when 'C'
+          expect(feature[:properties][:color]).to(eq('yellow'))
+        when 'D'
+          expect(feature[:properties][:color]).to(eq('red'))
+        end
+      end
     end
   end
 
@@ -73,9 +101,10 @@ RSpec.describe('Upload::Vectors', type: :request) do
       post '/uploads/vector/preview',
            params: {
              file: csv,
-             mappedAttributes: '{ "title": "Name", "longitude": "Longitude", "latitude": "Latitude" }'
+             mappedAttributes: '{ "title": "Name", "longitude": "Longitude", "latitude": "Latitude", "break": "Size", "colorMap": { "brew": "Reds", "steps": 6 } }'
            }
     end
+
     it 'returns GeoJSON with lat/lng and properties from CSV file' do
       expect(response).to(have_http_status(200))
       expect(response_data).to(be_instance_of(Hash))
@@ -101,6 +130,9 @@ RSpec.describe('Upload::Vectors', type: :request) do
       expect(response_data[:message]).to(eq('success'))
       expect(response_data[:layerTitle]).to(eq('Some Title'))
       vector_layer = VectorLayer.find(response_data[:layerId])
+      expect(vector_layer.default_break_property).to(eq('Percent NH American Indian and Alaska Native Population'))
+      expect(vector_layer.color_map).to(be_instance_of(Array))
+      expect(vector_layer.color_map.length).to(eq(5))
     end
   end
 end

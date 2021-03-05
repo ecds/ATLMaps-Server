@@ -9,7 +9,7 @@ class VectorUpload
   include FixGeojsonFeature
   include Sanitize
 
-  attr_accessor :type, :file, :attributes, :mapped_attributes, :geojson, :title, :file_name
+  attr_accessor :type, :file, :attributes, :mapped_attributes, :geojson, :title, :file_name, :break_property
 
   #
   # <Description>
@@ -33,7 +33,9 @@ class VectorUpload
 
     unzip if type == 'zip'
 
-    set_file_name if title.present?
+    # set_file_name if title.present?
+
+    self.break_property = mapped_attributes[:break] if mapped_attributes.present? && mapped_attributes[:break].present?
   end
 
   #
@@ -74,13 +76,8 @@ class VectorUpload
     else
       geojson = type == 'zip' ? to_geojson : file
       # TODO: Since we are no longer adding to GeoServer, we don't need to make a file on disk.
-      json = JSON.parse(File.read(geojson), symbolize_names: true)
-
-      if mapped_attributes[:break].present?
-        break_property = mapped_attributes.delete(:break)
-        json[:breakProperty] = sanitize_value(break_property)
-        json[:colorMap] = mapped_attributes[:colorMap]
-      end
+      json = JSON.parse(File.read(geojson), symbolize_names: true).with_indifferent_access
+      json[:colorMap] = build_color_map(json) if break_property
 
       json[:features].each do |feature|
         feature = fix_feature(feature) if feature[:type] != 'Feature'
@@ -92,9 +89,15 @@ class VectorUpload
             mapped_attributes[:dataAttributes].each do |datum|
               feature[:properties][:dataAttributes][datum.to_sym] = feature[:properties][datum.to_sym]
             end
-          elsif key == :colorMap && mapped_attributes[:colorMap].is_a?(Hash)
-            break_value = feature[:properties][json[:breakProperty].to_sym].to_sym
-            feature[:properties][:color] = mapped_attributes[:colorMap][break_value][:color]
+          elsif key == :colorMap
+            break_value = feature[:properties][break_property]
+            if mapped_attributes[:colorMap].is_a?(Hash) && mapped_attributes[:colorMap][:steps].nil?
+              feature[:properties][:color] = mapped_attributes[:colorMap][break_value.to_sym][:color]
+            else
+              json[:colorMap].each do |step|
+                feature[:properties][:color] = step[:color] if break_value.between?(step[:bottom], step[:top])
+              end
+            end
           else
             feature[:properties][key.to_sym] = sanitize_value(feature[:properties][value.to_sym])
           end
@@ -105,15 +108,17 @@ class VectorUpload
   end
 
   #
-  # <Description>
+  # Create a new VectorLayer
   #
-  # @param [<Type>] options <description>
+  # @param [Hash] options geojson, title and description for new VectorLayer
   #
-  # @return [<Type>] <description>
+  # @return [VectorLayer] newly created VectorLayer object.
   #
   def make_vector_layer(options)
     geojson, title, description = options.values_at(:geojson, :title, :description)
     geojson = JSON.parse(geojson) if geojson.is_a?(String)
+    geojson = geojson.with_indifferent_access
+    geojson = check_for_break(geojson) if geojson['breakProperty']
     layer = VectorLayer.create!(
       tmp_geojson: geojson,
       name: SecureRandom.uuid,
@@ -125,17 +130,29 @@ class VectorUpload
       default_break_property: geojson['breakProperty'],
       color_map: geojson['colorMap']
     )
-    if geojson['breakProperty']
-      layer.tmp_geojson['features'].each do |feature|
-        feature['properties']['breakProperty'] = geojson['breakProperty']
-        feature['properties']['breakValue'] = feature['properties'][geojson['breakProperty']]
-      end
-    end
-    layer.save!
     return layer
   end
 
   private
+
+  #
+  # Calculate color map based on data if the number of steps is provided.
+  # Otherwise, return the color map already defined.
+  #
+  # @return [Hahs] Instructions for how to color each feature.
+  #
+  def build_color_map(json)
+    json[:breakProperty] = sanitize_value(break_property)
+
+    return mapped_attributes[:colorMap] if mapped_attributes[:colorMap][:steps].nil?
+
+    return ColorMap.new(
+      geojson: json,
+      property: break_property,
+      steps: Integer(mapped_attributes[:colorMap][:steps]),
+      brewer_scheme: mapped_attributes[:colorMap][:brew]
+    ).create_map
+  end
 
   def unzip
     destination = file.to_path.gsub('.zip', '')
@@ -172,21 +189,24 @@ class VectorUpload
 
   def attributes_from_shape
     attrs = []
+    features = []
     begin
       RGeo::Shapefile::Reader.open(file).each do |feature|
         attrs.concat(feature.attributes.map { |key, _value| key })
+        features.push(feature.attributes)
       end
     rescue Errno::ENOENT => _e
       raise(VectorUploadException, 'Zip files must contain .shp file.')
     end
 
-    return attrs.uniq
+    return { attributes: attrs.uniq, data: features }
   end
 
   def attributes_from_spreadsheet
     spreadsheet = Roo::Spreadsheet.open(file, { csv_options: { encoding: 'bom|utf-8' } })
     rows = spreadsheet.is_a?(Roo::CSV) ? spreadsheet.parse(headers: true) : spreadsheet.sheet(0).parse(headers: true)
-    return rows.first.keys.compact
+    data = rows.filter_map { |row| { properties: row } if row.values.any? { |v| v.present? } }
+    return { attributes: rows.first.keys.compact, data: data }
   end
 
   def attributes_from_json
@@ -212,6 +232,7 @@ class VectorUpload
       next if row[mapped_attributes[:longitude]].nil? || row[mapped_attributes[:latitude]].nil?
 
       feature = empty_feature
+      feature[:properties] = row.transform_keys(&:to_sym)
       mapped_attributes.each do |key, value|
         case key
         when :longitude
@@ -224,14 +245,31 @@ class VectorUpload
           next if row[value].nil?
 
           feature[:geometry][:coordinates][1] = lat
-        when :color_map
+        when :colorMap
           next
+        # when :break
+        #   feature[:]
         else
           feature[:properties][key.to_sym] = sanitize_value(row[value])
         end
       end
       geojson[:features].push(feature)
     end
+    geojson = geojson.with_indifferent_access
+    if mapped_attributes[:colorMap]
+      geojson[:colorMap] = build_color_map(geojson)
+      # geojson[:features].each do |feature|
+      #   break_value = feature[:properties][break_property.to_sym]
+      #   if mapped_attributes[:colorMap].is_a?(Hash) && mapped_attributes[:colorMap][:steps].nil?
+      #     feature[:properties][:color] = mapped_attributes[:colorMap][break_value.to_sym][:color]
+      #   else
+      #     geojson[:colorMap].each do |step|
+      #       feature[:properties][:color] = step[:color] if break_value.between?(step[:bottom], step[:top])
+      #     end
+      #   end
+      # end
+    end
+
     return geojson
   end
 
@@ -251,10 +289,16 @@ class VectorUpload
   rescue ArgumentError
     raise(VectorUploadException, "Values for longitude and latitude must be numbers. You provided #{num}")
   end
+
+  def check_for_break(geojson)
+    geojson['features'].each do |feature|
+      feature['properties']['breakProperty'] = geojson['breakProperty']
+      feature['properties']['breakValue'] = feature['properties'][geojson['breakProperty']]
+    end
+    return geojson
+  end
 end
 # rubocop:enable Metrics/MethodLength, Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
-
-
 
 #
 # Exception class for Vector Upoads
