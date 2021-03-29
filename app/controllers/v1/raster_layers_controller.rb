@@ -23,7 +23,7 @@ class V1::RasterLayersController < ApplicationController
         # search parameters have values.
         RasterLayer.active
                    .browse_text_search(params[:text_search])
-                   .by_institution(params[:institution])
+                   .by_institution(params[:institutions])
                    .by_year(params[:start_year].to_i, params[:end_year].to_i)
                    .spatial_lucene(bounds: make_polygon(params[:bounds]), zoom: params[:zoom])
                    .by_tags(params[:tags])

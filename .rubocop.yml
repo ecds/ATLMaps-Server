@@ -14,6 +14,10 @@ Metrics/ClassLength:
 Style/ClassAndModuleChildren:
   Enabled: false
 
+Style/RaiseArgs:
+  Enabled: true
+  EnforcedStyle: compact
+
 Style/PercentLiteralDelimiters:
    Enabled: false
 

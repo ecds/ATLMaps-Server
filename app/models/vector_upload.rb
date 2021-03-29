@@ -76,7 +76,7 @@ class VectorUpload
     else
       geojson = type == 'zip' ? to_geojson : file
       # TODO: Since we are no longer adding to GeoServer, we don't need to make a file on disk.
-      json = JSON.parse(File.read(geojson), symbolize_names: true).with_indifferent_access
+      json = JSON.parse(File.read(geojson)).with_indifferent_access
       json[:colorMap] = build_color_map(json) if break_property
 
       json[:features].each do |feature|
@@ -87,7 +87,7 @@ class VectorUpload
             # feature[:properties][:dataAttributes] = feature[:properties][value[0]]
             feature[:properties][:dataAttributes] = {}
             mapped_attributes[:dataAttributes].each do |datum|
-              feature[:properties][:dataAttributes][datum.to_sym] = feature[:properties][datum.to_sym]
+              feature[:properties][:dataAttributes][datum] = feature[:properties][datum]
             end
           elsif key == :colorMap
             break_value = feature[:properties][break_property]
@@ -99,7 +99,7 @@ class VectorUpload
               end
             end
           else
-            feature[:properties][key.to_sym] = sanitize_value(feature[:properties][value.to_sym])
+            feature[:properties][key] = sanitize_value(feature[:properties][value])
           end
         end
       end

@@ -33,7 +33,8 @@ class V1::ProjectsController < ApplicationController
         ]
       )
     else
-      head(401)
+      # head(401)
+      render(json: project, serializer: EmptyProjectSerializer)
     end
   end
 
@@ -60,8 +61,6 @@ class V1::ProjectsController < ApplicationController
   end
 
   def update
-    Rails.logger.debug("PARMS????!!!: #{params[:data]}")
-
     @project = Project.find(params[:id])
     permissions = ownership(@project)
     if permissions[:may_edit] == true

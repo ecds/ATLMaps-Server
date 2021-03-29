@@ -157,7 +157,9 @@ class Layer < ApplicationRecord
   private
 
   def calculate_boundingbox
-    raise StandardError.new('calculate_bounding_box must be overridden.')
+    raise(
+      StandardError.new('calculate_bounding_box must be overridden.')
+    )
   end
 
   #
