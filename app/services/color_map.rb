@@ -122,8 +122,8 @@ class ColorMap
   def validate!
     raise(ArgumentError, 'geojosn MUST be a Hash.') unless @geojson.is_a?(Hash)
     raise(ArgumentError, 'geojson MUST be valid GeoJSON.') unless @geojson[:features].is_a?(Array)
-    raise(ArgumentError, "At lest one feature is missing a value for #{@property}") unless @geojson[:features].map { |f| Float(f[:properties][@property.to_sym]) }.any?(nil?)
-    raise(ArgumentError, 'All values of the break property must be a Numeric') unless @geojson[:features].map { |f| Float(f[:properties][@property.to_sym]) }.any?(Numeric)
+    raise(ArgumentError, "At lest one feature is missing a value for #{@property}") if @geojson[:features].map { |f| Float(f[:properties][@property.to_sym]) }.any?(nil?)
+    raise(ArgumentError, 'All values of the break property must be a Numeric') if @geojson[:features].map { |f| Float(f[:properties][@property.to_sym]) }.any?(String)
     raise(ArgumentError, 'Steps property must be a Numeric') unless Float(@steps).is_a?(Numeric)
   end
 end
