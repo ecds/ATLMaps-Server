@@ -6,7 +6,7 @@ jobs:
     # Primary container image where all commands run
 
     docker:
-      - image: circleci/ruby:2.7.2-node
+      - image: circleci/ruby:3.0.0-node
         environment:
           PGUSER: root
           RAILS_ENV: test
