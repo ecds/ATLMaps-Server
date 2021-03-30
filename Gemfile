@@ -5,7 +5,7 @@ source('https://rubygems.org')
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem('bootsnap')
 # RAILS!
-gem('rails', '~> 6.0')
+gem('rails', '~> 6.1')
 # Use postgres with the postgis plugin as the database for Active Record
 gem('activerecord-postgis-adapter', '~> 6.0.0')
 # Postgres

@@ -337,7 +337,7 @@ DEPENDENCIES
   pg_search
   puma
   rack-cors
-  rails (~> 6.0)
+  rails (~> 6.1)
   rgeo
   rgeo-activerecord
   rgeo-geojson
