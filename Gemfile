@@ -7,7 +7,7 @@ gem('bootsnap')
 # RAILS!
 gem('rails', '~> 6.1')
 # Use postgres with the postgis plugin as the database for Active Record
-gem('activerecord-postgis-adapter', '~> 6.0.0')
+gem('activerecord-postgis-adapter', '~> 7.1.0')
 # Postgres
 gem('pg')
 # gem 'squeel'
