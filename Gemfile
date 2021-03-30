@@ -65,7 +65,8 @@ gem('json')
 gem('rubyzip')
 
 # Ruby interface for spreadsheets
-gem('roo')
+# TODO: update when new version is released.
+gem 'roo', git: 'https://github.com/roo-rb/roo.git', branch: 'master'
 
 # Adds CORS headers
 gem('rack-cors', require: 'rack/cors')
