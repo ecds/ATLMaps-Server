@@ -7,7 +7,7 @@ gem('bootsnap')
 # RAILS!
 gem('rails', '~> 6.1')
 # Use postgres with the postgis plugin as the database for Active Record
-gem('activerecord-postgis-adapter', '~> 6.0.0')
+gem('activerecord-postgis-adapter', '~> 7.1.0')
 # Postgres
 gem('pg')
 # gem 'squeel'
@@ -26,7 +26,7 @@ gem('rgeo')
 # as well as a set of helpers for writing spatial
 # ActiveRecord adapters based on RGeo.
 # https://github.com/rgeo/rgeo-activerecord
-gem('rgeo-activerecord')
+gem('rgeo-activerecord', '~> 7.0.0')
 
 # Extension to RGeo that provides GeoJSON encoding and decoding.
 # https://github.com/rgeo/rgeo-geojson

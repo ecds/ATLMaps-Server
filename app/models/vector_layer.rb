@@ -107,10 +107,10 @@ class VectorLayer < Layer
   def remote_geojson
     if workspace.present?
       geo_url = "#{institution.geoserver}#{workspace}/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=#{workspace}:#{name}&outputFormat=application%2Fjson"
-      return JSON.parse(HTTParty.get(geo_url).body).with_indifferent_access
+      return JSON.parse(HTTParty.get(geo_url, verify: false).body).with_indifferent_access
     else
       begin
-        return JSON.parse(HTTParty.get(url).body).with_indifferent_access
+        return JSON.parse(HTTParty.get(url).body, verify: false).with_indifferent_access
       rescue StandardError
         return
       end
@@ -122,6 +122,8 @@ class VectorLayer < Layer
   #
   def set_geometry_type
     return if geojson.nil?
+
+    return if pbf?
 
     begin
       types = geojson[:features].map { |f| f[:geometry][:type].gsub('Multi', '') }.uniq
@@ -199,8 +201,15 @@ class VectorLayer < Layer
     self.keywords = Stopwords.new.filter(titles + descriptions)
   end
 
+  #
+  # Create a ColorMap based on the default break property
+  #
+  # The ColorMap service is only for break properties that are Numeric.
+  #
   def create_default_color_map
     return if default_break_property.nil?
+
+    return if geojson[:features].map { |f| f[:properties][default_break_property] }.any?(String)
 
     self.color_map = ColorMap.new(geojson: geojson, property: default_break_property).create_map
   end
