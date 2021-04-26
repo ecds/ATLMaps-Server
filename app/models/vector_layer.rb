@@ -94,6 +94,10 @@ class VectorLayer < Layer
   # @return [String] hex color value.
   #
   def tmp_color
+    return color_map[color_map.length / 2.ceil]['color'] if color_map.is_a?(Array)
+
+    return color_map.map { |c| c.last['color'] }[color_map.length / 2.ceil] if color_map.is_a?(Hash)
+
     return ColorBrewer.new.random
   end
 
@@ -126,16 +130,41 @@ class VectorLayer < Layer
     return if pbf?
 
     begin
-      types = geojson[:features].map { |f| f[:geometry][:type].gsub('Multi', '') }.uniq
+      types = extract_types
       self.geometry_type =
         if types.length == 1
-          types[0]
+          types.first
         else
           'GeometryCollection'
         end
     rescue NoMethodError
       self.geometry_type = nil
     end
+  end
+
+  #
+  # Extract geometry types from GeoJSON features.
+  #
+  # @return [Array] Unique list of geometry types.
+  #
+  def extract_types
+    feature_types = geojson[:features].map { |f| f[:geometry][:type] }
+    feature_types = extract_for_collection(feature_types) if feature_types.include?('GeometryCollection')
+    feature_types.map { |f| f.gsub('Multi', '') }.uniq
+  end
+
+  #
+  # If a feature is a Geometry Collection, we dig out all the goemetry types from the collections.
+  #
+  # @param [Array] types List of types from GeoJSON features
+  #
+  # @return [Array] List of types from GeoJSON features and GeometryCollections
+  #
+  def extract_for_collection(types)
+    types.delete('GeometryCollection')
+    collections = geojson[:features].select { |f| f[:geometry][:type] == 'GeometryCollection' }
+    geometries = collections.map { |t| t[:geometry][:geometries] }
+    types.concat(geometries.flatten.pluck(:type))
   end
 
   #
@@ -148,11 +177,12 @@ class VectorLayer < Layer
 
     return if geometry_type.nil?
 
-    if geometry_type.include?('Point') || default_break_property.is_a?(String)
-      self.data_type = 'qualitative'
-    else
-      self.data_type = 'quantitative'
-    end
+    self.data_type =
+      if geometry_type.include?('Point') || default_break_property.is_a?(String)
+        'qualitative'
+      else
+        'quantitative'
+      end
   end
 
   #
