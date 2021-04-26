@@ -191,3 +191,58 @@ VectorLayer.all.each do |vl|
   end
 end; nil
 
+vl.tmp_geojson[:features].each do |f|
+  next if f[:properties]['PHOTO LOCATION'] == 'NO PHOTO'
+  photo_loc = f[:properties]['PHOTO LOCATION']
+  collection = photo_loc.split('collection').last.split('/')[1]
+  id = photo_loc.split('id').last.split('/')[1]
+  html = Nokogiri::HTML.parse(f[:properties][:description])
+  images = html.xpath("//img")
+  puts images
+  next if images.empty?
+  # res = HTTParty.get(images.first['src'])
+  # next if res.body.starts_with? "\xFF"
+  images.first['src'] = "https://digitalcollections.library.gsu.edu/digital/api/singleitem/image/#{collection}/#{id}/default.jpg"
+  f[:properties][:description] = html.to_s
+end; nil
+
+vls = [199, 207, 205, 201, 208, 200, 206]
+vls.each do |i|
+  vl = VectorLayer.find(i)
+  vl.tmp_geojson[:features].each do |f|
+    f[:properties][:description] = "#{f[:properties][:audio]}<br>#{f[:properties][:description]}"
+    puts f[:properties][:description]
+  end
+  vl.save
+end; nil
+
+vl.tmp_geojson[:features].each do |f|
+  image_url = "https://atlmaps-data.s3.amazonaws.com/holc/#{f[:properties][:holc_id]}.png"
+  pdf_url = "https://atlmaps-data.s3.amazonaws.com/holc/#{f[:properties][:holc_id]}.pdf"
+  f[:properties][:images] = [{url: image_url, link: pdf_url}]
+end; nil
+
+feature_ids = vl.tmp_geojson[:features].map {|f| f[:properties][:holc_id]}
+vfs.each do |f|
+  next if feature_ids.include? f.properties['holc_id']
+  f.geojson['properties'] =
+  geojson = f.geojson.transform_keys(&:to_sym)
+  geojson[:type] = 'Feature'
+  geojson[:properties] = f.properties.transform_keys(&:to_sym)
+  geometry = geojson.delete(:geometries)
+  geojson[:geometry] = geometry[0]
+  vl.tmp_geojson[:features].append geojson
+  puts f.properties['holc_id']
+end; nil
+
+Dir.foreach('.') do |f|
+  next if f.start_with? '.'
+  name = "#{f.to_s.split('.')[0]}.png"
+  next if File.exist? name
+  puts name
+  i = MiniMagick::Image.open(f.to_s)
+  i.format 'png'
+  i.resize '25%'
+  i.write name
+  i.destroy!
+end
