@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   post 'uploads/vector/preview', to: 'uploads/vector#preview'
   post 'uploads/vector/new', to: 'uploads/vector#new'
 
+  get 'project-meta/:id', to: 'v1/projects#meta_only'
+
   # Additional version for testing
   scope module: :v2, constraints: ApiVersion.new('v2') do
     resources :projects, only: :index

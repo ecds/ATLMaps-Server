@@ -5,23 +5,33 @@ class V1::ProjectsController < ApplicationController
   # class for Controller
   include Permissions
   include EcdsRailsAuthEngine::CurrentUser
+
+  before_action :set_project, only: %i(show destroy meta_only update)
+  before_action :set_permissions, only: %i(show update destroy)
+
+  #
+  # Endpoint to serialize all featured projects.
+  #
+  # @return [JSON] Serialized json of featured projects.
+  #
   def index
     render(json: Project.featured)
   end
 
+  #
+  # Endpoint to serialize project
+  #
+  # @return [JSON] Serialized json for a project
+  #
   def show
-    project = Project.find(params[:id])
     # Only return the project if it is published, the user is the owner
     # or the user is a collaborator.
-    # Rails.logger.debug("CURRENT USER: #{current_user}")
-    permissions = ownership(project)
-    # Rails.logger.debug("PERMISSIONS: #{permissions}")
-    if project.published == true || permissions[:may_edit] == true
+    if @project.published == true || @permissions[:may_edit] == true
       render(
-        json: project,
+        json: @project,
         root: 'project',
-        may_edit: permissions[:may_edit],
-        mine: permissions[:mine],
+        may_edit: @permissions[:may_edit],
+        mine: @permissions[:mine],
         include: [
           'vector_layer_project',
           'vector_layer_project.vector_layer',
@@ -32,12 +42,27 @@ class V1::ProjectsController < ApplicationController
           'raster_layer_project.raster_layer.institution'
         ]
       )
-    else
-      # head(401)
-      render(json: project, serializer: EmptyProjectSerializer)
+      return
     end
+    render(json: @project, serializer: EmptyProjectSerializer)
   end
 
+  #
+  # Endpoint to just return the metadata for the project and
+  # and no associated layers. This is primarly used for serverside
+  # rendering.
+  #
+  # @return [JSON] Serialized json for a project using `MetaOnlyProjectSerializer`
+  #
+  def meta_only
+    render(json: @project, serializer: MetaOnlyProjectSerializer)
+  end
+
+  #
+  # Endpoint to create project
+  #
+  # @return [JSON] Serialized json of newly created project.
+  #
   def create
     if current_user
       project = Project.new(project_params)
@@ -60,10 +85,13 @@ class V1::ProjectsController < ApplicationController
     end
   end
 
+  #
+  # Enpoint to update project
+  #
+  # @return [JSON] Serialized json for updated project
+  #
   def update
-    @project = Project.find(params[:id])
-    permissions = ownership(@project)
-    if permissions[:may_edit] == true
+    if @permissions[:may_edit] == true
       if @project.update(project_params)
         render(json: @project, status: :no_content)
       else
@@ -74,11 +102,14 @@ class V1::ProjectsController < ApplicationController
     end
   end
 
+  #
+  # Enpoint to delete project
+  #
+  # @return [HTTP] HTTP respone
+  #
   def destroy
-    project = Project.find(params[:id])
-    permissions = ownership(project)
-    if permissions[:mine]
-      project.destroy
+    if @permissions[:mine]
+      @project.destroy!
       head(204)
     else
       head(401)
@@ -86,6 +117,17 @@ class V1::ProjectsController < ApplicationController
   end
 
   private
+
+  def set_project
+    @project = Project.find(params[:id])
+  end
+
+  #
+  # Set the permissions based on request.
+  #
+  def set_permissions
+    @permissions = ownership(@project)
+  end
 
   def project_params
     ActiveModelSerializers::Deserialization
