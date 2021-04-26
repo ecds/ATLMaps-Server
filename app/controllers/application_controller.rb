@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
 
   include EcdsRailsAuthEngine::CurrentUser
   include ActionController::MimeResponds
-
   include ActionController::Cookies
   include ActionController::RequestForgeryProtection
 
@@ -26,9 +25,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def
-    default_serializer_options
-  end
+  def default_serializer_options; end
 
   def set_csrf_cookie
     cookies['CSRF-TOKEN'] = {
