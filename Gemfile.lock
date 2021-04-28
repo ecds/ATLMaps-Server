@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/roo-rb/roo.git
-  revision: 5339d3aee8f217528eb4f5ba39065705c19ebcdd
+  revision: 709464c77623be2bc09b2103405d90ded7604a75
   branch: master
   specs:
     roo (2.8.3)
