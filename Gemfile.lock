@@ -11,7 +11,7 @@ GIT
 
 GIT
   remote: https://github.com/roo-rb/roo.git
-  revision: 5339d3aee8f217528eb4f5ba39065705c19ebcdd
+  revision: 709464c77623be2bc09b2103405d90ded7604a75
   branch: master
   specs:
     roo (2.8.3)
@@ -95,8 +95,8 @@ GEM
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
     aws-eventstream (1.1.1)
-    aws-partitions (1.444.0)
-    aws-sdk-core (3.113.1)
+    aws-partitions (1.448.0)
+    aws-sdk-core (3.114.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.239.0)
       aws-sigv4 (~> 1.1)
@@ -104,7 +104,7 @@ GEM
     aws-sdk-kms (1.43.0)
       aws-sdk-core (~> 3, >= 3.112.0)
       aws-sigv4 (~> 1.1)
-    aws-sdk-s3 (1.93.1)
+    aws-sdk-s3 (1.94.0)
       aws-sdk-core (~> 3, >= 3.112.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.1)
@@ -249,7 +249,7 @@ GEM
       rake (>= 0.8.7)
       thor (~> 1.0)
     rake (13.0.3)
-    rexml (3.2.4)
+    rexml (3.2.5)
     rgeo (2.3.0)
     rgeo-activerecord (7.0.1)
       activerecord (>= 5.0)
