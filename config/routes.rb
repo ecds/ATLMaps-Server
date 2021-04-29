@@ -32,6 +32,8 @@ Rails.application.routes.draw do
   post 'uploads/vector/new', to: 'uploads/vector#new'
 
   get 'project-meta/:id', to: 'v1/projects#meta_only'
+  get 'raster-layer-meta', to: 'v1/raster_layers#meta_only'
+  get 'vector-layer-meta', to: 'v1/vector_layers#meta_only'
 
   # Additional version for testing
   scope module: :v2, constraints: ApiVersion.new('v2') do

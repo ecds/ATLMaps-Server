@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 # API response for VectorLayer objects
-class V1::VectorLayersController < ApplicationController
-  include Permissions
-  include PaginationDict
-  include MakePolygon
-
+class V1::VectorLayersController < V1::LayersController
+  #
+  # Endpoint to list vector layers
+  #
+  # @return [JSON] Serialized json of vector layers.
+  #
   def index
     @serializer =
       if params[:names]
@@ -44,15 +45,11 @@ class V1::VectorLayersController < ApplicationController
     end
   end
 
-  def show
-    layer = VectorLayer.find(params[:id])
-    # end
-    render(json: layer) # , include: ['vector_feature'])
-    # respond_to do |format|
-    #  format.json { render json: layer, status: :ok }
-    # end
-  end
-
+  #
+  # Endpoint to create new Vectorayer.
+  #
+  # @return [JSON] Serialized json of newly created Vectorayer.
+  #
   def create
     if admin?
       @layer = VectorLayer.new(layer_params)
@@ -66,34 +63,21 @@ class V1::VectorLayersController < ApplicationController
     end
   end
 
-  def update
-    Rails.logger.debug("PARMS????!!!: #{params}")
-    # Rails.logger.debug("LAYER PARMS????: #{layer_params}")
-    if admin?
-      @layer = VectorLayer.find(params[:id])
-      if @layer.update(layer_params)
-        # render json: @stop
-        head(:no_content)
-      else
-        render(json: @layer.errors, status: :unprocessable_entity)
-      end
-    else
-      render(json: 'Bad credentials', status: :unauthorized)
-    end
-  end
-
-  def destroy
-    Rails.logger.debug("ADMIN????: #{admin?}")
-    if admin?
-      @layer = VectorLayer.find(params[:id])
-      @layer.destroy
-      head(204)
-    else
-      head(401)
-    end
+  #
+  # Endpoint to show only meta data for a layer (no GIS data)l
+  #
+  # @return [JSON] Serialized json of a layer's meta data.
+  #
+  def meta_only
+    layers = VectorLayer.where(name: params[:names].split(','))
+    render(json: layers, each_serializer: MetaOnlyLayerSerializer)
   end
 
   private
+
+  def set_layer
+    @layer = VectorLayer.find(params[:id])
+  end
 
   def layer_params
     ActiveModelSerializers::Deserialization
