@@ -15,7 +15,11 @@ class V1::ProjectsController < ApplicationController
   # @return [JSON] Serialized json of featured projects.
   #
   def index
-    render(json: Project.featured)
+    if current_user&.admin
+      render(json: Project.all, current_user: current_user)
+    else
+      render(json: Project.featured)
+    end
   end
 
   #
@@ -26,7 +30,7 @@ class V1::ProjectsController < ApplicationController
   def show
     # Only return the project if it is published, the user is the owner
     # or the user is a collaborator.
-    if @project.published == true || @permissions[:may_edit] == true
+    if @project.published == true || @permissions[:may_edit] == true || current_user.admin
       render(
         json: @project,
         root: 'project',
@@ -91,7 +95,7 @@ class V1::ProjectsController < ApplicationController
   # @return [JSON] Serialized json for updated project
   #
   def update
-    if @permissions[:may_edit] == true
+    if @permissions[:may_edit] || current_user.admin
       if @project.update(project_params)
         render(json: @project, status: :no_content)
       else

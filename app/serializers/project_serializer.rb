@@ -25,6 +25,9 @@ class ProjectSerializer < ActiveModel::Serializer
              :photo
 
   def mine
+    if instance_options[:current_user] == object.user
+      return true
+    end
     instance_options[:mine]
   end
 
