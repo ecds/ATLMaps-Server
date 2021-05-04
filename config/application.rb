@@ -10,6 +10,7 @@ Bundler.require(*Rails.groups)
 
 module Atlmaps
   class Application < Rails::Application
+    VERSION = '1.0.0'
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults(5.0)
     config.action_controller.include_all_helpers = false
