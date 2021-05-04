@@ -239,6 +239,8 @@ class VectorLayer < Layer
   def create_default_color_map
     return if default_break_property.nil?
 
+    return if color_map.present?
+
     return if geojson[:features].map { |f| f[:properties][default_break_property] }.any?(String)
 
     self.color_map = ColorMap.new(geojson: geojson, property: default_break_property).create_map
