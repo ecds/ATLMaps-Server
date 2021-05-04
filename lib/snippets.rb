@@ -246,3 +246,15 @@ Dir.foreach('.') do |f|
   i.write name
   i.destroy!
 end
+
+# 49916d6e = [{"bottom":0.8,"top":2.1,"color":"#807dba"},{"bottom":2.2,"top":4.4,"color":"#6a51a3"},{"bottom":4.41,"top":6.5,"color":"#54278f"},{"bottom":6.51,"top":6.6,"color":"#3f007d"}]
+# m[1]['bottom'] = 6.4
+# m[1]['top'] = 10.5
+# m[2]['bottom'] = 10.51
+# m[2]['top'] = 14.8
+# m[3]['bottom'] = 14.81
+# m[3]['top'] = 19
+# m[4]['bottom'] = 19.1
+# m[4]['top'] = 21.5
+
+# [{"bottom":0.3,"top":1.5,"color":"#807dba"},{"bottom":1.51,"top":3.6,"color":"#6a51a3"},{"bottom":3.61,"top":5.6,"color":"#54278f"},{"bottom":5.61,"top":8.0,"color":"#3f007d"}]

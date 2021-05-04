@@ -31,7 +31,7 @@ set(
   auth_methods: %w[publickey]
 )
 
-set(:branch, 'feature/v2')
+set(:branch, 'develop')
 set(:deploy_to, '/data/atlmaps-server')
 #
 # And/or per server (overrides global)
