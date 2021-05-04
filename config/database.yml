@@ -1,0 +1,25 @@
+default: &default
+  adapter: postgis
+  postgis_extension: true
+  encoding: utf8
+  pool: 50
+  username: <%= ENV['DB_USERNAME'] %>
+  host: <%= ENV['DB_HOSTNAME'] %>
+  schema_search_path: public, postgis
+  password: <%= ENV['DB_PASSWORD'] %>
+  database: <%= ENV['DB_NAME'] %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+  database: <%= ENV['TEST_DB_NAME'] %>
+
+production:
+  <<: *default
+  database: <%= ENV['RDS_DB_NAME'] %>
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOSTNAME'] %>
+  port: <%= ENV['RDS_PORT'] %>

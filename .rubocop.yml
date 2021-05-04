@@ -1,3 +1,6 @@
+require:
+  - rubocop-rails
+
 Layout/IndentationWidth:
   # Number of spaces for each indentation level.
   Width: 2
@@ -11,13 +14,17 @@ Metrics/ClassLength:
 Style/ClassAndModuleChildren:
   Enabled: false
 
+Style/RaiseArgs:
+  Enabled: true
+  EnforcedStyle: compact
+
 Style/PercentLiteralDelimiters:
    Enabled: false
 
 Style/MultilineIfModifier:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
 
 Metrics/MethodLength:
@@ -30,9 +37,26 @@ Metrics/AbcSize:
 Style/RedundantReturn:
   Enabled: false
 
+Lint/ConstantResolution:
+  Enabled: false
+
+Style/Copyright:
+  Enabled: false
+
+Style/DisableCopsWithinSourceCodeDirective:
+  Enabled: false
+
+Style/MissingElse:
+  Enabled: false
+
 Rails:
   Enabled: true
 
+Rails/FilePath:
+  Enabled: false
+
 AllCops:
+  EnabledByDefault: true
   Exclude:
     - 'db/**/*'
+    - 'lib/snippets.rb'

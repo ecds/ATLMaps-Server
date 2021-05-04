@@ -1,5 +1,7 @@
-class Projectlayer < ApplicationRecord
-    belongs_to :project
+# frozen_string_literal: true
 
-    default_scope { order('position DESC') }
+class Projectlayer < ApplicationRecord
+  belongs_to :project
+
+  default_scope { order('position DESC') }
 end

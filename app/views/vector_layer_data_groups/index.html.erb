@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Vector Layer Data Groups</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @vector_layer_data_groups.each do |vector_layer_data_group| %>
+      <tr>
+        <td><%= link_to 'Show', vector_layer_data_group %></td>
+        <td><%= link_to 'Edit', edit_vector_layer_data_group_path(vector_layer_data_group) %></td>
+        <td><%= link_to 'Destroy', vector_layer_data_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Vector Layer Data Group', new_vector_layer_data_group_path %>

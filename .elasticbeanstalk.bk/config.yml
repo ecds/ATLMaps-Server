@@ -1,0 +1,22 @@
+branch-defaults:
+  feature/v2:
+    environment: production
+    group_suffix: null
+environment-defaults:
+  production:
+    branch: feature/v2
+    repository: origin
+global:
+  application_name: ATLMaps-Rails
+  branch: feature/v2
+  default_ec2_keyname: gen
+  default_platform: Puma with Ruby 2.6 running on 64bit Amazon Linux
+  default_region: us-east-1
+  include_git_submodules: true
+  instance_profile: null
+  platform_name: null
+  platform_version: null
+  profile: null
+  repository: origin
+  sc: git
+  workspace_type: Application

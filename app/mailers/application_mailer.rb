@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # Base class for mailers.
 class ApplicationMailer < ActionMailer::Base
-    default from: 'info@atlmaps.com'
-    layout 'mailer'
+  default from: 'info@atlmaps.com'
+  layout 'mailer'
 end

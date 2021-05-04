@@ -1,31 +1,44 @@
+# frozen_string_literal: true
+
 # config/routes.rb
 
 Rails.application.routes.draw do
-    # namespace the controllers without affecting the URI
-    scope module: :v1, constraints: ApiVersion.new('v1', true) do
-        resources :users
-        get 'users/me', to: 'users#me'
-        resources :categories
-        resources :tags
-        resources :institutions
-        resources :logins
-        resources :projects
-        resources :raster_layers, path: 'raster-layers'
-        resources :raster_layer_projects, path: 'raster-layer-projects'
-        resources :users
-        resources :vector_layers, path: 'vector-layers'
-        resources :vector_layer_projects, path: 'vector-layer-projects'
-        resources :vector_features, path: 'vector-features'
-        resources :year_ranges, path: 'year-ranges'
-        resources :confirmation_tokens, path: 'confirmation-tokens'
+  # namespace the controllers without affecting the URI
+  scope module: :v1, constraints: ApiVersion.new('v1', true) do
+    resources :users
+    get 'users/me', to: 'users#me'
+    resources :categories
+    resources :tags
+    resources :institutions
+    resources :logins
+    resources :projects
+    resources :raster_layers, path: 'raster-layers' do
+      get :thumbnail, on: :member
     end
 
-    # Additional version for testing
-    scope module: :v2, constraints: ApiVersion.new('v2') do
-        resources :projects, only: :index
-    end
+    resources :raster_layer_projects, path: 'raster-layer-projects'
+    resources :users
+    resources :vector_layers, path: 'vector-layers'
+    resources :vector_layer_projects, path: 'vector-layer-projects'
+    resources :vector_features, path: 'vector-features'
+    resources :year_ranges, path: 'year-ranges'
+    resources :confirmation_tokens, path: 'confirmation-tokens'
 
-    post '/v1/token', to: 'oauth2#create'
-    post '/v1/revoke', to: 'oauth2#destroy'
+    get 'raster_layers'
+  end
 
+  post 'uploads/vector/parse', to: 'uploads/vector#parse'
+  post 'uploads/vector/preview', to: 'uploads/vector#preview'
+  post 'uploads/vector/new', to: 'uploads/vector#new'
+
+  get 'project-meta/:id', to: 'v1/projects#meta_only'
+  get 'raster-layer-meta', to: 'v1/raster_layers#meta_only'
+  get 'vector-layer-meta', to: 'v1/vector_layers#meta_only'
+
+  # Additional version for testing
+  scope module: :v2, constraints: ApiVersion.new('v2') do
+    resources :projects, only: :index
+  end
+
+  mount EcdsRailsAuthEngine::Engine, at: '/auth'
 end

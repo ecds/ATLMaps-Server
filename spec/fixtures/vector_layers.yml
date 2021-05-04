@@ -5,7 +5,7 @@ one:
   active: false
   institution_id: 1
   title: lll
-  data_type: GeometryCollection
+  tmp_type: GeometryCollection
 two:
   id: 2
   name: p8b03
@@ -19,7 +19,7 @@ two:
   active: true
   institution_id: 1
   title: Living Walls - 2010
-  data_type: Point
+  tmp_type: Point
   boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2adf0cf873c8 POLYGON ((-84.40121469999997 33.73982923366871, -84.29675800000001 33.73982923366871, -84.29675800000001 33.762403, -84.40121469999997 33.762403, -84.40121469999997 33.73982923366871))>
 
 three:
@@ -35,7 +35,7 @@ three:
  active: true
  institution_id: 1
  title: Living Walls - 2012
- data_type: Point
+ tmp_type: Point
  boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2adf0cfbe828 POLYGON ((-84.4238181 33.71389868418264, -84.31964725255966 33.71389868418264, -84.31964725255966 33.791800567017965, -84.4238181 33.791800567017965, -84.4238181 33.71389868418264))>
 
 four:
@@ -51,7 +51,7 @@ four:
  active: true
  institution_id: 1
  title: Living Walls - 2013
- data_type: Point
+ tmp_type: Point
  boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2adf0cfa2240 POLYGON ((-84.40412879999997 33.736531, 4.34475004673004 33.736531, 4.34475004673004 33.7576029, 4.40412879999997 33.7576029, 4.40412879999997 33.736531))>}
 
 five:
@@ -67,5 +67,5 @@ five:
  active: true
  institution_id: 1
  title: Early Edgewood and Candler Park
- data_type: Point
+ tmp_type: Point
  boundingbox: #<RGeo::Geos::CAPIPolygonImpl:0x2adf0cfc5f10 POLYGON ((-84.342878 33.765038, 4.339187 33.765038, 4.339187 33.769667, 4.342878 33.769667, 4.342878 33.765038))>

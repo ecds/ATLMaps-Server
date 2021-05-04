@@ -1,6 +1,8 @@
-class SearchSerializer < RasterLayerSerializer
-    # has_many :layers, embed: :ids
-    # has_many :vectors, embed: :ids
+# frozen_string_literal: true
 
-    attributes :id
+class SearchSerializer < RasterLayerSerializer
+  # has_many :layers, embed: :ids
+  # has_many :vectors, embed: :ids
+
+  attributes :id
 end

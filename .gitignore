@@ -1,11 +1,9 @@
 .vscode
 *.DS_Store
-config/database.yml
 .capistrano
 log
 tmp
 public/assets
-config/application.rb
 public/assets
 log/development.log
 tmp/pids/server.pid
@@ -20,6 +18,7 @@ coverage
 dump
 config/initializers/fog.rb
 config/secrets.yml
+config/storage.yml
 config/initializers/rails_api_auth.rb
 config/initializers/rack_cors.rb
 .yardoc
@@ -27,3 +26,10 @@ doc
 ps_start.sh
 .env
 ~gem*
+
+/config/master.key
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

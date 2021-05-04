@@ -1,4 +1,4 @@
-![](https://travis-ci.org/emory-libraries-ecds/ATLMaps-Server.svg?branch=develop)
+[![ECDS](https://circleci.com/gh/ecds/ATLMaps-Server.svg?style=svg)](<LINK>)
 [![Coverage Status](https://coveralls.io/repos/emory-libraries-ecds/ATLMaps-Server/badge.svg?branch=develop&service=github)](https://coveralls.io/github/emory-libraries-ecds/ATLMaps-Server?branch=develop)
 
 
