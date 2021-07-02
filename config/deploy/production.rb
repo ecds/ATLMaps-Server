@@ -27,13 +27,12 @@ server(ENV['ATLMAPS_STAGING'], user: 'deploy', roles: %w[web app db])
 # --------------
 set(
   :ssh_options,
-  keys: %w[/root/.ssh/id_rsa],
   forward_agent: false,
   auth_methods: %w[publickey]
 )
 
 set(:branch, 'release')
-set(:deploy_to, '/data/atlmaps.org')
+set(:deploy_to, '/atlmaps.org/atlmaps-server')
 
 # And/or per server (overrides global)
 # ------------------------------------
