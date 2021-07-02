@@ -258,3 +258,36 @@ end
 # m[4]['top'] = 21.5
 
 # [{"bottom":0.3,"top":1.5,"color":"#807dba"},{"bottom":1.51,"top":3.6,"color":"#6a51a3"},{"bottom":3.61,"top":5.6,"color":"#54278f"},{"bottom":5.61,"top":8.0,"color":"#3f007d"}]
+
+vl = VectorLayer.find(172)
+vl.tmp_geojson[:features].each do |f|
+  case f[:properties][:holc_grade]
+  when 'A'
+    f[:properties][:color] = '#4caf50'
+  when 'B'
+    f[:properties][:color] = '#1976d2'
+  when 'C'
+    f[:properties][:color] = '#ffeb3b'
+  when 'D'
+    f[:properties][:color] = '#f44336'
+  end
+end
+
+vl.tmp_geojson[:features].map {|f| f[:properties][:color]}
+
+vl.tmp_geojson[:features].each do |f|
+  next unless f[:properties][:video]
+  f[:properties][:youtube] = "//#{f[:properties][:video]}"
+end
+vl.tmp_geojson[:features].map {|f| f[:properties][:youtube]}
+
+vl = VectorLayer.find(531)
+vl.tmp_geojson[:features].each do |f|
+  next unless f[:properties][:images]
+  images = []
+  f[:properties][:images].each do |i|
+    images.push({ url: i })
+  end
+  f[:properties][:images] = images
+end; nil
+vl.tmp_geojson[:features].map {|f| f[:properties][:images]}
