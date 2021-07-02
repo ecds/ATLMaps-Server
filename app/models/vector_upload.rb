@@ -252,7 +252,10 @@ class VectorUpload
         else
           feature[:properties][key.to_sym] = sanitize_value(row[value])
         end
+
+        feature[:properties][:images] = [{ url: feature[:properties][:images] }] if feature[:properties][:images]
       end
+
       geojson[:features].push(feature)
     end
     geojson = geojson.with_indifferent_access
