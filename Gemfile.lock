@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/ecds/ecds_rails_auth_engine.git
-  revision: c5392efddaf97459522bdb79fb92f15fc0cbe13a
+  revision: 33fe6b041c8152bed0563245dd0a709d36b96ce1
   branch: feature/fauxoauth
   specs:
-    ecds_rails_auth_engine (0.1.6)
+    ecds_rails_auth_engine (0.2.0)
       cancancan
       httparty
       jwt
@@ -11,10 +11,10 @@ GIT
 
 GIT
   remote: https://github.com/roo-rb/roo.git
-  revision: 709464c77623be2bc09b2103405d90ded7604a75
+  revision: 00850f1520c9d8fd0d5a63b119a72a4e743709f0
   branch: master
   specs:
-    roo (2.8.3)
+    roo (2.10.0)
       nokogiri (~> 1)
       rubyzip (>= 1.3.0, < 3.0.0)
 
@@ -117,7 +117,7 @@ GEM
       bundler (>= 1.2.0, < 3)
       thor (~> 1.0)
     cancan (1.6.10)
-    cancancan (3.2.1)
+    cancancan (3.5.0)
     capistrano (3.16.0)
       airbrussh (>= 1.0.0)
       i18n
@@ -135,7 +135,7 @@ GEM
       sshkit (~> 1.3)
     case_transform (0.2)
       activesupport
-    concurrent-ruby (1.1.8)
+    concurrent-ruby (1.2.2)
     coveralls (0.8.23)
       json (>= 1.8, < 3)
       simplecov (~> 0.16.1)
@@ -151,10 +151,11 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
+    date (3.3.3)
     dbf (4.1.3)
     diff-lcs (1.4.4)
     docile (1.3.5)
-    erubi (1.10.0)
+    erubi (1.12.0)
     factory_bot (6.1.0)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.1.0)
@@ -162,18 +163,18 @@ GEM
       railties (>= 5.0.0)
     faker (2.17.0)
       i18n (>= 1.6, < 2)
-    globalid (0.4.2)
-      activesupport (>= 4.2.0)
+    globalid (1.1.0)
+      activesupport (>= 5.0)
     hashdiff (1.0.1)
     httparty (0.18.1)
       mime-types (~> 3.0)
       multi_xml (>= 0.5.2)
-    i18n (1.8.10)
+    i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     jmespath (1.4.0)
     json (2.5.1)
     jsonapi-renderer (0.2.2)
-    jwt (2.2.2)
+    jwt (2.7.1)
     kaminari (1.2.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.1)
@@ -186,28 +187,40 @@ GEM
       activerecord
       kaminari-core (= 1.2.1)
     kaminari-core (1.2.1)
-    loofah (2.9.0)
+    loofah (2.21.3)
       crass (~> 1.0.2)
-      nokogiri (>= 1.5.9)
-    mail (2.7.1)
+      nokogiri (>= 1.12.0)
+    mail (2.8.1)
       mini_mime (>= 0.1.1)
-    marcel (1.0.0)
+      net-imap
+      net-pop
+      net-smtp
+    marcel (1.0.2)
     method_source (1.0.0)
-    mime-types (3.3.1)
+    mime-types (3.5.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0225)
+    mime-types-data (3.2023.0808)
     mini_magick (4.11.0)
     mini_mime (1.0.3)
-    mini_portile2 (2.5.0)
-    minitest (5.14.4)
+    mini_portile2 (2.8.4)
+    minitest (5.19.0)
     msgpack (1.4.2)
     multi_xml (0.6.0)
+    net-imap (0.3.7)
+      date
+      net-protocol
+    net-pop (0.1.2)
+      net-protocol
+    net-protocol (0.2.1)
+      timeout
     net-scp (3.0.0)
       net-ssh (>= 2.6.5, < 7.0.0)
+    net-smtp (0.3.3)
+      net-protocol
     net-ssh (6.1.0)
-    nio4r (2.5.7)
-    nokogiri (1.11.3)
-      mini_portile2 (~> 2.5.0)
+    nio4r (2.5.9)
+    nokogiri (1.15.4)
+      mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
     pg (1.2.3)
     pg_search (2.3.5)
@@ -216,12 +229,12 @@ GEM
     public_suffix (4.0.6)
     puma (5.2.2)
       nio4r (~> 2.0)
-    racc (1.5.2)
-    rack (2.2.3)
+    racc (1.7.1)
+    rack (2.2.8)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
-    rack-test (1.1.0)
-      rack (>= 1.0, < 3)
+    rack-test (2.1.0)
+      rack (>= 1.3)
     rails (6.1.3.1)
       actioncable (= 6.1.3.1)
       actionmailbox (= 6.1.3.1)
@@ -237,18 +250,20 @@ GEM
       bundler (>= 1.15.0)
       railties (= 6.1.3.1)
       sprockets-rails (>= 2.0.0)
-    rails-dom-testing (2.0.3)
-      activesupport (>= 4.2.0)
+    rails-dom-testing (2.2.0)
+      activesupport (>= 5.0.0)
+      minitest
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.3.0)
-      loofah (~> 2.3)
+    rails-html-sanitizer (1.6.0)
+      loofah (~> 2.21)
+      nokogiri (~> 1.14)
     railties (6.1.3.1)
       actionpack (= 6.1.3.1)
       activesupport (= 6.1.3.1)
       method_source
       rake (>= 0.8.7)
       thor (~> 1.0)
-    rake (13.0.3)
+    rake (13.0.6)
     rexml (3.2.5)
     rgeo (2.3.0)
     rgeo-activerecord (7.0.1)
@@ -287,12 +302,12 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
     spring (2.1.1)
-    sprockets (4.0.2)
+    sprockets (4.2.0)
       concurrent-ruby (~> 1.0)
-      rack (> 1, < 3)
-    sprockets-rails (3.2.2)
-      actionpack (>= 4.0)
-      activesupport (>= 4.0)
+      rack (>= 2.2.4, < 4)
+    sprockets-rails (3.4.2)
+      actionpack (>= 5.2)
+      activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     sshkit (1.21.2)
       net-scp (>= 1.1.2)
@@ -300,20 +315,21 @@ GEM
     sync (0.5.0)
     term-ansicolor (1.7.1)
       tins (~> 1.0)
-    thor (1.1.0)
+    thor (1.2.2)
+    timeout (0.4.0)
     tins (1.28.0)
       sync
-    tzinfo (2.0.4)
+    tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     webmock (3.12.2)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    websocket-driver (0.7.3)
+    websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     yard (0.9.26)
-    zeitwerk (2.4.2)
+    zeitwerk (2.6.11)
 
 PLATFORMS
   ruby
